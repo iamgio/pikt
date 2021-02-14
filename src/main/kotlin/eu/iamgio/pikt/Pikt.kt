@@ -15,7 +15,8 @@ fun main(args: Array<String>) {
 
     val properties = PiktPropertiesRetriever().retrieve()
 
-    val image = PiktImage(properties.source)
+    val reader = PiktImage(properties.source).reader()
+
 }
 
 /**

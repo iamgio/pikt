@@ -16,7 +16,7 @@ data class Pixel(private val color: Color) {
     fun isWhitespace(): Boolean = color.rgb == -1 || color.alpha != 255
 
     /**
-     * @return [color] as an hexadecimal string
+     * @return [color] as hexadecimal
      */
     fun getHex(): String = Integer.toHexString(color.rgb).substring(2)
 }
@@ -26,7 +26,20 @@ data class Pixel(private val color: Color) {
  *
  * @author Giorgio Garofalo
  */
-class PixelArray(val pixels: Array<Pixel>) {
+class PixelArray(private val pixels: Array<Pixel>) {
+
+    /**
+     * Size of the array
+     */
+    val size: Int
+        get() = pixels.size
+
+    /**
+     * Gets a pixel from the array from given index.
+     * @param index item index
+     * @return pixel by index
+     */
+    operator fun get(index: Int): Pixel = pixels[index]
 
     override fun toString() = "PixelArray(size=${pixels.size})"
 }

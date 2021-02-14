@@ -21,7 +21,6 @@ class PiktImage(private val file: File) {
      */
     private fun readImage(): BufferedImage {
         return try {
-            println(file)
             ImageIO.read(file)
         } catch(e: IOException) {
             System.err.println("Could not read image $file.\nExiting.")
@@ -42,7 +41,7 @@ class PiktImage(private val file: File) {
      * Generates an array of pixels out of the image.
      * @return collection of pixels
      */
-    fun generatePixelArray(): PixelArray {
+    private fun generatePixelArray(): PixelArray {
         val image = readImage()
         val pixels = Array(image.width * image.height) {
             val x: Int = it % image.height
@@ -51,4 +50,9 @@ class PiktImage(private val file: File) {
         }
         return PixelArray(pixels)
     }
+
+    /**
+     * @return pixel-by-pixel reader for the image
+     */
+    fun reader(): PixelReader = PixelReader(generatePixelArray())
 }
