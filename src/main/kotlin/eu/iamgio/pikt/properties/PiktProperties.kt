@@ -37,7 +37,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
      */
     override fun retrieve(): PiktProperties {
         val sourceProperty             = System.getProperty("source")
-        val outputProperty             = System.getProperty("source")
+        val outputProperty             = System.getProperty("output")
         val targetProperty             = System.getProperty("target")
         val jvmCompilerPathProperty    = System.getProperty("jvmcompiler")
         val nativeCompilerPathProperty = System.getProperty("nativecompiler")
@@ -54,7 +54,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         val source: File? = if(sourceProperty == null) {
             error("Source file (-Dsource) is not set.")
             null
-        } else File(sourceProperty).also {
+        } else File(sourceProperty).absoluteFile.also {
             if(!it.exists()) {
                 error("Source file $it does not exist.")
             }
@@ -62,7 +62,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
 
         // Output file without extension
         val output: File? = when {
-            outputProperty != null -> File(outputProperty)
+            outputProperty != null -> File(outputProperty).absoluteFile
             source != null -> File(source.parent, source.nameWithoutExtension)
             else -> null
         }
@@ -97,7 +97,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
             colorsPropertiesRetriever.loadProperties(colorsProperty)
         } else if(!isError) {
             println("Colors scheme not found. Using the default one.")
-            println("Run Pikt with the -createcolors <name> argument to create a scheme.")
+            println("Run Pikt with the -createcolors=name argument to create a scheme.\n")
         }
 
         if(isError) {
