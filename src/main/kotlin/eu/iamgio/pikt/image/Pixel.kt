@@ -1,5 +1,8 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.properties.ColorsProperties
+import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.Statements
 import java.awt.Color
 
 /**
@@ -8,17 +11,29 @@ import java.awt.Color
  * @param color AWT color of the pixel
  * @author Giorgio Garofalo
  */
-data class Pixel(private val color: Color) {
+class Pixel(private val color: Color) {
 
     /**
-     * @return whether the pixel is a whitespace (either white or non-opaque), hence should be skipped
+     * [color] as hexadecimal
+     */
+    val hex: String = Integer.toHexString(color.rgb).substring(2).toUpperCase()
+
+    /**
+     * @return whether this pixel is a whitespace (either white or non-opaque), hence should be skipped
      */
     fun isWhitespace(): Boolean = color.rgb == -1 || color.alpha != 255
 
     /**
-     * @return [color] as hexadecimal
+     * @return statement linked to this pixel if exists. <tt>null</tt> otherwise
      */
-    fun getHex(): String = Integer.toHexString(color.rgb).substring(2)
+    fun getStatement(colors: ColorsProperties): Statement? = Statements.getStatement(this, colors)
+
+    /**
+     * @return pixel color as a Kotlin output name
+     */
+    fun asKotlinMember(): String = "`$hex`"
+
+    override fun toString(): String = asKotlinMember()
 }
 
 /**
@@ -33,6 +48,12 @@ class PixelArray(private val pixels: Array<Pixel>) {
      */
     val size: Int
         get() = pixels.size
+
+    /**
+     * Creates a copy of this array sliced from [start] to [end].
+     * @return sliced copy of this array
+     */
+    fun sliced(start: Int, end: Int): PixelArray = PixelArray(pixels.sliceArray(IntRange(start, end)))
 
     /**
      * Gets a pixel from the array from given index.
