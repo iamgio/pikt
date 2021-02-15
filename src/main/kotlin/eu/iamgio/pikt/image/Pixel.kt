@@ -14,14 +14,44 @@ import java.awt.Color
 class Pixel(private val color: Color) {
 
     /**
-     * [color] as hexadecimal
+     * [color] as hexadecimal.
      */
     val hex: String = Integer.toHexString(color.rgb).substring(2).toUpperCase()
 
     /**
-     * @return whether this pixel is a whitespace (either white or non-opaque), hence should be skipped
+     * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.
      */
-    fun isWhitespace(): Boolean = color.rgb == -1 || color.alpha != 255
+    val isWhitespace: Boolean
+        get() = color.rgb == -1 || color.alpha != 255
+
+    /**
+     * Whether this pixel is a string character (grayscale 1-255).
+     */
+    val isCharacter: Boolean
+        get() = !isWhitespace && color.red == color.green && color.green == color.blue
+
+    /**
+     * Whether this pixel is a numeric character (grayscale 48-57).
+     */
+    val isNumber: Boolean
+        get() = isCharacter && color.red >= '0'.toInt() && color.red <= '9'.toInt()
+
+    /**
+     * Character associated to grayscale pixels if [isCharacter] is <tt>true</tt>.
+     */
+    val characterContent: Char
+        get() = color.red.toChar()
+
+    /**
+     * @param colors colors scheme
+     * @return whether this pixel is a boolean value
+     */
+    fun isBoolean(colors: ColorsProperties) = matches(colors.boolTrue) || matches(colors.boolFalse)
+
+    /**
+     * @return whether the pixel's color matches [hex]
+     */
+    fun matches(hex: String) = this.hex.equals(hex, ignoreCase = true)
 
     /**
      * @return statement linked to this pixel if exists. <tt>null</tt> otherwise
@@ -31,9 +61,7 @@ class Pixel(private val color: Color) {
     /**
      * @return pixel color as a Kotlin output name
      */
-    fun asKotlinMember(): String = "`$hex`"
-
-    override fun toString(): String = asKotlinMember()
+    override fun toString(): String = "`$hex`"
 }
 
 /**

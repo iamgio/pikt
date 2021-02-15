@@ -14,7 +14,7 @@ abstract class Statement {
     /**
      * @return whether the pixel matches the statement's color
      */
-    fun matches(pixel: Pixel, colors: ColorsProperties): Boolean = pixel.hex.equals(getHex(colors), ignoreCase = true)
+    fun matches(pixel: Pixel, colors: ColorsProperties): Boolean = pixel.matches(getHex(colors))
 
     /**
      * @return statement's color from color schemes

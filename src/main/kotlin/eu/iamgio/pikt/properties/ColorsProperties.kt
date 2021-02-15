@@ -9,10 +9,14 @@ import java.io.InputStreamReader
  * The fields of this class refer to a hexadecimal color.
  *
  * @param variable define/set variables
+ * @param boolTrue boolean value 'true'
+ * @param boolFalse boolean value 'false'
  * @author Giorgio Garofalo
  */
 data class ColorsProperties(
-        val variable: String
+        val variable: String,
+        val boolTrue: String,
+        val boolFalse: String
 ) : Properties
 
 /**
@@ -23,17 +27,17 @@ data class ColorsProperties(
 class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
 
     /**
-     * External properties
+     * External properties.
      */
     private val properties = java.util.Properties()
 
     /**
-     * Internal properties used to fill missing properties
+     * Internal properties used to fill missing properties.
      */
     private val internalProperties = java.util.Properties()
 
     /**
-     * Loads external properties
+     * Loads external properties.
      * @param propertiesPath path to the .properties file
      */
     fun loadProperties(propertiesPath: String) {
@@ -60,7 +64,9 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
         internalProperties.load(InputStreamReader(javaClass.getResourceAsStream("/properties/colors.properties")))
 
         return ColorsProperties(
-                get("variable")
+                get("variable"),
+                get("bool.true"),
+                get("bool.false")
         )
     }
 }

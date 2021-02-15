@@ -25,13 +25,13 @@ class VariableStatement : Statement() {
 
         builder.append("var $name")
 
-        val value = reader.next()
-        if(value == null) {
+        val value = reader.nextExpression()
+        /*if(value == null) {
             reader.error("variable has no value.")
             return ""
-        }
+        }*/
 
-        builder.append("=$value")
+        builder.append("=${value.code}")
 
         return builder.toString()
     }

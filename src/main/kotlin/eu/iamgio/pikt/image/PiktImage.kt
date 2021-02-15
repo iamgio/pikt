@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.properties.ColorsProperties
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
@@ -54,5 +55,5 @@ class PiktImage(private val file: File) {
     /**
      * @return pixel-by-pixel reader for the image
      */
-    fun reader(): PixelReader = PixelReader(generatePixelArray())
+    fun reader(colors: ColorsProperties): PixelReader = PixelReader(generatePixelArray(), colors)
 }

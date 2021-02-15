@@ -2,7 +2,7 @@ package eu.iamgio.pikt
 
 import eu.iamgio.pikt.command.Commands
 import eu.iamgio.pikt.command.commands.CreateColorsCommand
-import eu.iamgio.pikt.evaluator.Evaluator
+import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.statement.Statements

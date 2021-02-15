@@ -1,5 +1,7 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.expression.Expression
+import eu.iamgio.pikt.expression.ExpressionParser
 import eu.iamgio.pikt.properties.ColorsProperties
 
 /**
@@ -8,12 +10,18 @@ import eu.iamgio.pikt.properties.ColorsProperties
  * @param pixels collection of [Pixel]s
  * @author Giorgio Garofalo
  */
-class PixelReader(private val pixels: PixelArray) {
+class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties) {
 
     /**
      * Current pixel index.
      */
-    private var index: Int = -1
+    var index: Int = -1
+
+    /**
+     * Amount of pixels.
+     */
+    val size: Int
+        get() = pixels.size
 
     /**
      * Gets the next non-whitespace pixel available.
@@ -24,7 +32,7 @@ class PixelReader(private val pixels: PixelArray) {
         if(index >= pixels.size) return null
 
         return pixels[index].let { pixel ->
-            if(pixel.isWhitespace()) {
+            if(pixel.isWhitespace) {
                 next()
             } else {
                 pixel
@@ -33,10 +41,38 @@ class PixelReader(private val pixels: PixelArray) {
     }
 
     /**
+     * Goes back to the previous non-whitespace pixel available.
+     * @return previous pixel, <tt>null</tt> if there is none
+     */
+    fun previous(): Pixel? {
+        index--
+        if(index <= 0) return null
+
+        return pixels[index].let { pixel ->
+            if(pixel.isWhitespace) {
+                previous()
+            } else {
+                pixel
+            }
+        }
+    }
+
+    /**
+     * Executes a task for every non-null pixel
+     * @param task task to be executed if the current pixel is not <tt>null</tt>.
+     */
+    fun whileNotNull(task: (Pixel) -> Unit) {
+        var pixel: Pixel? = null
+        while(next()?.also { pixel = it } != null) {
+            task(pixel!!)
+        }
+    }
+
+    /**
      * Subdivides this reader into one minor reader for each statement.
      * @return list of minor readers.
      */
-    fun subdivide(colors: ColorsProperties): List<PixelReader> {
+    fun subdivide(): List<PixelReader> {
         val readers = mutableListOf<PixelReader>()
 
         var startIndex = 0
@@ -44,12 +80,18 @@ class PixelReader(private val pixels: PixelArray) {
         while(true) {
             val pixel = next()
             if(startIndex != index && (pixel == null || pixel.getStatement(colors) != null)) {
-                readers += PixelReader(pixels.sliced(startIndex, index - 1))
+                readers += PixelReader(pixels.sliced(startIndex, index - 1), colors)
                 startIndex = index
             }
             if(pixel == null) return readers
         }
     }
+
+    /**
+     * Reads the next expression as Kotlin code, be it a string, a number, a boolean or an object.
+     * @return following value
+     */
+    fun nextExpression(): Expression = ExpressionParser(colors, this).eval()
 
     /**
      * Prints an error preceded by a standard prefix
