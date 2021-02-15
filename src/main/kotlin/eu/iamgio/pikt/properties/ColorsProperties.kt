@@ -9,15 +9,61 @@ import java.io.InputStreamReader
  * The fields of this class refer to a hexadecimal color.
  *
  * @param variable define/set variables
- * @param boolTrue boolean value 'true'
- * @param boolFalse boolean value 'false'
+ * @param boolean boolean values
+ * @param operators operators
  * @author Giorgio Garofalo
  */
 data class ColorsProperties(
         val variable: String,
+        val boolean: BooleanColorsProperties,
+        val operators: OperatorColorsProperties
+) : Properties
+
+/**
+ * Colors scheme for boolean values.
+ *
+ * @param boolTrue boolean value 'true'
+ * @param boolFalse boolean value 'false'
+ * @author Giorgio Garofalo
+ */
+data class BooleanColorsProperties(
         val boolTrue: String,
         val boolFalse: String
-) : Properties
+): Properties
+
+/**
+ * Colors scheme for operators.
+ *
+ * @param plus +
+ * @param minus -
+ * @param times *
+ * @param divide /
+ * @param modulo %
+ * @param and &&
+ * @param or ||
+ * @param equality ==
+ * @param inequality !=
+ * @param greater >
+ * @param greaterOrEquals >=
+ * @param less <
+ * @param lessOrEquals <=
+ * @author Giorgio Garofalo
+ */
+data class OperatorColorsProperties(
+        val plus: String,
+        val minus: String,
+        val times: String,
+        val divide: String,
+        val modulo: String,
+        val and: String,
+        val or: String,
+        val equality: String,
+        val inequality: String,
+        val greater: String,
+        val greaterOrEquals: String,
+        val less: String,
+        val lessOrEquals: String
+): Properties
 
 /**
  * Class that parses JVM properties into a [PiktProperties] instance.
@@ -65,8 +111,24 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
 
         return ColorsProperties(
                 get("variable"),
-                get("bool.true"),
-                get("bool.false")
+                BooleanColorsProperties(get("bool.true"),
+                        get("bool.false")
+                ),
+                OperatorColorsProperties(
+                        get("op.plus"),
+                        get("op.minus"),
+                        get("op.times"),
+                        get("op.divide"),
+                        get("op.modulo"),
+                        get("op.and"),
+                        get("op.or"),
+                        get("op.equality"),
+                        get("op.inequality"),
+                        get("op.greater"),
+                        get("op.greater_or_equals"),
+                        get("op.less"),
+                        get("op.less_or_equals")
+                )
         )
     }
 }

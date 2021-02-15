@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
 
     val image = PiktImage(properties.source, properties.colors)
     val evaluator = Evaluator()
-    evaluator.evaluate(image, properties.colors)
+    evaluator.evaluate(image)
 
     println("Output:\n" + evaluator.outputCode)
 }

@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.expression.Operator
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.Statements
@@ -12,7 +13,7 @@ import java.awt.Color
  * @param colors colors scheme
  * @author Giorgio Garofalo
  */
-class Pixel(private val color: Color, private val colors: ColorsProperties) {
+class Pixel(private val color: Color, val colors: ColorsProperties) {
 
     /**
      * [color] as hexadecimal.
@@ -41,7 +42,7 @@ class Pixel(private val color: Color, private val colors: ColorsProperties) {
      * Whether this pixel is a boolean value
      */
     val isBoolean
-        get() = matches(colors.boolTrue) || matches(colors.boolFalse)
+        get() = matches(colors.boolean.boolTrue) || matches(colors.boolean.boolFalse)
 
     /**
      * Character associated to grayscale pixels if [isCharacter] is <tt>true</tt>.
@@ -53,24 +54,31 @@ class Pixel(private val color: Color, private val colors: ColorsProperties) {
      * Boolean value associated to the pixel if [isBoolean] is <tt>true</tt>.
      */
     val booleanContent: String
-        get() = matches(colors.boolTrue).toString()
+        get() = matches(colors.boolean.boolTrue).toString()
+
+    /**
+     * [Statement] linked to this pixel if exists. <tt>null</tt> otherwise.
+     */
+    val statement: Statement?
+        get() = Statements.byPixel(this)
 
     /**
      * Whether this pixel is associated to a statement.
      */
     val hasStatement: Boolean
-        get() = getStatement() != null
+        get() = statement != null
+
+    /**
+     * [Operator] linked to this pixel if exists. <tt>null</tt> otherwise.
+     */
+    val operator: Operator?
+        get() = Operator.byPixel(this)
 
     /**
      * @param hex hexadecimal color to compare
      * @return whether the pixel's color matches [hex]
      */
     fun matches(hex: String) = this.hex.equals(hex, ignoreCase = true)
-
-    /**
-     * @return statement linked to this pixel if exists. <tt>null</tt> otherwise
-     */
-    fun getStatement(): Statement? = Statements.getStatement(this, colors)
 
     /**
      * @return pixel color as a Kotlin output name
@@ -104,5 +112,5 @@ class PixelArray(private val pixels: Array<Pixel>) {
      */
     operator fun get(index: Int): Pixel = pixels[index]
 
-    override fun toString() = "PixelArray(size=${pixels.size})"
+    override fun toString() = "PixelArray(size=${pixels.size}, pixels=[${pixels.joinToString()}])"
 }

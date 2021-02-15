@@ -21,11 +21,12 @@ enum class ExpressionType {
 
     /**
      * Either true (bool.true) or false (bool.false).
+     * @see eu.iamgio.pikt.image.Pixel.isBoolean
      */
     BOOLEAN,
 
     /**
-     * A mix of the previous expressions.
+     * A mix of the previous expressions containing [Operator]s.
      */
     COMPLEX
 }

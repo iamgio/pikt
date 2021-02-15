@@ -30,7 +30,7 @@ class Evaluator {
         codeBuilder.append("fun main(){")
         readers.forEach { reader ->
             reader.whileNotNull { pixel ->
-                pixel.getStatement()?.generate(reader)?.let { codeBuilder.append(it).append(";") }
+                pixel.statement?.generate(reader)?.let { codeBuilder.append(it).append(";") }
             }
         }
         codeBuilder.append("}")
