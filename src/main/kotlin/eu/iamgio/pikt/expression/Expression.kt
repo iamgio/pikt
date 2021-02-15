@@ -43,7 +43,7 @@ class ExpressionParser(private val colors: ColorsProperties, private val reader:
                     ExpressionType.NUMBER
                 }
                 // An expression is a boolean if its only pixel matches either bool.true or bool.false
-                type == null && pixel.isBoolean(colors) -> {
+                type == null && pixel.isBoolean -> {
                     ExpressionType.BOOLEAN
                 }
                 // If the expression is not a string and none of the above match, the expression is complex.
@@ -69,7 +69,7 @@ class ExpressionParser(private val colors: ColorsProperties, private val reader:
         val code = when(type) {
             ExpressionType.STRING -> "\"${nextString()}\""
             ExpressionType.NUMBER -> nextString(requireNumber = true)
-            ExpressionType.BOOLEAN -> if(reader.next()?.matches(colors.boolTrue) == true) "true" else "false"
+            ExpressionType.BOOLEAN -> reader.next()?.booleanContent ?: "false"
             ExpressionType.COMPLEX -> "" // TODO
         }
 

@@ -9,9 +9,10 @@ import java.awt.Color
  * Represents a single pixel of a [PiktImage]
  *
  * @param color AWT color of the pixel
+ * @param colors colors scheme
  * @author Giorgio Garofalo
  */
-class Pixel(private val color: Color) {
+class Pixel(private val color: Color, private val colors: ColorsProperties) {
 
     /**
      * [color] as hexadecimal.
@@ -37,16 +38,22 @@ class Pixel(private val color: Color) {
         get() = isCharacter && color.red >= '0'.toInt() && color.red <= '9'.toInt()
 
     /**
+     * Whether this pixel is a boolean value
+     */
+    val isBoolean
+        get() = matches(colors.boolTrue) || matches(colors.boolFalse)
+
+    /**
      * Character associated to grayscale pixels if [isCharacter] is <tt>true</tt>.
      */
     val characterContent: Char
         get() = color.red.toChar()
 
     /**
-     * @param colors colors scheme
-     * @return whether this pixel is a boolean value
+     * Boolean value associated to the pixel if [isBoolean] is <tt>true</tt>
      */
-    fun isBoolean(colors: ColorsProperties) = matches(colors.boolTrue) || matches(colors.boolFalse)
+    val booleanContent: String
+        get() = if(matches(colors.boolTrue)) "true" else "false"
 
     /**
      * @return whether the pixel's color matches [hex]
@@ -61,7 +68,7 @@ class Pixel(private val color: Color) {
     /**
      * @return pixel color as a Kotlin output name
      */
-    override fun toString(): String = "`$hex`"
+    override fun toString(): String = if(!isBoolean) "`$hex`" else booleanContent
 }
 
 /**

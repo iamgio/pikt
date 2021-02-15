@@ -14,7 +14,7 @@ import kotlin.system.exitProcess
  * @param file image file
  * @author Giorgio Garofalo
  */
-class PiktImage(private val file: File) {
+class PiktImage(private val file: File, private val colors: ColorsProperties) {
 
     /**
      * Reads image from [file]. Exits if an error occurs.
@@ -35,7 +35,7 @@ class PiktImage(private val file: File) {
      */
     private fun getPixel(image: BufferedImage, x: Int, y: Int): Pixel {
         val rgb = image.getRGB(x, y)
-        return Pixel(Color(rgb))
+        return Pixel(Color(rgb), colors)
     }
 
     /**

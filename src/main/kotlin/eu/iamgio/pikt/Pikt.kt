@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
 
     val properties = PiktPropertiesRetriever().retrieve()
 
-    val image = PiktImage(properties.source)
+    val image = PiktImage(properties.source, properties.colors)
     val evaluator = Evaluator()
     evaluator.evaluate(image, properties.colors)
 
