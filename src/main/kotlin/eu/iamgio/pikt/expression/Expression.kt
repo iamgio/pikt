@@ -10,7 +10,14 @@ import eu.iamgio.pikt.properties.ColorsProperties
  * @param code Kotlin code
  * @author Giorgio Garofalo
  */
-data class Expression(val type: ExpressionType, val code: String)
+data class Expression(val type: ExpressionType, val code: String) {
+
+    /**
+     * Whether this expression has no code.
+     */
+    val isEmpty: Boolean
+        get() = code.isEmpty()
+}
 
 /**
  * Parses [Expression]s

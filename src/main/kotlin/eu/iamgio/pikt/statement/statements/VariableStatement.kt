@@ -26,10 +26,10 @@ class VariableStatement : Statement() {
         builder.append("var $name")
 
         val value = reader.nextExpression()
-        /*if(value == null) {
+        if(value.isEmpty) {
             reader.error("variable has no value.")
             return ""
-        }*/
+        }
 
         builder.append("=${value.code}")
 
