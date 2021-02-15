@@ -2,6 +2,7 @@ package eu.iamgio.pikt
 
 import eu.iamgio.pikt.command.Commands
 import eu.iamgio.pikt.command.commands.CreateColorsCommand
+import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
@@ -9,6 +10,8 @@ import eu.iamgio.pikt.statement.Statements
 import eu.iamgio.pikt.statement.statements.VariableStatement
 
 fun main(args: Array<String>) {
+    val startTime = System.currentTimeMillis()
+
     registerCommands()
     registerStatements()
 
@@ -23,7 +26,13 @@ fun main(args: Array<String>) {
     val evaluator = Evaluator()
     evaluator.evaluate(image)
 
-    println("Output:\n" + evaluator.outputCode)
+    println("Output:\n${evaluator.outputCode}\n")
+
+    val compiler = Compiler(evaluator.outputCode, properties)
+    compiler.compile()
+
+    val totalTime = (System.currentTimeMillis() - startTime) / 1000.0
+    println("Done. (${totalTime}s)")
 }
 
 /**

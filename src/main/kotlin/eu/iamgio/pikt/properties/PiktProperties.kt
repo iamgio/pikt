@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.properties
 
+import eu.iamgio.pikt.compiler.CompilationTarget
 import java.io.File
 import kotlin.system.exitProcess
 
