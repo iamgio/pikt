@@ -6,6 +6,10 @@ package eu.iamgio.pikt.expression
  * @author Giorgio Garofalo
  */
 interface ExpressionMember {
+
+    /**
+     * Output Kotlin code
+     */
     val code: String
 }
 

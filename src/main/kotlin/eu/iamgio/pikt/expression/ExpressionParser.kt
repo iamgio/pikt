@@ -116,7 +116,8 @@ class ExpressionParser(private val reader: PixelReader) {
     }
 
     /**
-     *
+     * Reads the following complex expression and converts it to Kotlin code
+     * @return Kotlin code of complex expression
      */
     private fun nextComplex(): String {
         return splitComplex().joinToString("") { it.code }
