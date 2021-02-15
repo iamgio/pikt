@@ -41,23 +41,6 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties) 
     }
 
     /**
-     * Goes back to the previous non-whitespace pixel available.
-     * @return previous pixel, <tt>null</tt> if there is none
-     */
-    fun previous(): Pixel? {
-        index--
-        if(index <= 0) return null
-
-        return pixels[index].let { pixel ->
-            if(pixel.isWhitespace) {
-                previous()
-            } else {
-                pixel
-            }
-        }
-    }
-
-    /**
      * Executes a task for every non-null pixel
      * @param task task to be executed if the current pixel is not <tt>null</tt>.
      */
@@ -79,7 +62,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties) 
 
         while(true) {
             val pixel = next()
-            if(startIndex != index && (pixel == null || pixel.getStatement(colors) != null)) {
+            if(startIndex != index && (pixel == null || pixel.hasStatement)) {
                 readers += PixelReader(pixels.sliced(startIndex, index - 1), colors)
                 startIndex = index
             }

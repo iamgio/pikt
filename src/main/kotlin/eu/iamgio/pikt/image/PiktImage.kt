@@ -55,5 +55,5 @@ class PiktImage(private val file: File, private val colors: ColorsProperties) {
     /**
      * @return pixel-by-pixel reader for the image
      */
-    fun reader(colors: ColorsProperties): PixelReader = PixelReader(generatePixelArray(), colors)
+    fun reader(): PixelReader = PixelReader(generatePixelArray(), colors)
 }

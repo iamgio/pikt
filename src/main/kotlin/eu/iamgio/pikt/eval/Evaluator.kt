@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PiktImage
-import eu.iamgio.pikt.properties.ColorsProperties
 
 /**
  * Evaluates a [PiktImage] in order to generate Kotlin code
@@ -23,14 +22,15 @@ class Evaluator {
 
     /**
      * Evaluates [image] source via subdivided pixel readers
+     * @param image pikt image
      */
-    fun evaluate(image: PiktImage, colors: ColorsProperties) {
-        val readers = image.reader(colors).subdivide()
+    fun evaluate(image: PiktImage) {
+        val readers = image.reader().subdivide()
 
         codeBuilder.append("fun main(){")
         readers.forEach { reader ->
             reader.whileNotNull { pixel ->
-                pixel.getStatement(colors)?.generate(reader)?.let { codeBuilder.append(it).append(";") }
+                pixel.getStatement()?.generate(reader)?.let { codeBuilder.append(it).append(";") }
             }
         }
         codeBuilder.append("}")

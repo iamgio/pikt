@@ -17,7 +17,7 @@ class Pixel(private val color: Color, private val colors: ColorsProperties) {
     /**
      * [color] as hexadecimal.
      */
-    val hex: String = Integer.toHexString(color.rgb).substring(2).toUpperCase()
+    private val hex: String = Integer.toHexString(color.rgb).substring(2).toUpperCase()
 
     /**
      * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.
@@ -50,12 +50,19 @@ class Pixel(private val color: Color, private val colors: ColorsProperties) {
         get() = color.red.toChar()
 
     /**
-     * Boolean value associated to the pixel if [isBoolean] is <tt>true</tt>
+     * Boolean value associated to the pixel if [isBoolean] is <tt>true</tt>.
      */
     val booleanContent: String
-        get() = if(matches(colors.boolTrue)) "true" else "false"
+        get() = matches(colors.boolTrue).toString()
 
     /**
+     * Whether this pixel is associated to a statement.
+     */
+    val hasStatement: Boolean
+        get() = getStatement() != null
+
+    /**
+     * @param hex hexadecimal color to compare
      * @return whether the pixel's color matches [hex]
      */
     fun matches(hex: String) = this.hex.equals(hex, ignoreCase = true)
@@ -63,7 +70,7 @@ class Pixel(private val color: Color, private val colors: ColorsProperties) {
     /**
      * @return statement linked to this pixel if exists. <tt>null</tt> otherwise
      */
-    fun getStatement(colors: ColorsProperties): Statement? = Statements.getStatement(this, colors)
+    fun getStatement(): Statement? = Statements.getStatement(this, colors)
 
     /**
      * @return pixel color as a Kotlin output name
