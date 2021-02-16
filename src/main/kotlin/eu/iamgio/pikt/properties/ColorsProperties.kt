@@ -22,7 +22,7 @@ data class ColorsProperties(
 ) : Properties
 
 /**
- * Colors scheme for keywords and statements.
+ * Color scheme for keywords and statements.
  *
  * @param variable define/set variables
  * @param methodCall call a method/function without catching the resource value
@@ -38,7 +38,7 @@ data class KeywordsColorsProperties(
 )
 
 /**
- * Colors scheme for boolean values.
+ * Color scheme for boolean values.
  *
  * @param boolTrue boolean value 'true'
  * @param boolFalse boolean value 'false'
@@ -50,7 +50,7 @@ data class BooleanColorsProperties(
 ): Properties
 
 /**
- * Colors scheme for lambdas.
+ * Color scheme for lambdas.
  *
  * @param open block open
  * @param close block close
@@ -62,7 +62,7 @@ data class LambdaColorsProperties(
 ): Properties
 
 /**
- * Colors scheme for operators.
+ * Color scheme for operators.
  *
  * @param plus +
  * @param minus -

@@ -13,27 +13,27 @@ import kotlin.system.exitProcess
  */
 class CreateColorsCommand : Command("-createcolors", { args ->
     if(args == null) {
-        System.err.println("Colors scheme path not set. Usage: -createcolors=path.\nExiting.")
+        System.err.println("Color scheme path not set. Usage: -createcolors=path.\nExiting.")
         exitProcess(-1)
     }
 
     val file = File("$args.properties")
 
     if(file.exists()) {
-        println("Overwriting colors scheme.")
+        println("Overwriting color scheme.")
     } else {
-        println("Creating colors scheme file.")
+        println("Creating color scheme file.")
     }
 
     try {
         Command::class.java.getResourceAsStream("/properties/colors.properties").copyTo(FileOutputStream(file))
     } catch(e: IOException) {
-        System.err.println("An error occurred while creating colors scheme:")
+        System.err.println("An error occurred while creating color scheme:")
         e.printStackTrace()
         exitProcess(-1)
     }
 
-    println("Colors scheme successfully created at $file")
+    println("Color scheme successfully created at $file")
 
     exitProcess(0)
 })

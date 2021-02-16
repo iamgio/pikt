@@ -10,7 +10,7 @@ import java.awt.Color
  * Represents a single pixel of a [PiktImage]
  *
  * @param color AWT color of the pixel
- * @param colors colors scheme
+ * @param colors color scheme
  * @author Giorgio Garofalo
  */
 class Pixel(private val color: Color, val colors: ColorsProperties) {

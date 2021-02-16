@@ -28,7 +28,7 @@ fun main(args: Array<String>) {
     // Retrieve organized properties
     val properties = PiktPropertiesRetriever().retrieve()
 
-    // Initialize the image passing the source file and the custom colors scheme.
+    // Initialize the image passing the source file and the custom color scheme.
     val image = PiktImage(properties.source, properties.colors)
 
     // Evaluate the image pixel-by-pixel

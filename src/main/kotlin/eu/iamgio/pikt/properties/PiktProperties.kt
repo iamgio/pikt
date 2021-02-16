@@ -12,7 +12,7 @@ import kotlin.system.exitProcess
  * @param target compilation target ("-Dtarget")
  * @param jvmCompilerPath optional path to the Kotlin/JVM compiler (required if [target] is [CompilationTarget.JVM]) ("-Djvmcompiler")
  * @param nativeCompilerPath optional path to the Kotlin/Native compiler (required if [target] is [CompilationTarget.NATIVE]) ("-Dnativecompiler")
- * @param colors colors scheme ("-Dcolors")
+ * @param colors color scheme ("-Dcolors")
  * @author Giorgio Garofalo
  */
 data class PiktProperties(
@@ -92,12 +92,12 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
             error("Native compiler $nativeCompilerPathProperty does not exist.")
         }
 
-        // Colors scheme
+        // Color scheme
         val colorsPropertiesRetriever = ColorsPropertiesRetriever()
         if(colorsProperty != null && File(colorsProperty).exists()) {
             colorsPropertiesRetriever.loadProperties(colorsProperty)
         } else if(!isError) {
-            println("Colors scheme not found. Using the default one.")
+            println("Color scheme not found. Using the default one.")
             println("Run Pikt with the -createcolors=name argument to create a scheme.\n")
         }
 
