@@ -6,7 +6,7 @@ import eu.iamgio.pikt.statement.Statement
 
 /**
  * Used to define and/or set variables' values
- * <%variable%> <name> <value?>
+ * <%variable%> <name> <value>
  *
  * @author Giorgio Garofalo
  */
@@ -23,15 +23,16 @@ class VariableStatement : Statement() {
             return ""
         }
 
-        builder.append("var $name")
+        builder.append("var $name=")
 
         val value = reader.nextExpression()
-        if(value.isEmpty) {
-            reader.error("variable has no value.")
-            return ""
-        }
 
-        builder.append("=${value.code}")
+        // Value is empty for lambda variables, a workaround is needed.
+        /*if(value.isEmpty) {
+            reader.error("variable has no value.")
+        }*/
+
+        builder.append(value.code)
 
         return builder.toString()
     }

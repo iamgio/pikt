@@ -9,12 +9,14 @@ import java.io.InputStreamReader
  * The fields of this class refer to a hexadecimal color.
  *
  * @param variable define/set variables
+ * @param lambda lambda/code blocks open/close values
  * @param boolean boolean values
  * @param operators operators
  * @author Giorgio Garofalo
  */
 data class ColorsProperties(
         val variable: String,
+        val lambda: LambdaColorsProperties,
         val boolean: BooleanColorsProperties,
         val operators: OperatorColorsProperties
 ) : Properties
@@ -29,6 +31,18 @@ data class ColorsProperties(
 data class BooleanColorsProperties(
         val boolTrue: String,
         val boolFalse: String
+): Properties
+
+/**
+ * Colors scheme for lambdas.
+ *
+ * @param open block open
+ * @param close block close
+ * @author Giorgio Garofalo
+ */
+data class LambdaColorsProperties(
+        val open: String,
+        val close: String
 ): Properties
 
 /**
@@ -111,7 +125,12 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
 
         return ColorsProperties(
                 get("variable"),
-                BooleanColorsProperties(get("bool.true"),
+                LambdaColorsProperties(
+                        get("lambda.open"),
+                        get("lambda.close"),
+                ),
+                BooleanColorsProperties(
+                        get("bool.true"),
                         get("bool.false")
                 ),
                 OperatorColorsProperties(

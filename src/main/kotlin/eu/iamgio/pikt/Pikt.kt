@@ -7,6 +7,8 @@ import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.statement.Statements
+import eu.iamgio.pikt.statement.statements.LambdaCloseStatement
+import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
 import eu.iamgio.pikt.statement.statements.VariableStatement
 
 fun main(args: Array<String>) {
@@ -66,4 +68,6 @@ fun registerCommands() = with(Commands) {
  */
 fun registerStatements() = with(Statements) {
     register(VariableStatement())
+    register(LambdaOpenStatement())
+    register(LambdaCloseStatement())
 }

@@ -27,10 +27,10 @@ class Evaluator {
     fun evaluate(image: PiktImage) {
         val readers = image.reader().subdivide()
 
-        codeBuilder.append("fun main(){")
+        codeBuilder.append("fun main(){\n")
         readers.forEach { reader ->
             reader.whileNotNull { pixel ->
-                pixel.statement?.generate(reader)?.let { codeBuilder.append(it).append(";") }
+                pixel.statement?.generate(reader)?.let { codeBuilder.append(it).append("\n") }
             }
         }
         codeBuilder.append("}")
