@@ -8,20 +8,34 @@ import java.io.InputStreamReader
  * A standard file can be created by running Pikt with the -createcolors=<name> argument.
  * The fields of this class refer to a hexadecimal color.
  *
- * @param variable define/set variables
- * @param methodCall call a method/function without catching the resource value
+ * @param keywords keywords and statements
  * @param lambda lambda/code blocks open/close values
  * @param boolean boolean values
  * @param operators operators
  * @author Giorgio Garofalo
  */
 data class ColorsProperties(
-        val variable: String,
-        val methodCall: String,
+        val keywords: KeywordsColorsProperties,
         val lambda: LambdaColorsProperties,
         val boolean: BooleanColorsProperties,
         val operators: OperatorColorsProperties
 ) : Properties
+
+/**
+ * Colors scheme for keywords and statements.
+ *
+ * @param variable define/set variables
+ * @param methodCall call a method/function without catching the resource value
+ * @param `if` run code if a certain condition is verified
+ * @param `else` runs if the previous if statement did not run
+ * @author Giorgio Garofalo
+ */
+data class KeywordsColorsProperties(
+        val variable: String,
+        val methodCall: String,
+        val `if`: String,
+        val `else`: String
+)
 
 /**
  * Colors scheme for boolean values.
@@ -126,8 +140,12 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
         internalProperties.load(InputStreamReader(javaClass.getResourceAsStream("/properties/colors.properties")))
 
         return ColorsProperties(
-                get("variable"),
-                get("methodcall"),
+                KeywordsColorsProperties(
+                        get("variable"),
+                        get("methodcall"),
+                        get("if"),
+                        get("else")
+                ),
                 LambdaColorsProperties(
                         get("lambda.open"),
                         get("lambda.close"),

@@ -13,7 +13,7 @@ import eu.iamgio.pikt.statement.Statement
  */
 class MethodCallStatement : Statement() {
 
-    override fun getHex(colors: ColorsProperties) = colors.methodCall
+    override fun getHex(colors: ColorsProperties) = colors.keywords.methodCall
 
     override fun generate(reader: PixelReader) = reader.nextExpression(ExpressionType.METHOD_CALL).code
 }

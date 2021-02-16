@@ -7,10 +7,7 @@ import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.statement.Statements
-import eu.iamgio.pikt.statement.statements.LambdaCloseStatement
-import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
-import eu.iamgio.pikt.statement.statements.MethodCallStatement
-import eu.iamgio.pikt.statement.statements.VariableStatement
+import eu.iamgio.pikt.statement.statements.*
 
 fun main(args: Array<String>) {
     // Record when Pikt was started.
@@ -70,6 +67,8 @@ fun registerCommands() = with(Commands) {
 fun registerStatements() = with(Statements) {
     register(VariableStatement())
     register(MethodCallStatement())
+    register(IfStatement())
+    register(ElseStatement())
     register(LambdaOpenStatement())
     register(LambdaCloseStatement())
 }
