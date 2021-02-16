@@ -116,10 +116,10 @@ class ExpressionParser(private val reader: PixelReader) {
         }
 
         if(builder.endsWith(",")) {
-            builder.setCharAt(builder.length - 1, ')')
+            builder.setCharAt(builder.length - 1, ' ')
         }
 
-        return builder.toString()
+        return builder.append(")").toString()
     }
 
     /**
