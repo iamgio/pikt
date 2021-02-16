@@ -5,7 +5,7 @@ Pikt compiles executables via the [Kotlin compiler](https://kotlinlang.org/docs/
 
 ## Properties
 The following properties must be inserted before Pikt jar's path in the command line.  
-Example: `java -jar -Dproperty=value pikt.jar arguments_here`.  
+Example: `java -Dproperty=value -jar pikt.jar arguments_here`.  
 
 - `-Dsource` source image file;
 - `-Doutput` output file without extension. If not specified it will take `source`'s path without extension;
