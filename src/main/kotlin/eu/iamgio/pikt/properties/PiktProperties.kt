@@ -1,6 +1,9 @@
 package eu.iamgio.pikt.properties
 
 import eu.iamgio.pikt.compiler.CompilationTarget
+import eu.iamgio.pikt.compiler.isAny
+import eu.iamgio.pikt.compiler.isAnyNative
+import eu.iamgio.pikt.compiler.isAnyNull
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -9,16 +12,16 @@ import kotlin.system.exitProcess
  *
  * @param source source image file ("-Dsource")
  * @param output output executable file without extension ("-Doutput")
- * @param target compilation target ("-Dtarget")
- * @param jvmCompilerPath optional path to the Kotlin/JVM compiler (required if [target] is [CompilationTarget.JVM]) ("-Djvmcompiler")
- * @param nativeCompilerPath optional path to the Kotlin/Native compiler (required if [target] is [CompilationTarget.NATIVE]) ("-Dnativecompiler")
+ * @param targets compilation targets ("-Dtarget")
+ * @param jvmCompilerPath optional path to the Kotlin/JVM compiler (required if any of [targets] is [CompilationTarget.JVM]) ("-Djvmcompiler")
+ * @param nativeCompilerPath optional path to the Kotlin/Native compiler (required if any of [targets] is native) ("-Dnativecompiler")
  * @param colors color scheme ("-Dcolors")
  * @author Giorgio Garofalo
  */
 data class PiktProperties(
         val source: File,
-        val output: File,
-        val target: CompilationTarget,
+        val output: String,
+        val targets: List<CompilationTarget>,
         val jvmCompilerPath: String?,
         val nativeCompilerPath: String?,
         val colors: ColorsProperties
@@ -61,23 +64,25 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
             }
         }
 
-        // Output file without extension
-        val output: File? = when {
-            outputProperty != null -> File(outputProperty).absoluteFile
-            source != null -> File(source.parent, source.nameWithoutExtension)
-            else -> null
+        // Output name
+        val output: String = when {
+            outputProperty != null -> outputProperty
+            source != null -> source.nameWithoutExtension
+            else -> "out"
         }
 
-        // Compilation target type
-        val target = CompilationTarget.values().firstOrNull { it.argName == targetProperty }
-        if(target == null) {
-            error("Compilation target $target is invalid. 'jvm' and 'native' are supported targets.")
+        // Compilation targets
+        val targets = targetProperty.split(",").map { targetArg ->
+            CompilationTarget.values().firstOrNull { it.argName == targetArg }
+        }
+        if(targets.isAnyNull()) {
+            error("One or more compilation target are null.")
         }
 
         // JVM compiler
         if(jvmCompilerPathProperty == null) {
-            if(CompilationTarget.JVM == target) {
-                error("JVM compiler (-Djvmcompiler) is not set but target is JVM.")
+            if(targets.isAny(CompilationTarget.JVM)) {
+                error("JVM compiler (-Djvmcompiler) is not set but at least one target is JVM.")
             }
         } else if(!File(jvmCompilerPathProperty).exists()) {
             error("JVM compiler $jvmCompilerPathProperty does not exist.")
@@ -85,8 +90,8 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
 
         // Native compiler
         if(nativeCompilerPathProperty == null) {
-            if(CompilationTarget.NATIVE == target) {
-                error("Native compiler (-Dnativecompiler) is not set but target is native.")
+            if(targets.isAnyNative()) {
+                error("Native compiler (-Dnativecompiler) is not set but at least target is native.")
             }
         } else if(!File(nativeCompilerPathProperty).exists()) {
             error("Native compiler $nativeCompilerPathProperty does not exist.")
@@ -108,8 +113,8 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
 
         return PiktProperties(
                 source = source!!,
-                output = output!!,
-                target = target!!,
+                output = output,
+                targets = targets.filterNotNull(),
                 jvmCompilerPath = jvmCompilerPathProperty,
                 nativeCompilerPath = nativeCompilerPathProperty,
                 colors = colorsPropertiesRetriever.retrieve()

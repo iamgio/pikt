@@ -8,11 +8,11 @@ The following properties must be inserted before Pikt jar's path in the command 
 Example: `java -Dproperty=value -jar pikt.jar arguments_here`.  
 
 - `-Dsource` source image file;
-- `-Doutput` output file without extension. If not specified it will take `source`'s path without extension;
+- `-Doutput` output name without extension. If not specified it will take `source`'s name without extension;
 - `-Dcolors` path to the `.properties` color scheme without extension. Default values will be used if not specified;
-- `-Dtarget` compilation target. Can be either `jvm`, `native` or `interp`;
-- `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) compiler. Required if `target` is `jvm`;
-- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) compiler. Required if `target` is `native`;
+- `-Dtarget` compilation targets divided by a comma. Can be `jvm`, `windows`, `osx` or `linux`;
+- `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) compiler. Required if `target` contains `jvm`;
+- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) compiler. Required if `target` contains a native target;
 
 ## Arguments
 
@@ -25,7 +25,7 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 **Code**
 - [x] Variables
 - [x] Method calls (both as part of expressions and standalone)
-- [ ] Method definitions
+- [x] Method definitions
 - [x] If / else / if else
 - [x] Lambdas
 - [x] Operators (equality, logical and arithmetic)
@@ -34,5 +34,5 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 
 **Compilation**
 - [x] JVM
-- [ ] Native
+- [x] Native
 - [ ] Interpretation
