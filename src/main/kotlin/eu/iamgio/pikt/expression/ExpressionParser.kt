@@ -34,9 +34,13 @@ class ExpressionParser(private val reader: PixelReader) {
                 (type == null || type == ExpressionType.NUMBER) && pixel.isCharacter && pixel.isNumber -> {
                     ExpressionType.NUMBER
                 }
-                // An expression is a boolean if its only pixel matches either bool.true or bool.false
+                // An expression is a boolean if its only pixel matches either bool.true or bool.false.
                 type == null && pixel.isBoolean -> {
                     ExpressionType.BOOLEAN
+                }
+                // An expression is a method call if no character or operator is in it.
+                (type == null || type == ExpressionType.METHOD_CALL) && !pixel.isCharacter -> {
+                    ExpressionType.METHOD_CALL
                 }
                 // If the expression is not a string and none of the above match, the expression is complex.
                 // Complex expressions need additional evaluations (wip)
@@ -62,6 +66,7 @@ class ExpressionParser(private val reader: PixelReader) {
             ExpressionType.STRING -> "\"${nextString()}\""
             ExpressionType.NUMBER -> nextString(requireNumber = true)
             ExpressionType.BOOLEAN -> reader.next()?.booleanContent ?: "false"
+            ExpressionType.METHOD_CALL -> nextMethodCall()
             ExpressionType.COMPLEX -> nextComplex()
         }
 
@@ -88,6 +93,30 @@ class ExpressionParser(private val reader: PixelReader) {
                         }
                     }
             )
+        }
+
+        return builder.toString()
+    }
+
+    /**
+     * Reads a method call: one "name" pixel followed by a pixel for each argument.
+     * @return following method call
+     */
+    private fun nextMethodCall(): String {
+        val builder = StringBuilder()
+
+        reader.next()?.let { pixel ->
+            builder.append(pixel)
+        }
+
+        builder.append("(")
+
+        reader.whileNotNull { pixel ->
+            builder.append(pixel).append(",")
+        }
+
+        if(builder.endsWith(",")) {
+            builder.setCharAt(builder.length - 1, ')')
         }
 
         return builder.toString()
