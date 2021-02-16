@@ -45,8 +45,8 @@ class PiktImage(private val file: File, private val colors: ColorsProperties) {
     private fun generatePixelArray(): PixelArray {
         val image = readImage()
         val pixels = Array(image.width * image.height) {
-            val x: Int = it % image.height
-            val y: Int = it / image.height
+            val x: Int = it % image.width
+            val y: Int = it / image.width
             getPixel(image, x, y)
         }
         return PixelArray(pixels)
