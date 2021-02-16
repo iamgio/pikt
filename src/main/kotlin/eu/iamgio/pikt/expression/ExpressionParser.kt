@@ -57,12 +57,13 @@ class ExpressionParser(private val reader: PixelReader) {
 
     /**
      * Analyzes and evaluates raw pixels into an expression.
+     * @param type forced expression type. Dynamic if not specified
      * @return parsed expression
      */
-    fun eval(): Expression {
-        val type = analyze()
+    fun eval(type: ExpressionType? = null): Expression {
+        val expressionType = type ?: analyze()
 
-        val code = when(type) {
+        val code = when(expressionType) {
             ExpressionType.STRING -> "\"${nextString()}\""
             ExpressionType.NUMBER -> nextString(requireNumber = true)
             ExpressionType.BOOLEAN -> reader.next()?.booleanContent ?: "false"
@@ -70,7 +71,7 @@ class ExpressionParser(private val reader: PixelReader) {
             ExpressionType.COMPLEX -> nextComplex()
         }
 
-        return Expression(type, code)
+        return Expression(expressionType, code)
     }
 
     /**

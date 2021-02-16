@@ -2,6 +2,7 @@ package eu.iamgio.pikt.image
 
 import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.expression.ExpressionParser
+import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.properties.ColorsProperties
 
 /**
@@ -80,7 +81,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties) 
      * Reads the next expression as Kotlin code, be it a string, a number, a boolean or an object.
      * @return following value
      */
-    fun nextExpression(): Expression = ExpressionParser(this).eval()
+    fun nextExpression(type: ExpressionType? = null): Expression = ExpressionParser(this).eval(type)
 
     /**
      * Prints an error preceded by a standard prefix

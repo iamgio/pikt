@@ -9,6 +9,7 @@ import java.io.InputStreamReader
  * The fields of this class refer to a hexadecimal color.
  *
  * @param variable define/set variables
+ * @param methodCall call a method/function without catching the resource value
  * @param lambda lambda/code blocks open/close values
  * @param boolean boolean values
  * @param operators operators
@@ -16,6 +17,7 @@ import java.io.InputStreamReader
  */
 data class ColorsProperties(
         val variable: String,
+        val methodCall: String,
         val lambda: LambdaColorsProperties,
         val boolean: BooleanColorsProperties,
         val operators: OperatorColorsProperties
@@ -125,6 +127,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
 
         return ColorsProperties(
                 get("variable"),
+                get("methodcall"),
                 LambdaColorsProperties(
                         get("lambda.open"),
                         get("lambda.close"),
