@@ -1,5 +1,7 @@
 package pikt.stdlib
 
+import pikt.stdlib.targets.jvm.target_printError
+
 /**
  * Prints a message to the [System.out] stream.
  * @param message text content
@@ -13,5 +15,5 @@ fun print(message: Any) {
  * @param message text content
  */
 fun printError(message: Any) {
-    System.err.println(message)
+    target_printError(message)
 }

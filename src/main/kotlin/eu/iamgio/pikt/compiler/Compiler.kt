@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.compiler
 
+import eu.iamgio.pikt.eval.StdLib
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.BufferedReader
 import java.io.File
@@ -25,10 +26,12 @@ class Compiler(private val kotlinCode: String, private val properties: PiktPrope
 
         // Generate temporary Kotlin source file
         val kotlinFile = File(outputFolder, properties.output + ".kt")
-        kotlinFile.writeText(kotlinCode)
 
         // Compile for each target
         properties.targets.forEach { target ->
+            // Append target-specific library to the code
+            kotlinFile.writeText(kotlinCode + "\n" + StdLib.getTargetSpecificFile(target).readContent(null))
+
             // Find target folder and create if absent
             // Example: out/windows for target WINDOWS
             val targetFolder = File(outputFolder, target.argName).also { it.mkdir() }

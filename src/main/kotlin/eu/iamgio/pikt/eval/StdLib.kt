@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.eval
 
+import eu.iamgio.pikt.compiler.CompilationTarget
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -29,28 +30,44 @@ object StdLib {
             .toMap()
 
     /**
+     * Gets the target-specific library file from pikt.stdlib/targets.
+     * @param target compilation target
+     * @return target-specific [LibFile]
+     */
+    fun getTargetSpecificFile(target: CompilationTarget): LibFile {
+        return LibFile("targets/" + when {
+            target == CompilationTarget.JVM -> "jvm/jvm"
+            target.isNative -> "native/native"
+            else -> ""
+        })
+    }
+
+    /**
      * A standard library file (resources/pikt.stdlib/)
      *
      * @param name Kotlin file name without extension
      */
-    class LibFile(private val name: String) {
+    data class LibFile(private val name: String) {
 
         /**
          * Reads the content of the library file and changes placeholders with [colors] values.
          *
-         * @param colors color scheme
+         * @param colors color scheme. No changes will be done if it <tt>null</tt>
          * @return content as a string
          * @see generateColorProperties
          */
-        fun readContent(colors: Map<String, String>): String {
+        fun readContent(colors: Map<String, String>?): String {
             val builder = StringBuilder()
 
             val reader = BufferedReader(InputStreamReader(javaClass.getResourceAsStream("/pikt.stdlib/$name.kt")))
             while(reader.ready()) {
                 val line = reader.readLine().let { line ->
-                    if(line.startsWith("package")) {
-                        // Skip package declaration
+                    if(line.startsWith("package") || line.startsWith("import") || line.startsWith("@file:")) {
+                        // Skip package declaration, imports and file warnings suppression.
                         ""
+                    } else if(colors == null) {
+                        // Don't apply changes if no color scheme is used
+                        line
                     } else {
                         // Searches for a top-level member (either function or variable/constant)
                         Regex("(?<=(fun|val|var) )\\w+").find(line)?.groups?.firstOrNull()?.let { group ->
@@ -62,7 +79,7 @@ object StdLib {
                                 line.replaceRange(group.range, "`$hex`")
                             }
 
-                        } ?: line // If there is not a match (regular code) do nothing
+                        } ?: line // If there is not a match (regular code) do nothing.
                     }
                 }
                 builder.append(line).append("\n")
