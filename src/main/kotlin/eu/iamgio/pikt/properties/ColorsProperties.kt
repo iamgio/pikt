@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.properties
 
+import eu.iamgio.pikt.eval.StdLib
 import java.io.FileInputStream
 import java.io.InputStreamReader
 
@@ -12,13 +13,15 @@ import java.io.InputStreamReader
  * @param lambda lambda/code blocks open/close values
  * @param boolean boolean values
  * @param operators operators
+ * @param stdlib members (functions, variables, etc.) of the standard library as a name=hex map to be dynamically replaced
  * @author Giorgio Garofalo
  */
 data class ColorsProperties(
         val keywords: KeywordsColorsProperties,
         val lambda: LambdaColorsProperties,
         val boolean: BooleanColorsProperties,
-        val operators: OperatorColorsProperties
+        val operators: OperatorColorsProperties,
+        val stdlib: Map<String, String>
 ) : Properties
 
 /**
@@ -168,7 +171,8 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
                         get("op.greater_or_equals"),
                         get("op.less"),
                         get("op.less_or_equals")
-                )
+                ),
+                stdlib = StdLib.generateColorProperties(internalProperties.keys) { key -> get(key) }
         )
     }
 }

@@ -21,8 +21,9 @@ class Evaluator {
         get() = codeBuilder.toString()
 
     /**
-     * Evaluates [image] source via subdivided pixel readers
+     * Evaluates [image] source via subdivided pixel readers.
      * @param image pikt image
+     * @see outputCode
      */
     fun evaluate(image: PiktImage) {
         val readers = image.reader().subdivide()
@@ -34,5 +35,17 @@ class Evaluator {
             }
         }
         codeBuilder.append("}")
+    }
+
+    /**
+     * Appends the standard library to the output code.
+     *
+     * @param colors standard library color scheme
+     * @see outputCode
+     */
+    fun appendStdCode(colors: Map<String, String>) {
+        StdLib.libraryFiles.forEach {
+            codeBuilder.append(StdLib.LibFile(it).readContent(colors))
+        }
     }
 }

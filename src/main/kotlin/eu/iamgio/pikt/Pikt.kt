@@ -40,6 +40,9 @@ fun main(args: Array<String>) {
         println("Output:\n${evaluator.outputCode}\n")
     }
 
+    // Append the standard library to the output code
+    evaluator.appendStdCode(properties.colors.stdlib)
+
     // Compile the code output into an executable via the Kotlin compiler.
     // Does not run if -nocompile is enabled.
     if(System.getProperty(CMD_NOCOMPILE) == null) {

@@ -29,10 +29,11 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 - [x] If / else / if else
 - [x] Lambdas
 - [x] Operators (equality, logical and arithmetic)
-- [ ] Classes?
-- [ ] Standard library
+- [ ] Loops
+- [ ] [Standard library](https://github.com/iAmGio/pikt/tree/master/src/main/resources/pikt.stdlib) (1%)
 
 **Compilation**
 - [x] JVM
 - [x] Native
 - [ ] Interpretation
+- [ ] Error handling
