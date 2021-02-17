@@ -17,6 +17,7 @@ class StarterScriptFile(
     /**
      * Type of starter.
      * @param prefix script content prefix
+     * @param suffix script content suffix
      * @param extension file extension
      */
     enum class Type(val prefix: String, val suffix: String, val extension: String) {

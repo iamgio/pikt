@@ -75,7 +75,7 @@ class Compiler(private val kotlinCode: String, private val properties: PiktPrope
                 }
             }
             CompilationTarget.NATIVE_WINDOWS -> {
-                arrayOf(StarterScriptFile(StarterScriptFile.Type.BAT, "./$name.exe"))
+                arrayOf(StarterScriptFile(StarterScriptFile.Type.BAT, "$name.exe"))
             }
             CompilationTarget.NATIVE_OSX, CompilationTarget.NATIVE_LINUX -> {
                 arrayOf(StarterScriptFile(StarterScriptFile.Type.SH, "./$name.kexe"))
