@@ -37,6 +37,14 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
         }
     }
 
+    override fun printProcessLine(line: String, isError: Boolean) {
+        if(isError) {
+            System.err.println(line)
+        } else {
+            println(">\t$line")
+        }
+    }
+
     /**
      * Gets the target folder
      * Example: out/windows for target [CompilationTarget.NATIVE_WINDOWS]

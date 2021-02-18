@@ -26,4 +26,12 @@ class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractCo
     }
 
     override fun onPostCompile(target: CompilationTarget) {}
+
+    override fun printProcessLine(line: String, isError: Boolean) {
+        if(isError) {
+            System.err.println(line)
+        } else {
+            println(line)
+        }
+    }
 }

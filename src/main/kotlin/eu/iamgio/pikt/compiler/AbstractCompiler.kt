@@ -63,6 +63,13 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
     protected abstract fun onPostCompile(target: CompilationTarget)
 
     /**
+     * Prints a line from the process stream.
+     * @param line line to be printed
+     * @param isError whether the line is from the error stream or not
+     */
+    protected abstract fun printProcessLine(line: String, isError: Boolean)
+
+    /**
      * Runs the Kotlin compiler
      */
     fun compile() {
@@ -88,8 +95,8 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
             val process = Runtime.getRuntime().exec(generateCommand(target))
 
             // Print the command output.
-            printStream(process.inputStream)
-            printStream(process.errorStream)
+            printStream(process.inputStream, isErrorStream = false)
+            printStream(process.errorStream, isErrorStream = true)
 
             // Post-compilation task.
             onPostCompile(target)
@@ -102,13 +109,17 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
     /**
      * Reads and prints the content of the process [InputStream].
      */
-    private fun printStream(inputStream: InputStream) {
+    private fun printStream(inputStream: InputStream, isErrorStream: Boolean) {
         val reader = BufferedReader(InputStreamReader(inputStream))
 
         var line: String?
 
         while(reader.readLine().also { line = it } != null) {
-            if(line!!.startsWith("WARNING").not()) println(">   $line")
+            line?.let {
+                if(!it.startsWith("WARNING") && !it.contains("-Xverify")) {
+                    printProcessLine(it, isErrorStream)
+                }
+            }
         }
     }
 }
