@@ -15,7 +15,7 @@ fun <T> listOf(vararg items: T): MutableList<T> {
  * @param items items to be added
  */
 fun <T> addToList(list: MutableList<T>, vararg items: T) {
-    list.also { it.addAll(items) }
+    list.addAll(items)
 }
 
 /**
@@ -24,5 +24,5 @@ fun <T> addToList(list: MutableList<T>, vararg items: T) {
  * @param items items to be removed
  */
 fun <T> removeFromList(list: MutableList<T>, vararg items: T) {
-    list.also { it.removeAll(items) }
+    list.removeAll(items)
 }
