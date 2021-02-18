@@ -44,7 +44,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
     protected abstract fun getTargets(): List<CompilationTarget>
 
     /**
-     * Tasked called before the compilation starts.
+     * Task called before the compilation starts.
      * @param target target the code should be compiled for.
      */
     protected abstract fun onPreCompile(target: CompilationTarget)
@@ -57,7 +57,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
     protected abstract fun generateCommand(target: CompilationTarget): String
 
     /**
-     * Tasked called after the compilation finishes.
+     * Task called after the compilation finishes.
      * @param target target the code has been compiled for.
      */
     protected abstract fun onPostCompile(target: CompilationTarget)
