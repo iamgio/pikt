@@ -11,23 +11,17 @@ import kotlin.system.exitProcess
 /**
  * Represent an image source.
  *
- * @param file image file
+ * @param image AWT image
+ * @param colors color scheme
  * @author Giorgio Garofalo
  */
-class PiktImage(private val file: File, private val colors: ColorsProperties) {
+class PiktImage(private val image: BufferedImage, private val colors: ColorsProperties) {
 
     /**
-     * Reads image from [file]. Exits if an error occurs.
-     * @return [BufferedImage] loaded from [file]
+     * @param file image file
+     * @param colors color scheme
      */
-    private fun readImage(): BufferedImage {
-        return try {
-            ImageIO.read(file)
-        } catch(e: IOException) {
-            System.err.println("Could not read image $file.\nExiting.")
-            exitProcess(-1)
-        }
-    }
+    constructor(file: File, colors: ColorsProperties) : this(readImage(file), colors)
 
     /**
      * Instantiates a [Pixel] instance from image coordinates.
@@ -43,7 +37,6 @@ class PiktImage(private val file: File, private val colors: ColorsProperties) {
      * @return collection of pixels
      */
     private fun generatePixelArray(): PixelArray {
-        val image = readImage()
         val pixels = Array(image.width * image.height) {
             val x: Int = it % image.width
             val y: Int = it / image.width
@@ -56,4 +49,21 @@ class PiktImage(private val file: File, private val colors: ColorsProperties) {
      * @return pixel-by-pixel reader for the image
      */
     fun reader(): PixelReader = PixelReader(generatePixelArray(), colors)
+
+    private companion object {
+
+        /**
+         * Reads image from [file]. Exits if an error occurs.
+         * @param file image file
+         * @return [BufferedImage] loaded from [file]
+         */
+        private fun readImage(file: File): BufferedImage {
+            return try {
+                ImageIO.read(file)
+            } catch(e: IOException) {
+                System.err.println("Could not read image $file.\nExiting.")
+                exitProcess(-1)
+            }
+        }
+    }
 }

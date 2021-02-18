@@ -5,13 +5,13 @@ import eu.iamgio.pikt.properties.PiktProperties
 import java.io.File
 
 /**
- * Inteprets Kotlin code.
+ * Abstract interpreter that allows handling process stream.
  *
  * @param evaluator evaluator containing output code
  * @param properties Pikt properties
  * @author Giorgio Garofalo
  */
-class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractCompiler(evaluator, properties) {
+abstract class AbstractInterpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractCompiler(evaluator, properties) {
 
     override val sourceKotlinFile = File(outputFolder, properties.output + ".kts")
 
@@ -26,6 +26,16 @@ class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractCo
     }
 
     override fun onPostCompile(target: CompilationTarget) {}
+}
+
+/**
+ * Interprets Kotlin code.
+ *
+ * @param evaluator evaluator containing output code
+ * @param properties Pikt properties
+ * @author Giorgio Garofalo
+ */
+class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractInterpreter(evaluator, properties) {
 
     override fun printProcessLine(line: String, isError: Boolean) {
         if(isError) {
