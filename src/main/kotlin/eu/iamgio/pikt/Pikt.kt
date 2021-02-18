@@ -3,6 +3,7 @@ package eu.iamgio.pikt
 import eu.iamgio.pikt.command.Commands
 import eu.iamgio.pikt.command.commands.*
 import eu.iamgio.pikt.compiler.Compiler
+import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
@@ -40,13 +41,16 @@ fun main(args: Array<String>) {
         println("Output:\n${evaluator.outputCode}\n")
     }
 
-    // Append the standard library to the output code
-    evaluator.appendStdCode(properties.colors.stdlib)
+    // Interpret the output code if the "-Dinterpret" property is set.
+    if(properties.interpretationTarget != null) {
+        val interpreter = Interpreter(evaluator.clone(), properties)
+        interpreter.compile()
+    }
 
     // Compile the code output into an executable via the Kotlin compiler.
     // Does not run if -nocompile is enabled.
     if(System.getProperty(CMD_NOCOMPILE) == null) {
-        val compiler = Compiler(evaluator.outputCode, properties)
+        val compiler = Compiler(evaluator.clone(), properties)
         compiler.compile()
     }
 

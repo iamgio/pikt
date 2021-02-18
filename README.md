@@ -10,15 +10,16 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 - `-Dsource` source image file;
 - `-Doutput` output name without extension. If not specified it will take `source`'s name without extension;
 - `-Dcolors` path to the `.properties` color scheme without extension. Default values will be used if not specified;
-- `-Dtarget` compilation targets divided by a comma. Can be `jvm`, `windows`, `osx` or `linux`. Note that Windows and OSX executables can be generated only on those platforms;
-- `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) compiler. Required if `target` contains `jvm`;
-- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) compiler. Required if `target` contains a native target;
+- `-Dtargets` compilation targets divided by a comma. Can be `jvm`, `windows`, `osx` or `linux`. Note that Windows and OSX executables can be generated only on those platforms. No compilation will be executed if not specified;
+- `-Dinterpret` defines whether the interpretation should run on the native or JVM compiler. Can be either `jvm` or `native` (native interpretation still has some issues). No interpretation will be executed if not specified.
+- `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) compiler. Required if `target` contains `jvm` or `interpret` is `jvm`;
+- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) compiler. Required if `target` contains a native target or `interpret` is `native`.
 
 ## Arguments
 
 - `-createcolors=name` creates a new color scheme with default values and exits;
 - `-printoutput` prints the generated Kotlin code;
-- `-nocompile` generates the code only and does not actually create an output, mostly for development purposes;
+- `-nocompile` prevents the generation of any executable file.
 
 ## Roadmap
 
@@ -35,5 +36,5 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 **Compilation**
 - [x] JVM
 - [x] Native
-- [ ] Interpretation
+- [x] Interpretation (currently only on JVM)
 - [ ] Error handling

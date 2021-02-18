@@ -12,16 +12,18 @@ import kotlin.system.exitProcess
  *
  * @param source source image file ("-Dsource")
  * @param output output executable file without extension ("-Doutput")
- * @param targets compilation targets ("-Dtarget")
- * @param jvmCompilerPath optional path to the Kotlin/JVM compiler (required if any of [targets] is [CompilationTarget.JVM]) ("-Djvmcompiler")
- * @param nativeCompilerPath optional path to the Kotlin/Native compiler (required if any of [targets] is native) ("-Dnativecompiler")
+ * @param compilationTargets compilation targets ("-Dtarget")
+ * @param interpretationTarget interpretation target ("-Dinterpret")
+ * @param jvmCompilerPath optional path to the Kotlin/JVM compiler (required if any of [compilationTargets] is [CompilationTarget.JVM]) ("-Djvmcompiler")
+ * @param nativeCompilerPath optional path to the Kotlin/Native compiler (required if any of [compilationTargets] is native) ("-Dnativecompiler")
  * @param colors color scheme ("-Dcolors")
  * @author Giorgio Garofalo
  */
 data class PiktProperties(
         val source: File,
         val output: String,
-        val targets: List<CompilationTarget>,
+        val compilationTargets: List<CompilationTarget>,
+        val interpretationTarget: CompilationTarget?,
         val jvmCompilerPath: String?,
         val nativeCompilerPath: String?,
         val colors: ColorsProperties
@@ -42,7 +44,8 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     override fun retrieve(): PiktProperties {
         val sourceProperty             = System.getProperty("source")
         val outputProperty             = System.getProperty("output")
-        val targetProperty             = System.getProperty("target")
+        val interpTargetProperty       = System.getProperty("interpret")
+        val compTargetsProperty        = System.getProperty("targets")
         val jvmCompilerPathProperty    = System.getProperty("jvmcompiler")
         val nativeCompilerPathProperty = System.getProperty("nativecompiler")
         val colorsProperty             = System.getProperty("colors")
@@ -72,11 +75,22 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         }
 
         // Compilation targets
-        val targets = targetProperty.split(",").map { targetArg ->
+        val targets = compTargetsProperty?.split(",")?.map { targetArg ->
             CompilationTarget.values().firstOrNull { it.argName == targetArg }
-        }
+        } ?: emptyList()
         if(targets.isAnyNull()) {
             error("One or more compilation target are null.")
+        }
+
+        // Interpretation target
+        val interpretationTarget = if(interpTargetProperty != null) {
+            CompilationTarget.values().firstOrNull { it.argName == interpTargetProperty }.also {
+                if(it == null) {
+                    error("Invalid intepretation target.")
+                }
+            }
+        } else {
+            null
         }
 
         // JVM compiler
@@ -114,7 +128,8 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         return PiktProperties(
                 source = source!!,
                 output = output,
-                targets = targets.filterNotNull(),
+                compilationTargets = targets.filterNotNull(),
+                interpretationTarget = interpretationTarget,
                 jvmCompilerPath = jvmCompilerPathProperty,
                 nativeCompilerPath = nativeCompilerPathProperty,
                 colors = colorsPropertiesRetriever.retrieve()

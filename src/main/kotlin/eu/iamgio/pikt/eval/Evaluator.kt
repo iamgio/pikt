@@ -5,20 +5,21 @@ import eu.iamgio.pikt.image.PiktImage
 /**
  * Evaluates a [PiktImage] in order to generate Kotlin code
  *
+ * @param codeBuilder Kotlin code builder
  * @author Giorgio Garofalo
  */
-class Evaluator {
-
-    /**
-     * Kotlin code builder.
-     */
-    private val codeBuilder = StringBuilder()
+class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Cloneable {
 
     /**
      * Kotlin code output.
      */
     val outputCode: String
         get() = codeBuilder.toString()
+
+    /**
+     * @return a copy of this evaluator containing already generated code
+     */
+    public override fun clone() = Evaluator(codeBuilder)
 
     /**
      * Evaluates [image] source via subdivided pixel readers.
@@ -28,13 +29,19 @@ class Evaluator {
     fun evaluate(image: PiktImage) {
         val readers = image.reader().subdivide()
 
-        codeBuilder.append("fun main(){\n")
         readers.forEach { reader ->
             reader.whileNotNull { pixel ->
                 pixel.statement?.generate(reader)?.let { codeBuilder.append(it).append("\n") }
             }
         }
-        codeBuilder.append("}")
+    }
+
+    /**
+     * Inserts the current [outputCode] into a <tt>fun main()</tt> block.
+     */
+    fun insertInMain() {
+        codeBuilder.insert(0, "fun main() {\n")
+        codeBuilder.append("\n}")
     }
 
     /**
