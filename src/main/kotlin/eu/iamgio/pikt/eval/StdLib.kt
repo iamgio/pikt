@@ -15,7 +15,9 @@ object StdLib {
      * List of libraries to be evaluated in [Evaluator.appendStdCode].
      */
     val libraryFiles = arrayOf(
-            "print"
+            "Print",
+            "Numbers",
+            "Lists"
     )
 
     /**
@@ -36,8 +38,8 @@ object StdLib {
      */
     fun getTargetSpecificFile(target: CompilationTarget): LibFile {
         return LibFile("targets/" + when {
-            target == CompilationTarget.JVM -> "jvm/jvm"
-            target.isNative -> "native/native"
+            target == CompilationTarget.JVM -> "jvm/JVM"
+            target.isNative -> "native/Native"
             else -> ""
         })
     }
@@ -70,7 +72,7 @@ object StdLib {
                         line
                     } else {
                         // Searches for a top-level member (either function or variable/constant)
-                        Regex("(?<=(fun|val|var) )\\w+").find(line)?.groups?.firstOrNull()?.let { group ->
+                        Regex("(?<=(fun|val|var|<.>) )\\w+").find(line)?.groups?.firstOrNull()?.let { group ->
 
                             // Getting member name (e.g. fun print(...) -> print),
                             // fetching hex value from color schemes and replacing it.

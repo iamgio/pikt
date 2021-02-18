@@ -30,7 +30,7 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 - [x] Lambdas
 - [x] Operators (equality, logical and arithmetic)
 - [ ] Loops
-- [ ] [Standard library](https://github.com/iAmGio/pikt/tree/master/src/main/resources/pikt.stdlib) (1%)
+- [ ] [Standard library](https://github.com/iAmGio/pikt/tree/master/src/main/resources/pikt.stdlib) (2%)
 
 **Compilation**
 - [x] JVM
