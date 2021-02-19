@@ -51,8 +51,10 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Clon
      * @see outputCode
      */
     fun appendStdCode(colors: Map<String, String>) {
+        val stdBuilder = StringBuilder()
         StdLib.libraryFiles.forEach {
-            codeBuilder.append(StdLib.LibFile(it).readContent(colors))
+            stdBuilder.append(StdLib.LibFile(it).readContent(colors))
         }
+        codeBuilder.insert(0, stdBuilder)
     }
 }

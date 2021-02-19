@@ -25,6 +25,11 @@ class ExpressionParser(private val reader: PixelReader) {
                 type == ExpressionType.COMPLEX -> {
                     type
                 }
+                // If the expression is not a string and none of the above match, the expression is complex.
+                // Complex expressions need additional evaluations.
+                pixel.operator != null -> {
+                    ExpressionType.COMPLEX
+                }
                 // An expression is a string literal if at least one pixel in it is a non-number character.
                 // Every non-character in the string will be treated as a variable.
                 pixel.isCharacter && !pixel.isNumber -> {
@@ -41,11 +46,6 @@ class ExpressionParser(private val reader: PixelReader) {
                 // An expression is a method call if no character or operator is in it.
                 (type == null || type == ExpressionType.METHOD_CALL) && !pixel.isCharacter -> {
                     ExpressionType.METHOD_CALL
-                }
-                // If the expression is not a string and none of the above match, the expression is complex.
-                // Complex expressions need additional evaluations (wip)
-                pixel.operator != null -> {
-                    ExpressionType.COMPLEX
                 }
                 else -> type
             }
@@ -113,7 +113,7 @@ class ExpressionParser(private val reader: PixelReader) {
         builder.append("(")
 
         reader.whileNotNull { pixel ->
-            builder.append(pixel).append(",")
+            builder.append(pixel).append("()").append(",")
         }
 
         if(builder.endsWith(",")) {

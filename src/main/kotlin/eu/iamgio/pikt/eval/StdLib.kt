@@ -16,6 +16,7 @@ object StdLib {
      */
     val libraryFiles = arrayOf(
             "Print",
+            "Objects",
             "Numbers",
             "Lists"
     )
