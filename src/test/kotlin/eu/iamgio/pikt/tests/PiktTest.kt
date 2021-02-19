@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 class PiktTest {
 
     private val launcher = PiktTestLauncher()
-    private fun launch(name: String) = launcher.launch(name)
+    private fun launch(name: String, scheme: String? = null) = launcher.launch(name, scheme)
 
     @Test
     fun `sum of 3 integers`() {
@@ -38,7 +38,7 @@ class PiktTest {
 
     @Test
     fun `fibonacci n=20`() {
-        with(launch("fibonacci")) {
+        with(launch("fibonacci", scheme = "fibonacci")) {
             assertTrue {
                 last() == "4181"
             }

@@ -5,6 +5,7 @@ import eu.iamgio.pikt.compiler.isAny
 import eu.iamgio.pikt.compiler.isAnyNative
 import eu.iamgio.pikt.compiler.isAnyNull
 import java.io.File
+import java.io.FileInputStream
 import kotlin.system.exitProcess
 
 /**
@@ -114,7 +115,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         // Color scheme
         val colorsPropertiesRetriever = ColorsPropertiesRetriever()
         if(colorsProperty != null && File(colorsProperty).exists()) {
-            colorsPropertiesRetriever.loadProperties(colorsProperty)
+            colorsPropertiesRetriever.loadProperties(FileInputStream(colorsProperty))
         } else if(!isError) {
             println("Color scheme not found. Using the default one.")
             println("Run Pikt with the -createcolors=name argument to create a scheme.\n")

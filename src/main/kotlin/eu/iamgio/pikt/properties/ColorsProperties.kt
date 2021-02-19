@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.properties
 
 import eu.iamgio.pikt.eval.StdLib
-import java.io.FileInputStream
+import java.io.InputStream
 import java.io.InputStreamReader
 
 /**
@@ -123,10 +123,10 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
 
     /**
      * Loads external properties.
-     * @param propertiesPath path to the .properties file
+     * @param inputStream .properties input stream
      */
-    fun loadProperties(propertiesPath: String) {
-        properties.load(FileInputStream(propertiesPath))
+    fun loadProperties(inputStream: InputStream) {
+        properties.load(inputStream)
     }
 
     /**

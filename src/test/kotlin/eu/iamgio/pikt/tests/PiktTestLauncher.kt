@@ -20,16 +20,6 @@ class PiktTestLauncher {
 
     private val tempDirectory = File(System.getProperty("java.io.tmpdir") + File.separator + "pikt-test")
 
-    private val properties = PiktProperties(
-            source = File(tempDirectory, "ignored"),
-            output = "out",
-            compilationTargets = emptyList(),
-            interpretationTarget = CompilationTarget.JVM,
-            jvmCompilerPath = System.getProperty("jvmcompiler"), // Set -Djvmcompiler property before running
-            nativeCompilerPath = null,
-            colors = ColorsPropertiesRetriever().retrieve()
-    )
-
     init {
         tempDirectory.mkdir()
         registerStatements()
@@ -38,10 +28,25 @@ class PiktTestLauncher {
     /**
      * Launches the interpreter and returns all the non-error messages.
      * @param name PNG image name without extension
+     * @param colorSchemeName name of the optional .properties color scheme
      * @return non-error lines in order
      */
-    fun launch(name: String): List<String> {
+    fun launch(name: String, colorSchemeName: String? = null): List<String> {
         println("Launching test $name")
+
+        val properties = PiktProperties(
+                source = File(tempDirectory, "ignored"),
+                output = "out",
+                compilationTargets = emptyList(),
+                interpretationTarget = CompilationTarget.JVM,
+                jvmCompilerPath = System.getProperty("jvmcompiler"), // Set -Djvmcompiler property before running
+                nativeCompilerPath = null,
+                colors = ColorsPropertiesRetriever().also {
+                    if(colorSchemeName != null) {
+                        it.loadProperties(PiktTest::class.java.getResourceAsStream("/schemes/$colorSchemeName.properties"))
+                    }
+                }.retrieve()
+        )
 
         val lines = mutableListOf<String>()
 
