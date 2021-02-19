@@ -5,14 +5,14 @@ import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 
 /**
- * Used to define and/or set variables' values
- * <%variable%> <name> <value>
+ * Used to define variables
+ * <%variable.define%> <name> <value>
  *
  * @author Giorgio Garofalo
  */
-class VariableStatement : Statement() {
+class DefineVariableStatement : Statement() {
 
-    override fun getHex(colors: ColorsProperties) = colors.keywords.variable
+    override fun getHex(colors: ColorsProperties) = colors.keywords.defineVariable
 
     override fun generate(reader: PixelReader): String {
         val builder = StringBuilder()
@@ -32,6 +32,29 @@ class VariableStatement : Statement() {
             reader.error("variable has no value.")
         }*/
 
+        builder.append(value.code)
+
+        return builder.toString()
+    }
+}
+
+/**
+ * Used to set variables value
+ * <%variable.set%> <name> <value>
+ *
+ * @author Giorgio Garofalo
+ */
+class SetVariableStatement : Statement() {
+
+    override fun getHex(colors: ColorsProperties) = colors.keywords.setVariable
+
+    override fun generate(reader: PixelReader): String {
+        val builder = StringBuilder()
+
+        val name = reader.next()
+        builder.append("$name=")
+
+        val value = reader.nextExpression()
         builder.append(value.code)
 
         return builder.toString()
