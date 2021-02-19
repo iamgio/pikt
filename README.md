@@ -3,6 +3,14 @@ Pikt is a work-in-progress image, pixel-based esoteric programming language that
   
 Pikt compiles executables via the [Kotlin compiler](https://kotlinlang.org/docs/command-line.html), therefore compilation for both JVM and native targets is available, along with runtime interpretation.
 
+<p align="center">
+  <br>
+  <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
+  <i>A high-performance Fibonacci sequence algorithm*.</i>
+</p>
+
+_* Using [custom color schemes](https://github.com/iAmGio/pikt/blob/master/src/test/resources/schemes)._
+
 ## Properties
 The following properties must be inserted before Pikt jar's path in the command line.  
 Example: `java -Dproperty=value -jar pikt.jar arguments_here`.  
@@ -17,7 +25,7 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 
 ## Arguments
 
-- `-createcolors=name` creates a new color scheme with default values and exits;
+- `-createcolors=name` creates a new [color scheme](https://github.com/iAmGio/pikt/blob/master/src/main/resources/properties/colors.properties) with default values and exits;
 - `-printoutput` prints the generated Kotlin code;
 - `-nocompile` prevents the generation of any executable file.
 
