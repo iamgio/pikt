@@ -24,7 +24,7 @@ class Pixel(private val color: Color, val colors: ColorsProperties) {
      * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.
      */
     val isWhitespace: Boolean
-        get() = color.rgb == -1 || color.alpha != 255
+        get() = color.rgb == -1 || color.alpha != 255 || matches(colors.whitespace)
 
     /**
      * Whether this pixel is a string character (grayscale 1-255).

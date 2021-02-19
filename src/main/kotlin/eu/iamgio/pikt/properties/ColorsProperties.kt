@@ -9,6 +9,7 @@ import java.io.InputStreamReader
  * A standard file can be created by running Pikt with the -createcolors=<name> argument.
  * The fields of this class refer to a hexadecimal color.
  *
+ * @param whitespace ignored color
  * @param keywords keywords and statements
  * @param lambda lambda/code blocks open/close values
  * @param boolean boolean values
@@ -17,6 +18,7 @@ import java.io.InputStreamReader
  * @author Giorgio Garofalo
  */
 data class ColorsProperties(
+        val whitespace: String,
         val keywords: KeywordsColorsProperties,
         val lambda: LambdaColorsProperties,
         val boolean: BooleanColorsProperties,
@@ -147,6 +149,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
         internalProperties.load(InputStreamReader(javaClass.getResourceAsStream("/properties/colors.properties")))
 
         return ColorsProperties(
+                get("whitespace"),
                 KeywordsColorsProperties(
                         get("variable.define"),
                         get("variable.set"),
