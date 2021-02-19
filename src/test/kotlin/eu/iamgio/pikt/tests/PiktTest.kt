@@ -35,4 +35,13 @@ class PiktTest {
             }
         }
     }
+
+    @Test
+    fun `fibonacci n=20`() {
+        with(launch("fibonacci")) {
+            assertTrue {
+                last() == "4181"
+            }
+        }
+    }
 }
