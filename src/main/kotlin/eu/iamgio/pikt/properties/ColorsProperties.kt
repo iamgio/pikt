@@ -134,7 +134,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
      * @return corresponding hex value
      */
     fun get(key: String): String {
-        return if(key in properties) {
+        return if(key in properties.keys) {
             properties.getProperty(key)
         } else {
             internalProperties.getProperty(key)
