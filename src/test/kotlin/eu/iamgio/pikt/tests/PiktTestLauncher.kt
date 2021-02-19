@@ -41,9 +41,11 @@ class PiktTestLauncher {
      * @return non-error lines in order
      */
     fun launch(name: String): List<String> {
+        println("Launching test $name")
+
         val lines = mutableListOf<String>()
 
-        val image = PiktImage(ImageIO.read(javaClass.getResourceAsStream("/$name.png")), properties.colors)
+        val image = PiktImage(ImageIO.read(PiktTest::class.java.getResourceAsStream("/$name.png")), properties.colors)
 
         val evaluator = Evaluator()
         evaluator.evaluate(image)

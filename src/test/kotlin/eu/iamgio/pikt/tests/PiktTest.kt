@@ -17,4 +17,22 @@ class PiktTest {
             }
         }
     }
+
+    @Test
+    fun `print each element of an int list`() {
+        with(launch("list_foreach")) {
+            assertTrue {
+                equals(listOf("13", "32", "60"))
+            }
+        }
+    }
+
+    @Test
+    fun `print numbers from 0 to 10`() {
+        with(launch("range_foreach")) {
+            assertTrue {
+                equals((0..10).map { it.toString() })
+            }
+        }
+    }
 }

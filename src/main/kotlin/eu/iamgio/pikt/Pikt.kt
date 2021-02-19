@@ -76,6 +76,7 @@ fun registerStatements() = with(Statements) {
     register(MethodCallStatement())
     register(IfStatement())
     register(ElseStatement())
+    register(ForEachStatement())
     register(LambdaOpenStatement())
     register(LambdaCloseStatement())
 }

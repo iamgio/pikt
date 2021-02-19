@@ -26,3 +26,12 @@ fun <T> addToList(list: MutableList<T>, vararg items: T) {
 fun <T> removeFromList(list: MutableList<T>, vararg items: T) {
     list.removeAll(items)
 }
+
+/**
+ * Generates an ascending range of integers from [start] to [end].
+ * @param start start number
+ * @param end end number
+ */
+fun range(start: Int, end: Int): MutableList<Int> {
+    return (start..end).toMutableList()
+}

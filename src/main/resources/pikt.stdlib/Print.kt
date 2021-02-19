@@ -7,7 +7,7 @@ import pikt.stdlib.targets.jvm.target_printError
  * @param message text content
  */
 fun print(message: Any) {
-    kotlin.io.print(message)
+    println(message)
 }
 
 /**
