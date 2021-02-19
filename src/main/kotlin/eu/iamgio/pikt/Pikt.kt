@@ -63,7 +63,7 @@ fun main(args: Array<String>) {
  * Registers commands triggered by command-line arguments.
  */
 fun registerCommands() = with(Commands) {
-    register(CreateColorsCommand())
+    register(CreateSchemeCommand())
     register(PrintOutputCommand())
     register(NoCompileCommand())
 }

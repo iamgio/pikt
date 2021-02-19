@@ -118,7 +118,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
             colorsPropertiesRetriever.loadProperties(FileInputStream(colorsProperty))
         } else if(!isError) {
             println("Color scheme not found. Using the default one.")
-            println("Run Pikt with the -createcolors=name argument to create a scheme.\n")
+            println("Run Pikt with the -createscheme=name argument to create a scheme.\n")
         }
 
         if(isError) {

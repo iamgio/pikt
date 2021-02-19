@@ -6,7 +6,7 @@ import java.io.InputStreamReader
 
 /**
  * Storage for properties, loaded from a .properties file, that define the "keywords" of the language.
- * A standard file can be created by running Pikt with the -createcolors=<name> argument.
+ * A standard file can be created by running Pikt with the -createscheme=<name> argument.
  * The fields of this class refer to a hexadecimal color.
  *
  * @param whitespace ignored color

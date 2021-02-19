@@ -7,13 +7,13 @@ import java.io.IOException
 import kotlin.system.exitProcess
 
 /**
- * Triggered by -createcolors=name argument
+ * Triggered by -createscheme=name argument
  *
  * @author Giorgio Garofalo
  */
-class CreateColorsCommand : Command("-createcolors", { args ->
+class CreateSchemeCommand : Command("-createscheme", { args ->
     if(args == null) {
-        System.err.println("Color scheme path not set. Usage: -createcolors=path.\nExiting.")
+        System.err.println("Color scheme path not set. Usage: -createscheme=path.\nExiting.")
         exitProcess(-1)
     }
 

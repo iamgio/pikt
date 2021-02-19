@@ -25,7 +25,7 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 
 ## Arguments
 
-- `-createcolors=name` creates a new [color scheme](https://github.com/iAmGio/pikt/blob/master/src/main/resources/properties/colors.properties) with default values and exits;
+- `-createscheme=name` creates a new [color scheme](https://github.com/iAmGio/pikt/blob/master/src/main/resources/properties/colors.properties) with default values and exits;
 - `-printoutput` prints the generated Kotlin code;
 - `-nocompile` prevents the generation of any executable file.
 
