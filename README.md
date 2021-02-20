@@ -7,6 +7,9 @@ Pikt compiles executables via the [Kotlin compiler](https://kotlinlang.org/docs/
   <br>
   <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
   <i>A high-performance Fibonacci sequence algorithm*.</i>
+  <br><br>
+    <img width="130" src="https://i.imgur.com/LFYekAD.png" alt="Prime numbers" /><br>
+    <i>A prime numbers algorithm*.</i>
 </p>
 
 _* Using [custom color schemes](https://github.com/iAmGio/pikt/blob/master/src/test/resources/schemes)._
