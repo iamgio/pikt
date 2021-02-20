@@ -72,7 +72,7 @@ class ColorSchemePalette(schemeInputStream: InputStream) {
         generateList(keys.subList(properties.size / 2, properties.size - 1), graphics, IMAGE_WIDTH / 2 + 15)
 
         // Save image.
-        ImageIO.write(image, "jpg", imageFile)
+        ImageIO.write(image, "png", imageFile)
     }
 
     /**

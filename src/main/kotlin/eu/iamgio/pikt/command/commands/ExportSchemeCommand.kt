@@ -20,7 +20,7 @@ class ExportSchemeCommand : Command("-exportscheme", { args ->
     }
 
     val schemeFile = File("$args.properties")
-    val imageFile = File("$args.jpg")
+    val imageFile = File("$args.png")
 
     if(imageFile.exists()) {
         println("Overwriting color palette.")
