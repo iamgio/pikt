@@ -64,6 +64,7 @@ fun main(args: Array<String>) {
  */
 fun registerCommands() = with(Commands) {
     register(CreateSchemeCommand())
+    register(ExportSchemeCommand())
     register(PrintOutputCommand())
     register(NoCompileCommand())
 }
