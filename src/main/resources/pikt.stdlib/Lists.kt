@@ -32,6 +32,9 @@ fun <T> removeFromList(list: MutableList<T>, vararg items: T) {
  * @param start start number
  * @param end end number
  */
-fun range(start: Int, end: Int): MutableList<Int> {
-    return (start..end).toMutableList()
+fun range(start: Any, end: Any): MutableList<Int> {
+    if(start !is Number && end !is Number) {
+        throw RuntimeException("range(start, end) called with non-numeric values.")
+    }
+    return ((start as Number).toInt()..(end as Number).toInt()).toMutableList()
 }
