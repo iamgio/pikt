@@ -136,7 +136,7 @@ class ExpressionParser(private val reader: PixelReader) {
             val pixel = reader.next()
             val operator = pixel?.operator
 
-            if(startIndex > 0 && (pixel == null || operator != null)) {
+            if(pixel == null || operator != null) {
                 members += ExpressionParser(reader.sliced(startIndex, reader.index - 1).also { it.next() }).eval()
                 startIndex = reader.index
 
