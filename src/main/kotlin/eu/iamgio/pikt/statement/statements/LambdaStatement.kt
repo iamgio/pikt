@@ -15,7 +15,7 @@ class LambdaOpenStatement : Statement() {
     override fun generate(reader: PixelReader): String {
         val builder = StringBuilder("{")
         reader.whileNotNull {
-            builder.append(it).append(",")
+            builder.append(it).append(":Any,")
         }
         if(builder.endsWith(",")) {
             builder.append("->")
