@@ -6,9 +6,10 @@ import eu.iamgio.pikt.image.PixelReader
  * Parses [Expression]s
  *
  * @param reader pixel reader
+ * @param isComplexParser whether this parser is internally generated for complex expression parsing
  * @author Giorgio Garofalo
  */
-class ExpressionParser(private val reader: PixelReader) {
+class ExpressionParser(private val reader: PixelReader, private val isComplexParser: Boolean = false) {
 
     /**
      * Analizes the next pixels an finds the expression type.
@@ -136,8 +137,8 @@ class ExpressionParser(private val reader: PixelReader) {
             val pixel = reader.next()
             val operator = pixel?.operator
 
-            if(pixel == null || operator != null) {
-                members += ExpressionParser(reader.sliced(startIndex, reader.index - 1).also { it.next() }).eval()
+            if(!(isComplexParser && startIndex <= 0) && (pixel == null || operator != null)) {
+                members += ExpressionParser(reader.sliced(startIndex, reader.index - 1).also { it.next() }, isComplexParser = true).eval()
                 startIndex = reader.index
 
                 if(operator != null) {
