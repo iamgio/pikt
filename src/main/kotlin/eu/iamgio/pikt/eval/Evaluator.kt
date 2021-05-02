@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PiktImage
-import eu.iamgio.pikt.properties.ColorsProperty
 
 /**
  * Evaluates a [PiktImage] in order to generate Kotlin code
@@ -20,7 +19,7 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Clon
     /**
      * @return a copy of this evaluator containing already generated code
      */
-    public override fun clone() = Evaluator(codeBuilder)
+    public override fun clone() = Evaluator(StringBuilder(codeBuilder))
 
     /**
      * Evaluates [image] source via subdivided pixel readers.
@@ -48,13 +47,12 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Clon
     /**
      * Appends the standard library to the output code.
      *
-     * @param colors standard library color scheme
      * @see outputCode
      */
-    fun appendStdCode(colors: Map<String, ColorsProperty>) {
+    fun appendStdCode() {
         val stdBuilder = StringBuilder()
         StdLib.libraryFiles.forEach {
-            stdBuilder.append(StdLib.LibFile(it).readContent(colors))
+            stdBuilder.append(StdLib.LibFile(it).readContent())
         }
         codeBuilder.insert(0, stdBuilder)
     }

@@ -80,13 +80,13 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
         applyEvaluatorSettings()
 
         // Append the standard library to the output code.
-        evaluator.appendStdCode(properties.colors.stdlib)
+        evaluator.appendStdCode()
 
         // Compile for each target.
         getTargets().forEach { target ->
 
             // Write the evaluator code to the source file.
-            sourceKotlinFile.writeText(evaluator.outputCode + "\n" + StdLib.getTargetSpecificFile(target).readContent())
+            sourceKotlinFile.writeText(StdLib.getTargetSpecificFile(target).readContent() + "\n" + evaluator.outputCode)
 
             // Pre-compilation task.
             onPreCompile(target)
