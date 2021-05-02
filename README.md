@@ -1,4 +1,7 @@
 # Pikt
+
+> _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
+
 Pikt is a work-in-progress image, pixel-based esoteric programming language that aims at generating fast and lightweight programs from aesthetically pleasant image sources: to accomplish this, the colors of all "keywords", functions, operators and so on are easily customizable.
   
 Pikt compiles executables via the [Kotlin compiler](https://kotlinlang.org/docs/command-line.html), therefore compilation for both JVM and native targets is available, along with runtime interpretation.
