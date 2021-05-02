@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.eval.StdLib
 import eu.iamgio.pikt.expression.Operator
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.properties.ColorsProperty
@@ -46,13 +47,13 @@ class Pixel(private val color: Color, val colors: ColorsProperties) {
         get() = matches(colors.boolean.boolTrue) || matches(colors.boolean.boolFalse)
 
     /**
-     * Character associated to grayscale pixels if [isCharacter] is <tt>true</tt>.
+     * Character linked to grayscale pixels if [isCharacter] is <tt>true</tt>.
      */
     val characterContent: Char
         get() = color.red.toChar()
 
     /**
-     * Boolean value associated to the pixel if [isBoolean] is <tt>true</tt>.
+     * Boolean value linked to the pixel if [isBoolean] is <tt>true</tt>.
      */
     val booleanContent: String
         get() = matches(colors.boolean.boolTrue).toString()
@@ -64,7 +65,7 @@ class Pixel(private val color: Color, val colors: ColorsProperties) {
         get() = Statements.byPixel(this)
 
     /**
-     * Whether this pixel is associated to a statement.
+     * Whether this pixel is linked to a statement.
      */
     val hasStatement: Boolean
         get() = statement != null
@@ -76,6 +77,18 @@ class Pixel(private val color: Color, val colors: ColorsProperties) {
         get() = Operator.byPixel(this)
 
     /**
+     * Name of the standard library member linked to this pixel if exists. <tt>null</tt> otherwise.
+     */
+    private val stdlibMemberName: String?
+        get() = StdLib.getMemberName(hex)
+
+    /**
+     * Whether this pixel is linked to a standard library member
+     */
+    private val hasStdlibMember: Boolean
+        get() = stdlibMemberName != null
+
+    /**
      * @param colors colors to compare
      * @return whether the pixel's color matches [hex]
      */
@@ -84,7 +97,11 @@ class Pixel(private val color: Color, val colors: ColorsProperties) {
     /**
      * @return pixel color as a Kotlin output name
      */
-    override fun toString(): String = if(!isBoolean) "`$hex`" else booleanContent
+    override fun toString(): String = when {
+        isBoolean -> booleanContent
+        hasStdlibMember -> stdlibMemberName!!
+        else -> "`$hex`"
+    }
 }
 
 /**

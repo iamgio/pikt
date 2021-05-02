@@ -7,7 +7,7 @@ package eu.iamgio.pikt.properties
  * @see ColorsProperties
  * @author Giorgio Garofalo
  */
-class ColorsProperty(val colors: List<String>) {
+class ColorsProperty(private val colors: List<String>) {
 
     /**
      * Checks if a color matches one of those wrapped by this property.

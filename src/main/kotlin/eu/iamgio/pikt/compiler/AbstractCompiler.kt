@@ -86,7 +86,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
         getTargets().forEach { target ->
 
             // Write the evaluator code to the source file.
-            sourceKotlinFile.writeText(evaluator.outputCode + "\n" + StdLib.getTargetSpecificFile(target).readContent(null))
+            sourceKotlinFile.writeText(evaluator.outputCode + "\n" + StdLib.getTargetSpecificFile(target).readContent())
 
             // Pre-compilation task.
             onPreCompile(target)

@@ -13,6 +13,11 @@ import java.io.InputStreamReader
 object StdLib {
 
     /**
+     * Stored name=colors map, initialized after [generateColorProperties] is called.
+     */
+    private lateinit var colors: Map<String, ColorsProperty>
+
+    /**
      * List of libraries to be evaluated in [Evaluator.appendStdCode].
      */
     val libraryFiles = arrayOf(
@@ -23,15 +28,26 @@ object StdLib {
     )
 
     /**
-     * Generates a name=hex map for standard library members.
+     * Generates a name=hex map for standard library members and stores it into [colors].
      * @param keys color properties keys
      * @param get function getting color value from key
      * @return standard library color scheme
      */
-    fun generateColorProperties(keys: Set<Any>, get: (String) -> ColorsProperty): Map<String, ColorsProperty> = keys
-            .filter { it.toString().startsWith("stdlib.") }
-            .map { it.toString().split("stdlib.").last() to get(it.toString()) }
-            .toMap()
+    fun generateColorProperties(keys: Set<Any>, get: (String) -> ColorsProperty): Map<String, ColorsProperty> {
+        this.colors = keys
+                .filter { it.toString().startsWith("stdlib.") }
+                .map { it.toString().split("stdlib.").last() to get(it.toString()) }
+                .toMap()
+        return colors
+    }
+
+    /**
+     * @param hex hexadecimal color to check
+     * @return name of the stdlib member linked to [hex] color if exists. <tt>null</tt> otherwise
+     */
+    fun getMemberName(hex: String): String? {
+        return colors.entries.firstOrNull { it.value.has(hex) }?.key
+    }
 
     /**
      * Gets the target-specific library file from pikt.stdlib/targets.
@@ -54,13 +70,12 @@ object StdLib {
     data class LibFile(private val name: String) {
 
         /**
-         * Reads the content of the library file and changes placeholders with [colors] values.
+         * Reads the content of the library file skipping package declarations, imports and file warnings suppression.
          *
-         * @param colors color scheme. No changes will be done if it <tt>null</tt>
          * @return content as a string
          * @see generateColorProperties
          */
-        fun readContent(colors: Map<String, ColorsProperty>?): String {
+        fun readContent(): String {
             val builder = StringBuilder()
 
             val reader = BufferedReader(InputStreamReader(javaClass.getResourceAsStream("/pikt.stdlib/$name.kt")))
@@ -69,22 +84,8 @@ object StdLib {
                     if(line.startsWith("package") || line.startsWith("import") || line.startsWith("@file:")) {
                         // Skip package declaration, imports and file warnings suppression.
                         ""
-                    } else if(colors == null) {
-                        // Don't apply changes if no color scheme is used
-                        line
                     } else {
-                        // Searches for a top-level member (either function or variable/constant)
-                        Regex("(?<=(fun|val|var|<.>) )\\w+").find(line)?.groups?.firstOrNull()?.let { group ->
-
-                            // Getting member name (e.g. fun print(...) -> print),
-                            // fetching hex value from color schemes and replacing it.
-
-                            // TODO support multiple colors for stdlib
-                            colors[group.value]?.let { hex ->
-                                line.replaceRange(group.range, "`${hex.colors[0]}`")
-                            }
-
-                        } ?: line // If there is not a match (regular code) do nothing.
+                        line
                     }
                 }
                 builder.append(line).append("\n")
