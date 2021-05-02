@@ -2,6 +2,7 @@ package eu.iamgio.pikt.image
 
 import eu.iamgio.pikt.expression.Operator
 import eu.iamgio.pikt.properties.ColorsProperties
+import eu.iamgio.pikt.properties.ColorsProperty
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.Statements
 import java.awt.Color
@@ -75,10 +76,10 @@ class Pixel(private val color: Color, val colors: ColorsProperties) {
         get() = Operator.byPixel(this)
 
     /**
-     * @param hex hexadecimal color to compare
+     * @param colors colors to compare
      * @return whether the pixel's color matches [hex]
      */
-    fun matches(hex: String) = this.hex.equals(hex, ignoreCase = true)
+    fun matches(colors: ColorsProperty) = colors.has(hex)
 
     /**
      * @return pixel color as a Kotlin output name

@@ -12,7 +12,7 @@ import eu.iamgio.pikt.statement.Statement
  */
 class DefineVariableStatement : Statement() {
 
-    override fun getHex(colors: ColorsProperties) = colors.keywords.defineVariable
+    override fun getColors(colors: ColorsProperties) = colors.keywords.defineVariable
 
     override fun generate(reader: PixelReader): String {
         val builder = StringBuilder()
@@ -46,7 +46,7 @@ class DefineVariableStatement : Statement() {
  */
 class SetVariableStatement : Statement() {
 
-    override fun getHex(colors: ColorsProperties) = colors.keywords.setVariable
+    override fun getColors(colors: ColorsProperties) = colors.keywords.setVariable
 
     override fun generate(reader: PixelReader): String {
         val builder = StringBuilder()

@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.expression
 
 import eu.iamgio.pikt.image.Pixel
+import eu.iamgio.pikt.properties.ColorsProperty
 import eu.iamgio.pikt.properties.OperatorColorsProperties
 
 /**
@@ -8,7 +9,7 @@ import eu.iamgio.pikt.properties.OperatorColorsProperties
  *
  * @author Giorgio Garofalo
  */
-enum class Operator(override val code: String, val hex: (OperatorColorsProperties) -> String): ExpressionMember {
+enum class Operator(override val code: String, val hex: (OperatorColorsProperties) -> ColorsProperty): ExpressionMember {
     PLUS("+",               { colors -> colors.plus            }),
     MINUS("-",              { colors -> colors.minus           }),
     TIMES("*",              { colors -> colors.times           }),

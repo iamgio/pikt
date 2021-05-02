@@ -10,7 +10,7 @@ import eu.iamgio.pikt.statement.Statement
  */
 class LambdaOpenStatement : Statement() {
 
-    override fun getHex(colors: ColorsProperties) = colors.lambda.open
+    override fun getColors(colors: ColorsProperties) = colors.lambda.open
 
     override fun generate(reader: PixelReader): String {
         val builder = StringBuilder("{")
@@ -30,7 +30,7 @@ class LambdaOpenStatement : Statement() {
  */
 class LambdaCloseStatement : Statement() {
 
-    override fun getHex(colors: ColorsProperties) = colors.lambda.close
+    override fun getColors(colors: ColorsProperties) = colors.lambda.close
 
     override fun generate(reader: PixelReader) = "}"
 }

@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.compiler.CompilationTarget
+import eu.iamgio.pikt.properties.ColorsProperty
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -27,7 +28,7 @@ object StdLib {
      * @param get function getting color value from key
      * @return standard library color scheme
      */
-    fun generateColorProperties(keys: Set<Any>, get: (String) -> String): Map<String, String> = keys
+    fun generateColorProperties(keys: Set<Any>, get: (String) -> ColorsProperty): Map<String, ColorsProperty> = keys
             .filter { it.toString().startsWith("stdlib.") }
             .map { it.toString().split("stdlib.").last() to get(it.toString()) }
             .toMap()
@@ -59,7 +60,7 @@ object StdLib {
          * @return content as a string
          * @see generateColorProperties
          */
-        fun readContent(colors: Map<String, String>?): String {
+        fun readContent(colors: Map<String, ColorsProperty>?): String {
             val builder = StringBuilder()
 
             val reader = BufferedReader(InputStreamReader(javaClass.getResourceAsStream("/pikt.stdlib/$name.kt")))
@@ -78,8 +79,9 @@ object StdLib {
                             // Getting member name (e.g. fun print(...) -> print),
                             // fetching hex value from color schemes and replacing it.
 
+                            // TODO support multiple colors for stdlib
                             colors[group.value]?.let { hex ->
-                                line.replaceRange(group.range, "`$hex`")
+                                line.replaceRange(group.range, "`${hex.colors[0]}`")
                             }
 
                         } ?: line // If there is not a match (regular code) do nothing.

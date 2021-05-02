@@ -3,6 +3,7 @@ package eu.iamgio.pikt.statement
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
+import eu.iamgio.pikt.properties.ColorsProperty
 
 /**
  * Represents a statement or instruction
@@ -14,12 +15,12 @@ abstract class Statement {
     /**
      * @return whether the pixel matches the statement's color
      */
-    fun matches(pixel: Pixel): Boolean = pixel.matches(getHex(pixel.colors))
+    fun matches(pixel: Pixel): Boolean = pixel.matches(getColors(pixel.colors))
 
     /**
      * @return statement's color from color schemes
      */
-    abstract fun getHex(colors: ColorsProperties): String
+    abstract fun getColors(colors: ColorsProperties): ColorsProperty
 
     /**
      * Generates Kotlin code.

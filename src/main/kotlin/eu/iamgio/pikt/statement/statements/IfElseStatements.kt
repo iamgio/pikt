@@ -12,7 +12,7 @@ import eu.iamgio.pikt.statement.Statement
  */
 class IfStatement : Statement() {
 
-    override fun getHex(colors: ColorsProperties) = colors.keywords.`if`
+    override fun getColors(colors: ColorsProperties) = colors.keywords.`if`
 
     override fun generate(reader: PixelReader): String {
         return "if(${reader.nextExpression().code})"
@@ -27,7 +27,7 @@ class IfStatement : Statement() {
  */
 class ElseStatement : Statement() {
 
-    override fun getHex(colors: ColorsProperties) = colors.keywords.`else`
+    override fun getColors(colors: ColorsProperties) = colors.keywords.`else`
 
     override fun generate(reader: PixelReader) = "else"
 }

@@ -15,15 +15,16 @@ import java.io.InputStreamReader
  * @param boolean boolean values
  * @param operators operators
  * @param stdlib members (functions, variables, etc.) of the standard library as a name=hex map to be dynamically replaced
+ * @see ColorsProperties
  * @author Giorgio Garofalo
  */
 data class ColorsProperties(
-        val whitespace: String,
+        val whitespace: ColorsProperty,
         val keywords: KeywordsColorsProperties,
         val lambda: LambdaColorsProperties,
         val boolean: BooleanColorsProperties,
         val operators: OperatorColorsProperties,
-        val stdlib: Map<String, String>
+        val stdlib: Map<String, ColorsProperty>
 ) : Properties
 
 /**
@@ -38,12 +39,12 @@ data class ColorsProperties(
  * @author Giorgio Garofalo
  */
 data class KeywordsColorsProperties(
-        val defineVariable: String,
-        val setVariable: String,
-        val methodCall: String,
-        val `if`: String,
-        val `else`: String,
-        val forEach: String
+        val defineVariable: ColorsProperty,
+        val setVariable: ColorsProperty,
+        val methodCall: ColorsProperty,
+        val `if`: ColorsProperty,
+        val `else`: ColorsProperty,
+        val forEach: ColorsProperty
 )
 
 /**
@@ -54,8 +55,8 @@ data class KeywordsColorsProperties(
  * @author Giorgio Garofalo
  */
 data class BooleanColorsProperties(
-        val boolTrue: String,
-        val boolFalse: String
+        val boolTrue: ColorsProperty,
+        val boolFalse: ColorsProperty
 ): Properties
 
 /**
@@ -66,8 +67,8 @@ data class BooleanColorsProperties(
  * @author Giorgio Garofalo
  */
 data class LambdaColorsProperties(
-        val open: String,
-        val close: String
+        val open: ColorsProperty,
+        val close: ColorsProperty
 ): Properties
 
 /**
@@ -89,19 +90,19 @@ data class LambdaColorsProperties(
  * @author Giorgio Garofalo
  */
 data class OperatorColorsProperties(
-        val plus: String,
-        val minus: String,
-        val times: String,
-        val divide: String,
-        val modulo: String,
-        val and: String,
-        val or: String,
-        val equality: String,
-        val inequality: String,
-        val greater: String,
-        val greaterOrEquals: String,
-        val less: String,
-        val lessOrEquals: String
+        val plus: ColorsProperty,
+        val minus: ColorsProperty,
+        val times: ColorsProperty,
+        val divide: ColorsProperty,
+        val modulo: ColorsProperty,
+        val and: ColorsProperty,
+        val or: ColorsProperty,
+        val equality: ColorsProperty,
+        val inequality: ColorsProperty,
+        val greater: ColorsProperty,
+        val greaterOrEquals: ColorsProperty,
+        val less: ColorsProperty,
+        val lessOrEquals: ColorsProperty
 ): Properties
 
 /**
@@ -133,12 +134,12 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
      * Gets the value paired with [key] from the external [properties]. If the value is missing, it gets it from [internalProperties].
      * @return corresponding hex value
      */
-    fun get(key: String): String {
+    fun get(key: String): ColorsProperty {
         return if(key in properties.keys) {
             properties.getProperty(key)
         } else {
             internalProperties.getProperty(key)
-        }
+        }.let { value -> ColorsProperty(value.split(",")) }
     }
 
     /**
