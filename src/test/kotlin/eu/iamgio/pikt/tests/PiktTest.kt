@@ -10,6 +10,15 @@ class PiktTest {
     private fun launch(name: String, scheme: String? = null) = launcher.launch(name, scheme)
 
     @Test
+    fun `hello world`() {
+        with(launch("hello_world")) {
+            assertTrue {
+                first() == "Hello world!"
+            }
+        }
+    }
+
+    @Test
     fun `sum of 3 integers`() {
         with(launch("int_sum")) {
             assertTrue {
