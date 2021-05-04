@@ -6,6 +6,8 @@ Pikt is a work-in-progress image, pixel-based esoteric programming language that
   
 Pikt compiles executables via the [Kotlin compiler](https://kotlinlang.org/docs/command-line.html), therefore compilation for both JVM and native targets is available, along with runtime interpretation.
 
+Make sure to check out the **[wiki](./wiki)** to learn how to write your first Pikt program! 
+
 <p align="center">
   <br>
   <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
