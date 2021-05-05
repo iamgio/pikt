@@ -15,4 +15,6 @@ class ColorsProperty(private val colors: List<String>) {
      * @return whether [colors] contains [hex]
      */
     fun has(hex: String) = hex in colors
+
+    override fun toString() = "ColorsProperty$colors"
 }
