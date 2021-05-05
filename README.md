@@ -11,10 +11,13 @@ Make sure to check out the **[wiki](https://github.com/iAmGio/pikt/wiki)** to le
 <p align="center">
   <br>
   <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
-  <i>A high-performance Fibonacci sequence algorithm*.</i>
+  <i>A high-performance Fibonacci sequence algorithm. *</i>
   <br><br>
-    <img width="130" src="https://i.imgur.com/LFYekAD.png" alt="Prime numbers" /><br>
-    <i>A prime numbers algorithm*.</i>
+  <img width="130" src="https://i.imgur.com/LFYekAD.png" alt="Prime numbers" /><br>
+  <i>A prime numbers algorithm. *</i>
+  <br><br>
+  <img width="130" src="https://i.imgur.com/aKg4I59.png" alt="Tree" /><br>
+  <i>A tree that prints "A tree!". *</i>
 </p>
 
 _* Using [custom color schemes](https://github.com/iAmGio/pikt/blob/master/src/test/resources/schemes)._

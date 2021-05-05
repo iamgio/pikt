@@ -62,4 +62,13 @@ class PiktTest {
             }
         }
     }
+
+    @Test
+    fun `a tree that prints 'A tree!'`() {
+        with(launch("tree", scheme = "tree")) {
+            assertTrue {
+                first() == "A tree!"
+            }
+        }
+    }
 }
