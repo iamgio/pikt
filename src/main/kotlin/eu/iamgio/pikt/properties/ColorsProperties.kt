@@ -4,6 +4,8 @@ import eu.iamgio.pikt.eval.StdLib
 import java.io.InputStream
 import java.io.InputStreamReader
 
+const val INTERNAL_COLORS_SCHEME_PATH = "/properties/colors.properties"
+
 /**
  * Storage for properties, loaded from a .properties file, that define the "keywords" of the language.
  * A standard file can be created by running Pikt with the -createscheme=<name> argument.
@@ -139,7 +141,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
             properties.getProperty(key)
         } else {
             internalProperties.getProperty(key)
-        }.let { value -> ColorsProperty(value.split(",")) }
+        }.let { value -> ColorsProperty.of(value) }
     }
 
     /**
@@ -147,7 +149,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
      * @return parsed properties
      */
     override fun retrieve(): ColorsProperties {
-        internalProperties.load(InputStreamReader(javaClass.getResourceAsStream("/properties/colors.properties")!!))
+        internalProperties.load(InputStreamReader(javaClass.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!))
 
         return ColorsProperties(
                 get("whitespace"),

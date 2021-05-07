@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
-import eu.iamgio.pikt.palette.ColorSchemePalette
+import eu.iamgio.pikt.schemes.ColorSchemePalette
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException

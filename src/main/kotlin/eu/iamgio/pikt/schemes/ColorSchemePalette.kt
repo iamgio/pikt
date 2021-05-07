@@ -1,5 +1,6 @@
-package eu.iamgio.pikt.palette
+package eu.iamgio.pikt.schemes
 
+import eu.iamgio.pikt.properties.COLORS_SEPARATOR
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.RenderingHints
@@ -94,7 +95,7 @@ class ColorSchemePalette(schemeInputStream: InputStream) {
     private fun generateList(keys: List<Any>, graphics: Graphics2D, xOffset: Int) {
         keys.forEachIndexed { index, name ->
             val y = (index + 1) * PROPERTY_HEIGHT / 2
-            val colors = properties.getValue(name).toString().split(",")
+            val colors = properties.getValue(name).toString().split(COLORS_SEPARATOR)
             colors.forEachIndexed { colorIndex, hex ->
                 graphics.color = Color.decode("#$hex")
                 graphics.fillOval(xOffset + colorIndex * HORIZONTAL_SPACING, y - CIRCLE_DIAMETER / 2, CIRCLE_DIAMETER, CIRCLE_DIAMETER)

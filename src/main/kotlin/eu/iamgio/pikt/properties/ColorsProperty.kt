@@ -1,6 +1,11 @@
 package eu.iamgio.pikt.properties
 
 /**
+ * Separates multiple colors of the same property in schemes.
+ */
+const val COLORS_SEPARATOR = ","
+
+/**
  * A property value that consists of one or more hexadecimal colors separated by a comma.
  *
  * @param colors list of colors for this property
@@ -17,4 +22,13 @@ class ColorsProperty(private val colors: List<String>) {
     fun has(hex: String) = hex in colors
 
     override fun toString() = "ColorsProperty$colors"
+
+    companion object {
+
+        /**
+         * @param raw property string
+         * @return raw string property split into a [ColorsProperty]
+         */
+        fun of(raw: String) = ColorsProperty(raw.split(COLORS_SEPARATOR))
+    }
 }
