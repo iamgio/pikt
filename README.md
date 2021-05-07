@@ -39,7 +39,8 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 - `-createscheme=name` creates a new [color scheme](https://github.com/iAmGio/pikt/blob/master/src/main/resources/properties/colors.properties) with default values and exits;
 - `-exportscheme=name` generates a useful color palette image out of the given scheme;
 - `-printoutput` prints the generated Kotlin code;
-- `-nocompile` prevents the generation of any executable file.
+- `-nocompile` prevents the generation of any executable file;
+- `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme.
 
 ## Roadmap
 

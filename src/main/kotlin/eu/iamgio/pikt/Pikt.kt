@@ -67,6 +67,7 @@ fun registerCommands() = with(Commands) {
     register(ExportSchemeCommand())
     register(PrintOutputCommand())
     register(NoCompileCommand())
+    register(StandardizeCommand())
 }
 
 /**

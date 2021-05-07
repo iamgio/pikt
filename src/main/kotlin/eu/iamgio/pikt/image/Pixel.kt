@@ -9,6 +9,11 @@ import eu.iamgio.pikt.statement.Statements
 import java.awt.Color
 
 /**
+ * @return integer RGB converted into hexadecimal string
+ */
+fun Int.rgbToHex(): String = Integer.toHexString(this).substring(2).uppercase()
+
+/**
  * Represents a single pixel of a [PiktImage]
  *
  * @param color AWT color of the pixel
@@ -20,7 +25,7 @@ class Pixel(private val color: Color, val colors: ColorsProperties) {
     /**
      * [color] as hexadecimal.
      */
-    private val hex: String = Integer.toHexString(color.rgb).substring(2).uppercase()
+    private val hex: String = color.rgb.rgbToHex()
 
     /**
      * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.

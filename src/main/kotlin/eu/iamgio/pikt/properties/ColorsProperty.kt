@@ -12,7 +12,7 @@ const val COLORS_SEPARATOR = ","
  * @see ColorsProperties
  * @author Giorgio Garofalo
  */
-class ColorsProperty(private val colors: List<String>) {
+data class ColorsProperty(val colors: List<String>) {
 
     /**
      * Checks if a color matches one of those wrapped by this property.
@@ -20,8 +20,6 @@ class ColorsProperty(private val colors: List<String>) {
      * @return whether [colors] contains [hex]
      */
     fun has(hex: String) = hex in colors
-
-    override fun toString() = "ColorsProperty$colors"
 
     companion object {
 

@@ -50,18 +50,32 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
      */
     fun reader(): PixelReader = PixelReader(generatePixelArray(), colors)
 
-    private companion object {
+    companion object {
 
         /**
          * Reads image from [file]. Exits if an error occurs.
          * @param file image file
          * @return [BufferedImage] loaded from [file]
          */
-        private fun readImage(file: File): BufferedImage {
+        fun readImage(file: File): BufferedImage {
             return try {
                 ImageIO.read(file)
             } catch(e: IOException) {
                 System.err.println("Could not read image $file.\nExiting.")
+                exitProcess(-1)
+            }
+        }
+
+        /**
+         * Saves [image] to [file]. Exits if an error occurs.
+         * @param image image to save
+         * @param file image file
+         */
+        fun saveImage(image: BufferedImage, file: File) {
+            try {
+                ImageIO.write(image, "png", file)
+            } catch(e: IOException) {
+                System.err.println("Could not save image to $file.\nExiting.")
                 exitProcess(-1)
             }
         }
