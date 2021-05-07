@@ -26,7 +26,7 @@ class CreateSchemeCommand : Command("-createscheme", { args ->
     }
 
     try {
-        Command::class.java.getResourceAsStream("/properties/colors.properties").copyTo(FileOutputStream(file))
+        Command::class.java.getResourceAsStream("/properties/colors.properties")!!.copyTo(FileOutputStream(file))
     } catch(e: IOException) {
         System.err.println("An error occurred while creating color scheme:")
         e.printStackTrace()

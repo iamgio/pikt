@@ -147,7 +147,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
      * @return parsed properties
      */
     override fun retrieve(): ColorsProperties {
-        internalProperties.load(InputStreamReader(javaClass.getResourceAsStream("/properties/colors.properties")))
+        internalProperties.load(InputStreamReader(javaClass.getResourceAsStream("/properties/colors.properties")!!))
 
         return ColorsProperties(
                 get("whitespace"),

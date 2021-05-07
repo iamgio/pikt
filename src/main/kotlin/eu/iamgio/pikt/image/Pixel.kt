@@ -20,7 +20,7 @@ class Pixel(private val color: Color, val colors: ColorsProperties) {
     /**
      * [color] as hexadecimal.
      */
-    private val hex: String = Integer.toHexString(color.rgb).substring(2).toUpperCase()
+    private val hex: String = Integer.toHexString(color.rgb).substring(2).uppercase()
 
     /**
      * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.
@@ -38,7 +38,7 @@ class Pixel(private val color: Color, val colors: ColorsProperties) {
      * Whether this pixel is a numeric character (grayscale 48-57).
      */
     val isNumber: Boolean
-        get() = isCharacter && color.red >= '0'.toInt() && color.red <= '9'.toInt()
+        get() = isCharacter && color.red >= '0'.code && color.red <= '9'.code
 
     /**
      * Whether this pixel is a boolean value

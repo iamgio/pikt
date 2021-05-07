@@ -36,8 +36,7 @@ object StdLib {
     fun generateColorProperties(keys: Set<Any>, get: (String) -> ColorsProperty): Map<String, ColorsProperty> {
         this.colors = keys
                 .filter { it.toString().startsWith("stdlib.") }
-                .map { it.toString().split("stdlib.").last() to get(it.toString()) }
-                .toMap()
+                .associate { it.toString().split("stdlib.").last() to get(it.toString()) }
         return colors
     }
 
@@ -78,7 +77,7 @@ object StdLib {
         fun readContent(): String {
             val builder = StringBuilder()
 
-            val reader = BufferedReader(InputStreamReader(javaClass.getResourceAsStream("/pikt.stdlib/$name.kt")))
+            val reader = BufferedReader(InputStreamReader(javaClass.getResourceAsStream("/pikt.stdlib/$name.kt")!!))
             while(reader.ready()) {
                 val line = reader.readLine().let { line ->
                     if(line.startsWith("package") || line.startsWith("import") || line.startsWith("@file:")) {
