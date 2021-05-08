@@ -68,6 +68,7 @@ fun registerCommands() = with(Commands) {
     register(PrintOutputCommand())
     register(NoCompileCommand())
     register(StandardizeCommand())
+    register(RecolorizeCommand())
 }
 
 /**

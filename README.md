@@ -34,13 +34,14 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 - `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) compiler. Required if `target` contains `jvm` or `interpret` is `jvm`;
 - `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) compiler. Required if `target` contains a native target or `interpret` is `native`.
 
-## Arguments
+## Arguments/commands
 
 - `-createscheme=name` creates a new [color scheme](https://github.com/iAmGio/pikt/blob/master/src/main/resources/properties/colors.properties) with default values and exits;
 - `-exportscheme=name` generates a useful color palette image out of the given scheme;
 - `-printoutput` prints the generated Kotlin code;
 - `-nocompile` prevents the generation of any executable file;
-- `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme.
+- `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme for debugging purposes.
+- `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`). `method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`. 
 
 ## Roadmap
 
