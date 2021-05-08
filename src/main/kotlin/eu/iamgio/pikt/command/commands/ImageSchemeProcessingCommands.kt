@@ -17,7 +17,7 @@ class StandardizeCommand : Command("-standardize", {
     val properties = PiktPropertiesRetriever().retrieve()
     val sourceImage = PiktImage.readImage(properties.source)
     val finalImage = StandardizeImageProcessing(sourceImage, properties.colors.rawProperties).process()
-    val file = File(properties.source.parentFile, properties.source.name + "_standardized")
+    val file = File(properties.source.parentFile, properties.source.nameWithoutExtension + "_standardized." + properties.source.extension)
     PiktImage.saveImage(finalImage, file)
 
     println("Standardized image successfully saved as $file.")
@@ -44,7 +44,7 @@ class RecolorizeCommand : Command("-recolorize", { args ->
     }
 
     val finalImage = RecolorizeImageProcessing(sourceImage, properties.colors.rawProperties, method).process()
-    val file = File(properties.source.parentFile, properties.source.name + "_recolorized")
+    val file = File(properties.source.parentFile, properties.source.nameWithoutExtension + "_recolorized." + properties.source.extension)
     PiktImage.saveImage(finalImage, file)
 
     println("Recolorized image successfully saved as $file.")
