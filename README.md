@@ -2,7 +2,7 @@
 
 > _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
 
-Pikt is a work-in-progress image, pixel-based esoteric programming language that aims at generating fast and lightweight programs from aesthetically pleasant image sources: to accomplish this, the colors of all "keywords", functions, operators and so on are easily customizable.
+Pikt is a pixel-based esoteric programming language that aims at generating fast and lightweight programs from aesthetically pleasant image sources: to accomplish this, the colors of all "keywords", functions, operators and so on are easily customizable.
   
 Pikt compiles executables via the [Kotlin compiler](https://kotlinlang.org/docs/command-line.html), therefore compilation for both JVM and native targets is available, along with runtime interpretation.
 
@@ -10,17 +10,21 @@ Make sure to check out the **[wiki](https://github.com/iAmGio/pikt/wiki)** to le
 
 <p align="center">
   <br>
-  <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
+  <a href="https://github.com/iAmGio/pikt/wiki/Fibonacci:-breakdown" target="_blank">
+    <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
+  </a>
   <i>A high-performance Fibonacci sequence algorithm. *</i>
   <br><br>
   <img width="130" src="https://i.imgur.com/LFYekAD.png" alt="Prime numbers" /><br>
   <i>A prime numbers algorithm. *</i>
   <br><br>
-  <img width="130" src="https://i.imgur.com/aKg4I59.png" alt="Tree" /><br>
+  <a href="https://github.com/iAmGio/pikt/wiki/Tree:-breakdown" target="_blank">
+    <img width="130" src="https://i.imgur.com/aKg4I59.png" alt="Tree" /><br></a>
   <i>A tree that prints "A tree!". *</i>
 </p>
 
-_* Using [custom color schemes](https://github.com/iAmGio/pikt/blob/master/src/test/resources/schemes)._
+_* Using [custom color schemes](https://github.com/iAmGio/pikt/blob/master/src/test/resources/schemes)._  
+Click on the examples for a breakdown/explanation (WIP).
 
 ## Properties
 The following properties must be inserted before Pikt jar's path in the command line.  
