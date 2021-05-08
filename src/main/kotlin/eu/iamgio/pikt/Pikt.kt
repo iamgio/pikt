@@ -30,7 +30,7 @@ fun main(args: Array<String>) {
     val properties = PiktPropertiesRetriever().retrieve()
 
     // Initialize the image passing the source file and the custom color scheme.
-    val image = PiktImage(properties.source, properties.colors)
+    val image = PiktImage(properties)
 
     // Evaluate the image pixel-by-pixel
     val evaluator = Evaluator()
@@ -69,6 +69,7 @@ fun registerCommands() = with(Commands) {
     register(NoCompileCommand())
     register(StandardizeCommand())
     register(RecolorizeCommand())
+    register(CompactCommand())
 }
 
 /**

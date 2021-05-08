@@ -20,7 +20,7 @@ fun Int.rgbToHex(): String = Integer.toHexString(this).substring(2).uppercase()
  * @param colors color scheme
  * @author Giorgio Garofalo
  */
-class Pixel(private val color: Color, val colors: ColorsProperties) {
+data class Pixel(val color: Color, val colors: ColorsProperties) {
 
     /**
      * [color] as hexadecimal.

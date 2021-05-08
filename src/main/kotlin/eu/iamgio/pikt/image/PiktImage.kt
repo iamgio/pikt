@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.image
 
 import eu.iamgio.pikt.properties.ColorsProperties
+import eu.iamgio.pikt.properties.PiktProperties
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
@@ -20,13 +21,18 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
     /**
      * Used for compacting/decompacting copies of this image.
      */
-    //val compacter = ImageCompacter(this)
+    val compacter = ImageCompacter(this)
 
     /**
      * @param file image file
      * @param colors color scheme
      */
     constructor(file: File, colors: ColorsProperties) : this(readImage(file), colors)
+
+    /**
+     * @param properties Pikt properties
+     */
+    constructor(properties: PiktProperties) : this(properties.source, properties.colors)
 
     /**
      * Instantiates a [Pixel] instance from image coordinates.
