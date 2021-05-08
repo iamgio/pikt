@@ -22,7 +22,7 @@ class ImageCompacter(private val piktImage: PiktImage) {
         if(width == null && height == null) {
             // None are specified
             imageWidth = sqrt(size.toDouble()).toInt()
-            imageHeight = size / imageWidth
+            imageHeight = ceil(size / imageWidth.toDouble()).toInt()
         } else if(width != null && height == null) {
             // Width is specified
             imageWidth = width
