@@ -25,20 +25,14 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties) 
         get() = pixels.size
 
     /**
-     * Gets the next non-whitespace pixel available.
+     * Gets the next pixel available.
      * @return next pixel, <tt>null</tt> if there is none
      */
     fun next(): Pixel? {
         index++
         if(index >= pixels.size) return null
 
-        return pixels[index].let { pixel ->
-            if(pixel.isWhitespace) {
-                next()
-            } else {
-                pixel
-            }
-        }
+        return pixels[index]
     }
 
     /**

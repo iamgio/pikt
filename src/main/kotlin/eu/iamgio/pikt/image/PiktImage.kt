@@ -18,6 +18,11 @@ import kotlin.system.exitProcess
 class PiktImage(private val image: BufferedImage, private val colors: ColorsProperties) {
 
     /**
+     * Used for compacting/decompacting copies of this image.
+     */
+    //val compacter = ImageCompacter(this)
+
+    /**
      * @param file image file
      * @param colors color scheme
      */
@@ -33,16 +38,16 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
     }
 
     /**
-     * Generates an array of pixels out of the image.
+     * Generates an array of pixels out of the image skipping whitespaces.
      * @return collection of pixels
      */
     private fun generatePixelArray(): PixelArray {
         val pixels = Array(image.width * image.height) {
             val x: Int = it % image.width
             val y: Int = it / image.width
-            getPixel(image, x, y)
+            getPixel(image, x, y).let { pixel -> if(pixel.isWhitespace) null else pixel }
         }
-        return PixelArray(pixels)
+        return PixelArray(pixels.filterNotNull().toTypedArray())
     }
 
     /**
