@@ -70,6 +70,7 @@ fun registerCommands() = with(Commands) {
     register(StandardizeCommand())
     register(RecolorizeCommand())
     register(CompactCommand())
+    register(DecompactCommand())
 }
 
 /**

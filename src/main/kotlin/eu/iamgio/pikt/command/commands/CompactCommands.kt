@@ -34,3 +34,20 @@ class CompactCommand : Command("-compact", { args ->
     println("Compacted image successfully saved as $file.")
     exitProcess(0)
 })
+
+/**
+ * Triggered by -decompact argument.
+ *
+ * @author Giorgio Garofalo
+ */
+class DecompactCommand : Command("-decompact", {
+    val properties = PiktPropertiesRetriever().retrieve()
+    val piktImage = PiktImage(properties)
+
+    val file = File(properties.source.parentFile, properties.source.nameWithoutExtension + "_decompacted." + properties.source.extension)
+    val image = piktImage.compacter.decompact()
+    PiktImage.saveImage(image, file)
+
+    println("Decompacted image successfully saved as $file.")
+    exitProcess(0)
+})

@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.properties.ColorsProperties
 import java.awt.Color
 import java.awt.image.BufferedImage
 import kotlin.math.ceil
@@ -9,6 +10,15 @@ import kotlin.math.sqrt
  * @author Giorgio Garofalo
  */
 class ImageCompacter(private val piktImage: PiktImage) {
+
+    private fun BufferedImage.setRGB(index: Int, color: Color) = setRGB(index % width, index / width, color.rgb)
+
+    private fun BufferedImage.applyBackground(colors: ColorsProperties, startIndex: Int = 0) {
+        val background = colors.whitespace.colors.firstOrNull()?.let { Color.decode("#$it") } ?: Color.WHITE
+        (startIndex until width * height).forEach {
+            setRGB(it, background)
+        }
+    }
 
     /**
      * @param size image size, excluding whitespaces
@@ -56,17 +66,42 @@ class ImageCompacter(private val piktImage: PiktImage) {
 
         val image = BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB)
 
-        fun setRGB(index: Int, color: Color) = image.setRGB(index % imageWidth, index / imageWidth, color.rgb)
-
         // Copy PixelReader content.
         reader.whileNotNull {
-            setRGB(reader.index, it.color)
+            image.setRGB(reader.index, it.color)
         }
 
         // Fill the remaining space with whitespaces.
-        val background = reader.colors.whitespace.colors.firstOrNull()?.let { Color.decode("#$it") } ?: Color.WHITE
-        (reader.index until imageWidth * imageHeight).forEach {
-            setRGB(it, background)
+        image.applyBackground(reader.colors, reader.index)
+
+        return image
+    }
+
+    /**
+     * Creates a copy of the image with a statement per line.
+     * @return decompacted copy of the source image
+     */
+    fun decompact(): BufferedImage {
+        val reader = piktImage.reader()
+        val lines = mutableListOf<List<Int>>() // Lines of RGB pixels. A line = a statement.
+
+        var pixels = mutableListOf<Int>() // Current line
+        reader.whileNotNull {
+            if(it.hasStatement) {
+                if(pixels.isNotEmpty()) lines += pixels
+                pixels = mutableListOf()
+            }
+            pixels += it.color.rgb
+        }
+        if(pixels.isNotEmpty()) lines += pixels
+
+        val image = BufferedImage(lines.maxByOrNull { it.size }!!.size, lines.size, BufferedImage.TYPE_INT_RGB)
+        image.applyBackground(reader.colors)
+
+        lines.forEachIndexed { y, line ->
+            line.forEachIndexed { x, rgb ->
+                image.setRGB(x, y, rgb)
+            }
         }
 
         return image

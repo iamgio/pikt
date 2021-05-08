@@ -40,13 +40,14 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 
 ## Arguments/commands
 
-- `-createscheme=name` creates a new [color scheme](https://github.com/iAmGio/pikt/blob/master/src/main/resources/properties/colors.properties) with default values and exits;
-- `-exportscheme=name` generates a useful color palette image out of the given scheme;
 - `-printoutput` prints the generated Kotlin code;
 - `-nocompile` prevents the generation of any executable file;
-- `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme for debugging purposes.
-- `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`). `method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`.
-- `-compact[=size]` creates a compacted copy of the source image. If `size` is not specified, it will try to create a square-ish image with no whitespaces. `size` can be defined via `w?h?`, where both `w`and `h` are optional (in case one is missing, it will be calculated the same way as before) (e.g. `w10h5`, `w10`, `h5`).
+- `-createscheme=name` creates a new [color scheme](https://github.com/iAmGio/pikt/blob/master/src/main/resources/properties/colors.properties) with default values;
+- `-exportscheme=name` generates a useful color palette image out of the given scheme;
+- `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`). `method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`;
+- `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme;
+- `-compact[=size]` creates a compacted copy of the source image. If `size` is not specified, it will try to create a square-ish image with no whitespaces. `size` can be defined via `w?h?`, where both `w`and `h` are optional (in case one is missing, it will be calculated the same way as before) (e.g. `w10h5`, `w10`, `h5`);
+- `-decompact` creates a decompacted copy of the source image with a statement per line.
 
 ## Roadmap
 
