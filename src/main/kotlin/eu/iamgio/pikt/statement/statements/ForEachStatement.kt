@@ -12,6 +12,8 @@ import eu.iamgio.pikt.statement.Statement
  */
 class ForEachStatement : Statement() {
 
+    override val decompactionStyle = DecompactionStyle.BEFORE
+
     override fun getColors(colors: ColorsProperties) = colors.keywords.forEach
 
     override fun generate(reader: PixelReader): String {

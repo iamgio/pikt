@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.image
 
 import eu.iamgio.pikt.properties.ColorsProperties
+import eu.iamgio.pikt.statement.Statement
 import java.awt.Color
 import java.awt.image.BufferedImage
 import kotlin.math.ceil
@@ -86,14 +87,30 @@ class ImageCompacter(private val piktImage: PiktImage) {
         val lines = mutableListOf<List<Int>>() // Lines of RGB pixels. A line = a statement.
 
         var pixels = mutableListOf<Int>() // Current line
-        reader.whileNotNull {
-            if(it.isStatement) {
-                if(pixels.isNotEmpty()) lines += pixels
-                pixels = mutableListOf()
-            }
-            pixels += it.color.rgb
+        var currentDecompactionStyle = Statement.DecompactionStyle.NO_SPACING
+
+        fun append(isLast: Boolean = false) {
+            // Add empty line before the statement if required.
+            if(currentDecompactionStyle.hasEmptyLineBefore) lines += emptyList<Int>()
+
+            // Add current line.
+            lines += pixels
+
+            // Add empty line after the statement if required.
+            if(currentDecompactionStyle.hasEmptyLineAfter && !isLast) lines += emptyList<Int>()
         }
-        if(pixels.isNotEmpty()) lines += pixels
+
+        reader.whileNotNull { pixel ->
+            if(pixel.isStatement) {
+                if(pixels.isNotEmpty()) {
+                    append()
+                }
+                pixels = mutableListOf()
+                currentDecompactionStyle = pixel.statement!!.decompactionStyle
+            }
+            pixels += pixel.color.rgb
+        }
+        if(pixels.isNotEmpty()) append(true)
 
         val image = BufferedImage(lines.maxByOrNull { it.size }!!.size, lines.size, BufferedImage.TYPE_INT_RGB)
         image.applyBackground(reader.colors)

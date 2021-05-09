@@ -13,6 +13,13 @@ import eu.iamgio.pikt.properties.ColorsProperty
 abstract class Statement {
 
     /**
+     * Defines whether this statement requires empty lines in the decompacted output image.
+     * @see eu.iamgio.pikt.command.commands.DecompactCommand
+     * @see eu.iamgio.pikt.image.ImageCompacter
+     */
+    open val decompactionStyle: DecompactionStyle = DecompactionStyle.NO_SPACING
+
+    /**
      * @return whether the pixel matches the statement's color
      */
     fun matches(pixel: Pixel): Boolean = pixel.matches(getColors(pixel.colors))
@@ -28,6 +35,19 @@ abstract class Statement {
      * @return Kotlin code
      */
     abstract fun generate(reader: PixelReader): String
+
+    /**
+     * Different options for decompaction.
+     *
+     * @see eu.iamgio.pikt.command.commands.DecompactCommand
+     * @see eu.iamgio.pikt.image.ImageCompacter
+     */
+    enum class DecompactionStyle(val hasEmptyLineBefore: Boolean, val hasEmptyLineAfter: Boolean) {
+        NO_SPACING(false, false),
+        BEFORE(true, false),
+        AFTER(false, true),
+        BEFORE_AND_AFTER(true, true)
+    }
 }
 
 /**

@@ -10,6 +10,8 @@ import eu.iamgio.pikt.statement.Statement
  */
 class LambdaOpenStatement : Statement() {
 
+    override val decompactionStyle = DecompactionStyle.AFTER
+
     override fun getColors(colors: ColorsProperties) = colors.lambda.open
 
     override fun generate(reader: PixelReader): String {
@@ -29,6 +31,8 @@ class LambdaOpenStatement : Statement() {
  * @author Giorgio Garofalo
  */
 class LambdaCloseStatement : Statement() {
+
+    override val decompactionStyle = DecompactionStyle.BEFORE_AND_AFTER
 
     override fun getColors(colors: ColorsProperties) = colors.lambda.close
 
