@@ -1,5 +1,7 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.GlobalSettings
+import eu.iamgio.pikt.command.commands.CMD_PIXELINFO
 import eu.iamgio.pikt.eval.StdLib
 import eu.iamgio.pikt.expression.Operator
 import eu.iamgio.pikt.properties.ColorsProperties
@@ -17,10 +19,12 @@ fun Int.rgbToHex(): String = Integer.toHexString(this).substring(2).uppercase()
  * Represents a single pixel of a [PiktImage]
  *
  * @param color AWT color of the pixel
+ * @param x X coordinate
+ * @param y Y coordinate
  * @param colors color scheme
  * @author Giorgio Garofalo
  */
-data class Pixel(val color: Color, val colors: ColorsProperties) {
+data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsProperties) {
 
     /**
      * [color] as hexadecimal.
@@ -103,12 +107,15 @@ data class Pixel(val color: Color, val colors: ColorsProperties) {
         get() = stdlibMemberName != null
 
     /**
-     * @return pixel color as a Kotlin output name.
+     * @return pixel as a Kotlin output name.
      */
     override fun toString(): String = when {
         isBoolean -> booleanContent
         isStdlibMember -> stdlibMemberName!!
         else -> "`$hex`"
+    }.run {
+        // Appends commented pixel coordinates if -pixelinfo is enabled.
+        if(CMD_PIXELINFO in GlobalSettings) "$this /*$x;$y*/ " else this
     }
 }
 

@@ -40,7 +40,7 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
      */
     private fun getPixel(image: BufferedImage, x: Int, y: Int): Pixel {
         val rgb = image.getRGB(x, y)
-        return Pixel(Color(rgb), colors)
+        return Pixel(Color(rgb), x, y, colors)
     }
 
     /**
