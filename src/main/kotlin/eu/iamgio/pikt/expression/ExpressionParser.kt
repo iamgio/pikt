@@ -28,7 +28,7 @@ class ExpressionParser(private val reader: PixelReader, private val isComplexPar
                 }
                 // If the expression is not a string and none of the above match, the expression is complex.
                 // Complex expressions need additional evaluations.
-                pixel.operator != null -> {
+                pixel.isOperator -> {
                     ExpressionType.COMPLEX
                 }
                 // An expression is a string literal if at least one pixel in it is a non-number character.

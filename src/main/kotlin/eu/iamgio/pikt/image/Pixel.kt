@@ -28,6 +28,12 @@ data class Pixel(val color: Color, val colors: ColorsProperties) {
     private val hex: String = color.rgb.rgbToHex()
 
     /**
+     * @param colors colors to compare
+     * @return whether the pixel's color matches [hex]
+     */
+    fun matches(colors: ColorsProperty) = colors.has(hex)
+
+    /**
      * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.
      */
     val isWhitespace: Boolean
@@ -66,45 +72,42 @@ data class Pixel(val color: Color, val colors: ColorsProperties) {
     /**
      * [Statement] linked to this pixel if exists. <tt>null</tt> otherwise.
      */
-    val statement: Statement?
-        get() = Statements.byPixel(this)
+    val statement: Statement? by lazy { Statements.byPixel(this) }
 
     /**
      * Whether this pixel is linked to a statement.
      */
-    val hasStatement: Boolean
+    val isStatement: Boolean
         get() = statement != null
 
     /**
      * [Operator] linked to this pixel if exists. <tt>null</tt> otherwise.
      */
-    val operator: Operator?
-        get() = Operator.byPixel(this)
+    val operator: Operator? by lazy { Operator.byPixel(this) }
+
+    /**
+     * Whether this pixel is linked to an operator.
+     */
+    val isOperator: Boolean
+        get() = operator != null
 
     /**
      * Name of the standard library member linked to this pixel if exists. <tt>null</tt> otherwise.
      */
-    private val stdlibMemberName: String?
-        get() = StdLib.getMemberName(hex)
+    private val stdlibMemberName: String? by lazy { StdLib.getMemberName(hex) }
 
     /**
-     * Whether this pixel is linked to a standard library member
+     * Whether this pixel is linked to a standard library member.
      */
-    private val hasStdlibMember: Boolean
+    private val isStdlibMember: Boolean
         get() = stdlibMemberName != null
 
     /**
-     * @param colors colors to compare
-     * @return whether the pixel's color matches [hex]
-     */
-    fun matches(colors: ColorsProperty) = colors.has(hex)
-
-    /**
-     * @return pixel color as a Kotlin output name
+     * @return pixel color as a Kotlin output name.
      */
     override fun toString(): String = when {
         isBoolean -> booleanContent
-        hasStdlibMember -> stdlibMemberName!!
+        isStdlibMember -> stdlibMemberName!!
         else -> "`$hex`"
     }
 }

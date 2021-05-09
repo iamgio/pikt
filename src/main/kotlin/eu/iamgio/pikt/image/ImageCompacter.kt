@@ -87,7 +87,7 @@ class ImageCompacter(private val piktImage: PiktImage) {
 
         var pixels = mutableListOf<Int>() // Current line
         reader.whileNotNull {
-            if(it.hasStatement) {
+            if(it.isStatement) {
                 if(pixels.isNotEmpty()) lines += pixels
                 pixels = mutableListOf()
             }

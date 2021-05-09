@@ -63,7 +63,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties) 
 
         while(true) {
             val pixel = next()
-            if(startIndex != index && (pixel == null || pixel.hasStatement)) {
+            if(startIndex != index && (pixel == null || pixel.isStatement)) {
                 readers += sliced(startIndex, index - 1)
                 startIndex = index
             }
