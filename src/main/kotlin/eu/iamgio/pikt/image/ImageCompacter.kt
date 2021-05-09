@@ -2,6 +2,8 @@ package eu.iamgio.pikt.image
 
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.statements.LambdaCloseStatement
+import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
 import java.awt.Color
 import java.awt.image.BufferedImage
 import kotlin.math.ceil
@@ -84,40 +86,62 @@ class ImageCompacter(private val piktImage: PiktImage) {
      */
     fun decompact(): BufferedImage {
         val reader = piktImage.reader()
-        val lines = mutableListOf<List<Int>>() // Lines of RGB pixels. A line = a statement.
+        val lines = mutableListOf<List<Int?>>() // Lines of RGB pixels. A line = a statement.
 
-        var pixels = mutableListOf<Int>() // Current line
+        var pixels = mutableListOf<Int?>() // Current line
         var currentDecompactionStyle = Statement.DecompactionStyle.NO_SPACING
+        var currentShift = 0 // TAB-like spaces to distinguish sub-blocks (defined by lambdas).
 
+        // Appends a line and checks if it requires spacing (via decompaction style).
         fun append(isLast: Boolean = false) {
+            fun addLine(line: List<Int?>) {
+                if(line.isNotEmpty() || lines.last().isNotEmpty()) lines.add(line)
+            }
+
             // Add empty line before the statement if required.
-            if(currentDecompactionStyle.hasEmptyLineBefore) lines += emptyList<Int>()
+            if(currentDecompactionStyle.hasEmptyLineBefore) addLine(emptyList())
 
             // Add current line.
-            lines += pixels
+            addLine(pixels)
 
             // Add empty line after the statement if required.
-            if(currentDecompactionStyle.hasEmptyLineAfter && !isLast) lines += emptyList<Int>()
+            if(currentDecompactionStyle.hasEmptyLineAfter && !isLast) addLine(emptyList())
         }
 
+        // Changes the shift (amount of TABs) if there is a lambda statement and adds null pixels for each shift.
+        fun applyShift(statement: Statement) {
+            if(statement is LambdaCloseStatement) currentShift--
+
+            repeat(currentShift) {
+                pixels += null
+            }
+
+            if(statement is LambdaOpenStatement) currentShift++
+        }
+
+        // Reads the content and updates lines.
         reader.whileNotNull { pixel ->
             if(pixel.isStatement) {
                 if(pixels.isNotEmpty()) {
                     append()
                 }
                 pixels = mutableListOf()
+                applyShift(pixel.statement!!)
+
                 currentDecompactionStyle = pixel.statement!!.decompactionStyle
             }
             pixels += pixel.color.rgb
         }
         if(pixels.isNotEmpty()) append(true)
 
+        // Create image.
         val image = BufferedImage(lines.maxByOrNull { it.size }!!.size, lines.size, BufferedImage.TYPE_INT_RGB)
         image.applyBackground(reader.colors)
 
+        // Append lines to the image.
         lines.forEachIndexed { y, line ->
             line.forEachIndexed { x, rgb ->
-                image.setRGB(x, y, rgb)
+                if(rgb != null) image.setRGB(x, y, rgb)
             }
         }
 
