@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
     evaluator.evaluate(image)
 
     // Print Kotlin output if -printoutput is enabled.
-    System.getProperty(CMD_PRINTOUTPUT)?.run {
+    if(CMD_PRINTOUTPUT in GlobalSettings) {
         println("Output:\n${evaluator.outputCode}\n")
     }
 
@@ -49,7 +49,7 @@ fun main(args: Array<String>) {
 
     // Compile the code output into an executable via the Kotlin compiler.
     // Does not run if -nocompile is enabled.
-    if(System.getProperty(CMD_NOCOMPILE) == null) {
+    if(CMD_NOCOMPILE !in GlobalSettings) {
         val compiler = Compiler(evaluator.clone(), properties)
         compiler.compile()
     }
@@ -66,6 +66,7 @@ fun registerCommands() = with(Commands) {
     register(CreateSchemeCommand())
     register(ExportSchemeCommand())
     register(PrintOutputCommand())
+    register(PixelInfoCommand())
     register(NoCompileCommand())
     register(StandardizeCommand())
     register(RecolorizeCommand())
