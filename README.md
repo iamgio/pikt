@@ -47,7 +47,8 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 - `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`). `method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`;
 - `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme;
 - `-compact[=size]` creates a compacted copy of the source image. If `size` is not specified, it will try to create a square-ish image with no whitespaces. `size` can be defined via `w?h?`, where both `w`and `h` are optional (in case one is missing, it will be calculated the same way as before) (e.g. `w10h5`, `w10`, `h5`);
-- `-decompact` creates a decompacted copy of the source image with a statement per line.
+- `-decompact` creates a decompacted copy of the source image with a statement per line;
+- `-standardecompact` runs `-standardize` + `-decompact`.
 
 ## Roadmap
 

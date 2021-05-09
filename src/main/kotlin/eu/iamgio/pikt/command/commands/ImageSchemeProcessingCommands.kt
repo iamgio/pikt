@@ -50,3 +50,24 @@ class RecolorizeCommand : Command("-recolorize", { args ->
     println("Recolorized image successfully saved as $file.")
     exitProcess(0)
 })
+
+/**
+ * Triggered by -standardecompact argument.
+ *
+ * -standardize + decompact
+ *
+ * @author Giorgio Garofalo
+ */
+class StandardizeDecompactCommand : Command("-standardecompact", {
+    val properties = PiktPropertiesRetriever().retrieve()
+    val piktImage = PiktImage(properties)
+
+    val image = piktImage.compacter.decompact()
+    val finalImage = StandardizeImageProcessing(image, properties.colors.rawProperties).process()
+
+    val file = File(properties.source.parentFile, properties.source.nameWithoutExtension + "_standardecompacted." + properties.source.extension)
+    PiktImage.saveImage(finalImage, file)
+
+    println("Standardized and decompacted image successfully saved as $file.")
+    exitProcess(0)
+})
