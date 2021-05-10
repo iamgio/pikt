@@ -10,21 +10,23 @@ Make sure to check out the **[wiki](https://github.com/iAmGio/pikt/wiki)** to le
 
 <p align="center">
   <br>
-  <a href="https://github.com/iAmGio/pikt/wiki/Fibonacci:-breakdown" target="_blank">
+  <a href="https://github.com/iAmGio/pikt/wiki/Fibonacci:-breakdown">
     <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
   </a>
   <i>A high-performance Fibonacci sequence algorithm. *</i>
   <br><br>
-  <img width="130" src="https://i.imgur.com/LFYekAD.png" alt="Prime numbers" /><br>
+  <a href="https://github.com/iAmGio/pikt/wiki/Prime-numbers:-breakdown">
+    <img width="130" src="https://i.imgur.com/LFYekAD.png" alt="Prime numbers" /><br>
+  </a>
   <i>A prime numbers algorithm. *</i>
   <br><br>
-  <a href="https://github.com/iAmGio/pikt/wiki/Tree:-breakdown" target="_blank">
+  <a href="https://github.com/iAmGio/pikt/wiki/Tree:-breakdown">
     <img width="130" src="https://i.imgur.com/aKg4I59.png" alt="Tree" /><br></a>
   <i>A tree that prints "A tree!". *</i>
 </p>
 
 _* Using [custom color schemes](https://github.com/iAmGio/pikt/blob/master/src/test/resources/schemes)._  
-Click on the examples for a breakdown/explanation (WIP).
+Click on the examples for a breakdown/explanation.
 
 ## Properties
 The following properties must be inserted before Pikt jar's path in the command line.  
