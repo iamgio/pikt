@@ -17,3 +17,12 @@ fun print(message: Any) {
 fun printError(message: Any) {
     target_printError(message)
 }
+
+/**
+ * Reads an input from command line.
+ * It does not work with interpretation.
+ * @return input as a string
+ */
+fun readInput(): String {
+    return readLine() ?: ""
+}
