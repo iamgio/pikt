@@ -77,3 +77,12 @@ The following arguments execute tasks and exit when completed.
 - [x] Native
 - [x] Interpretation (currently only on JVM)
 - [ ] Error handling
+
+## Pikt Lab
+
+I'm working on an IDE for Pikt called [Pikt Lab](https://github.com/iAmGio/pikt-lab), check it out!  
+Meanwhile, here are some mockups:
+
+![Landing](https://i.imgur.com/oylceCd.png)
+
+![Workspace](https://i.imgur.com/pnHxGHK.png)
