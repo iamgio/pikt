@@ -114,8 +114,9 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
 
         // Color scheme
         val colorsPropertiesRetriever = ColorsPropertiesRetriever()
-        if(colorsProperty != null && File(colorsProperty).exists()) {
-            colorsPropertiesRetriever.loadProperties(FileInputStream(colorsProperty))
+        val colorsFile = File("$colorsProperty.properties")
+        if(colorsProperty != null && colorsFile.exists()) {
+            colorsPropertiesRetriever.loadProperties(FileInputStream(colorsFile))
         } else if(!isError) {
             println("Color scheme not found. Using the default one.")
             println("Run Pikt with the -createscheme=name argument to create a scheme.\n")
