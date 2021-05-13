@@ -51,13 +51,13 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
         val pixels = Array(image.width * image.height) {
             val x: Int = it % image.width
             val y: Int = it / image.width
-            getPixel(image, x, y).let { pixel -> if(pixel.isWhitespace) null else pixel }
+            getPixel(image, x, y)
         }
-        return PixelArray(pixels.filterNotNull().toTypedArray())
+        return PixelArray(pixels.filter { !it.isWhitespace }.toTypedArray())
     }
 
     /**
-     * @return pixel-by-pixel reader for the image
+     * @return a new pixel-by-pixel reader for the image
      */
     fun reader(): PixelReader = PixelReader(generatePixelArray(), colors)
 
