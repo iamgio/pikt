@@ -38,7 +38,7 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
      * Instantiates a [Pixel] instance from image coordinates.
      * @return pixel with color information
      */
-    private fun getPixel(image: BufferedImage, x: Int, y: Int): Pixel {
+    private fun getPixel(x: Int, y: Int): Pixel {
         val rgb = image.getRGB(x, y)
         return Pixel(Color(rgb), x, y, colors)
     }
@@ -51,7 +51,7 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
         val pixels = Array(image.width * image.height) {
             val x: Int = it % image.width
             val y: Int = it / image.width
-            getPixel(image, x, y)
+            getPixel(x, y)
         }
         return PixelArray(pixels.filter { !it.isWhitespace }.toTypedArray())
     }
