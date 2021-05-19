@@ -47,6 +47,7 @@ The following arguments enable settings that change Pikt's behavior.
 - `-printoutput` prints the generated Kotlin code;
 - `-nocompile` prevents the generation of any executable file;
 - `-pixelinfo` adds information about pixel coordinates to the output code as comments;
+- `-imgoutput=path` sets the output file for image-generating commands (see below). It must be inserted _before_ the other command. If not specified, defaults to the source image path followed by a suffix.
 
 ## Command arguments
 

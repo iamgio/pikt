@@ -68,6 +68,7 @@ fun registerCommands() = with(Commands) {
     register(PrintOutputCommand())
     register(PixelInfoCommand())
     register(NoCompileCommand())
+    register(ImageOutputCommand())
     register(StandardizeCommand())
     register(RecolorizeCommand())
     register(CompactCommand())
