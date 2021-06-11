@@ -34,9 +34,9 @@ jobs:
           cd staging
           java -jar pikt.jar -welcome
       - name: Get output files
-        run: ls -d "$PWD/"*
+        run: ls -d "$PWD/staging/"*
       - name: Publish JAR
         uses: actions/upload-artifact@v2
         with:
           name: pikt
-          path: .
+          path: staging
