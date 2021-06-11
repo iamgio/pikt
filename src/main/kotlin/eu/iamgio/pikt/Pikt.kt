@@ -63,6 +63,8 @@ fun main(args: Array<String>) {
  * Registers commands triggered by command-line arguments.
  */
 fun registerCommands() = with(Commands) {
+    //register(WelcomeCommand())
+    register(DownloadCompilerCommand())
     register(CreateSchemeCommand())
     register(ExportSchemeCommand())
     register(PrintOutputCommand())

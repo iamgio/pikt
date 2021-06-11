@@ -53,6 +53,7 @@ The following arguments enable settings that change Pikt's behavior.
 
 The following arguments execute tasks and exit when completed.
 
+- `-downloadcompiler=type[,version]` downloads the Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`). `version` defaults to `1.5.10`.
 - `-createscheme=name` creates a new [color scheme](https://github.com/iAmGio/pikt/blob/master/src/main/resources/properties/colors.properties) with default values;
 - `-exportscheme=name` generates a useful color palette image out of the given scheme;
 - `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`). `method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`;
@@ -71,6 +72,7 @@ The following arguments execute tasks and exit when completed.
 - [x] Lambdas
 - [x] Operators (equality, logical and arithmetic)
 - [x] Loops
+- [ ] Try/catch
 - [ ] [Standard library](https://github.com/iAmGio/pikt/tree/master/src/main/resources/pikt.stdlib) (2%)
 
 **Compilation**
