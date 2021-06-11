@@ -37,6 +37,4 @@ class ExportSchemeCommand : Command("-exportscheme", { args ->
     }
 
     println("Color palette successfully generated at $schemeFile")
-
-    exitProcess(0)
-})
+}, closeOnComplete = true)

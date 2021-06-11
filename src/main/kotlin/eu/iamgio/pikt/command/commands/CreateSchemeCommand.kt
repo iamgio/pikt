@@ -35,6 +35,4 @@ class CreateSchemeCommand : Command("-createscheme", { args ->
     }
 
     println("Color scheme successfully created at $file")
-
-    exitProcess(0)
-})
+}, closeOnComplete = true)

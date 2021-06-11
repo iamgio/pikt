@@ -60,7 +60,8 @@ The following arguments execute tasks and exit when completed.
 - `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme;
 - `-compact[=size]` creates a compacted copy of the source image. If `size` is not specified, it will try to create a square-ish image with no whitespaces. `size` can be defined via `w?h?`, where both `w`and `h` are optional (in case one is missing, it will be calculated the same way as before) (e.g. `w10h5`, `w10`, `h5`);
 - `-decompact` creates a decompacted copy of the source image with a statement per line;
-- `-standardecompact` runs `-standardize` + `-decompact`.
+- `-standardecompact` runs `-standardize` + `-decompact`;
+- `-welcome` runs `-createscheme=colors`, `-exportscheme=colors` and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable file. 
 
 ## Roadmap
 

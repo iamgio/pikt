@@ -7,7 +7,6 @@ import eu.iamgio.pikt.schemes.RecolorizeImageProcessing
 import eu.iamgio.pikt.schemes.StandardizeImageProcessing
 import java.awt.image.BufferedImage
 import java.io.File
-import kotlin.system.exitProcess
 
 // This file contains commands and utilities regarding image processing, which takes a source image and gives another image out
 // through several modifications and manipulations (color schemes, size, etc.).
@@ -62,8 +61,7 @@ class StandardizeCommand : Command("-standardize", {
     val file = save(finalImage, properties.source, tag = "standardized")
 
     println("Standardized image successfully saved as $file.")
-    exitProcess(0)
-})
+}, closeOnComplete = true)
 
 /**
  * Triggered by -recolorize[=method] argument.
@@ -88,8 +86,7 @@ class RecolorizeCommand : Command("-recolorize", { args ->
     val file = save(finalImage, properties.source, tag = "recolorized")
 
     println("Recolorized image successfully saved as $file.")
-    exitProcess(0)
-})
+}, closeOnComplete = true)
 
 /**
  * Triggered by -compact[=size] argument.
@@ -116,8 +113,7 @@ class CompactCommand : Command("-compact", { args ->
     val file = save(image, properties.source, tag = "compacted")
 
     println("Compacted image successfully saved as $file.")
-    exitProcess(0)
-})
+}, closeOnComplete = true)
 
 /**
  * Triggered by -decompact argument.
@@ -132,8 +128,7 @@ class DecompactCommand : Command("-decompact", {
     val file = save(image, properties.source, tag = "decompacted")
 
     println("Decompacted image successfully saved as $file.")
-    exitProcess(0)
-})
+}, closeOnComplete = true)
 
 /**
  * Triggered by -standardecompact argument.
@@ -152,5 +147,4 @@ class StandardizeDecompactCommand : Command("-standardecompact", {
     val file = save(finalImage, properties.source, tag = "standardecompacted")
 
     println("Standardized and decompacted image successfully saved as $file.")
-    exitProcess(0)
-})
+}, closeOnComplete = true)

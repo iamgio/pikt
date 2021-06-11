@@ -1,19 +1,25 @@
 package eu.iamgio.pikt.command
 
+import kotlin.system.exitProcess
+
 /**
  * Represents a command that can be executed from program arguments.
  *
  * @param name the name of the command
  * @param action the task to be run. (args) -> task. Arguments can be <tt>null</tt> if not specified.
+ * @param closeOnComplete whether the program should close after the command completed its execution.
  * @author Giorgio Garofalo
  */
-open class Command(val name: String, val action: (String?) -> Unit) {
+open class Command(val name: String, val action: (String?) -> Unit, var closeOnComplete: Boolean = false) {
 
     /**
      * Executes the command.
      * @param arguments command arguments
      */
-    fun execute(arguments: String?) = action(arguments)
+    fun execute(arguments: String?) {
+        action(arguments)
+        if(closeOnComplete) exitProcess(0)
+    }
 
     override fun toString(): String = "Command[name=$name]"
 }

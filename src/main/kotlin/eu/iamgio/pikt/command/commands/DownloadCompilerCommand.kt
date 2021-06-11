@@ -25,5 +25,4 @@ class DownloadCompilerCommand : Command("-downloadcompiler", { args ->
     }
 
     KotlinCompilerDownloader.download(version, type)
-    exitProcess(0)
-})
+}, closeOnComplete = true)
