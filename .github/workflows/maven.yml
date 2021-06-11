@@ -19,6 +19,12 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Get output files
@@ -29,4 +35,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: pikt
-          path: staging/pikt.jar
+          path: staging
