@@ -30,7 +30,7 @@ jobs:
       - name: Create staging directory
         run: mkdir staging && cp target/pikt.jar staging
       - name: Run -welcome
-        run: ./staging/pikt.jar -welcome
+        run: java -jar staging/pikt.jar -welcome
       - name: Get output files
         run: ls -d "$PWD/staging/"*
       - name: Publish JAR
