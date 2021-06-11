@@ -1,4 +1,4 @@
-# Pikt
+# Pikt [![Download](https://img.shields.io/badge/Download%20latest-snapshot-blue.svg)](https://nightly.link/iAmGio/pikt/workflows/maven/master/pikt.zip)
 
 > _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
 
