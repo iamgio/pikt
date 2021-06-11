@@ -26,4 +26,4 @@ jobs:
     - name: Get output files
       run: |
         cd target
-        ls -a
+        ls -d "$PWD/"*
