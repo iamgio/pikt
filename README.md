@@ -82,6 +82,9 @@ The following arguments execute tasks and exit when completed.
 - [x] Interpretation (currently only on JVM)
 - [ ] Error handling
 
+## Contributing
+See the [CONTRIBUTING](CONTRIBUTING.md) file for contribution guidelines.
+
 ## Pikt Lab
 
 I'm working on an IDE for Pikt called [Pikt Lab](https://github.com/iAmGio/pikt-lab), check it out!  

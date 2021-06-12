@@ -31,10 +31,11 @@ fun <T> removeFromList(list: MutableList<T>, vararg items: T) {
  * Generates an ascending range of integers from [start] to [end].
  * @param start start number
  * @param end end number
+ * @return list of integers from [start] to end
  */
 fun range(start: Any, end: Any): MutableList<Int> {
-    if(start !is Number && end !is Number) {
-        throw RuntimeException("range(start, end) called with non-numeric values.")
+    if(start is Number && end is Number) {
+        return (start.toInt()..end.toInt()).toMutableList()
     }
-    return ((start as Number).toInt()..(end as Number).toInt()).toMutableList()
+    throw RuntimeException("range(start, end) called with non-numeric values.")
 }
