@@ -48,12 +48,10 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Clon
      * Appends the standard library to the output code.
      *
      * @see outputCode
+     * @see StdLib
      */
     fun appendStdCode() {
-        val stdBuilder = StringBuilder()
-        StdLib.libraryFiles.forEach {
-            stdBuilder.append(StdLib.LibFile(it).readContent())
-        }
-        codeBuilder.insert(0, stdBuilder)
+        val stdCode = StdLib.libraryFiles.joinToString(separator = "") { StdLib.LibFile(it).readContent() }
+        codeBuilder.insert(0, stdCode)
     }
 }
