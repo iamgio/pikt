@@ -4,11 +4,13 @@ import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.expression.ExpressionParser
 import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.properties.ColorsProperties
+import eu.iamgio.pikt.statement.Statement
 
 /**
  * Pixel-by-pixel reader of a [PiktImage]
  *
  * @param pixels collection of [Pixel]s
+ * @param colors color scheme
  * @author Giorgio Garofalo
  */
 class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties) {
@@ -78,7 +80,13 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties) 
     fun nextExpression(type: ExpressionType? = null): Expression = ExpressionParser(this).eval(type)
 
     /**
-     * Prints an error preceded by a standard prefix
+     * Prints an error preceded by a standard prefix.
+     * <tt>Error at [x; y] (index i in Statement): message</tt>
+     * @param message message to print
+     * @param statement source statement
      */
-    fun error(message: String) = System.err.println("Error at index $index: $message")
+    fun error(message: String, statement: Statement) {
+        val coordinates = if(index > 0) pixels[index - 1].let { pixel -> " at (${pixel.x};${pixel.y})" } else ""
+        System.err.println("Error$coordinates (index $index in ${statement.javaClass.simpleName}):\n\t$message\n")
+    }
 }

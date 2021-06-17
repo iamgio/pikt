@@ -19,6 +19,9 @@ abstract class Statement {
      */
     open val decompactionStyle: DecompactionStyle = DecompactionStyle.NO_SPACING
 
+    var previousStatement: Statement? = null
+    var nextStatement: Statement? = null
+
     /**
      * @return whether the pixel matches the statement's color
      */

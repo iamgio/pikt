@@ -19,7 +19,7 @@ class DefineVariableStatement : Statement() {
 
         val name = reader.next()
         if(name == null) {
-            reader.error("variable has no name.")
+            reader.error("Variable has no name.", this)
             return ""
         }
 
@@ -27,10 +27,10 @@ class DefineVariableStatement : Statement() {
 
         val value = reader.nextExpression()
 
-        // Value is empty for lambda variables, a workaround is needed.
-        /*if(value.isEmpty) {
-            reader.error("variable has no value.")
-        }*/
+        if(value.isEmpty && nextStatement !is LambdaOpenStatement) {
+            reader.error("Variable ${name.hexName} has no value.", this)
+            return ""
+        }
 
         builder.append(value.code)
 
@@ -52,9 +52,19 @@ class SetVariableStatement : Statement() {
         val builder = StringBuilder()
 
         val name = reader.next()
+        if(name == null) {
+            reader.error("Variable to update is not defined.", this)
+            return ""
+        }
+
         builder.append("$name=")
 
         val value = reader.nextExpression()
+        if(value.isEmpty && nextStatement !is LambdaOpenStatement) {
+            reader.error("No value to set for ${name.hexName} provided.", this)
+            return ""
+        }
+
         builder.append(value.code)
 
         return builder.toString()

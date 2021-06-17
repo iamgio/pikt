@@ -1,6 +1,8 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PiktImage
+import eu.iamgio.pikt.image.PixelReader
+import eu.iamgio.pikt.statement.Statement
 
 /**
  * Evaluates a [PiktImage] in order to generate Kotlin code
@@ -29,10 +31,25 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Clon
     fun evaluate(image: PiktImage) {
         val readers = image.reader().subdivide()
 
+        data class QueuedStatement(val statement: Statement, val reader: PixelReader)
+        val statements = mutableListOf<QueuedStatement>()
+
+        // Queue statements so that previousStatement and nextStatement can be set.
         readers.forEach { reader ->
-            reader.whileNotNull { pixel ->
-                pixel.statement?.generate(reader)?.let { codeBuilder.append(it).append("\n") }
+            reader.next().let { pixel ->
+                pixel?.statement?.let { statements += QueuedStatement(it, reader) }
             }
+        }
+
+        statements.forEachIndexed { index, queued ->
+            val statement = queued.statement
+
+            // Set previous and next statements.
+            statement.previousStatement = if(index > 0) statements[index - 1].statement else null
+            statement.nextStatement = if(index < statements.size - 1) statements[index + 1].statement else null
+
+            // Generate and append code.
+            codeBuilder.append(statement.generate(queued.reader)).append("\n")
         }
     }
 

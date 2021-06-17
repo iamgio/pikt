@@ -38,6 +38,12 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
     fun matches(colors: ColorsProperty) = colors.has(hex)
 
     /**
+     * Pixel as a hex color, e.g. #FF0000.
+     */
+    val hexName: String
+        get() = "#$hex"
+
+    /**
      * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.
      */
     val isWhitespace: Boolean
