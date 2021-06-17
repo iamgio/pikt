@@ -14,6 +14,9 @@ class IfStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.BEFORE
 
+    override val syntax: String
+        get() = "<%if%> <condition> <lambda or statement>"
+
     override fun getColors(colors: ColorsProperties) = colors.keywords.`if`
 
     override fun generate(reader: PixelReader): String {
@@ -28,6 +31,9 @@ class IfStatement : Statement() {
  * @author Giorgio Garofalo
  */
 class ElseStatement : Statement() {
+
+    override val syntax: String
+        get() = "<%else%> <%if%?> <lambda or statement>"
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.`else`
 

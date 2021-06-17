@@ -12,6 +12,9 @@ import eu.iamgio.pikt.statement.Statement
  */
 class DefineVariableStatement : Statement() {
 
+    override val syntax: String
+        get() = "<%variable.define%> <name> <value>"
+
     override fun getColors(colors: ColorsProperties) = colors.keywords.defineVariable
 
     override fun generate(reader: PixelReader): String {
@@ -19,7 +22,7 @@ class DefineVariableStatement : Statement() {
 
         val name = reader.next()
         if(name == null) {
-            reader.error("Variable has no name.", this)
+            reader.error("Variable has no name.", syntax = true)
             return ""
         }
 
@@ -28,7 +31,7 @@ class DefineVariableStatement : Statement() {
         val value = reader.nextExpression()
 
         if(value.isEmpty && nextStatement !is LambdaOpenStatement) {
-            reader.error("Variable ${name.hexName} has no value.", this)
+            reader.error("Variable ${name.hexName} has no value.", syntax = true)
             return ""
         }
 
@@ -46,6 +49,9 @@ class DefineVariableStatement : Statement() {
  */
 class SetVariableStatement : Statement() {
 
+    override val syntax: String
+        get() = "<%variable.set%> <name> <value>"
+
     override fun getColors(colors: ColorsProperties) = colors.keywords.setVariable
 
     override fun generate(reader: PixelReader): String {
@@ -53,7 +59,7 @@ class SetVariableStatement : Statement() {
 
         val name = reader.next()
         if(name == null) {
-            reader.error("Variable to update is not defined.", this)
+            reader.error("Variable to update is not defined.", syntax = true)
             return ""
         }
 
@@ -61,7 +67,7 @@ class SetVariableStatement : Statement() {
 
         val value = reader.nextExpression()
         if(value.isEmpty && nextStatement !is LambdaOpenStatement) {
-            reader.error("No value to set for ${name.hexName} provided.", this)
+            reader.error("No value to set for ${name.hexName} provided.", syntax = true)
             return ""
         }
 

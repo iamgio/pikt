@@ -19,13 +19,35 @@ abstract class Statement {
      */
     open val decompactionStyle: DecompactionStyle = DecompactionStyle.NO_SPACING
 
+    /**
+     * Statement previous to this statement, if exists.
+     */
     var previousStatement: Statement? = null
+
+    /**
+     * Statement next to this statement, if exists.
+     */
     var nextStatement: Statement? = null
+
+    /**
+     * Name of this statement
+     */
+    val name: String
+        get() = javaClass.simpleName
 
     /**
      * @return whether the pixel matches the statement's color
      */
     fun matches(pixel: Pixel): Boolean = pixel.matches(getColors(pixel.colors))
+
+    /**
+     * Statement syntax according to these rules:
+     * - `<abc>` refers to an obligatory pixel;
+     * - `<abc?>` refers to an optional pixel;
+     * - `%abc%` refers to a color value from the color scheme;
+     * - ...abc refers to a sequential list of pixels.
+     */
+    abstract val syntax: String
 
     /**
      * @return statement's color from color schemes

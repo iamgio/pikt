@@ -43,13 +43,19 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Clon
 
         statements.forEachIndexed { index, queued ->
             val statement = queued.statement
+            val reader = queued.reader
 
             // Set previous and next statements.
             statement.previousStatement = if(index > 0) statements[index - 1].statement else null
             statement.nextStatement = if(index < statements.size - 1) statements[index + 1].statement else null
 
             // Generate and append code.
-            codeBuilder.append(statement.generate(queued.reader)).append("\n")
+            val code = statement.generate(reader)
+            if(reader.isInvalidated) {
+                codeBuilder.append("// Output of ${statement.name} was invalidated. See errors for details.\n")
+            } else {
+                codeBuilder.append(code).append("\n")
+            }
         }
     }
 

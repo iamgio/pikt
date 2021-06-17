@@ -12,6 +12,9 @@ class LambdaOpenStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.AFTER
 
+    override val syntax: String
+        get() = "<%lambda.open%>"
+
     override fun getColors(colors: ColorsProperties) = colors.lambda.open
 
     override fun generate(reader: PixelReader): String {
@@ -33,6 +36,9 @@ class LambdaOpenStatement : Statement() {
 class LambdaCloseStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.BEFORE_AND_AFTER
+
+    override val syntax: String
+        get() = "<%lambda.open%>"
 
     override fun getColors(colors: ColorsProperties) = colors.lambda.close
 

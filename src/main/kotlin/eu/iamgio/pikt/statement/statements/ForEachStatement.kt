@@ -14,6 +14,9 @@ class ForEachStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.BEFORE
 
+    override val syntax: String
+        get() = "<%foreach%> <collection> <lambda> <item>"
+
     override fun getColors(colors: ColorsProperties) = colors.keywords.forEach
 
     override fun generate(reader: PixelReader): String {

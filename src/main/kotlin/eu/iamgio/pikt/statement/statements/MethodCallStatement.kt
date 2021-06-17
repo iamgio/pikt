@@ -13,6 +13,9 @@ import eu.iamgio.pikt.statement.Statement
  */
 class MethodCallStatement : Statement() {
 
+    override val syntax: String
+        get() = "<%methodcall%> <method> <...args>"
+
     override fun getColors(colors: ColorsProperties) = colors.keywords.methodCall
 
     override fun generate(reader: PixelReader) = reader.nextExpression(ExpressionType.METHOD_CALL).code
