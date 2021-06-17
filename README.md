@@ -87,7 +87,7 @@ A good error handling is crucial to the usability of Pikt. This is what a parse 
 Error at (1,2) (index 2 in DefineVariableStatement):
 	Variable #54FF00 has no value.
 	Syntax: <%variable.define%> <name> <value>
-	                 ✓             ✓      ✗   
+	                 ✓            ✓      ✗   
 ```
 
 ## Contributing
