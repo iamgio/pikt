@@ -50,7 +50,7 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Clon
             statement.nextStatement = if(index < statements.size - 1) statements[index + 1].statement else null
 
             // Generate and append code.
-            val code = statement.generate(reader)
+            val code = statement.generate(reader, statement.getSyntax())
             if(reader.isInvalidated) {
                 codeBuilder.append("// Output of ${statement.name} was invalidated. See errors for details.\n")
             } else {

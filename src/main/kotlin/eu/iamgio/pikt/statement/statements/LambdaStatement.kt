@@ -3,6 +3,7 @@ package eu.iamgio.pikt.statement.statements
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
  * Defines a block of code starting by <%lambda.open%>
@@ -12,12 +13,13 @@ class LambdaOpenStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.AFTER
 
-    override val syntax: String
-        get() = "<%lambda.open%>"
+    override fun getSyntax() = StatementSyntax(
+            StatementSyntax.Member("lambda.open", StatementSyntax.Type.SCHEME_OBLIGATORY),
+    )
 
     override fun getColors(colors: ColorsProperties) = colors.lambda.open
 
-    override fun generate(reader: PixelReader): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
         val builder = StringBuilder("{")
         reader.whileNotNull {
             builder.append(it).append(":Any,")
@@ -37,10 +39,11 @@ class LambdaCloseStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.BEFORE_AND_AFTER
 
-    override val syntax: String
-        get() = "<%lambda.open%>"
+    override fun getSyntax() = StatementSyntax(
+            StatementSyntax.Member("lambda.close", StatementSyntax.Type.SCHEME_OBLIGATORY),
+    )
 
     override fun getColors(colors: ColorsProperties) = colors.lambda.close
 
-    override fun generate(reader: PixelReader) = "}"
+    override fun generate(reader: PixelReader, syntax: StatementSyntax) = "}"
 }

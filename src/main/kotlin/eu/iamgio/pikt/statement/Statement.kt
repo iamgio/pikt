@@ -45,9 +45,9 @@ abstract class Statement {
      * - `<abc>` refers to an obligatory pixel;
      * - `<abc?>` refers to an optional pixel;
      * - `%abc%` refers to a color value from the color scheme;
-     * - ...abc refers to a sequential list of pixels.
+     * - `...abc` refers to a sequential list of pixels.
      */
-    abstract val syntax: String
+    abstract fun getSyntax(): StatementSyntax
 
     /**
      * @return statement's color from color schemes
@@ -57,9 +57,10 @@ abstract class Statement {
     /**
      * Generates Kotlin code.
      * @param reader pixel reader
+     * @param syntax syntax instance, so that calling [StatementSyntax.mark] applies syntax marks
      * @return Kotlin code
      */
-    abstract fun generate(reader: PixelReader): String
+    abstract fun generate(reader: PixelReader, syntax: StatementSyntax): String
 
     /**
      * Different options for decompaction.

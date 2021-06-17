@@ -3,6 +3,7 @@ package eu.iamgio.pikt.statement.statements
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
  * Runs if its condition is verified.
@@ -14,12 +15,15 @@ class IfStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.BEFORE
 
-    override val syntax: String
-        get() = "<%if%> <condition> <lambda or statement>"
+    override fun getSyntax() = StatementSyntax(
+            StatementSyntax.Member("if", StatementSyntax.Type.SCHEME_OBLIGATORY),
+            StatementSyntax.Member("condition", StatementSyntax.Type.OBLIGATORY),
+            StatementSyntax.Member("lambda|statement", StatementSyntax.Type.OBLIGATORY)
+    )
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.`if`
 
-    override fun generate(reader: PixelReader): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
         return "if(${reader.nextExpression().code})"
     }
 }
@@ -32,10 +36,13 @@ class IfStatement : Statement() {
  */
 class ElseStatement : Statement() {
 
-    override val syntax: String
-        get() = "<%else%> <%if%?> <lambda or statement>"
+    override fun getSyntax() = StatementSyntax(
+            StatementSyntax.Member("else", StatementSyntax.Type.SCHEME_OBLIGATORY),
+            StatementSyntax.Member("if", StatementSyntax.Type.SCHEME_OPTIONAL),
+            StatementSyntax.Member("lambda|statement", StatementSyntax.Type.OBLIGATORY)
+    )
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.`else`
 
-    override fun generate(reader: PixelReader) = "else"
+    override fun generate(reader: PixelReader, syntax: StatementSyntax) = "else"
 }

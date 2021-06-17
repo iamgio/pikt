@@ -5,6 +5,7 @@ import eu.iamgio.pikt.expression.ExpressionParser
 import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
  * Pixel-by-pixel reader of a [PiktImage]
@@ -91,15 +92,19 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
      * Prints an error preceded by a standard prefix and invalidates this reader.
      * <tt>Error at [x; y] (index i in Statement): message</tt>
      * @param message message to log
-     * @param syntax whether [statement] syntax should be printed out
+     * @param syntax optional [statement]'s syntax that should be printed out
      */
-    fun error(message: String, syntax: Boolean = false) {
+    fun error(message: String, syntax: StatementSyntax? = null) {
         isInvalidated = true
 
         val coordinates = if(index > 0) pixels[index - 1].let { pixel -> " at (${pixel.x},${pixel.y})" } else ""
         System.err.println("Error$coordinates (index $index in ${statement?.name ?: "<no statement>"}):")
         System.err.println("\t$message")
-        if(syntax && statement != null) System.err.println("\tSyntax: " + statement.syntax)
+        if(syntax != null) {
+            val prefix = "Syntax: "
+            System.err.println("\t$prefix" + syntax)
+            System.err.println("\t${" ".repeat(prefix.length)}" + syntax.marksLine)
+        }
         System.err.println()
     }
 }
