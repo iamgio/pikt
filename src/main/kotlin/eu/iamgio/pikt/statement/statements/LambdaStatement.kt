@@ -3,6 +3,7 @@ package eu.iamgio.pikt.statement.statements
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
@@ -14,6 +15,8 @@ class LambdaOpenStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.AFTER
 
+    override val opensScope = true
+
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("lambda.open", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
             StatementSyntax.Member("args", StatementSyntax.Type.VARARG_OPTIONAL)
@@ -21,7 +24,7 @@ class LambdaOpenStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.lambda.open
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         val builder = StringBuilder("{")
         reader.whileNotNull {
             builder.append(it).append(":Any,")
@@ -43,11 +46,13 @@ class LambdaCloseStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.BEFORE_AND_AFTER
 
+    override val closesScope = true
+
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("lambda.close", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
     )
 
     override fun getColors(colors: ColorsProperties) = colors.lambda.close
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax) = "}"
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData) = "}"
 }

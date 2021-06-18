@@ -2,7 +2,6 @@ package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.image.PixelReader
-import eu.iamgio.pikt.statement.Statement
 
 /**
  * Evaluates a [PiktImage] in order to generate Kotlin code
@@ -11,7 +10,7 @@ import eu.iamgio.pikt.statement.Statement
  * @param isInvalidated whether code generation has run into an error
  * @author Giorgio Garofalo
  */
-class Evaluator(private val codeBuilder: StringBuilder = StringBuilder(), isInvalidated: Boolean = false) : Cloneable {
+class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated: Boolean = false) : Cloneable {
 
     /**
      * If an evaluator is invalidated, its content will not be compiled.
@@ -35,11 +34,11 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder(), isInva
      * Evaluates [image] source via subdivided pixel readers.
      * @param image pikt image
      * @see outputCode
+     * @see QueuedStatement.eval
      */
     fun evaluate(image: PiktImage) {
         val readers = image.reader().subdivide()
 
-        data class QueuedStatement(val statement: Statement, val reader: PixelReader)
         val statements = mutableListOf<QueuedStatement>()
 
         // Queue statements so that previousStatement and nextStatement can be set.
@@ -49,23 +48,8 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder(), isInva
             }
         }
 
-        statements.forEachIndexed { index, queued ->
-            val statement = queued.statement
-            val reader = queued.reader
-
-            // Set previous and next statements.
-            statement.previousStatement = if(index > 0) statements[index - 1].statement else null
-            statement.nextStatement = if(index < statements.size - 1) statements[index + 1].statement else null
-
-            // Generate and append code.
-            val code = statement.generate(reader, statement.getSyntax())
-            if(reader.isInvalidated) {
-                codeBuilder.append("// Output of ${statement.name} was invalidated. See errors for details.\n")
-                isInvalidated = true
-            } else {
-                codeBuilder.append(code).append("\n")
-            }
-        }
+        // Evaluate queued statements
+        statements.eval(this)
     }
 
     /**
@@ -85,5 +69,9 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder(), isInva
     fun appendStdCode() {
         val stdCode = StdLib.libraryFiles.joinToString(separator = "") { StdLib.LibFile(it).readContent() }
         codeBuilder.insert(0, stdCode)
+    }
+
+    fun invalidate() {
+        isInvalidated = true
     }
 }

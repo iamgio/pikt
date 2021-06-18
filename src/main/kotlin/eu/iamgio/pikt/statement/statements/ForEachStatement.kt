@@ -3,6 +3,7 @@ package eu.iamgio.pikt.statement.statements
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
@@ -24,7 +25,7 @@ class ForEachStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.forEach
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         return "(${reader.nextExpression().code} as Iterable<Any>).forEach()"
     }
 }

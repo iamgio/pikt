@@ -3,6 +3,7 @@ package eu.iamgio.pikt.statement.statements
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
@@ -15,6 +16,8 @@ class IfStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.BEFORE
 
+    override val opensTemporaryScope = true
+
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("if", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
             StatementSyntax.Member("condition", StatementSyntax.Type.OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
@@ -23,14 +26,14 @@ class IfStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.`if`
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         val condition = reader.nextExpression()
         if(condition.isEmpty) {
             syntax.mark("condition", StatementSyntax.Mark.WRONG)
             reader.error("\"if\" has no condition.", syntax)
         }
 
-        if(nextStatement == null || nextStatement is ElseStatement) {
+        if(data.nextStatement == null || data.nextStatement is ElseStatement) {
             syntax.mark("lambda|statement", StatementSyntax.Mark.WRONG)
             reader.error("\"if\" has empty body.", syntax)
         }
@@ -47,6 +50,8 @@ class IfStatement : Statement() {
  */
 class ElseStatement : Statement() {
 
+    override val opensTemporaryScope = true
+
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("else", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
             StatementSyntax.MemberGroup("ifcondition", StatementSyntax.Type.OPTIONAL, mark = StatementSyntax.Mark.UNSET,
@@ -58,14 +63,14 @@ class ElseStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.`else`
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         /*if(previousStatement !is IfStatement) {
             reader.error("\"else\" has no \"if\".")
         } TODO scopes */
 
-        if(nextStatement is IfStatement) {
+        if(data.nextStatement is IfStatement) {
             syntax.mark("ifcondition", StatementSyntax.Mark.CORRECT)
-        } else if(nextStatement == null) {
+        } else if(data.nextStatement == null) {
             syntax.mark("lambda|statement", StatementSyntax.Mark.WRONG)
             reader.error("\"else\" has empty body.", syntax)
         }

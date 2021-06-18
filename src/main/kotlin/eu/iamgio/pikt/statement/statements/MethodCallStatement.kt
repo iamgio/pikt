@@ -4,6 +4,7 @@ import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
@@ -22,7 +23,7 @@ class MethodCallStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.methodCall
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         val expression = reader.nextExpression(ExpressionType.METHOD_CALL)
 
         if(expression.isEmpty || expression.code == "()") {

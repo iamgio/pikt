@@ -3,6 +3,7 @@ package eu.iamgio.pikt.statement.statements
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
@@ -21,7 +22,7 @@ class DefineVariableStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.defineVariable
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         syntax.mark("variable.define", StatementSyntax.Mark.CORRECT)
 
         val builder = StringBuilder()
@@ -39,7 +40,7 @@ class DefineVariableStatement : Statement() {
 
         // Value
         val value = reader.nextExpression()
-        if(value.isEmpty && nextStatement !is LambdaOpenStatement) {
+        if(value.isEmpty && data.nextStatement !is LambdaOpenStatement) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
             reader.error("Variable ${name.hexName} has no value.", syntax)
             return ""
@@ -68,7 +69,7 @@ class SetVariableStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.setVariable
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         val builder = StringBuilder()
 
         // Name
@@ -84,7 +85,7 @@ class SetVariableStatement : Statement() {
 
         // Value
         val value = reader.nextExpression()
-        if(value.isEmpty && nextStatement !is LambdaOpenStatement) {
+        if(value.isEmpty && data.nextStatement !is LambdaOpenStatement) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
             reader.error("No value to set for ${name.hexName} provided.", syntax)
             return ""
