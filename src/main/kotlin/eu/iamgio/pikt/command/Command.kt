@@ -6,7 +6,7 @@ import kotlin.system.exitProcess
  * Represents a command that can be executed from program arguments.
  *
  * @param name the name of the command
- * @param action the task to be run. (args) -> task. Arguments can be <tt>null</tt> if not specified.
+ * @param action the task to be run. (args) -> task. Arguments can be `null` if not specified.
  * @param closeOnComplete whether the program should close after the command completed its execution.
  * @author Giorgio Garofalo
  */
@@ -47,13 +47,13 @@ object Commands {
     /**
      * Gets a command from name, if exists.
      * @param name command name, case sensitive
-     * @return command by name if exists, <tt>null</tt> otherwise.
+     * @return command by name if exists, `null` otherwise.
      */
     fun getCommand(name: String): Command? = commands.firstOrNull { it.name == name }
 
     /**
      * Splits a command line argument (command=args) into a pair (command, args).
-     * If there are no args, the second value of the pair is <tt>null</tt>.
+     * If there are no args, the second value of the pair is `null`.
      * @param fullCommand argument from command line
      * @return command splitted into name and arguments, if exist
      */

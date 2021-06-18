@@ -42,7 +42,7 @@ object StdLib {
 
     /**
      * @param hex hexadecimal color to check
-     * @return name of the stdlib member linked to [hex] color if exists. <tt>null</tt> otherwise
+     * @return name of the stdlib member linked to [hex] color if exists. `null` otherwise
      */
     fun getMemberName(hex: String): String? {
         return colors.entries.firstOrNull { it.value.has(hex) }?.key

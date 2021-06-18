@@ -29,7 +29,7 @@ enum class Operator(override val code: String, val hex: (OperatorColorsPropertie
         /**
          * Gets an operator by looking for one matching [pixel] color.
          * @param pixel pixel to compare
-         * @return matched operator if exists. <tt>null</tt> otherwise
+         * @return matched operator if exists. `null` otherwise
          */
         fun byPixel(pixel: Pixel): Operator? = values().firstOrNull {
             pixel.matches(it.hex(pixel.colors.operators))

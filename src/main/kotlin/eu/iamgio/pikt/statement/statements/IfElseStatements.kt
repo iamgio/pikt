@@ -40,7 +40,7 @@ class IfStatement : Statement() {
 }
 
 /**
- * Runs if the previous [IfStatement] did not run. Can be followed by another [IfStatement] in order to create an <tt>if else</tt> statement.
+ * Runs if the previous [IfStatement] did not run. Can be followed by another [IfStatement] in order to create an `if else` statement.
  * <%else%> <<%if%> <condition>?> <lambda or statement>
  *
  * @author Giorgio Garofalo

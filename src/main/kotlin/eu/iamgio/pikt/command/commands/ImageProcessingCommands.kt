@@ -12,7 +12,7 @@ import java.io.File
 // through several modifications and manipulations (color schemes, size, etc.).
 
 /**
- * Processed image output. [getOutputFileFromSource] value will be used by default if this is <tt>null</tt>.
+ * Processed image output. [getOutputFileFromSource] value will be used by default if this is `null`.
  */
 private var output: File? = null
 
@@ -27,8 +27,8 @@ private fun getOutputFileFromSource(source: File, tag: String) = File(source.par
 /**
  * Saves the given [image] to a file.
  * @param image image to save
- * @param source source image, used for [getOutputFileFromSource] in case [output] is <tt>null</tt>
- * @param tag suffix of the file name, used for [getOutputFileFromSource] in case [output] is <tt>null</tt>
+ * @param source source image, used for [getOutputFileFromSource] in case [output] is `null`
+ * @param tag suffix of the file name, used for [getOutputFileFromSource] in case [output] is `null`
  * @return output file
  */
 private fun save(image: BufferedImage, source: File, tag: String): File = (output ?: getOutputFileFromSource(source, tag)).also {

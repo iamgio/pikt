@@ -30,7 +30,7 @@ object KotlinCompilerDownloader {
 
     /**
      * Downloads the Kotlin compiler.
-     * @param version Kotlin version. [DEFAULT_KOTLIN_VERSION] if <tt>null</tt>
+     * @param version Kotlin version. [DEFAULT_KOTLIN_VERSION] if `null`
      * @param type compiler type
      * @param folder target directory
      */

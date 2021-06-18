@@ -68,19 +68,19 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         get() = matches(colors.boolean.boolTrue) || matches(colors.boolean.boolFalse)
 
     /**
-     * Character linked to grayscale pixels if [isCharacter] is <tt>true</tt>.
+     * Character linked to grayscale pixels if [isCharacter] is `true`.
      */
     val characterContent: Char
         get() = color.red.toChar()
 
     /**
-     * Boolean value linked to the pixel if [isBoolean] is <tt>true</tt>.
+     * Boolean value linked to the pixel if [isBoolean] is `true`.
      */
     val booleanContent: String
         get() = matches(colors.boolean.boolTrue).toString()
 
     /**
-     * [Statement] linked to this pixel if exists. <tt>null</tt> otherwise.
+     * [Statement] linked to this pixel if exists. `null` otherwise.
      */
     val statement: Statement? by lazy { Statements.byPixel(this) }
 
@@ -91,7 +91,7 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         get() = statement != null
 
     /**
-     * [Operator] linked to this pixel if exists. <tt>null</tt> otherwise.
+     * [Operator] linked to this pixel if exists. `null` otherwise.
      */
     val operator: Operator? by lazy { Operator.byPixel(this) }
 
@@ -102,7 +102,7 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         get() = operator != null
 
     /**
-     * Name of the standard library member linked to this pixel if exists. <tt>null</tt> otherwise.
+     * Name of the standard library member linked to this pixel if exists. `null` otherwise.
      */
     private val stdlibMemberName: String? by lazy { StdLib.getMemberName(hex) }
 

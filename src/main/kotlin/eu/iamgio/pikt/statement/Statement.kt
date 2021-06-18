@@ -95,7 +95,7 @@ object Statements {
 
     /**
      * Gets a statement matching the color of [pixel] based on color scheme.
-     * @return statement by pixel color if exists. <tt>null</tt> otherwise
+     * @return statement by pixel color if exists. `null` otherwise
      */
     fun byPixel(pixel: Pixel): Statement? = statements.firstOrNull { it.matches(pixel) }
 }

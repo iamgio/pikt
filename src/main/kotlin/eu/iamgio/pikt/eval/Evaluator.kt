@@ -69,7 +69,7 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder(), isInva
     }
 
     /**
-     * Inserts the current [outputCode] into a <tt>fun main()</tt> block.
+     * Inserts the current [outputCode] into a `fun main()` block.
      */
     fun insertInMain() {
         codeBuilder.insert(0, "fun main() {\n")

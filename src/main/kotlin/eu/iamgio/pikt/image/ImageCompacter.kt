@@ -25,8 +25,8 @@ class ImageCompacter(private val piktImage: PiktImage) {
 
     /**
      * @param size image size, excluding whitespaces
-     * @param width expected image width. Will be calculated if <tt>null</tt>
-     * @param height expected image height. Will be calculated if <tt>null</tt>
+     * @param width expected image width. Will be calculated if `null`
+     * @param height expected image height. Will be calculated if `null`
      * @return width and height of the compacted image
      */
     private fun calcCompactSize(size: Int, width: Int?, height: Int?): Pair<Int, Int> {
@@ -54,8 +54,8 @@ class ImageCompacter(private val piktImage: PiktImage) {
 
     /**
      * Creates a copy of the image with no whitespaces.
-     * @param width expected image width. Will be calculated if <tt>null</tt>
-     * @param height expected image height. Will be calculated if <tt>null</tt>
+     * @param width expected image width. Will be calculated if `null`
+     * @param height expected image height. Will be calculated if `null`
      * @return compacted copy of the source image
      */
     fun compact(width: Int?, height: Int?): BufferedImage {

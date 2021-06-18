@@ -37,7 +37,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
 
     /**
      * Gets the next pixel available.
-     * @return next pixel, <tt>null</tt> if there is none
+     * @return next pixel, `null` if there is none
      */
     fun next(): Pixel? {
         index++
@@ -48,7 +48,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
 
     /**
      * Executes a task for every non-null pixel
-     * @param task task to be executed if the current pixel is not <tt>null</tt>.
+     * @param task task to be executed if the current pixel is not `null`.
      */
     fun whileNotNull(task: (Pixel) -> Unit) {
         var pixel: Pixel? = null
@@ -90,7 +90,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
 
     /**
      * Prints an error preceded by a standard prefix and invalidates this reader.
-     * <tt>Error at [x; y] (index i in Statement): message</tt>
+     * `Error at [x; y] (index i in Statement): message`
      * @param message message to log
      * @param syntax optional [statement]'s syntax that should be printed out
      */

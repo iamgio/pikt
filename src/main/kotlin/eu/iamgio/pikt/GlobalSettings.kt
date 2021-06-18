@@ -15,7 +15,7 @@ object GlobalSettings {
     /**
      * Enables a setting.
      *
-     * Usage: <pre>GlobalSettings += "setting"</pre>
+     * Usage: `GlobalSettings += "setting"`
      * @param setting setting to set
      */
     operator fun plusAssign(setting: String) {
@@ -25,7 +25,7 @@ object GlobalSettings {
     /**
      * Used to check whether a setting is set.
      *
-     * Usage: <pre>val isSet = "setting" in GlobalSettings</pre>
+     * Usage: `val isSet = "setting" in GlobalSettings`
      * @param setting setting value to check existance for
      * @return whether [setting] is enabled
      */
