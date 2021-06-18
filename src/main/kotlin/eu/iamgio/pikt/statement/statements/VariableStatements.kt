@@ -14,7 +14,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
 class DefineVariableStatement : Statement() {
 
     override fun getSyntax() = StatementSyntax(
-            StatementSyntax.Member("variable.define", StatementSyntax.Type.SCHEME_OBLIGATORY),
+            StatementSyntax.Member("variable.define", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
             StatementSyntax.Member("name", StatementSyntax.Type.OBLIGATORY),
             StatementSyntax.Member("value", StatementSyntax.Type.OBLIGATORY)
     )
@@ -61,7 +61,7 @@ class DefineVariableStatement : Statement() {
 class SetVariableStatement : Statement() {
 
     override fun getSyntax() = StatementSyntax(
-            StatementSyntax.Member("variable.set", StatementSyntax.Type.SCHEME_OBLIGATORY),
+            StatementSyntax.Member("variable.set", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
             StatementSyntax.Member("name", StatementSyntax.Type.OBLIGATORY),
             StatementSyntax.Member("value", StatementSyntax.Type.OBLIGATORY)
     )
@@ -69,8 +69,6 @@ class SetVariableStatement : Statement() {
     override fun getColors(colors: ColorsProperties) = colors.keywords.setVariable
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
-        syntax.mark("variable.set", StatementSyntax.Mark.CORRECT)
-
         val builder = StringBuilder()
 
         // Name

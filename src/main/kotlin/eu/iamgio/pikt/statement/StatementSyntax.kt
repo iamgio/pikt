@@ -56,18 +56,28 @@ class StatementSyntax(private vararg val members: Member) {
      *
      * @param name member name
      * @param type member type
+     * @param mark mutable mark type
      */
-    data class Member(val name: String, val type: Type) {
+    open class Member(val name: String, val type: Type, var mark: Mark = Mark.UNSET) {
 
         /**
          * Formatted member based on its type.
          */
-        val asSyntaxString = type.transform(name)
+        open val asSyntaxString = type.transform(name)
+    }
 
-        /**
-         * Mutable mark of this member.
-         */
-        var mark = Mark.UNSET
+    /**
+     * A group of members.
+     *
+     * @param name invisible name, used as an ID
+     * @param type group type
+     * @param mark mark of the group
+     * @param members list of members the group contains
+     */
+    class MemberGroup(name: String, type: Type, mark: Mark = Mark.UNSET, private vararg val members: Member) : Member(name, type, mark) {
+
+        override val asSyntaxString: String
+            get() = type.transform(members.joinToString(separator = " ") { it.asSyntaxString })
     }
 
     /**

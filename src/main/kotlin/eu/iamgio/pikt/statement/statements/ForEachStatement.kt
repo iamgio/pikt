@@ -16,7 +16,7 @@ class ForEachStatement : Statement() {
     override val decompactionStyle = DecompactionStyle.BEFORE
 
     override fun getSyntax() = StatementSyntax(
-            StatementSyntax.Member("foreach", StatementSyntax.Type.SCHEME_OBLIGATORY),
+            StatementSyntax.Member("foreach", StatementSyntax.Type.SCHEME_OBLIGATORY, StatementSyntax.Mark.CORRECT),
             StatementSyntax.Member("collection", StatementSyntax.Type.OBLIGATORY),
             StatementSyntax.Member("lambda", StatementSyntax.Type.OBLIGATORY),
             StatementSyntax.Member("item", StatementSyntax.Type.OBLIGATORY)

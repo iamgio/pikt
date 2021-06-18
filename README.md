@@ -82,14 +82,6 @@ The following arguments execute tasks and exit when completed.
 - [x] Interpretation (currently only on JVM)
 - [ ] Error handling (WIP)
 
-A good error handling is crucial to the usability of Pikt. This is what a parse error currently looks like:
-```
-Error at (1,2) (index 2 in DefineVariableStatement):
-	Variable #54FF00 has no value.
-	Syntax: <%variable.define%> <name> <value>
-	                 ✓            ✓      ✗   
-```
-
 ## Contributing
 See the [CONTRIBUTING](CONTRIBUTING.md) file for contribution guidelines.
 

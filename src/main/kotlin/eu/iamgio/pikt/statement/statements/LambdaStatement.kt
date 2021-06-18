@@ -6,7 +6,8 @@ import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
- * Defines a block of code starting by <%lambda.open%>
+ * Starts a block of code.
+ * <%lambda.open%> <...args?>
  * @author Giorgio Garofalo
  */
 class LambdaOpenStatement : Statement() {
@@ -14,7 +15,8 @@ class LambdaOpenStatement : Statement() {
     override val decompactionStyle = DecompactionStyle.AFTER
 
     override fun getSyntax() = StatementSyntax(
-            StatementSyntax.Member("lambda.open", StatementSyntax.Type.SCHEME_OBLIGATORY),
+            StatementSyntax.Member("lambda.open", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
+            StatementSyntax.Member("args", StatementSyntax.Type.VARARG_OPTIONAL)
     )
 
     override fun getColors(colors: ColorsProperties) = colors.lambda.open
@@ -23,6 +25,7 @@ class LambdaOpenStatement : Statement() {
         val builder = StringBuilder("{")
         reader.whileNotNull {
             builder.append(it).append(":Any,")
+            syntax.mark("args", StatementSyntax.Mark.CORRECT)
         }
         if(builder.endsWith(",")) {
             builder.append("->")
@@ -32,7 +35,8 @@ class LambdaOpenStatement : Statement() {
 }
 
 /**
- * Defines a block of code ending by <%lambda.close%>
+ * Closes a block of code.
+ * <%lambda.close%>
  * @author Giorgio Garofalo
  */
 class LambdaCloseStatement : Statement() {
@@ -40,7 +44,7 @@ class LambdaCloseStatement : Statement() {
     override val decompactionStyle = DecompactionStyle.BEFORE_AND_AFTER
 
     override fun getSyntax() = StatementSyntax(
-            StatementSyntax.Member("lambda.close", StatementSyntax.Type.SCHEME_OBLIGATORY),
+            StatementSyntax.Member("lambda.close", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
     )
 
     override fun getColors(colors: ColorsProperties) = colors.lambda.close

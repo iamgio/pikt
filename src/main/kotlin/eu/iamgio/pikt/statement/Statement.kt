@@ -33,7 +33,7 @@ abstract class Statement {
      * Name of this statement
      */
     val name: String
-        get() = javaClass.simpleName
+        get() = javaClass.simpleName.removeSuffix("Statement")
 
     /**
      * @return whether the pixel matches the statement's color

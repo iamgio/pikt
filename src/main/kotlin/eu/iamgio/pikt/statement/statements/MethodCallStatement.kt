@@ -15,7 +15,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
 class MethodCallStatement : Statement() {
 
     override fun getSyntax() = StatementSyntax(
-            StatementSyntax.Member("methodcall", StatementSyntax.Type.SCHEME_OBLIGATORY),
+            StatementSyntax.Member("methodcall", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
             StatementSyntax.Member("method", StatementSyntax.Type.OBLIGATORY),
             StatementSyntax.Member("args", StatementSyntax.Type.VARARG_OPTIONAL)
     )
