@@ -8,9 +8,17 @@ import eu.iamgio.pikt.statement.Statement
  * Evaluates a [PiktImage] in order to generate Kotlin code
  *
  * @param codeBuilder Kotlin code builder
+ * @param isInvalidated whether code generation has run into an error
  * @author Giorgio Garofalo
  */
-class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Cloneable {
+class Evaluator(private val codeBuilder: StringBuilder = StringBuilder(), isInvalidated: Boolean = false) : Cloneable {
+
+    /**
+     * If an evaluator is invalidated, its content will not be compiled.
+     * An evaluator gets invalidate whenever the code generation process runs into an error thrown by [PixelReader.error].
+     */
+    var isInvalidated = isInvalidated
+        private set
 
     /**
      * Kotlin code output.
@@ -21,7 +29,7 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Clon
     /**
      * @return a copy of this evaluator containing already generated code
      */
-    public override fun clone() = Evaluator(StringBuilder(codeBuilder))
+    public override fun clone() = Evaluator(StringBuilder(codeBuilder), isInvalidated)
 
     /**
      * Evaluates [image] source via subdivided pixel readers.
@@ -53,6 +61,7 @@ class Evaluator(private val codeBuilder: StringBuilder = StringBuilder()) : Clon
             val code = statement.generate(reader, statement.getSyntax())
             if(reader.isInvalidated) {
                 codeBuilder.append("// Output of ${statement.name} was invalidated. See errors for details.\n")
+                isInvalidated = true
             } else {
                 codeBuilder.append(code).append("\n")
             }

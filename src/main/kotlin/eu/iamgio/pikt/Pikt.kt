@@ -41,6 +41,12 @@ fun main(args: Array<String>) {
         println("Output:\n${evaluator.outputCode}\n")
     }
 
+    // Stop execution if at least one error has occurred during code generation.
+    if(evaluator.isInvalidated) {
+        println("Please fix these issues and try again.")
+        return
+    }
+
     // Interpret the output code if the "-Dinterpret" property is set.
     if(properties.interpretationTarget != null) {
         val interpreter = Interpreter(evaluator.clone(), properties)

@@ -97,7 +97,10 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
     fun error(message: String, syntax: StatementSyntax? = null) {
         isInvalidated = true
 
-        val coordinates = if(index > 0) pixels[if(pixels.size == 1) 0 else index - 1].let { pixel -> " at (${pixel.x},${pixel.y})" } else ""
+        val coordinates = if(pixels.size > 0) {
+            val pixel = pixels[if(pixels.size == 1) 0 else index - 1]
+            " at (${pixel.x},${pixel.y})"
+        } else ""
         System.err.println("Error$coordinates (index $index in ${statement?.name ?: "<no statement>"}):")
         System.err.println("\t$message")
         if(syntax != null) {
