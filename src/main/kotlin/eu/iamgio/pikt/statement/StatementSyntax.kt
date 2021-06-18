@@ -39,9 +39,9 @@ class StatementSyntax(private vararg val members: Member) {
             val builder = StringBuilder()
             members.forEach { member ->
                 val length = member.asSyntaxString.length
-                builder.append(" ".repeat(length.floorDiv(2)))
+                builder.append(" ".repeat(length / 2))
                 builder.append(member.mark.char)
-                builder.append(" ".repeat(length.floorDiv(2)))
+                builder.append(" ".repeat(length / 2))
             }
             return builder.toString()
         }

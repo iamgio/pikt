@@ -8,7 +8,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
  * Used to call a method with one pixel per argument without catching the resource value.
- * <%methodcall%> <method> <...args?>
+ * <%methodcall%> <name> <...args?>
  *
  * @author Giorgio Garofalo
  */
@@ -16,11 +16,20 @@ class MethodCallStatement : Statement() {
 
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("methodcall", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
-            StatementSyntax.Member("method", StatementSyntax.Type.OBLIGATORY),
+            StatementSyntax.Member("name", StatementSyntax.Type.OBLIGATORY),
             StatementSyntax.Member("args", StatementSyntax.Type.VARARG_OPTIONAL)
     )
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.methodCall
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax) = reader.nextExpression(ExpressionType.METHOD_CALL).code
+    override fun generate(reader: PixelReader, syntax: StatementSyntax): String {
+        val expression = reader.nextExpression(ExpressionType.METHOD_CALL)
+
+        if(expression.isEmpty || expression.code == "()") {
+            syntax.mark("name", StatementSyntax.Mark.WRONG)
+            reader.error("No method name provided.", syntax)
+        }
+
+        return expression.code
+    }
 }
