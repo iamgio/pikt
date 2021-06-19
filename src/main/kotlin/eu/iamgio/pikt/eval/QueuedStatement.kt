@@ -18,9 +18,10 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
      * Opens and closes scopes if required.
      * @param scopes mutable list of scopes
      * @param previousStatement the statement that comes before [statement]
+     * @param previousPreviousStatement the statement that comes before [previousStatement], if exists
      */
-    private fun handleScopes(scopes: MutableList<Scope>, previousStatement: Statement?) {
-        if(previousStatement?.closesScope == true || previousStatement?.opensTemporaryScope == true) {
+    private fun handleScopes(scopes: MutableList<Scope>, previousStatement: Statement?, previousPreviousStatement: Statement?) {
+        if(previousStatement?.closesScope == true || previousPreviousStatement?.opensTemporaryScope == true) {
             scopes.removeLastOrNull() ?: System.err.println("There must be at least one active scope.")
         }
         if(statement.opensScope || statement.opensTemporaryScope) {
@@ -34,9 +35,10 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
      * @param evaluator root evaluator
      * @param previousStatement the statement that comes before [statement], if exists
      * @param nextStatement the statement that comes after [statement], if exists
+     * @param previousPreviousStatement the statement that comes before [previousStatement], if exists
      */
-    fun eval(scopes: MutableList<Scope>, evaluator: Evaluator, previousStatement: Statement?, nextStatement: Statement?) {
-        handleScopes(scopes, previousStatement)
+    fun eval(scopes: MutableList<Scope>, evaluator: Evaluator, previousStatement: Statement?, nextStatement: Statement?, previousPreviousStatement: Statement?) {
+        handleScopes(scopes, previousStatement, previousPreviousStatement)
 
         // Generate and append code.
         val code = statement.generate(reader, statement.getSyntax(), StatementData(scopes.last(), previousStatement, nextStatement))
@@ -59,6 +61,7 @@ fun List<QueuedStatement>.eval(evaluator: Evaluator) {
     forEachIndexed { index, queued ->
         val previousStatement = elementAtOrNull(index - 1)?.statement
         val nextStatement = elementAtOrNull(index + 1)?.statement
-        queued.eval(scopes, evaluator, previousStatement, nextStatement)
+        val previousPreviousStatement = elementAtOrNull(index - 2)?.statement
+        queued.eval(scopes, evaluator, previousStatement, nextStatement, previousPreviousStatement)
     }
 }

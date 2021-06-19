@@ -71,6 +71,9 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
         codeBuilder.insert(0, stdCode)
     }
 
+    /**
+     * Invalidates this evaluator.
+     */
     fun invalidate() {
         isInvalidated = true
     }
