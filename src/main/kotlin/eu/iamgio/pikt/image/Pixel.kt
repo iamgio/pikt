@@ -32,6 +32,12 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
     private val hex: String = color.rgb.rgbToHex()
 
     /**
+     * Used for identification.
+     */
+    val id: String
+        get() = hex
+
+    /**
      * @param colors colors to compare
      * @return whether the pixel's color matches [hex]
      */
@@ -113,7 +119,7 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         get() = stdlibMemberName != null
 
     /**
-     * @return pixel as a Kotlin output name.
+     * @return pixel as a Kotlin output name + pixel information, if enabled.
      */
     override fun toString(): String = when {
         isBoolean -> booleanContent
@@ -121,7 +127,7 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         else -> "`$hex`"
     }.run {
         // Appends commented pixel coordinates if -pixelinfo is enabled.
-        if(CMD_PIXELINFO in GlobalSettings) "$this /*$x;$y*/ " else this
+        if(CMD_PIXELINFO in GlobalSettings) "$this /*$x,$y*/ " else this
     }
 }
 

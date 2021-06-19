@@ -89,7 +89,6 @@ fun registerCommands() = with(Commands) {
  */
 fun registerStatements() = with(Statements) {
     register(DefineVariableStatement())
-    register(SetVariableStatement())
     register(MethodCallStatement())
     register(IfStatement())
     register(ElseStatement())

@@ -93,15 +93,16 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
      * `Error at [x; y] (index i in Statement): message`
      * @param message message to log
      * @param syntax optional [statement]'s syntax that should be printed out
+     * @param referenceToFirstPixel whether the error must reference the first pixel in the reader
      */
-    fun error(message: String, syntax: StatementSyntax? = null) {
+    fun error(message: String, syntax: StatementSyntax? = null, referenceToFirstPixel: Boolean = false) {
         isInvalidated = true
 
         val coordinates = if(pixels.size > 0) {
-            val pixel = pixels[if(pixels.size == 1) 0 else index - 1]
+            val pixel = pixels[if(referenceToFirstPixel || pixels.size == 1) 0 else index - 1]
             " at (${pixel.x},${pixel.y})"
         } else ""
-        System.err.println("Error$coordinates (index $index in ${statement?.name ?: "<no statement>"}):")
+        System.err.println("Error$coordinates (index ${if(referenceToFirstPixel) 0 else index} in ${statement?.name ?: "<no statement>"}):")
         System.err.println("\t$message")
         if(syntax != null) {
             val prefix = "Syntax: "
