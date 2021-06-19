@@ -24,13 +24,14 @@ class MethodCallStatement : Statement() {
     override fun getColors(colors: ColorsProperties) = colors.keywords.methodCall
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
-        val expression = reader.nextExpression(ExpressionType.METHOD_CALL)
+        val expression = reader.nextExpression(data.scope, ExpressionType.METHOD_CALL)
 
         if(expression.isEmpty || expression.code == "()") {
             syntax.mark("name", StatementSyntax.Mark.WRONG)
             reader.error("No method name provided.", syntax)
         }
 
+        // Output: name(arg1, arg2, ...)
         return expression.code
     }
 }

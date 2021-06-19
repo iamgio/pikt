@@ -115,7 +115,7 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
     /**
      * Whether this pixel is linked to a standard library member.
      */
-    private val isStdlibMember: Boolean
+    val isStdlibMember: Boolean
         get() = stdlibMemberName != null
 
     /**

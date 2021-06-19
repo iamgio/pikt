@@ -2,6 +2,7 @@ package eu.iamgio.pikt.statement.statements
 
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
+import eu.iamgio.pikt.statement.ScopeMember
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
@@ -26,13 +27,18 @@ class LambdaOpenStatement : Statement() {
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         val builder = StringBuilder("{")
-        reader.whileNotNull {
-            builder.append(it).append(":Any,")
+        reader.whileNotNull { argument ->
+            builder.append(argument).append(": Any,")
+            data.scope.push(argument, ScopeMember.Type.CONSTANT)
             syntax.mark("args", StatementSyntax.Mark.CORRECT)
         }
         if(builder.endsWith(",")) {
+            builder.setCharAt(builder.length - 1, ' ')
             builder.append("->")
         }
+
+        // Output without arguments: {
+        // Output with arguments:    { arg1: Any, arg2: Any ->
         return builder.toString()
     }
 }

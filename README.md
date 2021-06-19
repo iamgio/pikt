@@ -80,7 +80,7 @@ The following arguments execute tasks and exit when completed.
 - [x] JVM
 - [x] Native
 - [x] Interpretation (currently only on JVM)
-- [ ] Error handling (WIP)
+- [x] Error handling (still needs improvement)
 
 ## Contributing
 See the [CONTRIBUTING](CONTRIBUTING.md) file for contribution guidelines.

@@ -38,7 +38,7 @@ class DefineVariableStatement : Statement() {
         // Check if the variable were already registered
         when(data.scope[name]?.type) {
             null -> builder.append("var ") // Variable is not registered
-            ScopeMember.Type.VARIABLE,
+            ScopeMember.Type.VARIABLE -> {}
             ScopeMember.Type.CONSTANT -> {
                 reader.error("${name.hexName} is constant and its value cannot be set.", referenceToFirstPixel = true)
                 return ""
@@ -53,7 +53,7 @@ class DefineVariableStatement : Statement() {
         val isMethod = data.nextStatement?.isBlock ?: false
 
         // Value
-        val value = reader.nextExpression()
+        val value = reader.nextExpression(data.scope)
         if(value.isEmpty && !isMethod) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
             reader.error("Variable ${name.hexName} has no value.", syntax)

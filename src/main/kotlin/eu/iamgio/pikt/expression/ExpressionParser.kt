@@ -1,15 +1,43 @@
 package eu.iamgio.pikt.expression
 
+import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
+import eu.iamgio.pikt.statement.Scope
+import eu.iamgio.pikt.statement.ScopeMember
 
 /**
  * Parses [Expression]s
  *
  * @param reader pixel reader
+ * @param scope scope where the expression is
  * @param isComplexParser whether this parser is internally generated for complex expression parsing
  * @author Giorgio Garofalo
  */
-class ExpressionParser(private val reader: PixelReader, private val isComplexParser: Boolean = false) {
+class ExpressionParser(private val reader: PixelReader, private val scope: Scope, private val isComplexParser: Boolean = false) {
+
+    /**
+     * Checks if the pixel is registered within [scope], throws an error otherwise.
+     * @param message error message
+     * @param suffix text appended to [message]
+     */
+    private fun Pixel.checkExistance(message: String = "Unresolved reference: $hexName", suffix: String = "") {
+        // Cannot check existance for injected stdlib code
+        if(this !in scope && !this.isStdlibMember) {
+            reader.error(message + (if(suffix.isNotEmpty()) " " else "") + suffix)
+        }
+    }
+
+    /**
+     * Checks if the pixel is registered as [type] within [scope], throws an error otherwise.
+     * @param type expected member type
+     * @param message error message
+     */
+    private fun Pixel.checkType(type: ScopeMember.Type, message: String) {
+        val memberType = scope[this]?.type
+        if(memberType != null && memberType != type && !this.isStdlibMember) {
+            reader.error(message)
+        }
+    }
 
     /**
      * Analizes the next pixels an finds the expression type.
@@ -88,9 +116,10 @@ class ExpressionParser(private val reader: PixelReader, private val isComplexPar
                         pixel.characterContent
                     } else {
                         if(requireNumber) {
-                            System.err.println("member not expected while parsing number.")
+                            reader.error("Member not expected while parsing number.")
                             ""
                         } else {
+                            pixel.checkExistance("(in string literal)")
                             "\${$pixel}"
                         }
                     }
@@ -107,18 +136,23 @@ class ExpressionParser(private val reader: PixelReader, private val isComplexPar
     private fun nextMethodCall(): String {
         val builder = StringBuilder()
 
-        reader.next()?.let { pixel ->
-            builder.append(pixel)
+        // Method name
+        reader.next()?.let { name ->
+            name.checkExistance()
+            name.checkType(ScopeMember.Type.METHOD, message = "${name.hexName} is not a valid method.")
+            builder.append(name)
         }
 
         builder.append("(")
 
+        // Method arguments
         reader.whileNotNull { pixel ->
+            pixel.checkExistance(suffix = "(in method arguments)")
             builder.append(pixel).append("()").append(",")
         }
 
         if(builder.endsWith(",")) {
-            builder.setCharAt(builder.length - 1, ' ')
+            builder.setLength(builder.length - 1)
         }
 
         return builder.append(")").toString()
@@ -138,7 +172,7 @@ class ExpressionParser(private val reader: PixelReader, private val isComplexPar
             val operator = pixel?.operator
 
             if(!(isComplexParser && startIndex <= 0) && (pixel == null || operator != null)) {
-                members += ExpressionParser(reader.sliced(startIndex, reader.index - 1).also { it.next() }, isComplexParser = true).eval()
+                members += ExpressionParser(reader.sliced(startIndex, reader.index - 1).also { it.next() }, scope, isComplexParser = true).eval()
                 startIndex = reader.index
 
                 if(operator != null) {
