@@ -4,6 +4,7 @@ import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.properties.ColorsProperty
+import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
 
 /**
  * Represents a statement or instruction
@@ -38,10 +39,16 @@ abstract class Statement {
     open val closesScope: Boolean = false
 
     /**
-     * Name of this statement
+     * Name of this statement.
      */
     val name: String
         get() = javaClass.simpleName.removeSuffix("Statement")
+
+    /**
+     * Whether this statement opens a code block.
+     */
+    val isBlock: Boolean
+        get() = this is LambdaOpenStatement
 
     /**
      * @return whether the pixel matches the statement's color

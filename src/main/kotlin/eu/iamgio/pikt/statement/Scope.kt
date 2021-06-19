@@ -6,14 +6,10 @@ import eu.iamgio.pikt.image.Pixel
  * A scope that defines which members other statement can access.
  *
  * @param parent parent scope. `null` if this scope is the global one
+ * @param ownMembers members defined from this scope
  * @author Giorgio Garofalo
  */
-data class Scope(private val parent: Scope?) {
-
-    /**
-     * Members from this scope.
-     */
-    private val ownMembers = mutableSetOf<ScopeMember>()
+data class Scope(private val parent: Scope?, private val ownMembers: MutableSet<ScopeMember> = mutableSetOf()) {
 
     /**
      * Members available within this scope.
@@ -52,7 +48,8 @@ data class Scope(private val parent: Scope?) {
 data class ScopeMember(val id: String, val type: Type) {
     enum class Type {
         VARIABLE,
-        CONSTANT // TODO implement constants
+        CONSTANT, // TODO implement constants
+        METHOD
     }
 }
 

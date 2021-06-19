@@ -37,29 +37,34 @@ class DefineVariableStatement : Statement() {
 
         // Check if the variable were already registered
         when(data.scope[name]?.type) {
-            null -> builder.append("var ")
-            ScopeMember.Type.VARIABLE -> {}
+            null -> builder.append("var ") // Variable is not registered
+            ScopeMember.Type.VARIABLE,
             ScopeMember.Type.CONSTANT -> {
-                reader.error("Cannot set value of constant ${name.hexName}", referenceToFirstPixel = true)
+                reader.error("${name.hexName} is constant and its value cannot be set.", referenceToFirstPixel = true)
+                return ""
+            }
+            ScopeMember.Type.METHOD -> {
+                reader.error("${name.hexName} is a method and its value cannot be set.", referenceToFirstPixel = true)
                 return ""
             }
         }
 
-        builder.append("$name=")
+        // Whether this variable represents a method
+        val isMethod = data.nextStatement?.isBlock ?: false
 
         // Value
         val value = reader.nextExpression()
-        if(value.isEmpty && data.nextStatement !is LambdaOpenStatement) {
+        if(value.isEmpty && !isMethod) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
             reader.error("Variable ${name.hexName} has no value.", syntax)
             return ""
         }
         syntax.mark("value", StatementSyntax.Mark.CORRECT)
-        builder.append(value.code)
 
         // Push variable to the scope
-        if(!reader.isInvalidated) data.scope.push(name, ScopeMember.Type.VARIABLE)
+        if(!reader.isInvalidated) data.scope.push(name, if(isMethod) ScopeMember.Type.METHOD else ScopeMember.Type.VARIABLE)
 
-        return builder.toString()
+        // Output: [var] name = value
+        return builder.append(name).append(" = ").append(value.code).toString()
     }
 }
