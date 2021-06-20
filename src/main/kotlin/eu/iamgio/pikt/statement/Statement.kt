@@ -21,22 +21,9 @@ abstract class Statement {
     open val decompactionStyle: DecompactionStyle = DecompactionStyle.NO_SPACING
 
     /**
-     * Whether this statement creates a new scope.
-     * Example: `{` opens a code block.
+     * Options of this statement, such as scope open/close behavior.
      */
-    open val opensScope: Boolean = false
-
-    /**
-     * Whether this statement creates a new scope that gets removed on the next statement.
-     * Example: `if` takes a statement even without a lambda (explicit code block).
-     */
-    open val opensTemporaryScope: Boolean = false
-
-    /**
-     * Whether this statement removes its current scope.
-     * Example: `}` closes a code block.
-     */
-    open val closesScope: Boolean = false
+    open val options: StatementOptions = StatementOptions()
 
     /**
      * Name of this statement.
@@ -79,6 +66,15 @@ abstract class Statement {
     abstract fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String
 
     /**
+     * This method is called upon evaluation and defines the statement the evaluator will use to generate code.
+     * It defaults to `this` for a GC-friendly approach.
+     * However, if the statement has specific options that others may gain access to,
+     * this has to be overridden in order to return a new instance of that statement.
+     * @return evaluated statement
+     */
+    open fun getEvaluableInstance(): Statement = this
+
+    /**
      * Different options for decompaction.
      *
      * @see eu.iamgio.pikt.command.commands.DecompactCommand
@@ -104,6 +100,23 @@ data class StatementData(
         val scope: Scope,
         val previousStatement: Statement?,
         val nextStatement: Statement?
+)
+
+/**
+ * Optional settings of a statement.
+ *
+ * @param opensScope whether this statement creates a new scope.
+ *                   Example: `{` opens a code block
+ * @param opensTemporaryScope whether this statement creates a new scope that gets removed on the next statement.
+ *                            Example: `if` takes a statement even without a lambda (explicit code block)
+ * @param closesScope whether this statement removes its current scope.
+ *                    Example: `}` closes a code block
+ * @author Giorgio Garofalo
+ */
+data class StatementOptions(
+        val opensScope: Boolean = false,
+        val opensTemporaryScope: Boolean = false,
+        val closesScope: Boolean = false
 )
 
 /**

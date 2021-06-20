@@ -44,7 +44,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
         // Queue statements so that previousStatement and nextStatement can be set.
         readers.forEach { reader ->
             reader.next().let { pixel ->
-                pixel?.statement?.let { statements += QueuedStatement(it, reader) }
+                pixel?.statement?.let { statements += QueuedStatement(it.getEvaluableInstance(), reader) }
             }
         }
 

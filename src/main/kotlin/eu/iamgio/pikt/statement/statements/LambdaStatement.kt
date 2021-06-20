@@ -2,10 +2,7 @@ package eu.iamgio.pikt.statement.statements
 
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
-import eu.iamgio.pikt.statement.ScopeMember
-import eu.iamgio.pikt.statement.Statement
-import eu.iamgio.pikt.statement.StatementData
-import eu.iamgio.pikt.statement.StatementSyntax
+import eu.iamgio.pikt.statement.*
 
 /**
  * Starts a block of code.
@@ -15,8 +12,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
 class LambdaOpenStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.AFTER
-
-    override val opensScope = true
+    override val options = StatementOptions(opensScope = true)
 
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("lambda.open", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
@@ -52,7 +48,7 @@ class LambdaCloseStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.BEFORE_AND_AFTER
 
-    override val closesScope = true
+    override val options = StatementOptions(closesScope = true)
 
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("lambda.close", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),

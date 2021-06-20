@@ -21,10 +21,10 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
      * @param previousPreviousStatement the statement that comes before [previousStatement], if exists
      */
     private fun handleScopes(scopes: MutableList<Scope>, previousStatement: Statement?, previousPreviousStatement: Statement?) {
-        if(previousStatement?.closesScope == true || previousPreviousStatement?.opensTemporaryScope == true) {
+        if(previousStatement?.options?.closesScope == true || previousPreviousStatement?.options?.opensTemporaryScope == true) {
             scopes.removeLastOrNull() ?: System.err.println("There must be at least one active scope.")
         }
-        if(statement.opensScope || statement.opensTemporaryScope) {
+        if(statement.options.opensScope || statement.options.opensTemporaryScope) {
             scopes += Scope(parent = scopes.last())
         }
     }

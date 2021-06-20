@@ -13,7 +13,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
  *
  * @author Giorgio Garofalo
  */
-class DefineVariableStatement : Statement() {
+class SetVariableStatement : Statement() {
 
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("variable.set", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
