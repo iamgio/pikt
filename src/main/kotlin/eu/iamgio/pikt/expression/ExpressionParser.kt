@@ -135,11 +135,11 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
      */
     private fun nextMethodCall(): String {
         val builder = StringBuilder()
+        var hasArgs = false
 
         // Method name
-        reader.next()?.let { name ->
+        val name = reader.next()?.also { name ->
             name.checkExistance()
-            name.checkType(ScopeMember.Type.METHOD, message = "${name.hexName} is not a valid method.")
             builder.append(name)
         }
 
@@ -149,10 +149,15 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         reader.whileNotNull { pixel ->
             pixel.checkExistance(suffix = "(in method arguments)")
             builder.append(pixel).append("()").append(",")
+            hasArgs = true
         }
 
         if(builder.endsWith(",")) {
             builder.setLength(builder.length - 1)
+        }
+
+        if(hasArgs) {
+            name?.checkType(ScopeMember.Type.METHOD, message = "${name.hexName} is not a valid method.")
         }
 
         return builder.append(")").toString()
