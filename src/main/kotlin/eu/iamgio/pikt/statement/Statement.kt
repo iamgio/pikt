@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.statement
 
+import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
@@ -36,6 +37,12 @@ abstract class Statement {
      */
     val isBlock: Boolean
         get() = this is LambdaOpenStatement
+
+    /**
+     * This statement cast to a lambda.
+     */
+    val asBlock: LambdaOpenStatement
+        get() = this as LambdaOpenStatement
 
     /**
      * @return whether the pixel matches the statement's color

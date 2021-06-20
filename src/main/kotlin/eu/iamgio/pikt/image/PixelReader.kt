@@ -1,10 +1,10 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.expression.ExpressionParser
 import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.properties.ColorsProperties
-import eu.iamgio.pikt.statement.Scope
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementSyntax
 

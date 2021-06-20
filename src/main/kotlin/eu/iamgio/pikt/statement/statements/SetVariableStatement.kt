@@ -1,8 +1,10 @@
 package eu.iamgio.pikt.statement.statements
 
+import eu.iamgio.pikt.eval.ConstantMember
+import eu.iamgio.pikt.eval.MethodMember
+import eu.iamgio.pikt.eval.VariableMember
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
-import eu.iamgio.pikt.statement.ScopeMember
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
@@ -36,14 +38,14 @@ class SetVariableStatement : Statement() {
         syntax.mark("name", StatementSyntax.Mark.CORRECT)
 
         // Check if the variable were already registered
-        when(data.scope[name]?.type) {
+        when(data.scope[name]) {
             null -> builder.append("var ") // Variable is not registered
-            ScopeMember.Type.VARIABLE -> {}
-            ScopeMember.Type.CONSTANT -> {
+            is VariableMember -> {}
+            is ConstantMember -> {
                 reader.error("${name.hexName} is constant and its value cannot be set.", referenceToFirstPixel = true)
                 return ""
             }
-            ScopeMember.Type.METHOD -> {
+            is MethodMember -> {
                 reader.error("${name.hexName} is a method and its value cannot be set.", referenceToFirstPixel = true)
                 return ""
             }
@@ -62,7 +64,13 @@ class SetVariableStatement : Statement() {
         syntax.mark("value", StatementSyntax.Mark.CORRECT)
 
         // Push variable to the scope
-        if(!reader.isInvalidated) data.scope.push(name, if(isMethod) ScopeMember.Type.METHOD else ScopeMember.Type.VARIABLE)
+        if(!reader.isInvalidated) {
+            when(isMethod) {
+                // If this is a method declaration, wait for the next lambda to be evaluated and get the amount of arguments
+                true -> data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, MethodMember(name, args.size)) }
+                false -> data.scope.push(name, VariableMember(name))
+            }
+        }
 
         // Output: [var] name = value
         return builder.append(name).append(" = ").append(value.code).toString()

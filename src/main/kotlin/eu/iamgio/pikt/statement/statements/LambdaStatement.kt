@@ -1,8 +1,13 @@
 package eu.iamgio.pikt.statement.statements
 
+import eu.iamgio.pikt.eval.ConstantMember
+import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
-import eu.iamgio.pikt.statement.*
+import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementData
+import eu.iamgio.pikt.statement.StatementOptions
+import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
  * Starts a block of code.
@@ -10,6 +15,12 @@ import eu.iamgio.pikt.statement.*
  * @author Giorgio Garofalo
  */
 class LambdaOpenStatement : Statement() {
+
+    /**
+     * A callback that is called once the generation is complete,
+     * with a list representing the lambda arguments.
+     */
+    var onGenerationCompleted: ((List<Pixel>) -> Unit)? = null
 
     override val decompactionStyle = DecompactionStyle.AFTER
     override val options = StatementOptions(opensScope = true)
@@ -23,9 +34,12 @@ class LambdaOpenStatement : Statement() {
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         val builder = StringBuilder("{")
+        val arguments = mutableListOf<Pixel>()
+
         reader.whileNotNull { argument ->
-            builder.append(argument).append(": Any,")
-            data.scope.push(argument, ScopeMember.Type.CONSTANT)
+            builder.append(" ").append(argument).append(": Any,")
+            data.scope.push(argument, ConstantMember(argument))
+            arguments += argument
             syntax.mark("args", StatementSyntax.Mark.CORRECT)
         }
         if(builder.endsWith(",")) {
@@ -33,10 +47,15 @@ class LambdaOpenStatement : Statement() {
             builder.append("->")
         }
 
+        // Invoke the callback
+        onGenerationCompleted?.invoke(arguments)
+
         // Output without arguments: {
         // Output with arguments:    { arg1: Any, arg2: Any ->
         return builder.toString()
     }
+
+    override fun getEvaluableInstance() = LambdaOpenStatement()
 }
 
 /**

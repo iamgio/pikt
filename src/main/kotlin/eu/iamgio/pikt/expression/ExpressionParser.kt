@@ -1,9 +1,10 @@
 package eu.iamgio.pikt.expression
 
+import eu.iamgio.pikt.eval.MethodMember
+import eu.iamgio.pikt.eval.Scope
+import eu.iamgio.pikt.eval.ScopeMember
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
-import eu.iamgio.pikt.statement.Scope
-import eu.iamgio.pikt.statement.ScopeMember
 
 /**
  * Parses [Expression]s
@@ -28,13 +29,13 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
     }
 
     /**
-     * Checks if the pixel is registered as [type] within [scope], throws an error otherwise.
-     * @param type expected member type
+     * Checks if the pixel is registered as a given type within [scope], throws an error otherwise.
+     * @param typeCheck expected member type function
      * @param message error message
      */
-    private fun Pixel.checkType(type: ScopeMember.Type, message: String) {
-        val memberType = scope[this]?.type
-        if(memberType != null && memberType != type && !this.isStdlibMember) {
+    private fun Pixel.checkType(typeCheck: (ScopeMember) -> Boolean, message: String) {
+        val memberType = scope[this]
+        if(memberType != null && !this.isStdlibMember && !typeCheck(memberType)) {
             reader.error(message)
         }
     }
@@ -157,7 +158,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         }
 
         if(hasArgs) {
-            name?.checkType(ScopeMember.Type.METHOD, message = "${name.hexName} is not a valid method.")
+            name?.checkType({ it is MethodMember }, message = "${name.hexName} is not a valid method.")
         }
 
         return builder.append(")").toString()

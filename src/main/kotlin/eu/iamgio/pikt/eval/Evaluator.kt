@@ -2,7 +2,6 @@ package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.image.PixelReader
-import eu.iamgio.pikt.statement.Scope
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementOptions
 

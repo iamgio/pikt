@@ -119,13 +119,20 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         get() = stdlibMemberName != null
 
     /**
+     * Pixel as a Kotlin output content.
+     */
+    val codeContent: String by lazy {
+        when {
+            isBoolean -> booleanContent
+            isStdlibMember -> stdlibMemberName!!
+            else -> "`$hex`"
+        }
+    }
+
+    /**
      * @return pixel as a Kotlin output name + pixel information, if enabled.
      */
-    override fun toString(): String = when {
-        isBoolean -> booleanContent
-        isStdlibMember -> stdlibMemberName!!
-        else -> "`$hex`"
-    }.run {
+    override fun toString(): String = codeContent.run {
         // Appends commented pixel coordinates if -pixelinfo is enabled.
         if(CMD_PIXELINFO in GlobalSettings) "$this /*$x,$y*/ " else this
     }
