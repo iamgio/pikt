@@ -43,7 +43,7 @@ class PiktTestLauncher {
                 nativeCompilerPath = null,
                 colors = ColorsPropertiesRetriever().also {
                     if(colorSchemeName != null) {
-                        it.loadProperties(PiktTest::class.java.getResourceAsStream("/schemes/$colorSchemeName.properties"))
+                        it.loadProperties(PiktTest::class.java.getResourceAsStream("/schemes/$colorSchemeName.properties")!!)
                     }
                 }.retrieve()
         )
@@ -54,6 +54,8 @@ class PiktTestLauncher {
 
         val evaluator = Evaluator()
         evaluator.evaluate(image)
+
+        println(evaluator.outputCode)
 
         val interpreter = object : AbstractInterpreter(evaluator, properties) {
             override fun printProcessLine(line: String, isError: Boolean) {
