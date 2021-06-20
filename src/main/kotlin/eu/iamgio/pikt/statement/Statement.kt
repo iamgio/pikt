@@ -117,7 +117,13 @@ data class StatementOptions(
         val opensScope: Boolean = false,
         val opensTemporaryScope: Boolean = false,
         val closesScope: Boolean = false
-)
+) {
+    /**
+     * Whether at least one of the options modifies the scope status.
+     */
+    val handlesScopes: Boolean
+        get() = opensScope || opensTemporaryScope || closesScope
+}
 
 /**
  * Single-instance class that contains statements information.

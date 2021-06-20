@@ -2,6 +2,9 @@ package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.image.PixelReader
+import eu.iamgio.pikt.statement.Scope
+import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.StatementOptions
 
 /**
  * Evaluates a [PiktImage] in order to generate Kotlin code
@@ -50,6 +53,39 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
 
         // Evaluate queued statements
         statements.eval(this)
+    }
+
+    /**
+     * Appends indentation to [codeBuilder]. The amount of tab characters depends on [Scope.level] and [StatementOptions.handlesScopes].
+     * @param scope current scope
+     * @param statement target statement
+     * @param previousStatement statement that comes before [statement], if exists
+     */
+    fun appendIndentation(scope: Scope, statement: Statement, previousStatement: Statement?) {
+        /**
+         * Case 0:              Applied: (nothing changes)
+         * statement1           statement1
+         * statement2           statement2
+         *
+         * Case 1:              Applied:
+         * var method =         var method =
+         *     {                {
+         *     statement            statement
+         *     }                }
+         *
+         * Case 2:              Applied:
+         * if(condition)        if(condition)
+         *     {                {
+         *     statement            statement
+         * }                    }
+         */
+        codeBuilder.append(
+                "\t".repeat(scope.level - when {
+                    statement.options.handlesScopes && previousStatement?.options?.opensTemporaryScope == true -> 2
+                    statement.options.handlesScopes -> 1
+                    else -> 0
+                })
+        )
     }
 
     /**

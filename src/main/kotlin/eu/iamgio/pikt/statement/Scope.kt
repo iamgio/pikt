@@ -18,6 +18,12 @@ data class Scope(private val parent: Scope?, private val ownMembers: MutableSet<
         get() = ownMembers + (parent?.allMembers ?: emptyList())
 
     /**
+     * The amount of scopes that wrap either this one or its [parent].
+     */
+    val level: Int
+        get() = parent?.level?.plus(1) ?: 0
+
+    /**
      * Pushes a member to this scope.
      * @param pixel pixel to register as a member
      * @param type member type

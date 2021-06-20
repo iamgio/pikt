@@ -39,15 +39,22 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
      */
     fun eval(scopes: MutableList<Scope>, evaluator: Evaluator, previousStatement: Statement?, nextStatement: Statement?, previousPreviousStatement: Statement?) {
         handleScopes(scopes, previousStatement, previousPreviousStatement)
+        val scope = scopes.last()
 
         // Generate and append code.
-        val code = statement.generate(reader, statement.getSyntax(), StatementData(scopes.last(), previousStatement, nextStatement))
+        val code = statement.generate(reader, statement.getSyntax(), StatementData(scope, previousStatement, nextStatement))
+
+        // Apply indentation
+        evaluator.appendIndentation(scope, statement, previousStatement)
+
+        // Check if the reader has been invalidated, append generated code otherwise.
         if(reader.isInvalidated) {
-            evaluator.codeBuilder.append("// Output of ${statement.name} was invalidated. See errors for details.\n")
+            evaluator.codeBuilder.append("// Output of ${statement.name} was invalidated. See errors for details.")
             evaluator.invalidate()
         } else {
-            evaluator.codeBuilder.append(code).append("\n")
+            evaluator.codeBuilder.append(code)
         }
+        evaluator.codeBuilder.append("\n")
     }
 }
 
