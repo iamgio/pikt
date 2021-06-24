@@ -1,8 +1,8 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
-import eu.iamgio.pikt.kotlin.KotlinCompilerDownloader
-import eu.iamgio.pikt.kotlin.KotlinCompilerType
+import eu.iamgio.pikt.util.KotlinCompilerDownloader
+import eu.iamgio.pikt.util.KotlinCompilerType
 import kotlin.system.exitProcess
 
 /**

@@ -1,4 +1,4 @@
-package eu.iamgio.pikt.kotlin
+package eu.iamgio.pikt.util
 
 import java.io.File
 import java.io.FileOutputStream
@@ -35,21 +35,31 @@ object KotlinCompilerDownloader {
      * @param folder target directory
      */
     fun download(version: String?, type: KotlinCompilerType, folder: File = File(".")) {
-        val url = MessageFormat.format(DOWNLOAD_URL, version ?: DEFAULT_KOTLIN_VERSION, type.downloadName, type.extension)
+        val url = MessageFormat.format(DOWNLOAD_URL, version
+                ?: DEFAULT_KOTLIN_VERSION, type.downloadName, type.extension)
 
-        println("Downloading $url. Please wait...")
+        print("Downloading $url")
+
+        val connection = URL(url).openConnection()
+        println(" [${connection.contentLength * 10 / 1024 / 1024 / 10.0} MB]") // File size, one decimal.
+
+        // 'Please wait...' animated output.
+        val waitingText = AnimatedWaitMessage()
+        waitingText.print()
 
         // Download using NIO
-        val channel = Channels.newChannel(URL(url).openStream())
-        val fos = FileOutputStream(File(folder, url.substring(url.lastIndexOf("/"))))
-        fos.channel.transferFrom(channel, 0, Long.MAX_VALUE).also {
-            println("Done. $it bytes downloaded.")
-        }
+        val channel = Channels.newChannel(connection.getInputStream())
+        val file = File(folder, url.substring(url.lastIndexOf("/")))
+        FileOutputStream(file).channel.transferFrom(channel, 0, Long.MAX_VALUE)
+
+        waitingText.stop(message = "Done.\nSaved to ${file.canonicalPath}")
     }
 }
 
 /**
  * Kotlin compiler types.
+ *
+ * URL: https://github.com/JetBrains/kotlin/releases/download/vVERSION/kotlin-[downloadName]-VERSION.[extension]
  */
 enum class KotlinCompilerType(val downloadName: String, val extension: String) {
 
