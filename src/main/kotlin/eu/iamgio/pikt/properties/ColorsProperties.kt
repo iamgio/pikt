@@ -39,6 +39,7 @@ data class ColorsProperties(
  * @param `if` run code if a certain condition is verified
  * @param `else` runs if the previous if statement did not run
  * @param forEach runs a task for every element of the collection
+ * @param print prints an expression or value out
  * @author Giorgio Garofalo
  */
 data class KeywordsColorsProperties(
@@ -46,7 +47,8 @@ data class KeywordsColorsProperties(
         val methodCall: ColorsProperty,
         val `if`: ColorsProperty,
         val `else`: ColorsProperty,
-        val forEach: ColorsProperty
+        val forEach: ColorsProperty,
+        val print: ColorsProperty
 )
 
 /**
@@ -158,7 +160,8 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
                         get("methodcall"),
                         get("if"),
                         get("else"),
-                        get("foreach")
+                        get("foreach"),
+                        get("print")
                 ),
                 LambdaColorsProperties(
                         get("lambda.open"),

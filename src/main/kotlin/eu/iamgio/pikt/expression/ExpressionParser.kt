@@ -113,18 +113,18 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
 
         reader.whileNotNull { pixel ->
             builder.append(
-                    if(pixel.isCharacter && (!requireNumber || pixel.isNumber)) {
-                        // Grayscale pixel -> character
-                        pixel.characterContent
-                    } else {
-                        if(requireNumber) {
+                    if(pixel.isCharacter) {
+                        if(requireNumber && !pixel.isNumber) {
                             reader.error("Member not expected while parsing number.")
                             ""
                         } else {
-                            // Variable/method reference
-                            pixel.checkExistance(suffix = "(in string literal)")
-                            "\${$pixel}"
+                            // Grayscale pixel -> character
+                            pixel.characterContent
                         }
+                    } else {
+                        // Variable/method reference
+                        pixel.checkExistance(suffix = "(in string literal)")
+                        "\${$pixel}"
                     }
             )
         }
@@ -159,6 +159,8 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
             builder.setLength(builder.length - 1)
         }
 
+        builder.append(")")
+
         if(args.isNotEmpty()) {
             name?.checkType({ it is MethodMember }, message = "${name.hexName} is not a valid method.")
         }
@@ -171,7 +173,8 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
             }
         }
 
-        return builder.append(")").toString()
+        // Return empty string if the method has no name and no arguments.
+        return builder.toString().let { if(it == "()") "" else it }
     }
 
     /**

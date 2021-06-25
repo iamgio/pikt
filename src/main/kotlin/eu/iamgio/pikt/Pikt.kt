@@ -95,4 +95,5 @@ fun registerStatements() = with(Statements) {
     register(ForEachStatement())
     register(LambdaOpenStatement())
     register(LambdaCloseStatement())
+    register(PrintStatement())
 }

@@ -26,7 +26,7 @@ class MethodCallStatement : Statement() {
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         val expression = reader.nextExpression(data.scope, ExpressionType.METHOD_CALL)
 
-        if(expression.isEmpty || expression.code == "()") {
+        if(expression.isEmpty) {
             syntax.mark("name", StatementSyntax.Mark.WRONG)
             reader.error("No method name provided.", syntax)
         }
