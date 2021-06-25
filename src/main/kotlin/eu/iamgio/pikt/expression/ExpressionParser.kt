@@ -114,13 +114,15 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         reader.whileNotNull { pixel ->
             builder.append(
                     if(pixel.isCharacter && (!requireNumber || pixel.isNumber)) {
+                        // Grayscale pixel -> character
                         pixel.characterContent
                     } else {
                         if(requireNumber) {
                             reader.error("Member not expected while parsing number.")
                             ""
                         } else {
-                            pixel.checkExistance("(in string literal)")
+                            // Variable/method reference
+                            pixel.checkExistance(suffix = "(in string literal)")
                             "\${$pixel}"
                         }
                     }
