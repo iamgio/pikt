@@ -26,9 +26,9 @@ enum class ExpressionType {
     BOOLEAN,
 
     /**
-     * A method call where the first pixel is the method name, followed by a pixel for each argument.
+     * A function call where the first pixel is the function name, followed by a pixel for each argument.
      */
-    METHOD_CALL,
+    FUNCTION_CALL,
 
     /**
      * A mix of the previous expressions containing [Operator]s.

@@ -1,6 +1,6 @@
 package eu.iamgio.pikt.expression
 
-import eu.iamgio.pikt.eval.MethodMember
+import eu.iamgio.pikt.eval.FunctionMember
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.eval.ScopeMember
 import eu.iamgio.pikt.image.Pixel
@@ -73,9 +73,9 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
                 type == null && pixel.isBoolean -> {
                     ExpressionType.BOOLEAN
                 }
-                // An expression is a method call if no character or operator is in it.
-                (type == null || type == ExpressionType.METHOD_CALL) && !pixel.isCharacter -> {
-                    ExpressionType.METHOD_CALL
+                // An expression is a function call if no character or operator is in it.
+                (type == null || type == ExpressionType.FUNCTION_CALL) && !pixel.isCharacter -> {
+                    ExpressionType.FUNCTION_CALL
                 }
                 else -> type
             }
@@ -97,7 +97,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
             ExpressionType.STRING -> "\"${nextString()}\""
             ExpressionType.NUMBER -> nextString(requireNumber = true)
             ExpressionType.BOOLEAN -> reader.next()?.booleanContent ?: "false"
-            ExpressionType.METHOD_CALL -> nextMethodCall()
+            ExpressionType.FUNCTION_CALL -> nextFunctionCall()
             ExpressionType.COMPLEX -> nextComplex()
         }
 
@@ -133,10 +133,10 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
     }
 
     /**
-     * Reads a method call: one "name" pixel followed by a pixel for each argument.
+     * Reads a function call: one "name" pixel followed by a pixel for each argument.
      * @return following method call
      */
-    private fun nextMethodCall(): String {
+    private fun nextFunctionCall(): String {
         val builder = StringBuilder()
         val args = mutableListOf<Pixel>()
 
@@ -150,7 +150,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
 
         // Method arguments
         reader.whileNotNull { pixel ->
-            pixel.checkExistance(suffix = "(in method arguments)")
+            pixel.checkExistance(suffix = "(in function arguments)")
             builder.append(pixel).append("()").append(",")
             args += pixel
         }
@@ -162,12 +162,12 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         builder.append(")")
 
         if(args.isNotEmpty()) {
-            name?.checkType({ it is MethodMember }, message = "${name.hexName} is not a valid method.")
+            name?.checkType({ it is FunctionMember }, message = "${name.hexName} is not a valid method.")
         }
 
         if(name != null) {
             scope[name]?.let { member ->
-                if(member is MethodMember && member.argumentsSize != args.size) {
+                if(member is FunctionMember && member.argumentsSize != args.size) {
                     reader.error("Method ${name.hexName} called with ${args.size} arguments (${args.joinToString { it.hexName }}), but ${member.argumentsSize} expected.")
                 }
             }

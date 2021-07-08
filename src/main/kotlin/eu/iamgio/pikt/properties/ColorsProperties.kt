@@ -35,16 +35,16 @@ data class ColorsProperties(
  * Color scheme for keywords and statements.
  *
  * @param setVariable define and set variables
- * @param methodCall call a method/function without catching the resource value
- * @param `if` run code if a certain condition is verified
- * @param `else` runs if the previous if statement did not run
+ * @param functionCall call a function/method without catching its output value
+ * @param if run code if a certain condition is verified
+ * @param else runs if the previous if statement did not run
  * @param forEach runs a task for every element of the collection
  * @param print prints an expression or value out
  * @author Giorgio Garofalo
  */
 data class KeywordsColorsProperties(
         val setVariable: ColorsProperty,
-        val methodCall: ColorsProperty,
+        val functionCall: ColorsProperty,
         val `if`: ColorsProperty,
         val `else`: ColorsProperty,
         val forEach: ColorsProperty,
@@ -157,7 +157,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
                 get("whitespace"),
                 KeywordsColorsProperties(
                         get("variable.set"),
-                        get("methodcall"),
+                        get("funcall"),
                         get("if"),
                         get("else"),
                         get("foreach"),

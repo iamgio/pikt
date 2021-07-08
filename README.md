@@ -67,23 +67,21 @@ The following arguments execute tasks and exit when completed.
 
 **Code**
 - [x] Variables
-- [x] Method calls (both as part of expressions and standalone)
-- [x] Method definitions
+- [ ] Constants
+- [x] Function calls (both as part of expressions and standalone)
+- [x] Function definition
 - [x] If / else / if else
 - [x] Lambdas
 - [x] Operators (equality, logical and arithmetic)
-- [x] Loops
+- [x] Loops (for-each + `range` function for indexed for loop)
 - [ ] Try/catch
-- [ ] [Standard library](https://github.com/iAmGio/pikt/tree/master/src/main/resources/pikt.stdlib) (2%)
+- [ ] [Standard library](https://github.com/iAmGio/pikt/tree/master/src/main/resources/pikt.stdlib) (2%, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
 
 **Compilation**
 - [x] JVM
 - [x] Native
 - [x] Interpretation (currently only on JVM)
-- [x] Error handling (still needs improvement)
-
-## Contributing
-See the [CONTRIBUTING](CONTRIBUTING.md) file for contribution guidelines.
+- [x] Error handling
 
 ## Pikt Lab
 

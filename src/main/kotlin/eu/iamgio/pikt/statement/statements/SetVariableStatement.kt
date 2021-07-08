@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.statement.statements
 
 import eu.iamgio.pikt.eval.ConstantMember
-import eu.iamgio.pikt.eval.MethodMember
+import eu.iamgio.pikt.eval.FunctionMember
 import eu.iamgio.pikt.eval.VariableMember
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
@@ -45,7 +45,7 @@ class SetVariableStatement : Statement() {
                 reader.error("${name.hexName} is constant and its value cannot be set.", referenceToFirstPixel = true)
                 return ""
             }
-            is MethodMember -> {
+            is FunctionMember -> {
                 reader.error("${name.hexName} is a method and its value cannot be set.", referenceToFirstPixel = true)
                 return ""
             }
@@ -67,7 +67,7 @@ class SetVariableStatement : Statement() {
         if(!reader.isInvalidated) {
             when(isMethod) {
                 // If this is a method declaration, wait for the next lambda to be evaluated and get the amount of arguments
-                true -> data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, MethodMember(name, args.size)) }
+                true -> data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, args.size)) }
                 false -> data.scope.push(name, VariableMember(name))
             }
         }
