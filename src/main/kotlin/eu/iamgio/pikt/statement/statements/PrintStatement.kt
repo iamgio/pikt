@@ -8,7 +8,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
  * Prints an expression to [System.out].
- * This statement replaces the `print` method from the stdlib, that will be kept for compatibility.
+ * This statement replaces the `print` function from the stdlib, that will be kept for compatibility.
  * <%print%> <value?>
  *
  * @author Giorgio Garofalo

@@ -8,7 +8,7 @@ import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
- * Used to call a method with one pixel per argument without catching the resource value.
+ * Used to call a function with one pixel per argument without catching the resource value.
  * <%funcall%> <name> <...args?>
  *
  * @author Giorgio Garofalo

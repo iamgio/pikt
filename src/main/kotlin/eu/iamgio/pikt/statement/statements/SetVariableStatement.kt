@@ -46,17 +46,17 @@ class SetVariableStatement : Statement() {
                 return ""
             }
             is FunctionMember -> {
-                reader.error("${name.hexName} is a method and its value cannot be set.", referenceToFirstPixel = true)
+                reader.error("${name.hexName} is a function and its value cannot be set.", referenceToFirstPixel = true)
                 return ""
             }
         }
 
-        // Whether this variable represents a method
-        val isMethod = data.nextStatement?.isBlock ?: false
+        // Whether this variable represents a function
+        val isFunction = data.nextStatement?.isBlock ?: false
 
         // Value
         val value = reader.nextExpression(data.scope)
-        if(value.isEmpty && !isMethod) {
+        if(value.isEmpty && !isFunction) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
             reader.error("Variable ${name.hexName} has no value.", syntax)
             return ""
@@ -65,7 +65,7 @@ class SetVariableStatement : Statement() {
 
         // Push variable to the scope
         if(!reader.isInvalidated) {
-            when(isMethod) {
+            when(isFunction) {
                 // If this is a method declaration, wait for the next lambda to be evaluated and get the amount of arguments
                 true -> data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, args.size)) }
                 false -> data.scope.push(name, VariableMember(name))

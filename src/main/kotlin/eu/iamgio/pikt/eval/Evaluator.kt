@@ -67,7 +67,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
          * statement2           statement2
          *
          * Case 1:              Applied:
-         * var method =         var method =
+         * var function =       var function =
          *     {                {
          *     statement            statement
          *     }                }

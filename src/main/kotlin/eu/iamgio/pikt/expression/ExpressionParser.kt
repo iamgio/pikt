@@ -134,13 +134,13 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
 
     /**
      * Reads a function call: one "name" pixel followed by a pixel for each argument.
-     * @return following method call
+     * @return following function call
      */
     private fun nextFunctionCall(): String {
         val builder = StringBuilder()
         val args = mutableListOf<Pixel>()
 
-        // Method name
+        // Function name
         val name = reader.next()?.also { name ->
             name.checkExistance()
             builder.append(name)
@@ -148,7 +148,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
 
         builder.append("(")
 
-        // Method arguments
+        // Function arguments
         reader.whileNotNull { pixel ->
             pixel.checkExistance(suffix = "(in function arguments)")
             builder.append(pixel).append("()").append(",")
@@ -162,13 +162,13 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         builder.append(")")
 
         if(args.isNotEmpty()) {
-            name?.checkType({ it is FunctionMember }, message = "${name.hexName} is not a valid method.")
+            name?.checkType({ it is FunctionMember }, message = "${name.hexName} is not a valid function.")
         }
 
         if(name != null) {
             scope[name]?.let { member ->
                 if(member is FunctionMember && member.argumentsSize != args.size) {
-                    reader.error("Method ${name.hexName} called with ${args.size} arguments (${args.joinToString { it.hexName }}), but ${member.argumentsSize} expected.")
+                    reader.error("Function ${name.hexName} called with ${args.size} arguments (${args.joinToString { it.hexName }}), but ${member.argumentsSize} expected.")
                 }
             }
         }
