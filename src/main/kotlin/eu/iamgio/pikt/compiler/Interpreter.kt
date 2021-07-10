@@ -17,7 +17,7 @@ abstract class AbstractInterpreter(evaluator: Evaluator, properties: PiktPropert
 
     override fun applyEvaluatorSettings() {}
 
-    override fun getTargets() = listOf(properties.interpretationTarget!!)
+    override fun getTargets() = listOf(CompilationTarget.JVM)
 
     override fun onPreCompile(target: CompilationTarget) {}
 

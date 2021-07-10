@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.properties
 
 import eu.iamgio.pikt.compiler.CompilationTarget
-import eu.iamgio.pikt.compiler.isAny
+import eu.iamgio.pikt.compiler.isAnyJVM
 import eu.iamgio.pikt.compiler.isAnyNative
 import eu.iamgio.pikt.compiler.isAnyNull
 import java.io.File
@@ -14,7 +14,6 @@ import kotlin.system.exitProcess
  * @param source source image file ("-Dsource")
  * @param output output executable file without extension ("-Doutput")
  * @param compilationTargets compilation targets ("-Dtarget")
- * @param interpretationTarget interpretation target ("-Dinterpret")
  * @param jvmCompilerPath optional path to the Kotlin/JVM compiler (required if any of [compilationTargets] is [CompilationTarget.JVM]) ("-Djvmcompiler")
  * @param nativeCompilerPath optional path to the Kotlin/Native compiler (required if any of [compilationTargets] is native) ("-Dnativecompiler")
  * @param colors color scheme ("-Dcolors")
@@ -24,7 +23,6 @@ data class PiktProperties(
         val source: File,
         val output: String,
         val compilationTargets: List<CompilationTarget>,
-        val interpretationTarget: CompilationTarget?,
         val jvmCompilerPath: String?,
         val nativeCompilerPath: String?,
         val colors: ColorsProperties
@@ -55,7 +53,6 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     override fun retrieve(): PiktProperties {
         val sourceProperty             = System.getProperty("source")
         val outputProperty             = System.getProperty("output")
-        val interpTargetProperty       = System.getProperty("interpret")
         val compTargetsProperty        = System.getProperty("targets")
         val jvmCompilerPathProperty    = System.getProperty("jvmcompiler")
         val nativeCompilerPathProperty = System.getProperty("nativecompiler")
@@ -69,9 +66,6 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
 
         // Compilation targets
         val targets = compilationTargets(compTargetsProperty)
-
-        // Interpretation target
-        val interpretationTarget = interpretationTarget(interpTargetProperty)
 
         checkCompilers(jvmCompilerPathProperty, nativeCompilerPathProperty, targets)
 
@@ -87,7 +81,6 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
                 source = source!!,
                 output = output,
                 compilationTargets = targets,
-                interpretationTarget = interpretationTarget,
                 jvmCompilerPath = jvmCompilerPathProperty,
                 nativeCompilerPath = nativeCompilerPathProperty,
                 colors = colorsPropertiesRetriever.retrieve()
@@ -120,17 +113,6 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         return targets.filterNotNull()
     }
 
-    private fun interpretationTarget(interpretationTargetProperty: String?) =
-            if(interpretationTargetProperty != null) {
-                CompilationTarget.values().firstOrNull { it.argName == interpretationTargetProperty }.also {
-                    if(it == null) {
-                        error("Invalid intepretation target.")
-                    }
-                }
-            } else {
-                null
-            }
-
     private fun colors(colorsProperty: String?): ColorsPropertiesRetriever {
         val retriever = ColorsPropertiesRetriever()
         val colorsFile = File("$colorsProperty.properties")
@@ -146,8 +128,8 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     private fun checkCompilers(jvmCompilerPath: String?, nativeCompilerPath: String?, targets: List<CompilationTarget>) {
         // JVM compiler
         if(jvmCompilerPath == null) {
-            if(targets.isAny(CompilationTarget.JVM)) {
-                error("JVM compiler (-Djvmcompiler) is not set but at least one target is JVM.")
+            if(targets.isAnyJVM()) {
+                error("JVM compiler (-Djvmcompiler) is not set but one target is JVM or interpretation is enabled.")
             }
         } else if(!File(jvmCompilerPath).exists()) {
             error("JVM compiler $jvmCompilerPath does not exist.")

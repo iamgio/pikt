@@ -36,14 +36,14 @@ Example: `java -Dproperty=value -jar pikt.jar arguments_here`.
 - `-Doutput` output name without extension. If not specified it will take `source`'s name without extension;
 - `-Dcolors` path to the `.properties` color scheme without extension. Default values will be used if not specified;
 - `-Dtargets` compilation targets divided by a comma. Can be `jvm`, `windows`, `osx` or `linux`. Note that Windows and OSX executables can be generated only on those platforms. No compilation will be executed if not specified;
-- `-Dinterpret` defines whether the interpretation should run on the native or JVM compiler. Can be either `jvm` or `native` (native interpretation still has some issues). No interpretation will be executed if not specified.
-- `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) compiler. Required if `target` contains `jvm` or `interpret` is `jvm`;
-- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) compiler. Required if `target` contains a native target or `interpret` is `native`.
+- `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) compiler. Required if `target` contains `jvm` or if `-interpret` is used;
+- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) compiler. Required if `target` contains a native target.
 
 ## Settings arguments
 
-The following arguments enable settings that change Pikt's behavior.
+The following arguments enable settings that affect Pikt's behavior.
 
+- `-interpret` runs the generated code via the JVM compiler;
 - `-printoutput` prints the generated Kotlin code;
 - `-nocompile` prevents the generation of any executable file;
 - `-pixelinfo` adds information about pixel coordinates to the output code as comments;
@@ -77,11 +77,11 @@ The following arguments execute tasks and exit when completed.
 - [ ] Try/catch
 - [ ] [Standard library](https://github.com/iAmGio/pikt/tree/master/src/main/resources/pikt.stdlib) (2%, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
 
-**Compilation**
-- [x] JVM
-- [x] Native
-- [x] Interpretation (currently only on JVM)
+**Generation**
+- [x] Compilation (JVM and Native)
+- [x] Interpretation (JVM)
 - [x] Error handling
+- [ ] Runtime information
 
 ## Pikt Lab
 

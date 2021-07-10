@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.compiler.AbstractInterpreter
-import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.properties.ColorsPropertiesRetriever
@@ -38,7 +37,6 @@ class PiktTestLauncher {
                 source = File(tempDirectory, "ignored"),
                 output = "out",
                 compilationTargets = emptyList(),
-                interpretationTarget = CompilationTarget.JVM,
                 jvmCompilerPath = System.getProperty("jvmcompiler"), // Set -Djvmcompiler property before running
                 nativeCompilerPath = null,
                 colors = ColorsPropertiesRetriever().also {

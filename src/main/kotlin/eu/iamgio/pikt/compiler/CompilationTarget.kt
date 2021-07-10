@@ -1,5 +1,7 @@
 package eu.iamgio.pikt.compiler
 
+import eu.iamgio.pikt.GlobalSettings
+import eu.iamgio.pikt.command.commands.CMD_INTERPRET
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.File
 
@@ -61,17 +63,6 @@ enum class CompilationTarget(
             return generateNativeCompileCommand("linux", kotlinFile, outputFile, properties)
         }
 
-    }),
-
-    /**
-     * Interpreter that supports all native targets.
-     */
-    NATIVE_INTERPRETER("native", object : KotlinCommandGenerator {
-
-        override fun generateInterpretCommand(kotlinFile: File, properties: PiktProperties): String {
-            return "\"${properties.nativeCompilerPath}\" -script \"$kotlinFile\""
-        }
-
     });
 
     /**
@@ -126,6 +117,6 @@ interface KotlinCommandGenerator {
     }
 }
 
-fun List<CompilationTarget?>.isAnyNull(): Boolean                    = any { it == null }
-fun List<CompilationTarget?>.isAny(type: CompilationTarget): Boolean = any { type == it }
-fun List<CompilationTarget?>.isAnyNative(): Boolean                  = any { it?.isNative ?: false }
+fun List<CompilationTarget?>.isAnyNull(): Boolean   = any { it == null }
+fun List<CompilationTarget?>.isAnyJVM(): Boolean    = any { it == CompilationTarget.JVM } || CMD_INTERPRET in GlobalSettings
+fun List<CompilationTarget?>.isAnyNative(): Boolean = any { it?.isNative ?: false }

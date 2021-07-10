@@ -10,6 +10,12 @@ import eu.iamgio.pikt.command.Command
 open class SettingsCommand(name: String) : Command(name, { GlobalSettings += name })
 
 /**
+ * Runs the generated code via the JVM compiler.
+ */
+class InterpretCommand : SettingsCommand(CMD_INTERPRET)
+const val CMD_INTERPRET = "-interpret"
+
+/**
  * Prints the output code to console.
  */
 class PrintOutputCommand : SettingsCommand(CMD_PRINTOUTPUT)

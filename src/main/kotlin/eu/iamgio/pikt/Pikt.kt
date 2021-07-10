@@ -47,8 +47,8 @@ fun main(args: Array<String>) {
         return
     }
 
-    // Interpret the output code if the "-Dinterpret" property is set.
-    if(properties.interpretationTarget != null) {
+    // Interpret the generated code if -interpret is enabled.
+    if(CMD_INTERPRET in GlobalSettings) {
         val interpreter = Interpreter(evaluator.clone(), properties)
         interpreter.compile()
     }
@@ -70,6 +70,7 @@ fun main(args: Array<String>) {
  */
 fun registerCommands() = with(Commands) {
     register(WelcomeCommand())
+    register(InterpretCommand())
     register(DownloadCompilerCommand())
     register(CreateSchemeCommand())
     register(ExportSchemeCommand())
