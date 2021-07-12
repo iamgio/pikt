@@ -2,9 +2,10 @@
 
 > _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
 
-Pikt is a pixel-based esoteric programming language that aims at generating fast and lightweight programs from aesthetically pleasant image sources: to accomplish this, the colors of all "keywords", functions, operators and so on are easily customizable.
+Pikt is a pixel-based, Turing complete esoteric programming language that generates fast and lightweight programs out of aesthetically pleasant image sources.
+Indeed, Pikt's most interesting feature is flexibility: every keyword, statement, function, operator and so on is linked to one - or more - color, which can be easily customized via [color schemes](src/main/resources/properties/colors.properties).
   
-Pikt compiles executables via the [Kotlin compiler](https://kotlinlang.org/docs/command-line.html), therefore compilation for both JVM and native targets is available, along with runtime interpretation.
+Pikt compiles executables via the Kotlin compiler, therefore compilation for both JVM and native targets is available, along with runtime interpretation.
 
 Make sure to check out the **[wiki](https://github.com/iAmGio/pikt/wiki)** to learn how to create your first Pikt program! 
 
@@ -25,19 +26,19 @@ Make sure to check out the **[wiki](https://github.com/iAmGio/pikt/wiki)** to le
   <i>A tree that prints "A tree!". *</i>
 </p>
 
-_* Using [custom color schemes](https://github.com/iAmGio/pikt/blob/master/src/test/resources/schemes)._  
+_* Using [custom color schemes](src/test/resources/schemes)._  
 Click on the examples for a breakdown/explanation.
 
 ## Properties
-The following properties must be inserted before Pikt jar's path in the command line.  
-Example: `java -Dproperty=value -jar pikt.jar arguments_here`.  
+The following properties define parameters needed by Pikt.  
+Example: `java -Dproperty=value -jar pikt.jar -argument`.  
 
 - `-Dsource` source image file;
-- `-Doutput` output name without extension. If not specified it will take `source`'s name without extension;
-- `-Dcolors` path to the `.properties` color scheme without extension. Default values will be used if not specified;
+- `-Doutput` output name without extension. It will take `source` name without extension if not specified;
+- `-Dcolors` path to the `.properties` color scheme without extension. Default values will be used if not specified (not recommended);
 - `-Dtargets` compilation targets divided by a comma. Can be `jvm`, `windows`, `osx` or `linux`. Note that Windows and OSX executables can be generated only on those platforms. No compilation will be executed if not specified;
-- `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) compiler. Required if `target` contains `jvm` or if `-interpret` is used;
-- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) compiler. Required if `target` contains a native target.
+- `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) executable compiler. Required if `target` contains `jvm` or if `-interpret` is used;
+- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) executable compiler. Required if `target` contains a native target.
 
 ## Settings arguments
 
@@ -53,8 +54,8 @@ The following arguments enable settings that affect Pikt's behavior.
 
 The following arguments execute tasks and exit when completed.
 
-- `-downloadcompiler=type[,version]` downloads the Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`). `version` defaults to `1.5.10`.
-- `-createscheme=name` creates a new [color scheme](https://github.com/iAmGio/pikt/blob/master/src/main/resources/properties/colors.properties) with default values;
+- `-downloadcompiler=type[,version]` downloads the zipped Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`). `version` defaults to `1.5.10`.
+- `-createscheme=name` creates a new [color scheme](src/main/resources/properties/colors.properties) with default values;
 - `-exportscheme=name` generates a useful color palette image out of the given scheme;
 - `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`). `method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`;
 - `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme;
