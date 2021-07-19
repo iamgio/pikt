@@ -47,7 +47,7 @@ class ImageOutputCommand : Command("-imgoutput", { args ->
     } else if(output == null) {
         output = File(args)
     }
-})
+}, isSettingsCommand = true)
 
 /**
  * Triggered by -standardize argument.

@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.command
 
+import eu.iamgio.pikt.GlobalSettings
 import kotlin.system.exitProcess
 
 /**
@@ -7,10 +8,11 @@ import kotlin.system.exitProcess
  *
  * @param name the name of the command
  * @param action the task to be run. (args) -> task. Arguments can be `null` if not specified.
+ * @param isSettingsCommand whether this command affects either [GlobalSettings] or any other behavior.
  * @param closeOnComplete whether the program should close after the command completed its execution.
  * @author Giorgio Garofalo
  */
-open class Command(val name: String, val action: (String?) -> Unit, var closeOnComplete: Boolean = false) {
+open class Command(val name: String, val action: (String?) -> Unit, val isSettingsCommand: Boolean = false, var closeOnComplete: Boolean = false) {
 
     /**
      * Executes the command.

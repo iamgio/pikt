@@ -7,7 +7,7 @@ import eu.iamgio.pikt.command.Command
  * A no-arguments command that enables a given property.
  * @author Giorgio Garofalo
  */
-open class SettingsCommand(name: String) : Command(name, { GlobalSettings += name })
+open class SettingsCommand(name: String) : Command(name, { GlobalSettings += name }, isSettingsCommand = true)
 
 /**
  * Runs the generated code via the JVM compiler.

@@ -20,11 +20,8 @@ fun main(args: Array<String>) {
     // Register code statements.
     registerStatements()
 
-    // Look for any command/argument.
-    args.forEach {
-        val split = Commands.splitCommandLineArgument(it)
-        Commands.getCommand(split.first)?.execute(split.second)
-    }
+    // Look for any command/argument and execute it.
+    executeCommands(args)
 
     // Retrieve organized properties
     val properties = PiktPropertiesRetriever().retrieve()
@@ -63,6 +60,19 @@ fun main(args: Array<String>) {
     // Print total time elapsed.
     val totalTime = (System.currentTimeMillis() - startTime) / 1000.0
     println("Done. (${totalTime}s)")
+}
+
+/**
+ * Iterates through the program arguments, finds linked commands and executes them.
+ * @param args program arguments
+ */
+private fun executeCommands(args: Array<String>) {
+    args.map {
+        val split = Commands.splitCommandLineArgument(it) // Split raw program arguments. cmd=args -> [cmd, args]; cmd -> [cmd, null]
+        Commands.getCommand(split.first) to split.second  // Command linked to the first string paired to its arguments.
+    }.sortedByDescending { it.first?.isSettingsCommand }.forEach { (command, args) -> // Sort settings first.
+        command?.execute(args)                            // Execute the command.
+    }
 }
 
 /**
