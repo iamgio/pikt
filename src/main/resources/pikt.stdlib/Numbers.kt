@@ -13,7 +13,7 @@ operator fun Number.plus(other: Number): Number {
         is Byte   -> this.toByte()   + other.toByte()
         is Double -> this.toDouble() + other.toDouble()
         is Float  -> this.toFloat()  + other.toFloat()
-        else      -> throw RuntimeException("Unknown numeric type")
+        else      -> throw RuntimeException("Plus operation (+) called with at least one non-numeric value: $this + $other")
     }
 }
 
@@ -30,7 +30,7 @@ operator fun Number.minus(other: Number): Number {
         is Byte   -> this.toByte()   - other.toByte()
         is Double -> this.toDouble() - other.toDouble()
         is Float  -> this.toFloat()  - other.toFloat()
-        else      -> throw RuntimeException("Unknown numeric type")
+        else      -> throw RuntimeException("Minus operation (-) called with at least one non-numeric value: $this - $other")
     }
 }
 
@@ -47,7 +47,7 @@ operator fun Number.times(other: Number): Number {
         is Byte   -> this.toByte()   * other.toByte()
         is Double -> this.toDouble() * other.toDouble()
         is Float  -> this.toFloat()  * other.toFloat()
-        else      -> throw RuntimeException("Unknown numeric type")
+        else      -> throw RuntimeException("Times operation (*) called with at least one non-numeric value: $this * $other")
     }
 }
 
@@ -64,7 +64,7 @@ operator fun Number.div(other: Number): Number {
         is Byte   -> this.toByte()   / other.toByte()
         is Double -> this.toDouble() / other.toDouble()
         is Float  -> this.toFloat()  / other.toFloat()
-        else      -> throw RuntimeException("Unknown numeric type")
+        else      -> throw RuntimeException("Divide operation (/) called with at least one non-numeric value: $this / $other")
     }
 }
 
@@ -81,6 +81,6 @@ operator fun Number.rem(other: Number): Number {
         is Byte   -> this.toByte()   % other.toByte()
         is Double -> this.toDouble() % other.toDouble()
         is Float  -> this.toFloat()  % other.toFloat()
-        else      -> throw RuntimeException("Unknown numeric type")
+        else      -> throw RuntimeException("Rem operation (%) called with at least one non-numeric value: $this % $other")
     }
 }
