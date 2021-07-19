@@ -32,22 +32,31 @@ class ImageCompacter(private val piktImage: PiktImage) {
     private fun calcCompactSize(size: Int, width: Int?, height: Int?): Pair<Int, Int> {
         val imageWidth: Int
         val imageHeight: Int
-        if(width == null && height == null) {
+
+        when {
             // None are specified
-            imageWidth = sqrt(size.toDouble()).toInt()
-            imageHeight = ceil(size / imageWidth.toDouble()).toInt()
-        } else if(width != null && height == null) {
+            width == null && height == null -> {
+                imageWidth = sqrt(size.toDouble()).toInt()
+                imageHeight = ceil(size / imageWidth.toDouble()).toInt()
+            }
+
             // Width is specified
-            imageWidth = width
-            imageHeight = ceil(size / width.toDouble()).toInt()
-        } else if(width == null && height != null) {
+            width != null && height == null -> {
+                imageWidth = width
+                imageHeight = ceil(size / imageWidth.toDouble()).toInt()
+            }
+
             // Height is specified
-            imageHeight = height
-            imageWidth = ceil(size / imageHeight.toDouble()).toInt()
-        } else {
+            width == null && height != null -> {
+                imageHeight = height
+                imageWidth = ceil(size / imageHeight.toDouble()).toInt()
+            }
+
             // Both are specified
-            imageWidth = width!!
-            imageHeight = height!!
+            else -> {
+                imageWidth = width!!
+                imageHeight = height!!
+            }
         }
         return imageWidth to imageHeight
     }
@@ -60,16 +69,15 @@ class ImageCompacter(private val piktImage: PiktImage) {
      */
     fun compact(width: Int?, height: Int?): BufferedImage {
         val reader = piktImage.reader()
-        val imageWidth: Int
-        val imageHeight: Int
-        calcCompactSize(reader.size, width, height).let {
-            imageWidth = it.first
-            imageHeight = it.second
+        val (imageWidth, imageHeight) = calcCompactSize(reader.size, width, height)
+
+        if(reader.size >= imageWidth * imageHeight) {
+            System.err.println("Error while compacting: given size is ${imageWidth * imageHeight} ($imageWidth*$imageHeight), but source has ${reader.size} elements.")
         }
 
         val image = BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB)
 
-        // Copy PixelReader content.
+        // Copy PixelReader content to the output image.
         reader.whileNotNull {
             image.setRGB(reader.index, it.color)
         }
