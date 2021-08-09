@@ -52,9 +52,9 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
     /**
      * Generates the command needed by the compiler.
      * @param target target the code should be compiled for
-     * @return generated command to either compile or interpret on [target]
+     * @return generated command as an array of arguments to either compile or interpret on [target]
      */
-    protected abstract fun generateCommand(target: CompilationTarget): String
+    protected abstract fun generateCommand(target: CompilationTarget): Array<String>
 
     /**
      * Task called after the compilation finishes.
@@ -91,7 +91,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
             // Pre-compilation task.
             onPreCompile(target)
 
-            // Execute the command.
+            // Generate and execute the command.
             val process = Runtime.getRuntime().exec(generateCommand(target))
 
             // Print the command output.

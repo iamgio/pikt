@@ -21,7 +21,7 @@ abstract class AbstractInterpreter(evaluator: Evaluator, properties: PiktPropert
 
     override fun onPreCompile(target: CompilationTarget) {}
 
-    override fun generateCommand(target: CompilationTarget): String {
+    override fun generateCommand(target: CompilationTarget): Array<String> {
         return target.commandGenerator.generateInterpretCommand(sourceKotlinFile, properties)
     }
 

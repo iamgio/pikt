@@ -22,14 +22,13 @@ enum class CompilationTarget(
      */
     JVM("jvm", object : KotlinCommandGenerator {
 
-        override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties): String {
-            return "\"${properties.jvmCompilerPath}\" \"$kotlinFile\" -nowarn -include-runtime -d \"$outputFile.jar\""
-        }
+        override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties) = arrayOf(
+                properties.jvmCompilerPath!!, kotlinFile.absolutePath, "-nowarn", "-include-runtime", "-d", "$outputFile.jar"
+        )
 
-        override fun generateInterpretCommand(kotlinFile: File, properties: PiktProperties): String {
-            return "\"${properties.jvmCompilerPath}\" -script \"$kotlinFile\""
-        }
-
+        override fun generateInterpretCommand(kotlinFile: File, properties: PiktProperties) = arrayOf(
+                properties.jvmCompilerPath!!, "-script", kotlinFile.absolutePath
+        )
     }),
 
     /**
@@ -37,7 +36,7 @@ enum class CompilationTarget(
      */
     NATIVE_WINDOWS("windows", object : KotlinCommandGenerator {
 
-        override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties): String {
+        override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties): Array<String> {
             return generateNativeCompileCommand("mingw", kotlinFile, outputFile, properties)
         }
 
@@ -48,7 +47,7 @@ enum class CompilationTarget(
      */
     NATIVE_OSX("osx", object : KotlinCommandGenerator {
 
-        override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties): String {
+        override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties): Array<String> {
             return generateNativeCompileCommand("macos", kotlinFile, outputFile, properties)
         }
 
@@ -59,7 +58,7 @@ enum class CompilationTarget(
      */
     NATIVE_LINUX("linux", object : KotlinCommandGenerator {
 
-        override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties): String {
+        override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties): Array<String> {
             return generateNativeCompileCommand("linux", kotlinFile, outputFile, properties)
         }
 
@@ -80,10 +79,10 @@ enum class CompilationTarget(
          * @param properties Pikt properties
          * @return generated command
          */
-        fun generateNativeCompileCommand(platform: String, kotlinFile: File, outputFile: File, properties: PiktProperties): String {
-            return "\"${properties.nativeCompilerPath}\" \"$kotlinFile\" " +
-                    "-nowarn -opt -target $platform -o \"$outputFile\""
-        }
+        fun generateNativeCompileCommand(platform: String, kotlinFile: File, outputFile: File, properties: PiktProperties) = arrayOf(
+            properties.nativeCompilerPath!!, kotlinFile.absolutePath,
+                "-nowarn", "-opt", "-target", platform, "-o", outputFile.absolutePath
+        )
     }
 }
 
@@ -96,12 +95,12 @@ interface KotlinCommandGenerator {
     /**
      * Generates the command needed to compile the source file into an executable.
      * @param kotlinFile source .kt file
-     * @param outputFile output executable file file without extension
+     * @param outputFile output executable file without extension
      * @param properties Pikt properties
      * @return final command
      * @throws IllegalAccessError if this method has not been implemented by the selected target
      */
-    fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties): String {
+    fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties): Array<String> {
         throw IllegalAccessError("This target does not allow compilation.")
     }
 
@@ -112,7 +111,7 @@ interface KotlinCommandGenerator {
      * @return final command
      * @throws IllegalAccessError if this method has not been implemented by the selected target
      */
-    fun generateInterpretCommand(kotlinFile: File, properties: PiktProperties): String {
+    fun generateInterpretCommand(kotlinFile: File, properties: PiktProperties): Array<String> {
         throw IllegalAccessError("This target does not allow interpretation.")
     }
 }

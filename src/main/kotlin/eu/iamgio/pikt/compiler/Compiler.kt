@@ -26,7 +26,7 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
         println("\nCompiling for target $target. Please wait...\n")
     }
 
-    override fun generateCommand(target: CompilationTarget): String {
+    override fun generateCommand(target: CompilationTarget): Array<String> {
         return target.commandGenerator.generateCompileCommand(sourceKotlinFile, File(getTargetFolder(target), properties.output), properties)
     }
 
@@ -75,7 +75,6 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
             CompilationTarget.NATIVE_OSX, CompilationTarget.NATIVE_LINUX -> {
                 arrayOf(StarterScriptFile(StarterScriptFile.Type.SH, "./$name.kexe"))
             }
-            else -> emptyArray()
         }
     }
 }
