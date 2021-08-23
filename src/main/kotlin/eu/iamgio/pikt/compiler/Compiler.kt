@@ -32,7 +32,7 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
 
     override fun onPostCompile(target: CompilationTarget) {
         // Generate script (.sh, .bat and .command) files
-        getStarterScriptFiles(name = properties.output, target).forEach {
+        target.getStarterScriptFiles(executableName = properties.output).forEach {
             it.create(getTargetFolder(target), name = properties.output)
         }
     }
@@ -52,33 +52,4 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
      * @return folder of the target
      */
     private fun getTargetFolder(target: CompilationTarget) = File(outputFolder, target.argName)
-
-    /**
-     * Finds out script types and content based on [target]
-     * @param name output name without extension
-     * @param target compilation target to find the script for
-     * @return array of scripts
-     */
-    private fun getStarterScriptFiles(name: String, target: CompilationTarget): Array<StarterScriptFile> {
-        return when(target) {
-            CompilationTarget.JVM -> {
-                "java -jar $name.jar".let { command ->
-                    arrayOf(
-                            StarterScriptFile(StarterScriptFile.Type.SH, command),
-                            StarterScriptFile(StarterScriptFile.Type.COMMAND, command),
-                            StarterScriptFile(StarterScriptFile.Type.BAT, command)
-                    )
-                }
-            }
-            CompilationTarget.NATIVE_WINDOWS -> {
-                arrayOf(StarterScriptFile(StarterScriptFile.Type.BAT, "$name.exe"))
-            }
-            CompilationTarget.NATIVE_LINUX -> {
-                arrayOf(StarterScriptFile(StarterScriptFile.Type.SH, "./$name.kexe"))
-            }
-            CompilationTarget.NATIVE_OSX -> {
-                arrayOf(StarterScriptFile(StarterScriptFile.Type.COMMAND, "\"\$(dirname \"\$BASH_SOURCE\")\"/$name.kexe"))
-            }
-        }
-    }
 }

@@ -33,7 +33,7 @@ class StarterScriptFile(
 
 
         /**
-         * Command script (OSX).
+         * Command script (OSX) based on Bash.
          */
         COMMAND(prefix = SH.prefix, suffix = SH.suffix, extension = "command"),
     }
@@ -46,5 +46,33 @@ class StarterScriptFile(
      */
     fun create(folder: File, name: String) {
         File(folder, "$name.${type.extension}").writeText(type.prefix + content + type.suffix)
+    }
+}
+
+/**
+ * Finds out script types and content for [this] target.
+ * @param executableName output name without extension
+ * @return array of scripts
+ */
+fun CompilationTarget.getStarterScriptFiles(executableName: String): Array<StarterScriptFile> {
+    return when(this) {
+        CompilationTarget.JVM -> {
+            "java -jar $executableName.jar".let { command ->
+                arrayOf(
+                        StarterScriptFile(StarterScriptFile.Type.SH, command),
+                        StarterScriptFile(StarterScriptFile.Type.COMMAND, command),
+                        StarterScriptFile(StarterScriptFile.Type.BAT, command)
+                )
+            }
+        }
+        CompilationTarget.NATIVE_WINDOWS -> {
+            arrayOf(StarterScriptFile(StarterScriptFile.Type.BAT, "$executableName.exe"))
+        }
+        CompilationTarget.NATIVE_LINUX -> {
+            arrayOf(StarterScriptFile(StarterScriptFile.Type.SH, "./$executableName.kexe"))
+        }
+        CompilationTarget.NATIVE_OSX -> {
+            arrayOf(StarterScriptFile(StarterScriptFile.Type.COMMAND, "\"\$(dirname \"\$BASH_SOURCE\")\"/$executableName.kexe"))
+        }
     }
 }
