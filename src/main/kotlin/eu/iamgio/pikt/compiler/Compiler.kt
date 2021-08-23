@@ -31,7 +31,7 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
     }
 
     override fun onPostCompile(target: CompilationTarget) {
-        // Generate script (.sh and .bat) files
+        // Generate script (.sh, .bat and .command) files
         getStarterScriptFiles(name = properties.output, target).forEach {
             it.create(getTargetFolder(target), name = properties.output)
         }
@@ -65,6 +65,7 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
                 "java -jar $name.jar".let { command ->
                     arrayOf(
                             StarterScriptFile(StarterScriptFile.Type.SH, command),
+                            StarterScriptFile(StarterScriptFile.Type.COMMAND, command),
                             StarterScriptFile(StarterScriptFile.Type.BAT, command)
                     )
                 }
@@ -72,8 +73,11 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
             CompilationTarget.NATIVE_WINDOWS -> {
                 arrayOf(StarterScriptFile(StarterScriptFile.Type.BAT, "$name.exe"))
             }
-            CompilationTarget.NATIVE_OSX, CompilationTarget.NATIVE_LINUX -> {
+            CompilationTarget.NATIVE_LINUX -> {
                 arrayOf(StarterScriptFile(StarterScriptFile.Type.SH, "./$name.kexe"))
+            }
+            CompilationTarget.NATIVE_OSX -> {
+                arrayOf(StarterScriptFile(StarterScriptFile.Type.COMMAND, "\"\$(dirname \"\$BASH_SOURCE\")\"/$name.kexe"))
             }
         }
     }

@@ -22,14 +22,20 @@ class StarterScriptFile(
      */
     enum class Type(val prefix: String, val suffix: String, val extension: String) {
         /**
-         * Shell script (OSX, Linux).
+         * Batch script (Windows).
+         */
+        BAT(prefix = "", suffix = "\nPAUSE", extension = "bat"),
+
+        /**
+         * Shell script (Linux).
          */
         SH(prefix = "#!/bin/sh\n", suffix = "\nread -s -n 1 -p \"Press any key to continue . . .\"", extension = "sh"),
 
+
         /**
-         * Batch script (Windows).
+         * Command script (OSX).
          */
-        BAT(prefix = "", suffix = "\nPAUSE", extension = "bat")
+        COMMAND(prefix = SH.prefix, suffix = SH.suffix, extension = "command"),
     }
 
     /**
