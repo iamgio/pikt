@@ -28,6 +28,15 @@ class PiktTest {
     }
 
     @Test
+    fun `check if string is not an integer`() {
+        with(launch("not_int")) {
+            assertTrue {
+                first() == "OK"
+            }
+        }
+    }
+
+    @Test
     fun `print each element of an int list`() {
         with(launch("list_foreach")) {
             assertTrue {

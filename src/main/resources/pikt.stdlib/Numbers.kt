@@ -1,6 +1,13 @@
 package pikt.stdlib
 
 /**
+ * Converts a [String] to an [Int] value. If [value] does not represent an integer, `null` is returned.
+ * @param value string input
+ * @return [value] to the corresponding integer value, or `null` if it is not an integer.
+ */
+fun toInt(value: Any): Int? = value.toString().toIntOrNull()
+
+/**
  * Enables generic number + number operation.
  * @param other number to be added
  * @return [this] + [other]
