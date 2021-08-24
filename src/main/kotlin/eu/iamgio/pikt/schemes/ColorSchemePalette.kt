@@ -93,13 +93,19 @@ class ColorSchemePalette(schemeInputStream: InputStream) {
      * @param xOffset x coordinate where elements start at
      */
     private fun generateList(keys: List<Any>, graphics: Graphics2D, xOffset: Int) {
-        keys.forEachIndexed { index, name ->
-            val y = (index + 1) * PROPERTY_HEIGHT / 2
+        // Y coordinate to place items at.
+        var y = 0
+
+        // Iterate properties
+        keys.forEach { name ->
             val colors = properties.getValue(name).toString().split(COLORS_SEPARATOR)
             colors.forEachIndexed { colorIndex, hex ->
-                graphics.color = Color.decode("#$hex")
-                graphics.fillOval(xOffset + colorIndex * HORIZONTAL_SPACING, y - CIRCLE_DIAMETER / 2, CIRCLE_DIAMETER, CIRCLE_DIAMETER)
-                if(colorIndex == 0) graphics.drawString(name.toString(), xOffset + TEXT_MARGIN + colors.size * HORIZONTAL_SPACING, y + CIRCLE_DIAMETER / 4)
+                try {
+                    graphics.color = Color.decode("#$hex") // Does not go further if the color is invalid.
+                    y += PROPERTY_HEIGHT / 2
+                    graphics.fillOval(xOffset + colorIndex * HORIZONTAL_SPACING, y - CIRCLE_DIAMETER / 2, CIRCLE_DIAMETER, CIRCLE_DIAMETER)
+                    if(colorIndex == 0) graphics.drawString(name.toString(), xOffset + TEXT_MARGIN + colors.size * HORIZONTAL_SPACING, y + CIRCLE_DIAMETER / 4)
+                } catch(ignored: NumberFormatException) {}
             }
         }
     }
