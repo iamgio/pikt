@@ -4,7 +4,7 @@ Hi there, I hope you enjoy Pikt! In this file you'll find a few guidelines in ca
 ## Expanding the standard library
 Follow these steps if you wish to implement new functions or variables:
 1) Head to the [stdlib package](src/main/resources/pikt.stdlib)
-   and choose a file relevant to what you want to bring support to. If none of the existing fits your addition feel free to create a new `.kt` file that matches Kotlin naming guidelines and register it to the [StdLib](src/main/kotlin/eu/iamgio/pikt/eval/StdLib.kt) `libraryFiles` array.
+   and choose a file relevant to what you want to bring support to. If none of the existing fits your addition feel free to create a new `.kt` file (within the main package) that matches Kotlin naming guidelines.
    
 2) Implement your function or variable as a top-level member, remember to add documentation for newcomers and use a clear name that explains its behavior.
    In case it is a function, arguments must be of the type `Any` (the superclass every Kotlin object shares) and should be cast at runtime.

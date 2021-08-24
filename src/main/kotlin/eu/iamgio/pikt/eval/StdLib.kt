@@ -4,6 +4,17 @@ import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.properties.ColorsProperty
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import kotlin.streams.toList
+
+/**
+ * Where standard library files are located within the JAR file.
+ */
+private const val STDLIB_PATH = "/pikt.stdlib"
+
+/**
+ * Extension of library files.
+ */
+private const val LIB_FILE_EXTENSION = ".kt"
 
 /**
  * Utility functions for the standard library (resources/pikt.stdlib/)
@@ -20,12 +31,9 @@ object StdLib {
     /**
      * List of libraries to be evaluated in [Evaluator.appendStdCode].
      */
-    val libraryFiles = arrayOf(
-            "Print",
-            "Objects",
-            "Numbers",
-            "Lists"
-    )
+    val libraryFiles: List<String>
+        get() = javaClass.getResourceAsStream(STDLIB_PATH)!!.bufferedReader()
+                .lines().filter { it.endsWith(LIB_FILE_EXTENSION) }.toList()
 
     /**
      * Generates a name=hex map for standard library members and stores it into [colors].
@@ -58,13 +66,13 @@ object StdLib {
             target == CompilationTarget.JVM -> "jvm/JVM"
             target.isNative -> "native/Native"
             else -> ""
-        })
+        } + LIB_FILE_EXTENSION)
     }
 
     /**
      * A standard library file (resources/pikt.stdlib/)
      *
-     * @param name Kotlin file name without extension
+     * @param name Kotlin file name
      */
     data class LibFile(private val name: String) {
 
@@ -77,7 +85,7 @@ object StdLib {
         fun readContent(): String {
             val builder = StringBuilder()
 
-            val reader = BufferedReader(InputStreamReader(javaClass.getResourceAsStream("/pikt.stdlib/$name.kt")!!))
+            val reader = BufferedReader(InputStreamReader(javaClass.getResourceAsStream("$STDLIB_PATH/$name")!!))
             while(reader.ready()) {
                 val line = reader.readLine().let { line ->
                     if(line.startsWith("package") || line.startsWith("import") || line.startsWith("@file:")) {
