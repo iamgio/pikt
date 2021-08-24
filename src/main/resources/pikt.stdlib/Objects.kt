@@ -85,3 +85,14 @@ operator fun Any.compareTo(other: Any): Int {
     @Suppress("UNCHECKED_CAST")
     return (this as? Comparable<Any>)?.compareTo(other) ?: 0
 }
+
+/**
+ * Gets a boolean value from any nullable object value.
+ * This is automatically inserted in `if` blocks.
+ * @return `true` if either this object is not null or this is called on a boolean whose value is `true`, `false` otherwise.
+ */
+val Any?.bool: Boolean
+    get() {
+        if(this is Boolean) return this
+        return this != null
+    }

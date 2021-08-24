@@ -21,7 +21,7 @@ class IfStatement : Statement() {
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("if", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
             StatementSyntax.Member("condition", StatementSyntax.Type.OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
-            StatementSyntax.Member("lambda|statement", StatementSyntax.Type.OBLIGATORY)
+            StatementSyntax.Member("lambda|statement", StatementSyntax.Type.OPTIONAL)
     )
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.`if`
@@ -33,13 +33,13 @@ class IfStatement : Statement() {
             reader.error("\"if\" has no condition.", syntax)
         }
 
-        if(data.nextStatement == null || data.nextStatement is ElseStatement) {
-            syntax.mark("lambda|statement", StatementSyntax.Mark.WRONG)
-            reader.error("\"if\" has empty body.", syntax)
+        if(data.nextStatement != null && data.nextStatement !is ElseStatement) {
+            syntax.mark("lambda|statement", StatementSyntax.Mark.CORRECT)
         }
 
-        // Output: if(condition)
-        return "if(${condition.code})"
+        // Output: if((condition).bool)
+        // Note: bool is a library function from Objects.kt
+        return "if((${condition.code}).bool)"
     }
 }
 
