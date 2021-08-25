@@ -28,7 +28,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Create staging directory
-        run: mkdir staging && cp target/pikt.jar staging
+        run: mkdir staging && cp core/target/pikt.jar staging
       - name: Run -welcome
         run: |
           cd staging
