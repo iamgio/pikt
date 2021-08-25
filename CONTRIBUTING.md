@@ -1,5 +1,5 @@
 # Contributing to Pikt
-Hi there, I hope you enjoy Pikt! In this file you'll find a few guidelines in case you want to help improving this out-of-the-scheme programming language.
+Hi there, I hope you enjoy Pikt! In this file you'll find a few guidelines in case you want to help to improve this out-of-the-scheme programming language.
 
 ## Expanding the standard library
 Follow these steps if you wish to implement new functions or variables:
