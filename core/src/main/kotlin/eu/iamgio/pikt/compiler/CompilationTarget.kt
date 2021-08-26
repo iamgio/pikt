@@ -23,11 +23,12 @@ enum class CompilationTarget(
     JVM("jvm", object : KotlinCommandGenerator {
 
         override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties) = arrayOf(
-                properties.jvmCompilerPath!!, kotlinFile.absolutePath, "-nowarn", "-include-runtime", "-d", "$outputFile.jar"
+                properties.jvmCompilerPath!!,
+                kotlinFile.absolutePath, "-nowarn", "-include-runtime", "-cp", properties.stdlib.absolutePath, "-d", "$outputFile.jar"
         )
 
         override fun generateInterpretCommand(kotlinFile: File, properties: PiktProperties) = arrayOf(
-                properties.jvmCompilerPath!!, "-script", kotlinFile.absolutePath
+                properties.jvmCompilerPath!!, "-script", kotlinFile.absolutePath, "-cp", properties.stdlib.absolutePath
         )
     }),
 

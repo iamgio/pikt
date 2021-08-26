@@ -1,23 +1,9 @@
 package eu.iamgio.pikt.eval
 
-import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.properties.ColorsProperty
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import kotlin.streams.toList
 
 /**
- * Where standard library files are located within the JAR file.
- */
-private const val STDLIB_PATH = "/pikt.stdlib"
-
-/**
- * Extension of library files.
- */
-private const val LIB_FILE_EXTENSION = ".kt"
-
-/**
- * Utility functions for the standard library (resources/pikt.stdlib/)
+ * Utility functions for the standard library (stdlib module).
  *
  * @author Giorgio Garofalo
  */
@@ -27,13 +13,6 @@ object StdLib {
      * Stored name=colors map, initialized after [generateColorProperties] is called.
      */
     private lateinit var colors: Map<String, ColorsProperty>
-
-    /**
-     * List of libraries to be evaluated in [Evaluator.appendStdCode].
-     */
-    val libraryFiles: List<String>
-        get() = javaClass.getResourceAsStream(STDLIB_PATH)!!.bufferedReader()
-                .lines().filter { it.endsWith(LIB_FILE_EXTENSION) }.toList()
 
     /**
      * Generates a name=hex map for standard library members and stores it into [colors].
@@ -54,50 +33,5 @@ object StdLib {
      */
     fun getMemberName(hex: String): String? {
         return colors.entries.firstOrNull { it.value.has(hex) }?.key
-    }
-
-    /**
-     * Gets the target-specific library file from pikt.stdlib/targets.
-     * @param target compilation target
-     * @return target-specific [LibFile]
-     */
-    fun getTargetSpecificFile(target: CompilationTarget): LibFile {
-        return LibFile("targets/" + when {
-            target == CompilationTarget.JVM -> "jvm/JVM"
-            target.isNative -> "native/Native"
-            else -> ""
-        } + LIB_FILE_EXTENSION)
-    }
-
-    /**
-     * A standard library file (resources/pikt.stdlib/)
-     *
-     * @param name Kotlin file name
-     */
-    data class LibFile(private val name: String) {
-
-        /**
-         * Reads the content of the library file skipping package declarations, imports and file warnings suppression.
-         *
-         * @return content as a string
-         * @see generateColorProperties
-         */
-        fun readContent(): String {
-            val builder = StringBuilder()
-
-            val reader = BufferedReader(InputStreamReader(javaClass.getResourceAsStream("$STDLIB_PATH/$name")!!))
-            while(reader.ready()) {
-                val line = reader.readLine().let { line ->
-                    if(line.startsWith("package") || line.startsWith("import") || line.startsWith("@file:")) {
-                        // Skip package declaration, imports and file warnings suppression.
-                        ""
-                    } else {
-                        line
-                    }
-                }
-                builder.append(line).append("\n")
-            }
-            return builder.toString()
-        }
     }
 }

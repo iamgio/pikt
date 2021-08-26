@@ -5,29 +5,33 @@
 Pikt is a pixel-based, Turing complete esoteric programming language that generates fast and lightweight programs out of aesthetically pleasant image sources.
 Indeed, Pikt's most interesting feature is flexibility: every keyword, statement, function, operator and so on is linked to one - or more - color, which can be easily customized via [color schemes](core/src/main/resources/properties/colors.properties).
   
-Pikt compiles executables via the Kotlin compiler, therefore compilation for both JVM and native targets is available, along with runtime interpretation.
+Pikt compiles executables via the Kotlin compiler, therefore compilation for both JVM and native* targets is available, along with runtime interpretation.
 
 Make sure to check out the **[wiki](https://github.com/iAmGio/pikt/wiki)** to learn how to create your first Pikt program! 
 
+_* Native support is limited due to the lack of Kotlin/Native libraries and is being discontinued._
+
+<!--suppress HtmlDeprecatedAttribute -->
 <p align="center">
   <br>
   <a href="https://github.com/iAmGio/pikt/wiki/Fibonacci:-breakdown">
     <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
   </a>
-  <i>A high-performance Fibonacci sequence algorithm. *</i>
+  <i>A high-performance Fibonacci sequence algorithm.</i>
   <br><br>
   <a href="https://github.com/iAmGio/pikt/wiki/Prime-numbers:-breakdown">
     <img width="130" src="https://i.imgur.com/LFYekAD.png" alt="Prime numbers" /><br>
   </a>
-  <i>A prime numbers algorithm. *</i>
+  <i>A prime numbers algorithm.</i>
   <br><br>
   <a href="https://github.com/iAmGio/pikt/wiki/Tree:-breakdown">
     <img width="130" src="https://i.imgur.com/aKg4I59.png" alt="Tree" /><br></a>
-  <i>A tree that prints "A tree!". *</i>
+  <i>A tree that prints "A tree!".</i>
 </p>
 
-_* Using [custom color schemes](core/src/test/resources/schemes)._  
+These examples use [custom color schemes](core/src/test/resources/schemes).  
 Click on the examples for a breakdown/explanation.
+
 
 ## Properties
 The following properties define parameters needed by Pikt.  
@@ -37,6 +41,7 @@ Example: `java -Dproperty=value -jar pikt.jar -argument`.
 - `-Doutput` output name without extension. It will take `source` name without extension if not specified;
 - `-Dcolors` path to the `.properties` color scheme without extension. Default values will be used if not specified (not recommended);
 - `-Dtargets` compilation targets divided by a comma. Can be `jvm`, `windows`, `osx` or `linux`. Note that Windows and OSX executables can be generated only on those platforms. No compilation will be executed if not specified;
+- `-Dstdlib` path to the bundled `stdlib.jar` file. If not specified, points by default to `./stdlib.jar`; 
 - `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) executable compiler. Required if `target` contains `jvm` or if `-interpret` is used;
 - `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) executable compiler. Required if `target` contains a native target.
 
@@ -62,7 +67,14 @@ The following arguments execute tasks and exit when completed.
 - `-compact[=size]` creates a compacted copy of the source image. If `size` is not specified, it will try to create a square-ish image with no whitespaces. `size` can be defined via `w?h?`, where both `w`and `h` are optional (in case one is missing, it will be calculated the same way as before) (e.g. `w10h5`, `w10`, `h5`);
 - `-decompact` creates a decompacted copy of the source image with a statement per line;
 - `-standardecompact` runs `-standardize` + `-decompact`;
-- `-welcome` runs `-createscheme=colors`, `-exportscheme=colors` and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable file. 
+- `-welcome` runs `-createscheme=colors`, `-exportscheme=colors` and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable file.
+
+## Building
+The downloadable archive is already built off the latest GitHub commit.
+If you wish to build it yourself from source just run `mvn clean install`.
+
+As a bonus tip, consider editing your run configuration to execute `mvn clean install -pl stdlib -am` in order to compile the standard library before launching Pikt.   
+If you are using IntelliJ IDEA consider importing configurations from the [.run](.run) folder.
 
 ## Roadmap
 
@@ -74,9 +86,10 @@ The following arguments execute tasks and exit when completed.
 - [x] If / else / if else
 - [x] Lambdas
 - [x] Operators (equality, logical and arithmetic)
-- [x] Loops (for-each + `range` function for indexed for loop)
+- [x] Loops (`for-each` + `range` function for indexed `for` loop)
 - [ ] Try/catch
 - [ ] [Standard library](https://github.com/iAmGio/pikt/tree/master/src/main/resources/pikt.stdlib) (2%, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
+- [ ] External libraries
 
 **Generation**
 - [x] Compilation (JVM and Native)

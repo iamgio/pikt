@@ -1,13 +1,11 @@
 package eu.iamgio.pikt.compiler
 
 import eu.iamgio.pikt.eval.Evaluator
-import eu.iamgio.pikt.eval.StdLib
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
-
 
 /**
  * Defines the generic way the content of [evaluator] can be used.
@@ -80,13 +78,13 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
         applyEvaluatorSettings()
 
         // Append the standard library to the output code.
-        evaluator.appendStdCode()
+        evaluator.insertStdImport()
+
+        // Write the evaluator code to the source file.
+        sourceKotlinFile.writeText(evaluator.outputCode)
 
         // Compile for each target.
         getTargets().forEach { target ->
-
-            // Write the evaluator code to the source file.
-            sourceKotlinFile.writeText(StdLib.getTargetSpecificFile(target).readContent() + "\n" + evaluator.outputCode)
 
             // Pre-compilation task.
             onPreCompile(target)

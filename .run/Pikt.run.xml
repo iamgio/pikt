@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Pikt" type="JetRunConfigurationType">
+    <option name="MAIN_CLASS_NAME" value="eu.iamgio.pikt.PiktKt" />
+    <module name="core" />
+    <method v="2">
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="clean install -pl stdlib -am" />
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

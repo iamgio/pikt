@@ -96,14 +96,10 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
     }
 
     /**
-     * Appends the standard library to the output code.
-     *
-     * @see outputCode
-     * @see StdLib
+     * Imports the standard library functions.
      */
-    fun appendStdCode() {
-        val stdCode = StdLib.libraryFiles.joinToString(separator = "") { StdLib.LibFile(it).readContent() }
-        codeBuilder.insert(0, stdCode)
+    fun insertStdImport() {
+        codeBuilder.insert(0, "import pikt.stdlib.*\n\n")
     }
 
     /**
