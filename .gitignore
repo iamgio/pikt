@@ -1,5 +1,5 @@
 .idea/
-.run/
 target/
+.run/*.xml
 *.iml
 MANIFEST.MF
