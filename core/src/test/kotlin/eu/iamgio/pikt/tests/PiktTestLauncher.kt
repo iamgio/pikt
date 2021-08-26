@@ -33,11 +33,14 @@ class PiktTestLauncher {
     fun launch(name: String, colorSchemeName: String? = null): List<String> {
         println("Launching test $name")
 
+        val jvmCompiler = System.getProperty("jvmcompiler")
+                ?: throw NullPointerException("JVM compiler (-Djvmcompiler) is not set.") // Set -Djvmcompiler property before running
+
         val properties = PiktProperties(
                 source = File(tempDirectory, "ignored"),
                 output = "out",
                 compilationTargets = emptyList(),
-                jvmCompilerPath = System.getProperty("jvmcompiler"), // Set -Djvmcompiler property before running
+                jvmCompilerPath = jvmCompiler,
                 nativeCompilerPath = null,
                 colors = ColorsPropertiesRetriever().also {
                     if(colorSchemeName != null) {
