@@ -88,7 +88,7 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] Operators (equality, logical and arithmetic)
 - [x] Loops (`for-each` + `range` function for indexed `for` loop)
 - [ ] Try/catch
-- [ ] [Standard library](https://github.com/iAmGio/pikt/tree/master/src/main/resources/pikt.stdlib) (2%, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
+- [ ] [Standard library](stdlib) (2%, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
 - [ ] External libraries
 
 **Generation**
