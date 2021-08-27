@@ -73,8 +73,8 @@ The following arguments execute tasks and exit when completed.
 The downloadable archive is already built off the latest GitHub commit.
 If you wish to build it yourself from source just run `mvn clean install`.
 
-As a bonus tip, consider editing your run configuration to execute `mvn clean install -pl stdlib -am` in order to compile the standard library before launching Pikt.   
-If you are using IntelliJ IDEA consider importing configurations from the [.run](.run) folder.
+As a bonus tip, consider setting your run configuration to execute `mvn clean install -pl stdlib -am` in order to compile the standard library before launching Pikt.   
+If you are using IntelliJ IDEA consider importing configuration templates from the [runConfigurations](runConfigurations) folder.
 
 ## Roadmap
 

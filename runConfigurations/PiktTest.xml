@@ -11,6 +11,7 @@
     <option name="MAIN_CLASS_NAME" value="eu.iamgio.pikt.tests.PiktTest" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
+    <option name="VM_PARAMETERS" value="-Djvmcompiler=SET_HERE -Dstdlib=../stdlib/target/stdlib.jar" />
     <method v="2">
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="clean install -pl stdlib -am" />
       <option name="Make" enabled="true" />
