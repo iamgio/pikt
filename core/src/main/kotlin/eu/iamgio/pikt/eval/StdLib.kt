@@ -1,6 +1,9 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.properties.ColorsProperty
+import net.lingala.zip4j.ZipFile
+import net.lingala.zip4j.model.ZipParameters
+import java.io.File
 
 /**
  * Utility functions for the standard library (stdlib module).
@@ -33,5 +36,20 @@ object StdLib {
      */
     fun getMemberName(hex: String): String? {
         return colors.entries.firstOrNull { it.value.has(hex) }?.key
+    }
+
+    /**
+     * Includes a library into the output JAR file.
+     * @param libraryJarFile JAR file of the library to add
+     * @param targetJarFile target output JAR file
+     */
+    fun copyJarLibrary(libraryJarFile: File, targetJarFile: File) {
+        val targetJar = ZipFile(targetJarFile)
+        val libraryJar = ZipFile(libraryJarFile) // TODO external libraries
+
+        libraryJar.fileHeaders.filter { !it.fileName.startsWith("META-INF") }.forEach { header ->
+            val inputStream = libraryJar.getInputStream(header)
+            targetJar.addStream(inputStream, ZipParameters().apply { fileNameInZip = header.fileName; isIncludeRootFolder = true })
+        }
     }
 }
