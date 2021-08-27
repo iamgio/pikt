@@ -3,7 +3,7 @@ Hi there, I hope you enjoy Pikt! In this file you'll find a few guidelines in ca
 
 ## Expanding the standard library
 Follow these steps if you wish to implement new functions or variables:
-1) Head to the [stdlib package](stdlib/src/main/kotlin/pikt.stdlib)
+1) Head to [stdlib](stdlib/src/main/kotlin/pikt.stdlib)
    and choose a file relevant to what you want to bring support to. If none of the existing fits your addition feel free to create a new `.kt` file (within the main package) that matches Kotlin naming guidelines.
    
 2) Implement your function or variable as a top-level member, remember to add documentation for newcomers and use a clear name that explains its behavior.
@@ -27,8 +27,8 @@ fun range(start: Any, end: Any): MutableList<Int> {
 ```
 
 3) Link a unique color to your function or variable from the [default scheme](core/src/main/resources/properties/colors.properties)
-   by appending `stdlib.name=YOURHEX`, where `name` should match your function/variable name (case-sensitive) and `YOURHEX` is the hexadecimal color linked to it, without the `#` and uppercase.
-   
-4) Test your new feature.
+   by appending `stdlib.name=YOURHEX`, where `name` should match your function/variable name (case-sensitive) and `YOURHEX` is the hexadecimal color linked to it, without the `#` and uppercase. The color can also be omitted, letting the users choose their own colors.
+
+4) Run `mvn clean install -pl stdlib -am` and test your new feature.
 
 5) Open a [pull request](https://github.com/iAmGio/pikt/pulls).
