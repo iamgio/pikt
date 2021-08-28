@@ -34,9 +34,9 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
         // If the compilation target is the JVM,
         // include libraries into the output JAR file.
         if(target == CompilationTarget.JVM) {
-            properties.stdlib.extractTo(
-                    targetJarFile = File(getOutputFile(target).absolutePath + ".jar")
-            ) // TODO external libraries
+            properties.libraries.forEach {
+                it.extractTo(targetJarFile = File(getOutputFile(target).absolutePath + ".jar"))
+            }
         }
 
         // Generate script (.sh, .bat and .command) files

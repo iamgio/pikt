@@ -1,6 +1,8 @@
 package eu.iamgio.pikt.properties
 
 import eu.iamgio.pikt.eval.Libraries
+import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.lib.LIBRARY_COLOR_SCHEME_KEY_PREFIX
 import java.io.InputStream
 import java.io.InputStreamReader
 
@@ -111,10 +113,11 @@ data class OperatorColorsProperties(
 
 /**
  * Class that parses JVM properties into a [PiktProperties] instance.
+ * @param libraries external libraries
  *
  * @author Giorgio Garofalo
  */
-class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
+class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : PropertiesRetriever<ColorsProperties> {
 
     /**
      * External properties.
@@ -139,7 +142,6 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
      * @return corresponding hex value
      */
     fun get(key: String): ColorsProperty {
-        // TODO check libraries internal schemes
         return if(key in properties.keys) {
             properties.getProperty(key)
         } else {
@@ -148,11 +150,25 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
     }
 
     /**
+     * Loads [internalProperties], in case [properties] is missing properties.
+     * Internal properties consist of the internal color scheme, along with libraries'.
+     */
+    private fun loadInternalProperties() {
+        internalProperties.load(InputStreamReader(javaClass.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!))
+        libraries.forEach { library ->
+            val scheme = library.colorScheme
+            scheme?.properties?.forEach { key, value ->
+                internalProperties.setProperty("$LIBRARY_COLOR_SCHEME_KEY_PREFIX${library.info.prefix}.$key", value.toString())
+            }
+        }
+    }
+
+    /**
      * Converts values specified by a .properties file to parsed [ColorsProperties].
      * @return parsed properties
      */
     override fun retrieve(): ColorsProperties {
-        internalProperties.load(InputStreamReader(javaClass.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!))
+        loadInternalProperties()
 
         return ColorsProperties(
                 get("whitespace"),
@@ -187,7 +203,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
                         get("op.less"),
                         get("op.less_or_equals")
                 ),
-                stdlib = Libraries.generateColorProperties(properties.keys) { key -> get(key) },
+                stdlib = Libraries.generateColorProperties(internalProperties.keys) { key -> get(key) },
                 properties
         )
     }

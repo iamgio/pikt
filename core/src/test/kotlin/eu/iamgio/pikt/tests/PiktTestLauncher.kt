@@ -36,7 +36,7 @@ class PiktTestLauncher {
         println("Launching test $name")
 
         val propertiesRetriever = PiktPropertiesRetriever()
-        val stdlib = propertiesRetriever.stdlib()
+        val libraries = propertiesRetriever.libraries()
         val jvmCompiler = propertiesRetriever.jvmCompiler()
         propertiesRetriever.checkCompilers(jvmCompiler, null, targets = listOf(CompilationTarget.JVM))
 
@@ -48,10 +48,10 @@ class PiktTestLauncher {
                 source = File(tempDirectory, "ignored"),
                 output = "out",
                 compilationTargets = emptyList(),
-                stdlib = stdlib,
+                libraries = libraries,
                 jvmCompilerPath = jvmCompiler,
                 nativeCompilerPath = null,
-                colors = ColorsPropertiesRetriever().also {
+                colors = ColorsPropertiesRetriever(libraries).also {
                     if(colorSchemeName != null) {
                         it.loadProperties(PiktTest::class.java.getResourceAsStream("/schemes/$colorSchemeName.properties")!!)
                     }

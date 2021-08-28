@@ -15,7 +15,7 @@ import kotlin.system.exitProcess
  * @param source source image file ("-Dsource")
  * @param output output executable file without extension ("-Doutput")
  * @param compilationTargets compilation targets ("-Dtarget")
- * @param stdlib standard library JAR library
+ * @param libraries external JAR libraries, including stdlib
  * @param jvmCompilerPath optional path to the Kotlin/JVM compiler (required if any of [compilationTargets] is [CompilationTarget.JVM]) ("-Djvmcompiler")
  * @param nativeCompilerPath optional path to the Kotlin/Native compiler (required if any of [compilationTargets] is native) ("-Dnativecompiler")
  * @param colors color scheme ("-Dcolors")
@@ -25,7 +25,7 @@ data class PiktProperties(
         val source: File,
         val output: String,
         val compilationTargets: List<CompilationTarget>,
-        val stdlib: JarLibrary,
+        val libraries: List<JarLibrary>,
         val jvmCompilerPath: String?,
         val nativeCompilerPath: String?,
         val colors: ColorsProperties
@@ -64,8 +64,8 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         // Compilation targets
         val targets = compilationTargets()
 
-        // Standard library
-        val stdlib = stdlib()
+        // JAR libraries
+        val libraries = libraries()
 
         val jvmCompilerPath = jvmCompiler()
         val nativeCompilerPath = nativeCompiler()
@@ -73,7 +73,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         checkCompilers(jvmCompilerPath, nativeCompilerPath, targets)
 
         // Color scheme
-        val colorsPropertiesRetriever = colors()
+        val colorsPropertiesRetriever = colors(libraries = libraries)
 
         if(isError) {
             System.err.println("Could not initialize Pikt properties. Exiting.")
@@ -84,7 +84,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
                 source = source!!,
                 output = output,
                 compilationTargets = targets,
-                stdlib = stdlib,
+                libraries = libraries,
                 jvmCompilerPath = jvmCompilerPath,
                 nativeCompilerPath = nativeCompilerPath,
                 colors = colorsPropertiesRetriever.retrieve()
@@ -127,21 +127,24 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     }
 
     /**
-     * Gets the standard library JAR from a property if given, uses ./stdlib.jar otherwise.
+     * Gets the standard library JAR from a property if given, `[./stdlib.jar]` otherwise.
      */
-    fun stdlib(stdlibProperty: String? = System.getProperty("stdlib")): JarLibrary {
-        return JarLibrary(File(stdlibProperty ?: "stdlib.jar").also {
-            if(!it.exists()) {
-                error("stdlib (-Dstdlib) does not exist at $it.")
+    fun libraries(librariesProperty: String? = System.getProperty("lib")): List<JarLibrary> {
+        val rawLibraries = librariesProperty?.split(",") ?: listOf("stdlib.jar")
+        return rawLibraries.map {
+            val file = File(it)
+            if(!file.exists()) {
+                error("Library file $file (-Dlib) does not exist.")
             }
-        })
+            JarLibrary(File(it))
+        }
     }
 
     /**
      * Gets the color scheme from a given property.
      */
-    private fun colors(colorsProperty: String? = System.getProperty("colors")): ColorsPropertiesRetriever {
-        val retriever = ColorsPropertiesRetriever()
+    private fun colors(colorsProperty: String? = System.getProperty("colors"), libraries: List<JarLibrary>): ColorsPropertiesRetriever {
+        val retriever = ColorsPropertiesRetriever(libraries)
         val colorsFile = File("$colorsProperty.properties")
         if(colorsProperty != null && colorsFile.exists()) {
             retriever.loadProperties(FileInputStream(colorsFile))

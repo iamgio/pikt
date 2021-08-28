@@ -19,7 +19,7 @@ class CreateSchemeCommand : Command("-createscheme", { args ->
         exitProcess(-1)
     }
 
-    val stdlib = PiktPropertiesRetriever().stdlib()
+    val libraries = PiktPropertiesRetriever().libraries()
     val file = File("$args.properties")
 
     if(file.exists()) {
@@ -30,7 +30,7 @@ class CreateSchemeCommand : Command("-createscheme", { args ->
 
     try {
         Command::class.java.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!.copyTo(FileOutputStream(file))
-        stdlib.colorScheme?.appendToScheme(file)
+        libraries.forEach { it.colorScheme?.appendToScheme(file) }
     } catch(e: IOException) {
         System.err.println("An error occurred while creating color scheme:")
         e.printStackTrace()
