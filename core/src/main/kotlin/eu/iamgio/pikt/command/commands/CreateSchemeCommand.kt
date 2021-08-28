@@ -2,6 +2,7 @@ package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.properties.INTERNAL_COLORS_SCHEME_PATH
+import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -18,6 +19,7 @@ class CreateSchemeCommand : Command("-createscheme", { args ->
         exitProcess(-1)
     }
 
+    val stdlib = PiktPropertiesRetriever().stdlib()
     val file = File("$args.properties")
 
     if(file.exists()) {
@@ -28,6 +30,7 @@ class CreateSchemeCommand : Command("-createscheme", { args ->
 
     try {
         Command::class.java.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!.copyTo(FileOutputStream(file))
+        stdlib.colorScheme?.appendToScheme(file)
     } catch(e: IOException) {
         System.err.println("An error occurred while creating color scheme:")
         e.printStackTrace()

@@ -99,6 +99,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
      * Imports the standard library functions.
      */
     fun insertStdImport() {
+        // TODO from LibraryInfo
         codeBuilder.insert(0, "import pikt.stdlib.*\n\n")
     }
 

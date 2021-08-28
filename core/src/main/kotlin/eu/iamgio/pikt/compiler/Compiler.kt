@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.compiler
 
 import eu.iamgio.pikt.eval.Evaluator
-import eu.iamgio.pikt.eval.StdLib
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.File
 
@@ -35,8 +34,7 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
         // If the compilation target is the JVM,
         // include libraries into the output JAR file.
         if(target == CompilationTarget.JVM) {
-            StdLib.copyJarLibrary(
-                    libraryJarFile = properties.stdlib,
+            properties.stdlib.extractTo(
                     targetJarFile = File(getOutputFile(target).absolutePath + ".jar")
             ) // TODO external libraries
         }

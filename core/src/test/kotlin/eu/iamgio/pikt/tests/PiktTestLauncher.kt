@@ -1,13 +1,14 @@
 package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.compiler.AbstractInterpreter
+import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.properties.ColorsPropertiesRetriever
 import eu.iamgio.pikt.properties.PiktProperties
+import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.registerStatements
 import java.io.File
-import java.io.FileNotFoundException
 import javax.imageio.ImageIO
 
 
@@ -34,15 +35,14 @@ class PiktTestLauncher {
     fun launch(name: String, colorSchemeName: String? = null): List<String> {
         println("Launching test $name")
 
-        val stdlib = System.getProperty("stdlib")?.let { File(it) }
-                ?: throw NullPointerException("stdlib (-Dstdlib) is not set.")
+        val propertiesRetriever = PiktPropertiesRetriever()
+        val stdlib = propertiesRetriever.stdlib()
+        val jvmCompiler = propertiesRetriever.jvmCompiler()
+        propertiesRetriever.checkCompilers(jvmCompiler, null, targets = listOf(CompilationTarget.JVM))
 
-        if(!stdlib.exists()) {
-            throw FileNotFoundException("stdlib (-Dstdlib) does not exist at $stdlib.")
+        if(propertiesRetriever.isError) {
+            throw IllegalStateException("Failed to initialize Pikt properties.")
         }
-
-        val jvmCompiler = System.getProperty("jvmcompiler")
-                ?: throw NullPointerException("JVM compiler (-Djvmcompiler) is not set.")
 
         val properties = PiktProperties(
                 source = File(tempDirectory, "ignored"),

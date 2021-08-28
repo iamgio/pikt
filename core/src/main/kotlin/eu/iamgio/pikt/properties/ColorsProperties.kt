@@ -1,6 +1,6 @@
 package eu.iamgio.pikt.properties
 
-import eu.iamgio.pikt.eval.StdLib
+import eu.iamgio.pikt.eval.Libraries
 import java.io.InputStream
 import java.io.InputStreamReader
 
@@ -139,6 +139,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
      * @return corresponding hex value
      */
     fun get(key: String): ColorsProperty {
+        // TODO check libraries internal schemes
         return if(key in properties.keys) {
             properties.getProperty(key)
         } else {
@@ -186,7 +187,7 @@ class ColorsPropertiesRetriever : PropertiesRetriever<ColorsProperties> {
                         get("op.less"),
                         get("op.less_or_equals")
                 ),
-                stdlib = StdLib.generateColorProperties(internalProperties.keys) { key -> get(key) },
+                stdlib = Libraries.generateColorProperties(properties.keys) { key -> get(key) },
                 properties
         )
     }

@@ -48,7 +48,7 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
 
         // Check if the reader has been invalidated, append generated code otherwise.
         if(reader.isInvalidated) {
-            evaluator.codeBuilder.append("// Output of ${statement.name} was invalidated. See errors for details.")
+            evaluator.codeBuilder.append(code)//"// Output of ${statement.name} was invalidated. See errors for details.")
             evaluator.invalidate()
         } else {
             evaluator.codeBuilder.append(code)
