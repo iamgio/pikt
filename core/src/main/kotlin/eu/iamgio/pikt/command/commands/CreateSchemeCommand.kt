@@ -3,24 +3,24 @@ package eu.iamgio.pikt.command.commands
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.properties.INTERNAL_COLORS_SCHEME_PATH
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
-import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import kotlin.system.exitProcess
 
 /**
- * Triggered by -createscheme=name argument
+ * Triggered by -createscheme argument
  *
  * @author Giorgio Garofalo
  */
-class CreateSchemeCommand : Command("-createscheme", { args ->
-    if(args == null) {
-        System.err.println("Color scheme path not set. Usage: -createscheme=path.\nExiting.")
+class CreateSchemeCommand : Command("-createscheme", {
+    val retriever = PiktPropertiesRetriever()
+    val file = retriever.colorsFile()
+    val libraries = retriever.libraries()
+
+    if(file == null) {
+        System.err.println("Color scheme (-Dcolors) not set.\nExiting.")
         exitProcess(-1)
     }
-
-    val libraries = PiktPropertiesRetriever().libraries()
-    val file = File("$args.properties")
 
     if(file.exists()) {
         println("Overwriting color scheme.")

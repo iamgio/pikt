@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.schemes.ColorSchemePalette
 import java.io.File
 import java.io.FileInputStream
@@ -8,19 +9,20 @@ import java.io.IOException
 import kotlin.system.exitProcess
 
 /**
- * Triggered by -exportscheme=name argument.
+ * Triggered by -exportscheme argument.
  * Creates a color palette.
  *
  * @author Giorgio Garofalo
  */
-class ExportSchemeCommand : Command("-exportscheme", { args ->
-    if(args == null) {
-        System.err.println("Color scheme path not set. Usage: -exportscheme=path.\nExiting.")
+class ExportSchemeCommand : Command("-exportscheme", {
+    val schemeFile = PiktPropertiesRetriever().colorsFile()
+
+    if(schemeFile == null) {
+        System.err.println("Color scheme (-Dcolors) not set.\nExiting.")
         exitProcess(-1)
     }
 
-    val schemeFile = File("$args.properties")
-    val imageFile = File("$args.png")
+    val imageFile = File("${schemeFile.nameWithoutExtension}.png")
 
     if(imageFile.exists()) {
         println("Overwriting color palette.")

@@ -141,16 +141,21 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     }
 
     /**
+     * File of the optional color scheme file from a given property.
+     */
+    fun colorsFile(colorsProperty: String? = System.getProperty("colors")): File? =
+            colorsProperty?.let { File("$colorsProperty.properties") }
+
+    /**
      * Gets the color scheme from a given property.
      */
-    private fun colors(colorsProperty: String? = System.getProperty("colors"), libraries: List<JarLibrary>): ColorsPropertiesRetriever {
+    private fun colors(colorsFile: File? = colorsFile(), libraries: List<JarLibrary>): ColorsPropertiesRetriever {
         val retriever = ColorsPropertiesRetriever(libraries)
-        val colorsFile = File("$colorsProperty.properties")
-        if(colorsProperty != null && colorsFile.exists()) {
+        if(colorsFile != null && colorsFile.exists()) {
             retriever.loadProperties(FileInputStream(colorsFile))
         } else if(!isError) {
             println("Color scheme not found. Using the default one.")
-            println("Run Pikt with the -createscheme=name argument to create a scheme.\n")
+            println("Run Pikt with the -createscheme argument to create a scheme.\n")
         }
         return retriever
     }

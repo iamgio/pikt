@@ -18,7 +18,7 @@ open class Command(val name: String, val action: (String?) -> Unit, val isSettin
      * Executes the command.
      * @param arguments command arguments
      */
-    fun execute(arguments: String?) {
+    fun execute(arguments: String? = null) {
         action(arguments)
         if(closeOnComplete) exitProcess(0)
     }
