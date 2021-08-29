@@ -40,19 +40,19 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
         handleScopes(scopes, previousStatement, previousPreviousStatement)
         val scope = scopes.last()
 
-        // Generate and append code.
+        // Generate code.
         val code = statement.generate(reader, statement.getSyntax(), StatementData(scope, previousStatement, nextStatement))
 
         // Apply indentation
         evaluator.appendIndentation(scope, statement, previousStatement)
 
-        // Check if the reader has been invalidated, append generated code otherwise.
+        // Check if the reader has been invalidated and append generated code.
         if(reader.isInvalidated) {
-            evaluator.codeBuilder.append(code)//"// Output of ${statement.name} was invalidated. See errors for details.")
+            evaluator.codeBuilder.append("// Output of ${statement.name} was invalidated. See errors for details. ")
+            evaluator.codeBuilder.append("This was generated:\n// ") // Output code gets commented out if invalidated.
             evaluator.invalidate()
-        } else {
-            evaluator.codeBuilder.append(code)
         }
+        evaluator.codeBuilder.append(code)
         evaluator.codeBuilder.append("\n")
     }
 }
