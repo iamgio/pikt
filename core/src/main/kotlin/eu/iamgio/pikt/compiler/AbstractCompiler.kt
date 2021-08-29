@@ -74,6 +74,9 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
         // Create the output folder if absent.
         outputFolder.mkdir()
 
+        // Inject specific variables.
+        evaluator.insertInjections(properties)
+
         // Apply compiler-specific code settings.
         applyEvaluatorSettings()
 
