@@ -130,7 +130,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
      * Gets the standard library JAR from a property if given, `[./stdlib.jar]` otherwise.
      */
     fun libraries(librariesProperty: String? = System.getProperty("lib")): List<JarLibrary> {
-        val rawLibraries = librariesProperty?.split(",") ?: listOf("stdlib.jar")
+        val rawLibraries = librariesProperty?.split(",") ?: listOf("libraries/stdlib.jar")
         return rawLibraries.map {
             val file = File(it)
             if(!file.exists()) {
