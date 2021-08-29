@@ -2,7 +2,7 @@
   <configuration default="false" name="Pikt" type="JetRunConfigurationType">
     <option name="MAIN_CLASS_NAME" value="eu.iamgio.pikt.PiktKt" />
     <module name="core" />
-    <option name="VM_PARAMETERS" value="-Dsource=SET_HERE -Dcolors=colors -Dtargets=jvm -Djvmcompiler=SET_HERE -Dstdlib=../stdlib/target/stdlib.jar" />
+    <option name="VM_PARAMETERS" value="-Dsource=SET_HERE -Dcolors=colors -Dtargets=jvm -Djvmcompiler=SET_HERE -Dlib=../stdlib/target/stdlib.jar" />
     <method v="2">
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="clean install -pl stdlib -am" />
       <option name="Make" enabled="true" />
