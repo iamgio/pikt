@@ -78,7 +78,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
         applyEvaluatorSettings()
 
         // Append the standard library to the output code.
-        evaluator.insertStdImport()
+        evaluator.insertImports(properties.libraries)
 
         // Write the evaluator code to the source file.
         sourceKotlinFile.writeText(evaluator.outputCode)
