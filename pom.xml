@@ -11,6 +11,7 @@
     <modules>
         <module>core</module>
         <module>stdlib</module>
+        <module>image</module>
     </modules>
 
     <properties>

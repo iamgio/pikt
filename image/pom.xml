@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>stdlib</artifactId>
+    <artifactId>image</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -23,10 +23,16 @@
             <version>${kotlin.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>eu.iamgio.pikt</groupId>
+            <artifactId>stdlib</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>stdlib-without-dependencies</finalName>
+        <finalName>image-without-dependencies</finalName>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <plugins>
             <plugin>
@@ -61,7 +67,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>stdlib</finalName>
+                    <finalName>image</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
