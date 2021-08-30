@@ -3,7 +3,7 @@
 > _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
 
 Pikt is a pixel-based, Turing complete esoteric programming language that generates fast and lightweight programs out of aesthetically pleasant image sources.
-Indeed, Pikt's most interesting feature is flexibility: every keyword, statement, function, operator and so on is linked to one - or more - color, which can be easily customized via [color schemes](core/src/main/resources/properties/colors.properties).
+Indeed, Pikt's most interesting feature is flexibility: every keyword, statement, function, operator and so on is linked to one - or more - color, which can be easily customized via [color schemes](core/src/main/resources/colors.properties).
   
 Pikt compiles executables via the Kotlin compiler, therefore compilation for both JVM and native* targets is available, along with runtime interpretation.
 
@@ -60,7 +60,7 @@ The following arguments enable settings that affect Pikt's behavior.
 The following arguments execute tasks and exit when completed.
 
 - `-downloadcompiler=type[,version]` downloads the zipped Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`). `version` defaults to `1.5.10`.
-- `-createscheme` creates a new [color scheme](core/src/main/resources/properties/colors.properties) with default values. It automatically appends library colors too, i.e. as the [stdlib scheme](stdlib/src/main/resources/colors.properties), loaded from `-Dlib`;
+- `-createscheme` creates a new [color scheme](core/src/main/resources/colors.properties) with default values. It automatically appends library colors too, i.e. as the [stdlib scheme](stdlib/src/main/resources/colors.properties), loaded from `-Dlib`;
 - `-exportscheme` generates a useful color palette image out of the given color scheme;
 - `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`). `method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`;
 - `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme;

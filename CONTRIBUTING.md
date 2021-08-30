@@ -26,7 +26,7 @@ fun range(start: Any, end: Any): MutableList<Int> {
 }
 ```
 
-3) Link a unique color to your function or variable from the [default scheme](core/src/main/resources/properties/colors.properties)
+3) Link a unique color to your function or variable from the [default scheme](core/src/main/resources/colors.properties)
    by appending `stdlib.name=YOURHEX`, where `name` should match your function/variable name (case-sensitive) and `YOURHEX` is the hexadecimal color linked to it, without the `#` and uppercase. The color can also be omitted, letting the users choose their own colors.
 
 4) Run `mvn clean install -pl stdlib -am` and test your new feature.
