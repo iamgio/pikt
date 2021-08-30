@@ -1,8 +1,8 @@
 package eu.iamgio.pikt.properties
 
-import eu.iamgio.pikt.eval.Libraries
 import eu.iamgio.pikt.lib.JarLibrary
 import eu.iamgio.pikt.lib.LIBRARY_COLOR_SCHEME_KEY_PREFIX
+import eu.iamgio.pikt.lib.Libraries
 import java.io.InputStream
 import java.io.InputStreamReader
 
