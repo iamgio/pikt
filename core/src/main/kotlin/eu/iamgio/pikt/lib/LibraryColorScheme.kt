@@ -24,7 +24,7 @@ class LibraryColorScheme(private val library: JarLibrary, private val inputStrea
      * @param mainScheme color scheme to append keys to
      */
     fun appendToScheme(mainScheme: File) {
-        val content = StringBuilder("\n# ${library.name}\n")
+        val content = StringBuilder("\n\n# ${library.name}\n")
 
         // Read line-by-line the content of the scheme.
         inputStream.readBytes().decodeToString().lines().forEach {

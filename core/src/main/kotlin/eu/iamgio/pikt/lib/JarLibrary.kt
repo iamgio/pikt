@@ -76,7 +76,8 @@ class JarLibrary(private val libraryJar: ZipFile) {
 
         libraryJar.fileHeaders.filter {
             // Ignored files
-            !it.fileName.startsWith("META-INF") && it.fileName != LIBRARY_COLOR_SCHEME_NAME  && it.fileName != LIBRARY_INFO_NAME
+            it.fileName != LIBRARY_COLOR_SCHEME_NAME && it.fileName != LIBRARY_INFO_NAME
+                    && !it.fileName.startsWith("META-INF") && !it.fileName.endsWith("/")
         }.forEach { header ->
             val inputStream = libraryJar.getInputStream(header)
             targetJar.addStream(inputStream, ZipParameters().apply { fileNameInZip = header.fileName; isIncludeRootFolder = true })

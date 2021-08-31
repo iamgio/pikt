@@ -3,6 +3,7 @@ package eu.iamgio.pikt.eval
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementOptions
 
@@ -98,6 +99,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
 
     /**
      * Imports library functions.
+     * @param libraries loaded libraries
      */
     fun insertImports(libraries: List<JarLibrary>) {
         val imports = buildString {
@@ -107,6 +109,17 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
             append("\n")
         }
         codeBuilder.insert(0, imports)
+    }
+
+    /**
+     * Sets values of variables from the standard library.
+     * @param properties Pikt properties
+     */
+    fun insertInjections(properties: PiktProperties) {
+        // Transforms a string into a code-friendly string value
+        fun String.stringify() = "\"" + replace("\\", "\\\\") + "\""
+
+        codeBuilder.insert(0, "sourceImagePath = ${properties.source.absolutePath.stringify()}\n")
     }
 
     /**

@@ -2,8 +2,8 @@ package eu.iamgio.pikt.image
 
 import eu.iamgio.pikt.GlobalSettings
 import eu.iamgio.pikt.command.commands.CMD_PIXELINFO
-import eu.iamgio.pikt.eval.Libraries
 import eu.iamgio.pikt.expression.Operator
+import eu.iamgio.pikt.lib.Libraries
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.properties.ColorsProperty
 import eu.iamgio.pikt.statement.Statement

@@ -1,6 +1,5 @@
-package eu.iamgio.pikt.eval
+package eu.iamgio.pikt.lib
 
-import eu.iamgio.pikt.lib.LIBRARY_COLOR_SCHEME_KEY_PREFIX
 import eu.iamgio.pikt.properties.ColorsProperty
 
 /**
@@ -22,7 +21,7 @@ object Libraries {
      * @return standard library color scheme
      */
     fun generateColorProperties(keys: Set<Any>, get: (String) -> ColorsProperty): Map<String, ColorsProperty> {
-        this.colors = keys
+        colors = keys
                 .filter { it.toString().startsWith(LIBRARY_COLOR_SCHEME_KEY_PREFIX) }
                 .associate { it.toString().substring(it.toString().lastIndexOf(".") + 1) to get(it.toString()) }
         return colors
