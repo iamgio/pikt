@@ -19,7 +19,7 @@ private const val DOWNLOAD_URL = "https://github.com/JetBrains/kotlin/releases/d
 /**
  * Default Kotlin version to download if not specified.
  */
-private const val DEFAULT_KOTLIN_VERSION = "1.5.10"
+private const val DEFAULT_KOTLIN_VERSION = "1.5.30"
 
 /**
  * Downloads the Kotlin compiler from GitHub releases.
