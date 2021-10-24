@@ -21,6 +21,12 @@ data class ColorsProperty(val colors: List<String>) {
      */
     fun has(hex: String) = hex in colors
 
+    /**
+     * Unconverts [colors] back to a string divided by commas.
+     * @return [colors] as a string
+     */
+    fun stringify() = colors.joinToString(separator = ",")
+
     companion object {
 
         /**

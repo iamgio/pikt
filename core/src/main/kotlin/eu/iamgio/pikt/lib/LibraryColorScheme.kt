@@ -29,7 +29,7 @@ class LibraryColorScheme(private val library: JarLibrary, private val inputStrea
         // Read line-by-line the content of the scheme.
         inputStream.readBytes().decodeToString().lines().forEach {
             // If this line represents a property, add the default prefix + library prefix.
-            val line = if(it.contains("=")) "$LIBRARY_COLOR_SCHEME_KEY_PREFIX${library.info.prefix}.$it" else it
+            val line = if(it.contains("=")) library.info.getFullKey(it) else it
             content.append("\n$line")
         }
         inputStream.close()

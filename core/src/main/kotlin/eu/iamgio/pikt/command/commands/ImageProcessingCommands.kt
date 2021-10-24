@@ -57,7 +57,7 @@ class ImageOutputCommand : Command("-imgoutput", { args ->
 class StandardizeCommand : Command("-standardize", {
     val properties = PiktPropertiesRetriever().retrieve()
     val sourceImage = PiktImage.readImage(properties.source)
-    val finalImage = StandardizeImageProcessing(sourceImage, properties.colors.rawProperties).process()
+    val finalImage = StandardizeImageProcessing(sourceImage, properties.colors.rawProperties, properties.libraries).process()
     val file = save(finalImage, properties.source, tag = "standardized")
 
     println("Standardized image successfully saved as $file.")
@@ -82,7 +82,7 @@ class RecolorizeCommand : Command("-recolorize", { args ->
         RecolorizeImageProcessing.ColorChoiceMethod.FIRST
     }
 
-    val finalImage = RecolorizeImageProcessing(sourceImage, properties.colors.rawProperties, method).process()
+    val finalImage = RecolorizeImageProcessing(sourceImage, properties.colors.rawProperties, properties.libraries, method).process()
     val file = save(finalImage, properties.source, tag = "recolorized")
 
     println("Recolorized image successfully saved as $file.")
@@ -142,7 +142,7 @@ class StandardizeDecompactCommand : Command("-standardecompact", {
     val piktImage = PiktImage(properties)
 
     val image = piktImage.compacter.decompact()
-    val finalImage = StandardizeImageProcessing(image, properties.colors.rawProperties).process()
+    val finalImage = StandardizeImageProcessing(image, properties.colors.rawProperties, properties.libraries).process()
 
     val file = save(finalImage, properties.source, tag = "standardecompacted")
 

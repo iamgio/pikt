@@ -14,6 +14,12 @@ data class LibraryInfo(
         val `package`: String,
         val prefix: String
 ) {
+    /**
+     * @param key property key
+     * @return full property key: <global prefix>.<library prefix>.<key>
+     */
+    fun getFullKey(key: String) = "$LIBRARY_COLOR_SCHEME_KEY_PREFIX${prefix}.$key"
+
     companion object {
         /**
          * Instantiates a [LibraryInfo] from a .properties file.

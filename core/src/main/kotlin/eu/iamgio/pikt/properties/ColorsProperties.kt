@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.properties
 
 import eu.iamgio.pikt.lib.JarLibrary
-import eu.iamgio.pikt.lib.LIBRARY_COLOR_SCHEME_KEY_PREFIX
 import eu.iamgio.pikt.lib.Libraries
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -158,7 +157,7 @@ class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : Prope
         libraries.forEach { library ->
             val scheme = library.colorScheme
             scheme?.properties?.forEach { key, value ->
-                internalProperties.setProperty("$LIBRARY_COLOR_SCHEME_KEY_PREFIX${library.info.prefix}.$key", value.toString())
+                internalProperties.setProperty(library.info.getFullKey(key.toString()), value.toString())
             }
         }
     }

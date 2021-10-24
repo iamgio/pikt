@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.schemes
 
 import eu.iamgio.pikt.image.rgbToHex
+import eu.iamgio.pikt.lib.JarLibrary
 import eu.iamgio.pikt.properties.ColorsProperty
 import eu.iamgio.pikt.properties.INTERNAL_COLORS_SCHEME_PATH
 import java.awt.Color
@@ -12,7 +13,7 @@ import java.util.*
  * @param customScheme custom colors scheme to handle
  * @author Giorgio Garofalo
  */
-sealed class ImageSchemeProcessing(private val image: BufferedImage, private val customScheme: Properties) {
+sealed class ImageSchemeProcessing(private val image: BufferedImage, private val customScheme: Properties, private val libraries: List<JarLibrary>) {
 
     /**
      * @return the schemes as a pair of two maps: the internal one and the custom one
@@ -20,6 +21,11 @@ sealed class ImageSchemeProcessing(private val image: BufferedImage, private val
     protected fun retrieveSchemes(): SchemesPair {
         fun Properties.asMap() = keys.associate { it.toString() to ColorsProperty.of(getProperty(it.toString())) }
         val internalScheme = Properties().also { it.load(javaClass.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!) }
+        libraries.forEach {
+            it.colorScheme?.properties?.asMap()?.forEach { (key, colors) ->
+                internalScheme.setProperty(it.info.getFullKey(key), colors.stringify())
+            }
+        }
         return SchemesPair(internalScheme.asMap(), customScheme.asMap())
     }
 
@@ -57,7 +63,7 @@ data class SchemesPair(val internal: Map<String, ColorsProperty>, val custom: Ma
 /**
  * @see eu.iamgio.pikt.command.commands.StandardizeCommand
  */
-class StandardizeImageProcessing(image: BufferedImage, customScheme: Properties) : ImageSchemeProcessing(image, customScheme) {
+class StandardizeImageProcessing(image: BufferedImage, customScheme: Properties, libraries: List<JarLibrary>) : ImageSchemeProcessing(image, customScheme, libraries) {
 
     override fun process(): BufferedImage {
         // Get data.
@@ -84,7 +90,7 @@ class StandardizeImageProcessing(image: BufferedImage, customScheme: Properties)
 /**
  * @see eu.iamgio.pikt.command.commands.RecolorizeCommand
  */
-class RecolorizeImageProcessing(image: BufferedImage, customScheme: Properties, private val method: ColorChoiceMethod) : ImageSchemeProcessing(image, customScheme) {
+class RecolorizeImageProcessing(image: BufferedImage, customScheme: Properties, libraries: List<JarLibrary>, private val method: ColorChoiceMethod) : ImageSchemeProcessing(image, customScheme, libraries) {
 
     /**
      * Defines the way colors are picked in case a [ColorsProperty] has more than one.
