@@ -20,7 +20,7 @@ _* Native support is limited due to the lack of Kotlin/Native libraries and is b
   <i>A high-performance Fibonacci sequence algorithm.</i>
   <br><br>
   <a href="https://github.com/iAmGio/pikt/wiki/Prime-numbers:-breakdown">
-    <img width="130" src="https://i.imgur.com/LFYekAD.png" alt="Prime numbers" /><br>
+    <img width="130" src="https://i.imgur.com/YKm9bFD.png" alt="Prime numbers" /><br>
   </a>
   <i>A prime numbers algorithm.</i>
   <br><br>

@@ -31,11 +31,13 @@ fun <T> removeFromList(list: MutableList<T>, vararg items: T) {
  * Generates a range of integers from [start] to [end].
  * @param start start number
  * @param end end number
+ * @param forceUp whether the range should be ascending, even if [start] > [end]
  * @return list of integers from [start] to [end]
  */
-fun range(start: Any, end: Any): MutableList<Int> {
+@JvmOverloads
+fun range(start: Any, end: Any, forceUp: Boolean = false): MutableList<Int> {
     if(start is Number && end is Number) {
-        val step = if(end > start) 1 else -1
+        val step = if(end >= start || forceUp.bool) 1 else -1
         return IntProgression.fromClosedRange(start.toInt(), end.toInt(), step).toMutableList()
     }
     throw RuntimeException("range(start, end) called with non-numeric values.")

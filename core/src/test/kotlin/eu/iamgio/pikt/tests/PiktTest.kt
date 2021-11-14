@@ -67,7 +67,7 @@ class PiktTest {
     fun `print prime numbers from 0 to 30`() {
         with(launch("prime_numbers", scheme = "prime_numbers")) {
             assertTrue {
-                size == 12 && last() == "29"
+                size == 10 && first() == "2" && last() == "29"
             }
         }
     }
