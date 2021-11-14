@@ -60,8 +60,8 @@ fun CompilationTarget.getStarterScriptFiles(executableName: String): Array<Start
             "java -jar $executableName.jar".let { command ->
                 arrayOf(
                         StarterScriptFile(StarterScriptFile.Type.SH, command),
-                        StarterScriptFile(StarterScriptFile.Type.COMMAND, command),
-                        StarterScriptFile(StarterScriptFile.Type.BAT, command)
+                        StarterScriptFile(StarterScriptFile.Type.BAT, command),
+                        StarterScriptFile(StarterScriptFile.Type.COMMAND, "java -jar \"\$(dirname \"\$BASH_SOURCE\")\"/$executableName.jar")
                 )
             }
         }
