@@ -23,7 +23,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
      */
     private fun Pixel.checkExistance(message: String = "Unresolved reference: $hexName", suffix: String = "") {
         // Cannot check existance for injected stdlib code
-        if(this !in scope && !this.isStdlibMember) {
+        if(this !in scope && !this.isBoolean && !this.isStdlibMember) {
             reader.error(message + (if(suffix.isNotEmpty()) " " else "") + suffix)
         }
     }
