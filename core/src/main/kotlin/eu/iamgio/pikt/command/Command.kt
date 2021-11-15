@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.command
 
 import eu.iamgio.pikt.GlobalSettings
-import kotlin.system.exitProcess
 
 /**
  * Represents a command that can be executed from program arguments.
@@ -9,10 +8,11 @@ import kotlin.system.exitProcess
  * @param name the name of the command
  * @param action the task to be run. (args) -> task. Arguments can be `null` if not specified.
  * @param isSettingsCommand whether this command affects either [GlobalSettings] or any other behavior.
- * @param closeOnComplete whether the program should close after the command completed its execution.
+ * @param closeOnComplete whether the program should exit after the commands completed their execution.
+ * @see eu.iamgio.pikt.executeCommands
  * @author Giorgio Garofalo
  */
-open class Command(val name: String, val action: (String?) -> Unit, val isSettingsCommand: Boolean = false, var closeOnComplete: Boolean = false) {
+open class Command(val name: String, val action: (String?) -> Unit, val isSettingsCommand: Boolean = false, val closeOnComplete: Boolean = false) {
 
     /**
      * Executes the command.
@@ -20,7 +20,6 @@ open class Command(val name: String, val action: (String?) -> Unit, val isSettin
      */
     fun execute(arguments: String? = null) {
         action(arguments)
-        if(closeOnComplete) exitProcess(0)
     }
 
     override fun toString(): String = "Command[name=$name]"

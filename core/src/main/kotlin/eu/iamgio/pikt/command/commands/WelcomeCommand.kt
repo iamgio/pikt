@@ -16,7 +16,7 @@ class WelcomeCommand : Command("-welcome", {
     // Target color scheme
     System.setProperty("colors", "colors")
 
-    CreateSchemeCommand().also { it.closeOnComplete = false }.execute()
-    ExportSchemeCommand().also { it.closeOnComplete = false }.execute()
+    CreateSchemeCommand().execute()
+    ExportSchemeCommand().execute()
     KotlinCompilerDownloader.download(version = null, KotlinCompilerType.JVM)
 }, closeOnComplete = true)

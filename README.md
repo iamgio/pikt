@@ -69,6 +69,12 @@ The following arguments execute tasks and exit when completed.
 - `-standardecompact` runs `-standardize` + `-decompact`;
 - `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`) and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable file.
 
+> Commands can be chained.
+> For example, `java -Dsource=img.png -Dcolors=scheme -jar pikt.jar -imgoutput=img_new.png -recolorize -compact`
+> applies the `scheme` color scheme to `img.png` and compacts the output to `img_new.png` at the same time.
+> 
+> It is possible to overwrite the source image, albeit highly discouraged.
+
 ## Building
 The downloadable archive is already built off the latest GitHub commit.
 If you wish to build it yourself from source just run `mvn clean install`.

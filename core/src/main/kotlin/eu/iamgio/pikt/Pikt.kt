@@ -9,6 +9,7 @@ import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.statement.Statements
 import eu.iamgio.pikt.statement.statements.*
+import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
     // Record when Pikt was started.
@@ -67,12 +68,16 @@ fun main(args: Array<String>) {
  * @param args program arguments
  */
 private fun executeCommands(args: Array<String>) {
+    var exit = false
     args.map {
         val split = Commands.splitCommandLineArgument(it) // Split raw program arguments. cmd=args -> [cmd, args]; cmd -> [cmd, null]
         Commands.getCommand(split.first) to split.second  // Command linked to the first string paired to its arguments.
     }.sortedByDescending { it.first?.isSettingsCommand }.forEach { (command, args) -> // Sort settings first.
         command?.execute(args)                            // Execute the command.
+        if(command?.closeOnComplete == true) exit = true  // If at least one command has a 'close on complete' property,
+                                                          // the program exits after the other commands are evaluated.
     }
+    if(exit) exitProcess(0)
 }
 
 /**
