@@ -63,7 +63,7 @@ class PiktTestLauncher {
         val image = PiktImage(ImageIO.read(PiktTest::class.java.getResourceAsStream("/$name.png")), properties.colors)
 
         val evaluator = Evaluator()
-        evaluator.evaluate(image)
+        evaluator.evaluate(image, properties.libraries)
 
         println(evaluator.outputCode)
 

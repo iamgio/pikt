@@ -32,7 +32,7 @@ fun main(args: Array<String>) {
 
     // Evaluate the image pixel-by-pixel
     val evaluator = Evaluator()
-    evaluator.evaluate(image)
+    evaluator.evaluate(image, properties.libraries)
 
     // Print Kotlin output if -printoutput is enabled.
     if(CMD_PRINTOUTPUT in GlobalSettings) {

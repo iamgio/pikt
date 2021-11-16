@@ -67,7 +67,7 @@ class SetVariableStatement : Statement() {
         if(!reader.isInvalidated) {
             when(isFunction) {
                 // If this is a method declaration, wait for the next lambda to be evaluated and get the amount of arguments
-                true -> data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, args.size)) }
+                true -> data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, FunctionMember.Overload(args.size))) }
                 false -> data.scope.push(name, VariableMember(name))
             }
         }

@@ -167,8 +167,11 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
 
         if(name != null) {
             scope[name]?.let { member ->
-                if(member is FunctionMember && member.argumentsSize != args.size) {
-                    reader.error("Function ${name.hexName} called with ${args.size} arguments (${args.joinToString { it.hexName }}), but ${member.argumentsSize} expected.")
+                if(member is FunctionMember && !member.isApplicableFor(args.size)) {
+                    val functionName = (if(member.isLibraryFunction) "${member.name} " else "") + name.hexName
+                    val passedArguments = if(args.isNotEmpty()) " (${args.joinToString { it.hexName }})" else ""
+                    val argumentsSize = member.overloads.joinToString(" or ") { it.argumentsSize.toString() }
+                    reader.error("Function $functionName called with ${args.size} arguments$passedArguments, but $argumentsSize expected.")
                 }
             }
         }

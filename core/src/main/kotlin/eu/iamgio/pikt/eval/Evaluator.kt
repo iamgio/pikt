@@ -36,11 +36,12 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
 
     /**
      * Evaluates [image] source via subdivided pixel readers.
-     * @param image pikt image
+     * @param image Pikt image
+     * @param libraries program libraries
      * @see outputCode
      * @see QueuedStatement.eval
      */
-    fun evaluate(image: PiktImage) {
+    fun evaluate(image: PiktImage, libraries: List<JarLibrary>) {
         val readers = image.reader().subdivide()
 
         val statements = mutableListOf<QueuedStatement>()
@@ -53,7 +54,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
         }
 
         // Evaluate queued statements
-        statements.eval(this)
+        statements.eval(this, Scope.buildMainScope(libraries))
     }
 
     /**

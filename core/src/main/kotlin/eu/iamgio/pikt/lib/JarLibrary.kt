@@ -84,4 +84,18 @@ class JarLibrary(private val libraryJar: ZipFile) {
             inputStream.close()
         }
     }
+
+    /**
+     * Scans the JAR for .class files.
+     * @return a list of reflection-ready classes within this JAR
+     */
+    fun getClasses(): List<String> =
+            libraryJar.fileHeaders.filter { it.fileName.endsWith(".class") }.map {
+                it.fileName.replace("/", ".").removeSuffix(".class")
+            }
+
+    /**
+     * @return a new reflection helper for this library
+     */
+    fun reflectionHelper() = LibraryReflectionHelper(this)
 }

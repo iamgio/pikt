@@ -1,6 +1,8 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.Pixel
+import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.lib.Libraries
 
 /**
  * A scope that defines which members other statement can access.
@@ -30,12 +32,21 @@ data class Scope(private val parent: Scope?, private val ownMembers: MutableMap<
         get() = parent?.level?.plus(1) ?: 0
 
     /**
-     * Pushes a member to this scope.
+     * Pushes a member, linked by a [Pixel], to this scope.
      * @param pixel pixel to register as a member
      * @param member scope member
      */
     fun push(pixel: Pixel, member: ScopeMember) {
         ownMembers[pixel.id] = member
+    }
+
+    /**
+     * Pushes a member, linked by a hexadecimal color, to this scope.
+     * @param hex color to register as a member
+     * @param member scope member
+     */
+    fun push(hex: String, member: ScopeMember) {
+        ownMembers[hex] = member
     }
 
     /**
@@ -45,8 +56,40 @@ data class Scope(private val parent: Scope?, private val ownMembers: MutableMap<
     operator fun get(pixel: Pixel): ScopeMember? = allMembers[pixel.id]
 
     /**
+     * @param hex hexadecimal color linked to a member
+     * @return member linked to [hex] if it were registered within this scope, `null` otherwise
+     */
+    operator fun get(hex: String): ScopeMember? = allMembers[hex]
+
+    /**
      * @param pixel pixel to check existance for
      * @return whether [pixel] was registered within this scope
      */
     operator fun contains(pixel: Pixel): Boolean = get(pixel) != null
+
+    companion object {
+        /**
+         * Builds the main scope filled with library functions.
+         * @param libraries supplied libraries
+         * @return the main scope of the program
+         */
+        fun buildMainScope(libraries: List<JarLibrary>): Scope {
+            val scope = Scope(parent = null)
+            libraries.forEach { library ->
+                // We look up available classes and functions from libraries.
+                val helper = library.reflectionHelper()
+                helper.getAllMethods().forEach { method ->
+                    // The colors of the function are retrieved.
+                    Libraries.getColorsFor(method.name)?.colors?.forEach { hex ->
+                        // The linked function member is created or updated.
+                        val function = scope[hex] as? FunctionMember ?: FunctionMember(method.name, mutableListOf(), isLibraryFunction = true)
+                        function.overloads += helper.createFunctionOverload(method)
+                        // The function is pushed to the scope.
+                        scope.push(hex, function)
+                    }
+                }
+            }
+            return scope
+        }
+    }
 }

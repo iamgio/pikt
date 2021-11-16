@@ -29,9 +29,17 @@ object Libraries {
 
     /**
      * @param hex hexadecimal color to check
-     * @return name of the stdlib member linked to [hex] color if exists. `null` otherwise
+     * @return name of the library member linked to [hex] color if exists. `null` otherwise
      */
     fun getMemberName(hex: String): String? {
         return colors.entries.firstOrNull { it.value.has(hex) }?.key
+    }
+
+    /**
+     * @param name library member name to check
+     * @return colors of the library member linked saved as [name] if exists. `null` otherwise
+     */
+    fun getColorsFor(name: String): ColorsProperty? {
+        return colors.entries.firstOrNull { it.key == name}?.value
     }
 }

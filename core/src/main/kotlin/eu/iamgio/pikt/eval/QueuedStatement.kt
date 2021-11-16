@@ -61,8 +61,8 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
  * Evaluates and generates code for each [QueuedStatement].
  * @param evaluator root evaluator
  */
-fun List<QueuedStatement>.eval(evaluator: Evaluator) {
-    val scopes = mutableListOf(Scope(parent = null))
+fun List<QueuedStatement>.eval(evaluator: Evaluator, mainScope: Scope) {
+    val scopes = mutableListOf(mainScope)
 
     forEachIndexed { index, queued ->
         val previousStatement = elementAtOrNull(index - 1)?.statement
