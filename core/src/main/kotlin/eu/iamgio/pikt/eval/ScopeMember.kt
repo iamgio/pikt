@@ -43,7 +43,7 @@ data class FunctionMember(override val name: String, val overloads: MutableList<
      * @param argumentsSize amount of arguments from method call
      * @return whether the passed amount of arguments matches the definition
      */
-    fun isApplicableFor(argumentsSize: Int) = overloads.all { it.argumentsSize == argumentsSize || it.hasVarArgs }
+    fun isApplicableFor(argumentsSize: Int) = overloads.any { it.argumentsSize == argumentsSize || it.hasVarArgs }
 
     /**
      * An overload of this function.
