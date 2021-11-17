@@ -108,15 +108,15 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         get() = operator != null
 
     /**
-     * Name of the standard library member linked to this pixel if exists. `null` otherwise.
+     * Name of the library member linked to this pixel if exists. `null` otherwise.
      */
-    private val stdlibMemberName: String? by lazy { Libraries.getMemberName(hex) }
+    private val libraryMemberName: String? by lazy { Libraries.getMemberName(hex) }
 
     /**
-     * Whether this pixel is linked to a standard library member.
+     * Whether this pixel is linked to a library member/function.
      */
-    val isStdlibMember: Boolean
-        get() = stdlibMemberName != null
+    val isLibraryMember: Boolean
+        get() = libraryMemberName != null
 
     /**
      * Pixel as a Kotlin output content.
@@ -124,7 +124,7 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
     val codeContent: String by lazy {
         when {
             isBoolean -> booleanContent
-            isStdlibMember -> stdlibMemberName!!
+            isLibraryMember -> libraryMemberName!!
             else -> "`$hex`"
         }
     }

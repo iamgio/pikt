@@ -17,7 +17,7 @@ const val INTERNAL_COLORS_SCHEME_PATH = "/colors.properties"
  * @param lambda lambda/code blocks open/close values
  * @param boolean boolean values
  * @param operators operators
- * @param stdlib members (functions, variables, etc.) of the standard library as a name=hex map to be dynamically replaced
+ * @param libraries members (functions, variables, etc.) of external libraries as a name=hex map to be dynamically replaced
  * @param rawProperties raw Java properties data
  * @see ColorsProperties
  * @author Giorgio Garofalo
@@ -28,7 +28,7 @@ data class ColorsProperties(
         val lambda: LambdaColorsProperties,
         val boolean: BooleanColorsProperties,
         val operators: OperatorColorsProperties,
-        val stdlib: Map<String, ColorsProperty>,
+        val libraries: Map<String, ColorsProperty>,
         val rawProperties: java.util.Properties
 ) : Properties
 
@@ -202,7 +202,7 @@ class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : Prope
                         get("op.less"),
                         get("op.less_or_equals")
                 ),
-                stdlib = Libraries.generateColorProperties(internalProperties.keys) { key -> get(key) },
+                libraries = Libraries.generateColorProperties(internalProperties.keys) { key -> get(key) },
                 properties
         )
     }

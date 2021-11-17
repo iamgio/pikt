@@ -22,8 +22,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
      * @param suffix text appended to [message]
      */
     private fun Pixel.checkExistance(message: String = "Unresolved reference: $hexName", suffix: String = "") {
-        // Cannot check existance for injected stdlib code
-        if(this !in scope && !this.isBoolean && !this.isStdlibMember) {
+        if(this !in scope && !this.isBoolean && !this.isLibraryMember) {
             reader.error(message + (if(suffix.isNotEmpty()) " " else "") + suffix)
         }
     }
@@ -35,7 +34,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
      */
     private fun Pixel.checkType(typeCheck: (ScopeMember) -> Boolean, message: String) {
         val memberType = scope[this]
-        if(memberType != null && !this.isStdlibMember && !typeCheck(memberType)) {
+        if(memberType != null && !this.isLibraryMember && !typeCheck(memberType)) {
             reader.error(message)
         }
     }
