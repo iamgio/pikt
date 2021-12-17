@@ -6,7 +6,7 @@
 <p align="center">
   <br>
   <a href="https://www.youtube.com/watch?v=Wr7RJqqrw7s" target="_blank">
-    <img src="https://i.imgur.com/OMHSZJW.png" alt="Video" /><br>
+    <img width="50%" src="https://i.imgur.com/OMHSZJW.png" alt="Video" /><br>
   </a>
 </p>
 
