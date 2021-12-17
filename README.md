@@ -2,6 +2,14 @@
 
 > _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
 
+<!--suppress HtmlDeprecatedAttribute -->
+<p align="center">
+  <br>
+  <a href="https://www.youtube.com/watch?v=Wr7RJqqrw7s">
+    <img height="150" src="https://i.imgur.com/OMHSZJW.png" alt="Video" /><br>
+  </a>
+</p>
+
 Pikt is a pixel-based, Turing complete esoteric programming language that generates fast and lightweight programs out of aesthetically pleasant image sources.
 Indeed, Pikt's most interesting feature is flexibility: every keyword, statement, function, operator and so on is linked to one - or more - color, which can be easily customized via [color schemes](core/src/main/resources/colors.properties).
   
@@ -94,6 +102,7 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] Operators (equality, logical and arithmetic)
 - [x] Loops (`for-each` + `range` function for indexed `for` loop)
 - [ ] Try/catch
+- [ ] Structs
 - [ ] [Standard library](stdlib) (2%, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
 - [x] External libraries support (following certain standards, wiki in progress)
 
