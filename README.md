@@ -5,9 +5,10 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <p align="center">
   <br>
-  <a href="https://www.youtube.com/watch?v=Wr7RJqqrw7s" target="_blank">
-    <img width="50%" src="https://i.imgur.com/OMHSZJW.png" alt="Video" /><br>
+  <a href="https://www.youtube.com/watch?v=Wr7RJqqrw7s">
+    <img width="55%" src="https://i.imgur.com/rYscSbe.png" alt="Video" /><br>
   </a>
+  <br>
 </p>
 
 Pikt is a pixel-based, Turing complete esoteric programming language that generates fast and lightweight programs out of aesthetically pleasant image sources.
