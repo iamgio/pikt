@@ -2,6 +2,7 @@ package eu.iamgio.pikt.statement.statements
 
 import eu.iamgio.pikt.eval.ConstantMember
 import eu.iamgio.pikt.eval.FunctionMember
+import eu.iamgio.pikt.eval.StructMember
 import eu.iamgio.pikt.eval.VariableMember
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
@@ -43,6 +44,10 @@ class SetVariableStatement : Statement() {
             is VariableMember -> {}
             is ConstantMember -> {
                 reader.error("${name.hexName} is constant and its value cannot be set.", referenceToFirstPixel = true)
+                return ""
+            }
+            is StructMember -> {
+                reader.error("${name.hexName} is already linked to a struct.", referenceToFirstPixel = true)
                 return ""
             }
             is FunctionMember -> {

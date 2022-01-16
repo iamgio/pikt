@@ -48,6 +48,26 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
     }
 
     /**
+     * Reads the next pixels as a sequence.
+     * A sequence is built by pixels separated by a dot operator.
+     * @return next pixel sequence
+     */
+    fun nextSequence(): PixelSequence {
+        val sequence = mutableListOf<Pixel>()
+        whileNotNull { pixel ->
+            if(pixel.isDot) {
+                val next = next()
+                if(next != null) {
+                    sequence += next
+                } else {
+                    error("Expected pixel after dot operator.")
+                }
+            } else sequence += pixel
+        }
+        return PixelSequence(sequence.toTypedArray())
+    }
+
+    /**
      * Executes a task for every non-null pixel
      * @param task task to be executed if the current pixel is not `null`.
      */

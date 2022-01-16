@@ -3,6 +3,7 @@ package eu.iamgio.pikt.expression
 import eu.iamgio.pikt.eval.FunctionMember
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.eval.ScopeMember
+import eu.iamgio.pikt.eval.StructMember
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 
@@ -54,6 +55,11 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
                 type == ExpressionType.COMPLEX -> {
                     type
                 }
+                // If there is only one pixel and it is a struct,
+                // the expression is a struct initialization
+                type == null && scope[pixel] is StructMember -> {
+                    ExpressionType.STRUCT_INIT
+                }
                 // If the expression is not a string and none of the above match, the expression is complex.
                 // Complex expressions need additional evaluations.
                 pixel.isOperator -> {
@@ -97,6 +103,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
             ExpressionType.NUMBER -> nextString(requireNumber = true)
             ExpressionType.BOOLEAN -> reader.next()?.booleanContent ?: "false"
             ExpressionType.FUNCTION_CALL -> nextFunctionCall()
+            ExpressionType.STRUCT_INIT -> nextStructInit()
             ExpressionType.COMPLEX -> nextComplex()
         }
 
@@ -177,6 +184,29 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
 
         // Return empty string if the method has no name and no arguments.
         return builder.toString().let { if(it == "()") "" else it }
+    }
+
+    /**
+     * Reads a struct initialization: one pixel matching struct color.
+     * @return following struct initialization
+     */
+    private fun nextStructInit(): String {
+        val struct = reader.next()
+        if(struct == null) {
+            reader.error("Null struct initialization.")
+            return ""
+        }
+
+        if(scope[struct] !is StructMember) {
+            reader.error("Attempted initialization of invalid struct ${struct.hexName}.")
+            return ""
+        }
+
+        // Return StructName() with zero passed for each argument by default.
+
+        val builder = StringBuilder()
+        builder.append(struct).append("(").append(")")
+        return builder.toString()
     }
 
     /**

@@ -39,6 +39,7 @@ data class ColorsProperties(
  * @param functionCall call a function/method without catching its output value
  * @param if run code if a certain condition is verified
  * @param else runs if the previous if statement did not run
+ * @param struct creates a struct
  * @param forEach runs a task for every element of the collection
  * @param print prints an expression or value out
  * @author Giorgio Garofalo
@@ -48,6 +49,7 @@ data class KeywordsColorsProperties(
         val functionCall: ColorsProperty,
         val `if`: ColorsProperty,
         val `else`: ColorsProperty,
+        val struct: ColorsProperty,
         val forEach: ColorsProperty,
         val print: ColorsProperty
 )
@@ -79,6 +81,7 @@ data class LambdaColorsProperties(
 /**
  * Color scheme for operators.
  *
+ * @param dot .
  * @param plus +
  * @param minus -
  * @param times *
@@ -95,6 +98,7 @@ data class LambdaColorsProperties(
  * @author Giorgio Garofalo
  */
 data class OperatorColorsProperties(
+        val dot: ColorsProperty,
         val plus: ColorsProperty,
         val minus: ColorsProperty,
         val times: ColorsProperty,
@@ -176,6 +180,7 @@ class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : Prope
                         get("funcall"),
                         get("if"),
                         get("else"),
+                        get("struct"),
                         get("foreach"),
                         get("print")
                 ),
@@ -188,6 +193,7 @@ class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : Prope
                         get("bool.false")
                 ),
                 OperatorColorsProperties(
+                        get("op.dot"),
                         get("op.plus"),
                         get("op.minus"),
                         get("op.times"),

@@ -31,6 +31,11 @@ enum class ExpressionType {
     FUNCTION_CALL,
 
     /**
+     * A struct initialization, represented by a pixel matching the struct color.
+     */
+    STRUCT_INIT,
+
+    /**
      * A mix of the previous expressions containing [Operator]s.
      */
     COMPLEX

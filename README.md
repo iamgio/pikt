@@ -103,7 +103,7 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] Operators (equality, logical and arithmetic)
 - [x] Loops (`for-each` + `range` function for indexed `for` loop)
 - [ ] Try/catch
-- [ ] Structs
+- [ ] Structs (WIP)
 - [ ] [Standard library](stdlib) (2%, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
 - [x] External libraries support (following certain standards, wiki in progress)
 

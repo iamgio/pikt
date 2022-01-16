@@ -68,10 +68,17 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         get() = isCharacter && color.red >= '0'.code && color.red <= '9'.code
 
     /**
-     * Whether this pixel is a boolean value
+     * Whether this pixel is a boolean value.
      */
     val isBoolean
         get() = matches(colors.boolean.boolTrue) || matches(colors.boolean.boolFalse)
+
+    /**
+     * Whether this pixel is a dot operator (used to access struct data).
+     * @see PixelReader.nextSequence
+     */
+    val isDot
+        get() = matches(colors.operators.dot)
 
     /**
      * Character linked to grayscale pixels if [isCharacter] is `true`.
@@ -136,33 +143,4 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         // Appends commented pixel coordinates if -pixelinfo is enabled.
         if(CMD_PIXELINFO in GlobalSettings) "$this /*$x,$y*/ " else this
     }
-}
-
-/**
- * Represents a collection of [Pixel]s
- *
- * @author Giorgio Garofalo
- */
-class PixelArray(private val pixels: Array<Pixel>) {
-
-    /**
-     * Size of the array
-     */
-    val size: Int
-        get() = pixels.size
-
-    /**
-     * Creates a copy of this array sliced from [start] to [end].
-     * @return sliced copy of this array
-     */
-    fun sliced(start: Int, end: Int): PixelArray = PixelArray(pixels.sliceArray(IntRange(start, end)))
-
-    /**
-     * Gets a pixel from the array from given index.
-     * @param index item index
-     * @return pixel by index
-     */
-    operator fun get(index: Int): Pixel = pixels[index]
-
-    override fun toString() = "PixelArray(size=${pixels.size}, pixels=[${pixels.joinToString()}])"
 }

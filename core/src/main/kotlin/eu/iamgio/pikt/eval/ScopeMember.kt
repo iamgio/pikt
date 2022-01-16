@@ -30,6 +30,16 @@ data class ConstantMember(override val name: String) : ScopeMember {
 }
 
 /**
+ * A member linked to a struct.
+ *
+ * @param name Kotlin name of the struct
+ * @param overload arguments information
+ */
+data class StructMember(override val name: String, val overload: FunctionMember.Overload) : ScopeMember {
+    constructor(pixel: Pixel, overload: FunctionMember.Overload) : this(pixel.codeContent, overload)
+}
+
+/**
  * A member linked to a function.
  *
  * @param name Kotlin name of the function
