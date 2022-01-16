@@ -10,6 +10,14 @@ fun <T> listOf(vararg items: T): MutableList<T> {
 }
 
 /**
+ * Creates an empty list.
+ * @return empty list of objects
+ */
+fun listOf(): MutableList<Any> {
+    return mutableListOf()
+}
+
+/**
  * Adds values to a [list].
  * @param list list to be affected
  * @param items items to be added
