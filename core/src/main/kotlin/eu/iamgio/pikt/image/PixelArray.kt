@@ -48,5 +48,11 @@ class PixelSequence(pixels: Array<Pixel>) : PixelArray(pixels) {
     val last: Pixel?
         get() = pixels.lastOrNull()
 
+    /**
+     * Whether this sequence contains nested data.
+     */
+    val isNested: Boolean
+        get() = size != 1
+
     override fun toString() = pixels.joinToString(separator = ".")
 }

@@ -29,8 +29,11 @@ class SetVariableStatement : Statement() {
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
         val builder = StringBuilder()
 
+        val sequence = reader.nextSequence()
+        val isNested = sequence.isNested
+
         // Name
-        val name = reader.next()
+        val name = sequence.last
         if(name == null) {
             syntax.mark("name", StatementSyntax.Mark.WRONG)
             reader.error("Variable has no name.", syntax)
@@ -39,7 +42,8 @@ class SetVariableStatement : Statement() {
         syntax.mark("name", StatementSyntax.Mark.CORRECT)
 
         // Check if the variable were already registered
-        when(data.scope[name]) {
+        // TODO check nested existance
+        if(!isNested) when(data.scope[name]) {
             null -> builder.append("var ") // Variable is not registered
             is VariableMember -> {}
             is ConstantMember -> {
@@ -69,15 +73,16 @@ class SetVariableStatement : Statement() {
         syntax.mark("value", StatementSyntax.Mark.CORRECT)
 
         // Push variable to the scope
-        if(!reader.isInvalidated) {
-            when(isFunction) {
-                // If this is a method declaration, wait for the next lambda to be evaluated and get the amount of arguments
-                true -> data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, FunctionMember.Overload(args.size))) }
-                false -> data.scope.push(name, VariableMember(name))
+        if(!reader.isInvalidated && !isNested) {
+            if(isFunction) {
+                // If this is a method declaration, wait for the next lambda to be evaluated and get the amount of arguments.
+                data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, FunctionMember.Overload(args.size))) }
+            } else {
+                data.scope.push(name, VariableMember(name))
             }
         }
 
         // Output: [var] name = value
-        return builder.append(name).append(" = ").append(value.code).toString()
+        return builder.append(sequence).append(" = ").append(value.code).toString()
     }
 }
