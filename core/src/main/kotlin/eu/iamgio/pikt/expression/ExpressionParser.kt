@@ -147,11 +147,11 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         val args = mutableListOf<Pixel>()
 
         // Function name
-        val name = reader.next()?.also { name ->
-            name.checkExistance()
-            builder.append(name)
-        }
+        val sequence = reader.nextSequence()
+        val name = sequence.last
+        sequence.first?.checkExistance()
 
+        builder.append(sequence)
         builder.append("(")
 
         // Function arguments

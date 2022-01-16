@@ -54,15 +54,19 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
      */
     fun nextSequence(): PixelSequence {
         val sequence = mutableListOf<Pixel>()
-        whileNotNull { pixel ->
-            if(pixel.isDot) {
-                val next = next()
-                if(next != null) {
-                    sequence += next
-                } else {
-                    error("Expected pixel after dot operator.")
-                }
-            } else sequence += pixel
+        while(true) {
+            val pixel = next()
+            if(pixel == null) {
+                if(sequence.isNotEmpty()) error("Expected pixel after dot operator.")
+                break
+            }
+            val next = next()
+            sequence += pixel
+            if(next == null) break
+            if(!next.isDot) {
+                index--
+                break
+            }
         }
         return PixelSequence(sequence.toTypedArray())
     }

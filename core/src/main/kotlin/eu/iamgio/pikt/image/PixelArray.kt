@@ -36,6 +36,15 @@ open class PixelArray(protected val pixels: Array<Pixel>) {
  */
 class PixelSequence(pixels: Array<Pixel>) : PixelArray(pixels) {
 
+    /**
+     * The first pixel of the sequence
+     */
+    val first: Pixel?
+        get() = pixels.firstOrNull()
+
+    /**
+     * The last pixel of the sequence
+     */
     val last: Pixel?
         get() = pixels.lastOrNull()
 
