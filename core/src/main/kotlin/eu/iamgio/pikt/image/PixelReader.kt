@@ -86,7 +86,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
      * Creates a copy of this reader sliced from [start] to [end].
      * @return sliced copy of this reader
      */
-    fun sliced(start: Int, end: Int, statement: Statement? = null) = PixelReader(pixels.sliced(start, end), colors, statement)
+    fun sliced(start: Int, end: Int, statement: Statement? = null) = PixelReader(pixels.sliced(start, if(end < size) end else size - 1), colors, statement)
 
     /**
      * Subdivides this reader into one minor reader for each statement.
