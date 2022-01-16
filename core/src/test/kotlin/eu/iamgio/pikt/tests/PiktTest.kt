@@ -46,6 +46,18 @@ class PiktTest {
     }
 
     @Test
+    fun `sum two struct fields`() {
+        // This test creates a struct with 3 parameters.
+        // The first one is set to 1, the second one is set to 2.
+        // The third one is the sum of the other two.
+        with(launch("structs_sum")) {
+            assertTrue {
+                equals(listOf("1", "2", "3"))
+            }
+        }
+    }
+
+    @Test
     fun `print numbers from 0 to 10`() {
         with(launch("range_foreach")) {
             assertTrue {
