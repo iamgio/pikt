@@ -1,14 +1,20 @@
 <p align="center">
-    <img width="80%" src="https://i.imgur.com/1c7IMHn.png" alt="Banner" />
+    <img width="60%" src="https://i.imgur.com/1c7IMHn.png" alt="Banner" />
     <br>
     <a href="https://nightly.link/iAmGio/pikt/workflows/maven/master/pikt.zip">
-        <img src="https://img.shields.io/badge/Download%20latest-snapshot-brightgreen.svg" alt="Download">
+        <img width="25%" src="https://img.shields.io/badge/Download%20latest-snapshot-brightgreen.svg" alt="Download">
     </a>
 </p>
+<br>
+
+> _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
 
 ---
 
-> _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
+<br>
+
+Pikt is a pixel-based, Turing complete esoteric programming language that generates fast and lightweight programs out of aesthetically pleasant image sources.
+Indeed, Pikt's most interesting feature is flexibility: every keyword, statement, function, operator and so on is linked to one - or more - color, which can be easily customized via [color schemes](core/src/main/resources/colors.properties).
 
 <!--suppress HtmlDeprecatedAttribute -->
 <p align="center">
@@ -18,9 +24,6 @@
   </a>
   <br>
 </p>
-
-Pikt is a pixel-based, Turing complete esoteric programming language that generates fast and lightweight programs out of aesthetically pleasant image sources.
-Indeed, Pikt's most interesting feature is flexibility: every keyword, statement, function, operator and so on is linked to one - or more - color, which can be easily customized via [color schemes](core/src/main/resources/colors.properties).
   
 Pikt compiles executables via the Kotlin compiler, therefore compilation for both JVM and native* targets is available, along with runtime interpretation.
 
