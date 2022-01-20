@@ -1,4 +1,9 @@
-# Pikt [![Download](https://img.shields.io/badge/Download%20latest-snapshot-blue.svg)](https://nightly.link/iAmGio/pikt/workflows/maven/master/pikt.zip)
+<p align="center">
+    <img width="80%" src="https://i.imgur.com/1c7IMHn.png" alt="Banner" />
+    <a href="https://nightly.link/iAmGio/pikt/workflows/maven/master/pikt.zip">
+        <img src="https://img.shields.io/badge/Download%20latest-snapshot-brightgreen.svg" alt="Download">
+    </a>
+</p>
 
 > _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
 
