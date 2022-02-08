@@ -52,6 +52,14 @@ _* Native support is limited due to the lack of Kotlin/Native libraries and is b
 These examples use [custom color schemes](core/src/test/resources/schemes).  
 Click on the examples for a breakdown/explanation.
 
+## Table of contents
+
+- [Properties](#properties)
+- [Settings arguments](#properties)
+- [Command arguments](#command-arguments)
+- [Building](#building)
+- [Roadmap](#roadmap)
+- [NFT & donations](#nft--donations)
 
 ## Properties
 The following properties define parameters needed by Pikt.  
@@ -124,11 +132,10 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] Error handling
 - [ ] Runtime information
 
-## Pikt Lab
+## NFT & donations
+The example programs you see above are available as NFT's on the OpenSea platform for 0.001 ETH each (about $3) without any gas fee.  
+If you like this project you might consider buying one as a way to support my work, and you will get a cheap NFT on the other hand.  
+**[Link](https://opensea.io/collection/pikt)**
 
-I'm working on an IDE for Pikt called [Pikt Lab](https://github.com/iAmGio/pikt-lab), check it out!  
-Meanwhile, here are some mockups:
-
-![Lab-Landing](https://i.imgur.com/oylceCd.png)
-
-![Lab-Workspace](https://i.imgur.com/wlj3gpg.png)
+Alternatively, if you fancy a traditional donation, you can find me on [PayPal](https://www.paypal.com/paypalme/giogar).
+Thank you in advance!
