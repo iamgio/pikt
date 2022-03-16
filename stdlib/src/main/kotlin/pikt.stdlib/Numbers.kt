@@ -5,7 +5,7 @@ package pikt.stdlib
  * @param value string input
  * @return [value] to the corresponding integer value, or `null` if it is not an integer.
  */
-fun toInt(value: Any): Int? = value.toString().toIntOrNull()
+fun toInt(value: Any?): Int? = if(value is Number) value.toInt() else value?.toString()?.toIntOrNull()
 
 /**
  * Enables generic number + number operation.
