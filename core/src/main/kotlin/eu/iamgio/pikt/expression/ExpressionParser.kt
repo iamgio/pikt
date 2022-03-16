@@ -144,25 +144,30 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
      */
     private fun nextFunctionCall(): String {
         val builder = StringBuilder()
-        val args = mutableListOf<Pixel>()
 
         // Function name
         val sequence = reader.nextSequence()
         val name = sequence.last
-        sequence.first?.checkExistance()
 
         builder.append(sequence)
         builder.append("(")
 
-        // Function arguments
-        reader.whileNotNull { pixel ->
-            pixel.checkExistance(suffix = "(in function arguments)")
-            builder.append(pixel).append("()").append(",")
-            args += pixel
-        }
+        val functionMember = sequence.first?.also { it.checkExistance() }?.let { scope[it] as? FunctionMember }
+        val args = mutableListOf<String>()
 
-        if(builder.endsWith(",")) {
-            builder.setLength(builder.length - 1)
+        // Read arguments only if this is an actual function,
+        // because this method is called for variable reading as well.
+        if(functionMember != null) {
+            var expression: Expression
+            while(reader.nextExpression(scope).also { expression = it }.isNotEmpty) {
+                val code = expression.code
+                builder.append(code).append(",")
+                args += code
+            }
+
+            if(builder.endsWith(",")) {
+                builder.setLength(builder.length - 1)
+            }
         }
 
         builder.append(")")
@@ -171,15 +176,12 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
             name?.checkType({ it is FunctionMember }, message = "${name.hexName} is not a valid function.")
         }
 
-        if(name != null) {
-            scope[name]?.let { member ->
-                if(member is FunctionMember && !member.isApplicableFor(args.size)) {
-                    val functionName = (if(member.isLibraryFunction) "${member.name} " else "") + name.hexName
-                    val passedArguments = if(args.isNotEmpty()) " (${args.joinToString { it.hexName }})" else ""
-                    val argumentsSize = member.overloads.joinToString(" or ") { it.argumentsSize.toString() }
-                    reader.error("Function $functionName called with ${args.size} arguments$passedArguments, but $argumentsSize expected.")
-                }
-            }
+        // Check whether this is a proper call
+        if(name != null && functionMember != null && !functionMember.isApplicableFor(args.size)) {
+            val functionName = (if(functionMember.isLibraryFunction) "${functionMember.name} " else "") + name.hexName
+            val passedArguments = if(args.isNotEmpty()) " (${args.joinToString()})" else ""
+            val argumentsSize = functionMember.overloads.joinToString(" or ") { it.argumentsSize.toString() }
+            reader.error("Function $functionName called with ${args.size} arguments$passedArguments, but $argumentsSize expected.", referenceToFirstPixel = true)
         }
 
         // Return empty string if the method has no name and no arguments.

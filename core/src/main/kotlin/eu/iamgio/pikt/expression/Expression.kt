@@ -27,4 +27,10 @@ data class Expression(val type: ExpressionType, override val code: String): Expr
      */
     val isEmpty: Boolean
         get() = code.isEmpty()
+
+    /**
+     * Whether this expression has code.
+     */
+    val isNotEmpty: Boolean
+        get() = code.isNotEmpty()
 }
