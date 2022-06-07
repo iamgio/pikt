@@ -59,7 +59,6 @@ Click on the examples for a breakdown/explanation.
 - [Command arguments](#command-arguments)
 - [Building](#building)
 - [Roadmap](#roadmap)
-- [NFT & donations](#nft--donations)
 
 ## Properties
 The following properties define parameters needed by Pikt.  
@@ -87,14 +86,43 @@ The following arguments enable settings that affect Pikt's behavior.
 
 The following arguments execute tasks and exit when completed.
 
-- `-downloadcompiler=type[,version]` downloads the zipped Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`). `version` defaults to `1.5.10`.
-- `-createscheme` creates a new [color scheme](core/src/main/resources/colors.properties) with default values. It automatically appends library colors too, i.e. as the [stdlib scheme](stdlib/src/main/resources/colors.properties), loaded from `-Dlib`;
+- `-downloadcompiler=type[,version]` downloads the zipped Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`).   
+`version` defaults to `1.5.10`.
+
+
+- `-createscheme` creates a new [color scheme](core/src/main/resources/colors.properties) with default values.  
+It automatically appends library colors too, i.e. as the [stdlib scheme](stdlib/src/main/resources/colors.properties), loaded from `-Dlib`;
+
+
 - `-exportscheme` generates a useful color palette image out of the given color scheme;
-- `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`). `method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`;
+
+
+- `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`).  
+`method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`;
+
+
 - `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme;
-- `-compact[=size]` creates a compacted copy of the source image. If `size` is not specified, it will try to create a square-ish image with no whitespaces. `size` can be defined via `w?h?`, where both `w`and `h` are optional (in case one is missing, it will be calculated the same way as before) (e.g. `w10h5`, `w10`, `h5`);
+
+
+- `-compact[=size]` creates a compacted copy of the source image.  
+If `size` is not specified, it will try to create a square-ish image with no whitespaces.  
+`size` can be defined via `w?h?`, where both `w`and `h` are optional (in case one is missing, it will be calculated the same way as before) (e.g. `w10h5`, `w10`, `h5`);
+
+
 - `-decompact` creates a decompacted copy of the source image with a statement per line;
+
+
 - `-standardecompact` runs `-standardize` + `-decompact`;
+
+
+- `-strconvert=string` converts a string into a sequence of RGB (grayscale) values supported by Pikt and prints them out.  
+  _See [Hello world!](https://github.com/iAmGio/pikt/wiki/Hello-world) for further information._  
+For instance, `-strconvert="Hello Pikt!"` prints:
+```
+RGB:  72  101  108  108  111  32  80  105  107  116  33  
+      H   e    l    l    o        P   i    k    t    !   
+```
+
 - `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`) and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable file.
 
 > Commands can be chained.
@@ -131,11 +159,3 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] Interpretation (JVM)
 - [x] Error handling
 - [ ] Runtime information
-
-## NFT & donations
-The example programs you see above are available as NFT's on the OpenSea platform for 0.001 ETH each (about $3) without any gas fee.  
-If you like this project you might consider buying one as a way to support my work, and you will get a cheap NFT on the other hand.  
-**[Link](https://opensea.io/collection/pikt)**
-
-Alternatively, if you fancy a traditional donation, you can find me on [PayPal](https://www.paypal.com/paypalme/giogar).
-Thank you in advance!
