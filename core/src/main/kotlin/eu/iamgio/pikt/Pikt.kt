@@ -6,6 +6,9 @@ import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
+import eu.iamgio.pikt.properties.PiktProjectInfo
+import eu.iamgio.pikt.properties.PiktProjectInfo.Companion.mergeArgs
+import eu.iamgio.pikt.properties.PiktProjectInfoParser
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.statement.Statements
 import eu.iamgio.pikt.statement.statements.*
@@ -21,8 +24,16 @@ fun main(args: Array<String>) {
     // Register code statements.
     registerStatements()
 
+    // Project info is an optional YAML file loaded from -Dproject=path.
+    // It may store command-line properties and commands that should be used for a specific project.
+    val projectInfo = readProjectInfo()
+    // Properties saved within project info are saved into System properties,
+    // so that PiktPropertiesReceiver can read them as if they were inserted from command line.
+    projectInfo?.applyProperties()
+
     // Look for any command/argument and execute it.
-    executeCommands(args)
+    // If a project info file is used, arguments from it are loaded as well.
+    executeCommands(projectInfo.mergeArgs(args))
 
     // Retrieve organized properties
     val properties = PiktPropertiesRetriever().retrieve()
@@ -61,6 +72,15 @@ fun main(args: Array<String>) {
     // Print total time elapsed.
     val totalTime = (System.currentTimeMillis() - startTime) / 1000.0
     println("Done. (${totalTime}s)")
+}
+
+/**
+ * Reads and parses optional project info data.
+ * @see PiktProjectInfo
+ */
+private fun readProjectInfo(): PiktProjectInfo? {
+    val projectInfoFile = PiktPropertiesRetriever.getProjectInfoFile() ?: return null
+    return PiktProjectInfoParser(projectInfoFile).parse()
 }
 
 /**

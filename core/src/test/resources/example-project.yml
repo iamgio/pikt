@@ -1,0 +1,14 @@
+# This is a sample project.yml file.
+
+properties:
+  - source: source.png
+  - output: out
+  - colors: colors
+  - targets: jvm
+  - jvmcompiler: path/to/kotlinc
+
+commands:
+  - nocompile
+  - printoutput
+  - interpret
+  - imageoutput: path

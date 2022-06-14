@@ -192,4 +192,15 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
             error("Native compiler $nativeCompilerPath does not exist.")
         }
     }
+
+    companion object {
+        /**
+         * @return project info file, if path (without extension) is set
+         * @see PiktProjectInfo
+         */
+        fun getProjectInfoFile(path: String? = System.getProperty("project")): FileInputStream? {
+            if(path == null) return null
+            return FileInputStream("$path.yml")
+        }
+    }
 }
