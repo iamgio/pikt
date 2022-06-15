@@ -15,11 +15,12 @@ import java.io.InputStream
 data class PiktProjectInfo(val properties: Map<String, *>, val commands: Map<String, *>) {
 
     /**
-     * Saves the given [properties] into [System] properties.
+     * Saves the given [properties] into [System] properties, without overriding command line settings.
      */
     fun applyProperties() {
         properties.forEach { (property, value) ->
-            System.setProperty(property, value?.toString() ?: "")
+            if(System.getProperty(property) == null)
+                System.setProperty(property, value?.toString() ?: "")
         }
     }
 
