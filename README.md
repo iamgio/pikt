@@ -65,21 +65,44 @@ The following properties define parameters needed by Pikt.
 Example: `java -Dproperty=value -jar pikt.jar -argument`.  
 
 - `-Dsource` source image file;
+
+
 - `-Doutput` output name without extension. It will take `source` name without extension if not specified;
+
+
 - `-Dcolors` path to the `.properties` color scheme without extension. Default values will be used if not specified (not recommended);
+
+
 - `-Dtargets` compilation targets divided by a comma. Can be `jvm`, `windows`, `osx` or `linux`. Note that Windows and OSX executables can be generated only on those platforms. No compilation will be executed if not specified;
+
+
 - `-Dlib` path to JAR libraries, including the bundled `stdlib.jar` file, divided by a comma. If not specified, points by default to `./libraries/stdlib.jar`; 
+
+
 - `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) executable compiler. Required if `target` contains `jvm` or if `-interpret` is used;
-- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) executable compiler. Required if `target` contains a native target.
+
+
+- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) executable compiler. Required if `target` contains a native target;~~
+
+
+- `-Dproject` optional path to a [project info](https://github.com/iAmGio/pikt/wiki/Project-info-file) YAML configuration.
 
 ## Settings arguments
 
 The following arguments enable settings that affect Pikt's behavior.
 
 - `-interpret` runs the generated code via the JVM compiler;
+
+
 - `-printoutput` prints the generated Kotlin code;
+
+
 - `-nocompile` prevents the generation of any executable file;
+
+
 - `-pixelinfo` adds information about pixel coordinates to the output code as comments;
+
+
 - `-imgoutput=path` sets the output file for image-generating commands (see below). If not specified, defaults to the source image path followed by a suffix.
 
 ## Command arguments
