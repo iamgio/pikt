@@ -34,17 +34,21 @@ _* Native support is limited due to the lack of Kotlin/Native libraries and is b
 <!--suppress HtmlDeprecatedAttribute -->
 <p align="center">
   <br>
-  <a href="https://github.com/iAmGio/pikt/wiki/Fibonacci:-breakdown">
+  <a href="https://github.com/iAmGio/pikt/wiki/Fibonacci-breakdown">
     <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
   </a>
   <i>A high-performance Fibonacci sequence algorithm.</i>
   <br><br>
-  <a href="https://github.com/iAmGio/pikt/wiki/Prime-numbers:-breakdown">
+  <a href="https://github.com/iAmGio/pikt/wiki/Prime-numbers-breakdown">
     <img width="130" src="https://i.imgur.com/YKm9bFD.png" alt="Prime numbers" /><br>
   </a>
   <i>A prime numbers algorithm.</i>
   <br><br>
-  <a href="https://github.com/iAmGio/pikt/wiki/Tree:-breakdown">
+  <a href="https://github.com/iAmGio/pikt/wiki/String-reverser-breakdown">
+    <img width="130" src="https://i.imgur.com/4Kz9DsI.png" alt="Reverser" /><br></a>
+  <i>A string reverser.</i>
+  <br><br>
+  <a href="https://github.com/iAmGio/pikt/wiki/Tree-breakdown">
     <img width="130" src="https://i.imgur.com/aKg4I59.png" alt="Tree" /><br></a>
   <i>A tree that prints "A tree!".</i>
 </p>

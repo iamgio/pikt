@@ -92,4 +92,13 @@ class PiktTest {
             }
         }
     }
+
+    @Test
+    fun `reverse string`() {
+        with(launch("reverse", scheme = "reverse")) {
+            assertTrue {
+                first() == "Reversed".reversed()
+            }
+        }
+    }
 }
