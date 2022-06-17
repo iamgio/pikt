@@ -124,8 +124,9 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
                             reader.error("Member not expected while parsing number.")
                             ""
                         } else {
-                            // Grayscale pixel -> character
-                            pixel.characterContent
+                            // Grayscale pixel -> character, except for null character (code 0)
+                            // Therefore, the null character is useful to force string initialization or concatenation.
+                            pixel.characterContent.takeIf { it.code != 0 } ?: ""
                         }
                     } else {
                         // Variable/method reference
