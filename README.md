@@ -1,5 +1,6 @@
 <p align="center">
-    <img width="60%" src="https://i.imgur.com/1c7IMHn.png" alt="Banner" />
+    <img width="60%" src="https://user-images.githubusercontent.com/16124324/174398253-36eff685-846b-4b51-949e-9b8004678195.png#gh-dark-mode-only" alt="Banner" />
+    <img width="60%" src="https://user-images.githubusercontent.com/16124324/174398256-3c886e3f-11ab-4f39-967d-39d0eaf0c6be.png#gh-light-mode-only" alt="Banner" />
     <br>
     <a href="https://nightly.link/iAmGio/pikt/workflows/maven/master/pikt.zip">
         <img width="25%" src="https://img.shields.io/badge/Download%20latest-snapshot-brightgreen.svg" alt="Download">
