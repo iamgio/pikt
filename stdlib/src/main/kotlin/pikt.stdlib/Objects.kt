@@ -96,3 +96,17 @@ val Any?.bool: Boolean
         if(this is Boolean) return this
         return this != null
     }
+
+/**
+ * Gets an iterable value from any nullable object value.
+ * This is automatically inserted in `forEach` blocks.
+ * @return an iterable if this object is a list or a string, a singleton list containing this object otherwise.
+ */
+@Suppress("UNCHECKED_CAST")
+val Any?.iterable: Iterable<Any>
+    get() = when(this) {
+        null -> emptyList()
+        is Iterable<*> -> this as Iterable<Any>
+        is CharSequence -> toList()
+        else -> kotlin.collections.listOf(this)
+    }

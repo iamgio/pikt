@@ -41,7 +41,7 @@ class ForEachStatement : Statement() {
         }
         syntax.mark("lambda with argument", StatementSyntax.Mark.CORRECT)
 
-        // Output: (list as Iterable<Any>).forEach()
-        return "(${collection.code} as Iterable<Any>).forEach()"
+        // Output: (list).iterable.forEach()
+        return "(${collection.code}).iterable.forEach()"
     }
 }
