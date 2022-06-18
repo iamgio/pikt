@@ -1,5 +1,7 @@
 package eu.iamgio.pikt.schemes
 
+import eu.iamgio.pikt.image.clone
+import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.image.rgbToHex
 import eu.iamgio.pikt.lib.JarLibrary
 import eu.iamgio.pikt.properties.ColorsProperty
@@ -13,7 +15,7 @@ import java.util.*
  * @param customScheme custom colors scheme to handle
  * @author Giorgio Garofalo
  */
-sealed class ImageSchemeProcessing(private val image: BufferedImage, private val customScheme: Properties, private val libraries: List<JarLibrary>) {
+sealed class ImageSchemeProcessing(protected val image: BufferedImage, private val customScheme: Properties, private val libraries: List<JarLibrary>) {
 
     /**
      * @return the schemes as a pair of two maps: the internal one and the custom one
@@ -27,23 +29,6 @@ sealed class ImageSchemeProcessing(private val image: BufferedImage, private val
             }
         }
         return SchemesPair(internalScheme.asMap(), customScheme.asMap())
-    }
-
-    /**
-     * @return a copy of [image]
-     */
-    protected fun cloneImage() = BufferedImage(image.colorModel, image.copyData(null), image.colorModel.isAlphaPremultiplied, null)
-
-    /**
-     * Reads the image content pixel by pixel.
-     * @param action action to run for each (x, y) pair
-     */
-    protected fun readImage(action: (Int, Int) -> Unit) {
-        (0 until image.height).forEach { y ->
-            (0 until image.width).forEach { x ->
-                action(x, y)
-            }
-        }
     }
 
     /**
@@ -67,11 +52,11 @@ class StandardizeImageProcessing(image: BufferedImage, customScheme: Properties,
 
     override fun process(): BufferedImage {
         // Get data.
-        val image = cloneImage()
+        val image = super.image.clone()
         val schemes = retrieveSchemes()
 
         // Read image pixels
-        readImage { x, y ->
+        super.image.readLineByLine { x, y ->
             val hex = image.getRGB(x, y).rgbToHex()
 
             // Check for match between the pixel and a value from the custom scheme.
@@ -115,11 +100,11 @@ class RecolorizeImageProcessing(image: BufferedImage, customScheme: Properties, 
 
     override fun process(): BufferedImage {
         // Get data.
-        val image = cloneImage()
+        val image = super.image
         val schemes = retrieveSchemes()
 
         // Read image pixels
-        readImage { x, y ->
+        super.image.readLineByLine { x, y ->
             val hex = image.getRGB(x, y).rgbToHex()
 
             // Check for match between the pixel and a value from the internal scheme.

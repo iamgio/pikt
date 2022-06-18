@@ -146,6 +146,9 @@ If `size` is not specified, it will try to create a square-ish image with no whi
 - `-standardecompact` runs `-standardize` + `-decompact`;
 
 
+- `-mask=path` creates a masked copy of the source image, loading the mask image from `path`;
+
+
 - `-strconvert=string` converts a string into a sequence of RGB (grayscale) values supported by Pikt and prints them out.  
   _See [Hello world!](https://github.com/iAmGio/pikt/wiki/Hello-world) for further information._  
 For instance, `-strconvert="Hello Pikt!"` prints:
@@ -186,7 +189,7 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] External libraries support (following certain standards, wiki in progress)
 
 **Generation**
-- [x] Compilation (JVM and Native)
+- [x] Compilation (JVM ~~and Native~~)
 - [x] Interpretation (JVM)
 - [x] Error handling
 - [ ] Runtime information

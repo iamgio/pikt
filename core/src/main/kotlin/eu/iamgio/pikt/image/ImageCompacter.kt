@@ -14,8 +14,6 @@ import kotlin.math.sqrt
  */
 class ImageCompacter(private val piktImage: PiktImage) {
 
-    private fun BufferedImage.setRGB(index: Int, color: Color) = setRGB(index % width, index / width, color.rgb)
-
     private fun BufferedImage.applyBackground(colors: ColorsProperties, startIndex: Int = 0) {
         val background = colors.whitespace.colors.firstOrNull()?.let { Color.decode("#$it") } ?: Color.WHITE
         (startIndex until width * height).forEach {
@@ -65,25 +63,41 @@ class ImageCompacter(private val piktImage: PiktImage) {
      * Creates a copy of the image with no whitespaces.
      * @param width expected image width. Will be calculated if `null`
      * @param height expected image height. Will be calculated if `null`
+     * @param mask
      * @return compacted copy of the source image
      */
-    fun compact(width: Int?, height: Int?): BufferedImage {
+    fun compact(width: Int?, height: Int?, mask: PixelMask? = null): BufferedImage {
         val reader = piktImage.reader()
         val (imageWidth, imageHeight) = calcCompactSize(reader.size, width, height)
 
-        if(reader.size >= imageWidth * imageHeight) {
+        if(reader.size > imageWidth * imageHeight) {
             System.err.println("Error while compacting: given size is ${imageWidth * imageHeight} ($imageWidth*$imageHeight), but source has ${reader.size} elements.")
+        }
+        if(mask != null && reader.size != mask.size) {
+            System.err.println("Error while masking: mask has ${mask.size} elements, but source has ${reader.size}.")
         }
 
         val image = BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB)
 
-        // Copy PixelReader content to the output image.
-        reader.whileNotNull {
-            image.setRGB(reader.index, it.color)
+        // Fill the remaining space with whitespaces (when using a mask, otherwise it's done at the end to save time).
+        if(mask != null) {
+            image.applyBackground(reader.colors)
         }
 
-        // Fill the remaining space with whitespaces.
-        image.applyBackground(reader.colors, reader.index)
+        // Copy PixelReader content to the output image.
+        reader.whileNotNull {
+            if(mask == null) {
+                image.setRGB(reader.index, it.color)
+            } else {
+                val maskComponent = mask.getComponentByIndex(reader.index) ?: return@whileNotNull
+                image.setRGB(maskComponent.x, maskComponent.y, it.color.rgb)
+            }
+        }
+
+        // Fill the remaining space with whitespaces (when not using a mask, otherwise it's done at the beginning).
+        if(mask == null) {
+            image.applyBackground(reader.colors, reader.index)
+        }
 
         return image
     }

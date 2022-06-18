@@ -5,9 +5,6 @@ import eu.iamgio.pikt.properties.PiktProperties
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
-import java.io.IOException
-import javax.imageio.ImageIO
-import kotlin.system.exitProcess
 
 /**
  * Represent an image source.
@@ -60,35 +57,4 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
      * @return a new pixel-by-pixel reader for the image
      */
     fun reader(): PixelReader = PixelReader(generatePixelArray(), colors)
-
-    companion object {
-
-        /**
-         * Reads image from [file]. Exits if an error occurs.
-         * @param file image file
-         * @return [BufferedImage] loaded from [file]
-         */
-        fun readImage(file: File): BufferedImage {
-            return try {
-                ImageIO.read(file)
-            } catch(e: IOException) {
-                System.err.println("Could not read image $file.\nExiting.")
-                exitProcess(-1)
-            }
-        }
-
-        /**
-         * Saves [image] to [file]. Exits if an error occurs.
-         * @param image image to save
-         * @param file image file
-         */
-        fun saveImage(image: BufferedImage, file: File) {
-            try {
-                ImageIO.write(image, "png", file)
-            } catch(e: IOException) {
-                System.err.println("Could not save image to $file.\nExiting.")
-                exitProcess(-1)
-            }
-        }
-    }
 }

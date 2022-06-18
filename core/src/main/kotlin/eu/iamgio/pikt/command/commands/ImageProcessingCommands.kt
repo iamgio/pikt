@@ -2,6 +2,9 @@ package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.PiktImage
+import eu.iamgio.pikt.image.PixelMask
+import eu.iamgio.pikt.image.readImage
+import eu.iamgio.pikt.image.save
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.schemes.RecolorizeImageProcessing
 import eu.iamgio.pikt.schemes.StandardizeImageProcessing
@@ -31,8 +34,10 @@ private fun getOutputFileFromSource(source: File, tag: String) = File(source.par
  * @param tag suffix of the file name, used for [getOutputFileFromSource] in case [output] is `null`
  * @return output file
  */
-private fun save(image: BufferedImage, source: File, tag: String): File = (output ?: getOutputFileFromSource(source, tag)).also {
-    PiktImage.saveImage(image, it)
+private fun save(image: BufferedImage, source: File, tag: String): File {
+    val out = output ?: getOutputFileFromSource(source, tag)
+    image.save(out)
+    return out
 }
 
 /**
@@ -56,7 +61,7 @@ class ImageOutputCommand : Command("-imgoutput", { args ->
  */
 class StandardizeCommand : Command("-standardize", {
     val properties = PiktPropertiesRetriever().retrieve()
-    val sourceImage = PiktImage.readImage(properties.source)
+    val sourceImage = readImage(properties.source)
     val finalImage = StandardizeImageProcessing(sourceImage, properties.colors.rawProperties, properties.libraries).process()
     val file = save(finalImage, properties.source, tag = "standardized")
 
@@ -70,7 +75,7 @@ class StandardizeCommand : Command("-standardize", {
  */
 class RecolorizeCommand : Command("-recolorize", { args ->
     val properties = PiktPropertiesRetriever().retrieve()
-    val sourceImage = PiktImage.readImage(properties.source)
+    val sourceImage = readImage(properties.source)
 
     // Get color choice method from optional =method argument. Defaults to FIRST.
     val method = if(args != null && args.isNotEmpty()) {
@@ -147,4 +152,32 @@ class StandardizeDecompactCommand : Command("-standardecompact", {
     val file = save(finalImage, properties.source, tag = "standardecompacted")
 
     println("Standardized and decompacted image successfully saved as $file.")
+}, closeOnComplete = true)
+
+/**
+ * Triggered by -mask=<path> argument.
+ *
+ * @author Giorgio Garofalo
+ */
+class MaskCommand : Command("-mask", { args ->
+    println(args)
+    if(args == null) {
+        System.err.println("Expected -shapify=<mask path>. Exiting.")
+    } else {
+        val properties = PiktPropertiesRetriever().retrieve()
+        val piktImage = PiktImage(properties)
+        val maskFile = File(args)
+
+        if(!maskFile.exists()) {
+            System.err.println("Mask image $maskFile does not exist.")
+        } else {
+            val maskImage = readImage(maskFile)
+            val mask = PixelMask.createFrom(maskImage)
+
+            val compacted = piktImage.compacter.compact(maskImage.width, maskImage.height, mask)
+            val file = save(compacted, properties.source, tag = "masked")
+
+            println("Masked image successfully saved as $file.")
+        }
+    }
 }, closeOnComplete = true)

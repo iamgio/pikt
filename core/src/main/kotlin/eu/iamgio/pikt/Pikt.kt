@@ -118,6 +118,7 @@ fun registerCommands() = with(Commands) {
     register(CompactCommand())
     register(DecompactCommand())
     register(StandardizeDecompactCommand())
+    register(MaskCommand())
     register(StringConvertCommand())
 }
 
