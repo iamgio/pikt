@@ -1,9 +1,9 @@
-<p align="center">
+<p id="begin" align="center">
     <img width="60%" src="https://user-images.githubusercontent.com/16124324/174399599-462c8ab7-e76d-4ea9-9589-022092ff0074.png#gh-dark-mode-only" alt="Banner" />
     <img width="60%" src="https://user-images.githubusercontent.com/16124324/174399545-b753a93e-3b5e-4ef5-8c16-0d7e4f012218.png#gh-light-mode-only" alt="Banner" />
     <br>
     <a href="https://nightly.link/iAmGio/pikt/workflows/maven/master/pikt.zip">
-        <img width="25%" src="https://img.shields.io/badge/Download%20latest-snapshot-brightgreen.svg" alt="Download">
+        <img width="35%" src="https://user-images.githubusercontent.com/16124324/174476208-fdbfd9cd-c052-4f5f-9beb-88764ed3b62e.svg" alt="Download">
     </a>
 </p>
 <br>
@@ -166,7 +166,7 @@ RGB:  72  101  108  108  111  32  80  105  107  116  33
 > It is possible to overwrite the source image, albeit highly discouraged.
 
 ## Building
-The downloadable archive is already built off the latest GitHub commit.
+The [downloadable archive](#begin) is already built off the latest GitHub commit.
 If you wish to build it yourself from source just run `mvn clean install`.
 
 As a bonus tip, consider setting your run configuration to execute `mvn clean install -pl stdlib -am` in order to compile the standard library before launching Pikt.   
