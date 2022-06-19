@@ -3,7 +3,7 @@
     <img width="60%" src="https://user-images.githubusercontent.com/16124324/174399545-b753a93e-3b5e-4ef5-8c16-0d7e4f012218.png#gh-light-mode-only" alt="Banner" />
     <br>
     <a href="https://nightly.link/iAmGio/pikt/workflows/maven/master/pikt.zip">
-        <img width="35%" src="https://user-images.githubusercontent.com/16124324/174476208-fdbfd9cd-c052-4f5f-9beb-88764ed3b62e.svg" alt="Download">
+        <img width="35%" src="https://user-images.githubusercontent.com/16124324/174477531-eff55703-63df-474a-a617-a6e51293fb1c.svg" alt="Download">
     </a>
 </p>
 <br>
