@@ -34,5 +34,32 @@ data class ColorsProperty(val colors: List<String>) {
          * @return raw string property split into a [ColorsProperty]
          */
         fun of(raw: String) = ColorsProperty(raw.split(COLORS_SEPARATOR))
+
+        /**
+         * Generates a name=colors map for a given properties sub-section specified by [prefix].
+         *
+         * Example:
+         * ```
+         * section.property1=colors1
+         * section.property2=colors2
+         * ```
+         *
+         * This function called with `prefix` = `section`
+         * generates:
+         *
+         * `{property1=colors1, property2=colors2}`
+         *
+         * @param keys color properties keys
+         * @param prefix sub-section prefix
+         * @param get function getting color value from key
+         * @return standard library color scheme
+         */
+        fun generateColorPropertiesForSubsection(keys: Set<Any>, prefix: String, get: (String) -> ColorsProperty): Map<String, ColorsProperty> {
+            return keys
+                    .filter { it.toString().startsWith(prefix) }
+                    .associate {
+                        it.toString().substring(it.toString().lastIndexOf(prefix) + prefix.length) to get(it.toString())
+                    }
+        }
     }
 }

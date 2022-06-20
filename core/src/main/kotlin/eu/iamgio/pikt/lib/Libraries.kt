@@ -18,12 +18,10 @@ object Libraries {
      * Generates a name=hex map for standard library members and stores it into [colors].
      * @param keys color properties keys
      * @param get function getting color value from key
-     * @return standard library color scheme
+     * @return libraries color scheme
      */
     fun generateColorProperties(keys: Set<Any>, get: (String) -> ColorsProperty): Map<String, ColorsProperty> {
-        colors = keys
-                .filter { it.toString().startsWith(LIBRARY_COLOR_SCHEME_KEY_PREFIX) }
-                .associate { it.toString().substring(it.toString().lastIndexOf(".") + 1) to get(it.toString()) }
+        colors = ColorsProperty.generateColorPropertiesForSubsection(keys, LIBRARY_COLOR_SCHEME_KEY_PREFIX, get)
         return colors
     }
 
