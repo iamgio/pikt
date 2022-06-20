@@ -63,7 +63,7 @@ class ImageCompacter(private val piktImage: PiktImage) {
      * Creates a copy of the image with no whitespaces.
      * @param width expected image width. Will be calculated if `null`
      * @param height expected image height. Will be calculated if `null`
-     * @param mask
+     * @param mask if not `null`, defines the shape the pixels should fill
      * @return compacted copy of the source image
      */
     fun compact(width: Int?, height: Int?, mask: PixelMask? = null): BufferedImage {
