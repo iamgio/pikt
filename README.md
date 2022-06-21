@@ -10,6 +10,8 @@
 
 > _Ah a language to code by while listening to Pink Floyd_ - a guy from Reddit
 
+> _This looks like it belongs on the list of those things I totally want to do if I ever become immortal_ - another guy from Reddit
+
 ---
 
 <br>
