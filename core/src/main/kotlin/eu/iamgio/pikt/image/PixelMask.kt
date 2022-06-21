@@ -16,7 +16,7 @@ data class PixelMaskComponent(val x: Int, val y: Int)
 /**
  * A pixel mask represents zones of an image where certain operations should be executed.
  *
- * @param components pixels that compose the mask, where their alpha value is 1-255 (0 = not in mask)
+ * @param components pixels that compose the mask
  * @author Giorgio Garofalo
  */
 open class PixelMask(private val components: List<PixelMaskComponent>) {
@@ -25,6 +25,12 @@ open class PixelMask(private val components: List<PixelMaskComponent>) {
     open fun getComponentByIndex(index: Int) = components.elementAtOrNull(index)
 
     companion object {
+        /**
+         * Creates a pixel mask from a given [image].
+         * The mask is built by fully opaque pixels from [image] (`alpha == 255`).
+         * @param image mask image source
+         * @return pixel mask from [image]
+         */
         fun createFrom(image: BufferedImage): PixelMask {
             val components = mutableListOf<PixelMaskComponent>()
             image.readLineByLine { x, y ->

@@ -2,7 +2,6 @@ package eu.iamgio.pikt.properties
 
 import eu.iamgio.pikt.lib.JarLibrary
 import eu.iamgio.pikt.lib.Libraries
-import eu.iamgio.pikt.schemes.ColorReplacements
 import java.io.InputStream
 import java.io.InputStreamReader
 
@@ -19,7 +18,6 @@ const val INTERNAL_COLORS_SCHEME_PATH = "/colors.properties"
  * @param boolean boolean values
  * @param operators operators
  * @param libraries members (functions, variables, etc.) of external libraries as a name=hex map to be dynamically replaced
- * @param replacements color replacements as a from_hex=to_hex map. In schemes they are defined via `change.from_hex=to_hex`
  * @param rawProperties raw Java properties data
  * @see ColorsProperties
  * @author Giorgio Garofalo
@@ -31,7 +29,6 @@ data class ColorsProperties(
         val boolean: BooleanColorsProperties,
         val operators: OperatorColorsProperties,
         val libraries: Map<String, ColorsProperty>,
-        val replacements: Map<ColorsProperty, ColorsProperty>,
         val rawProperties: java.util.Properties
 ) : Properties
 
@@ -211,8 +208,7 @@ class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : Prope
                         get("op.less"),
                         get("op.less_or_equals")
                 ),
-                libraries = Libraries.generateColorProperties(internalProperties.keys, ::get).also { println(it) },
-                replacements = ColorReplacements.generateColorProperties(properties.keys, ::get).also { println(it) },
+                libraries = Libraries.generateColorProperties(internalProperties.keys, ::get),
                 properties
         )
     }

@@ -2,6 +2,7 @@ package eu.iamgio.pikt
 
 import eu.iamgio.pikt.command.Commands
 import eu.iamgio.pikt.command.commands.*
+import eu.iamgio.pikt.command.commands.imageprocessing.*
 import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.eval.Evaluator
@@ -118,6 +119,7 @@ fun registerCommands() = with(Commands) {
     register(CompactCommand())
     register(DecompactCommand())
     register(StandardizeDecompactCommand())
+    register(ColorSwapCommand())
     register(MaskCommand())
     register(StringConvertCommand())
 }

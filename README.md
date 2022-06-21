@@ -146,6 +146,10 @@ If `size` is not specified, it will try to create a square-ish image with no whi
 - `-standardecompact` runs `-standardize` + `-decompact`;
 
 
+- `-colorswap=<swaps>` swaps colors from the source image.  
+`swaps` is defined as `from1:to1,from2:to2,...` where `from` and `to` are hexadecimal colors. 
+
+
 - `-mask=path` creates a masked copy of the source image, loading the mask image from `path`;
 
 
