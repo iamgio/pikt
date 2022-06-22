@@ -18,7 +18,11 @@ fun Command.fire(args: String? = null) = this.action(args)
 
 class PiktImageProcessingTestLauncher : PiktTestLauncher() {
     private val folder: File = File(tempDirectory, "imageprocessing")
+
     private val sourceFilePath: String
+        get() = folder.absolutePath + File.separator + SOURCE
+
+    private val outFilePath: String
         get() = folder.absolutePath + File.separator + OUT
 
     init {
@@ -27,7 +31,7 @@ class PiktImageProcessingTestLauncher : PiktTestLauncher() {
 
         System.setProperty("source", sourceFilePath)
         // Set output file
-        ImageOutputCommand().fire(sourceFilePath)
+        ImageOutputCommand().fire(outFilePath)
         copy("source.png")
     }
 
@@ -46,7 +50,7 @@ class PiktImageProcessingTestLauncher : PiktTestLauncher() {
     fun pathify(name: String) = folder.absolutePath + File.separator + name
 
     override fun getImage(name: String): InputStream {
-        return FileInputStream(sourceFilePath)
+        return FileInputStream(outFilePath)
     }
 
     override fun getColorScheme(colorSchemeName: String): InputStream {
