@@ -1,12 +1,22 @@
 package eu.iamgio.pikt.tests
 
 import org.junit.jupiter.api.Test
+import java.io.InputStream
 import kotlin.test.assertTrue
 
+private class InternalTestLauncher : PiktTestLauncher() {
+    override fun getImage(name: String): InputStream {
+        return PiktTest::class.java.getResourceAsStream("/$name.png")!!
+    }
+
+    override fun getColorScheme(colorSchemeName: String): InputStream {
+        return PiktTest::class.java.getResourceAsStream("/schemes/$colorSchemeName.properties")!!
+    }
+}
 
 class PiktTest {
 
-    private val launcher = PiktTestLauncher()
+    private val launcher = InternalTestLauncher()
     private fun launch(name: String, scheme: String? = null) = launcher.launch(name, scheme)
 
     @Test

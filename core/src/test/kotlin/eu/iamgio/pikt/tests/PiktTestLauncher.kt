@@ -9,6 +9,7 @@ import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.registerStatements
 import java.io.File
+import java.io.InputStream
 import javax.imageio.ImageIO
 
 
@@ -17,14 +18,26 @@ import javax.imageio.ImageIO
  *
  * @author Giorgio Garofalo
  */
-class PiktTestLauncher {
+abstract class PiktTestLauncher {
 
-    private val tempDirectory = File(System.getProperty("java.io.tmpdir") + File.separator + "pikt-test")
+    protected val tempDirectory = File(System.getProperty("java.io.tmpdir") + File.separator + "pikt-test")
 
     init {
         tempDirectory.mkdir()
         registerStatements()
     }
+
+    /**
+     * @param name name of the source image
+     * @return source image as [InputStream]
+     */
+    abstract fun getImage(name: String): InputStream
+
+    /**
+     * @param colorSchemeName name of the color scheme
+     * @return color scheme as [InputStream]
+     */
+    abstract fun getColorScheme(colorSchemeName: String): InputStream
 
     /**
      * Launches the interpreter and returns all the non-error messages.
@@ -53,14 +66,14 @@ class PiktTestLauncher {
                 nativeCompilerPath = null,
                 colors = ColorsPropertiesRetriever(libraries).also {
                     if(colorSchemeName != null) {
-                        it.loadProperties(PiktTest::class.java.getResourceAsStream("/schemes/$colorSchemeName.properties")!!)
+                        it.loadProperties(getColorScheme(colorSchemeName))
                     }
                 }.retrieve()
         )
 
         val lines = mutableListOf<String>()
 
-        val image = PiktImage(ImageIO.read(PiktTest::class.java.getResourceAsStream("/$name.png")), properties.colors)
+        val image = PiktImage(ImageIO.read(getImage(name)), properties.colors)
 
         val evaluator = Evaluator()
         evaluator.evaluate(image, properties.libraries)

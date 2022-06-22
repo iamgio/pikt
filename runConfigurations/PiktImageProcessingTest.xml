@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PiktImageProcessingTest" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="core" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="eu.iamgio.pikt.tests.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="eu.iamgio.pikt.tests" />
+    <option name="MAIN_CLASS_NAME" value="eu.iamgio.pikt.tests.PiktImageProcessingTest" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="VM_PARAMETERS" value="-Djvmcompiler=SET_HERE -Dlib=../stdlib/target/stdlib.jar" />
+  </configuration>
+</component>
