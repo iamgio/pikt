@@ -58,7 +58,7 @@ data class ColorsProperty(val colors: List<String>) {
             return keys
                     .filter { it.toString().startsWith(prefix) }
                     .associate {
-                        it.toString().substring(it.toString().lastIndexOf(prefix) + prefix.length) to get(it.toString())
+                        it.toString().substring(it.toString().lastIndexOf(".") + 1) to get(it.toString())
                     }
         }
     }
