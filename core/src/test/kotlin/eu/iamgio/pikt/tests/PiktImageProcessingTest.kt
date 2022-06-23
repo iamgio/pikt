@@ -1,12 +1,9 @@
 package eu.iamgio.pikt.tests
 
-import eu.iamgio.pikt.command.commands.imageprocessing.ColorSwapCommand
-import eu.iamgio.pikt.command.commands.imageprocessing.CompactCommand
-import eu.iamgio.pikt.command.commands.imageprocessing.DecompactCommand
-import eu.iamgio.pikt.command.commands.imageprocessing.MaskCommand
-import eu.iamgio.pikt.image.rgbToHex
+import eu.iamgio.pikt.command.commands.imageprocessing.*
 import org.junit.jupiter.api.Test
 import java.awt.image.BufferedImage
+import kotlin.test.assertFails
 import kotlin.test.assertTrue
 
 // These tests apply image processing filters to the same image (/imageprocessing-tests/source.png)
@@ -22,7 +19,7 @@ class PiktImageProcessingTest {
     private val launcher = PiktImageProcessingTestLauncher()
 
     // Launches a Pikt program.
-    private fun launch() = launcher.launch()
+    private fun launch(colorSchemeName: String? = null) = launcher.launch("", colorSchemeName)
 
     // Copies a resource from /imageprocessing-tests/ to the temp folder.
     private fun copy(name: String) = launcher.copy(name)
@@ -31,11 +28,52 @@ class PiktImageProcessingTest {
     private fun pathify(name: String) = launcher.pathify(name)
 
     // Checks whether the transformed image outputs the correct result.
-    private fun checkCorrectOutput() = assertTrue { launch().firstOrNull() == EXPECTED_RESULT }
+    private fun checkCorrectOutput(colorSchemeName: String? = null) =
+            assertTrue { launch(colorSchemeName).firstOrNull() == EXPECTED_RESULT }
+
+    // Compares the output image to another image loaded from the internal tests folder
+    private fun assertImageEquals(name: String) = launcher.assertImageEquals(name)
+
+    // Compares the output image size to given values
+    private fun assertImageSize(width: Int, height: Int) = with(outImage) {
+        assertTrue {
+            this.width == width && this.height == height
+        }
+    }
 
     // Latest generated image
     private val outImage: BufferedImage
         get() = launcher.getOutputImage()
+
+    // Adapts the image to the test-scheme color scheme (-recolorize)
+    @Test
+    fun recolorize() {
+        copy("test-scheme.properties")
+        System.setProperty("colors", pathify("test-scheme"))
+
+        RecolorizeCommand().fire()
+        checkCorrectOutput(colorSchemeName = "test-scheme")
+        launcher.assertImageEquals("exp_recolorized")
+
+        System.clearProperty("colors")
+    }
+
+    // Adapts the recolorized image to the standard scheme (-standardize)
+    @Test
+    fun standardize() {
+        copy("test-scheme.properties")
+        copy("exp_recolorized.png")
+        System.setProperty("source", pathify("exp_recolorized.png"))
+        System.setProperty("colors", pathify("test-scheme"))
+
+        StandardizeCommand().fire()
+        launcher.assertImageEquals("source")
+
+        System.clearProperty("colors")
+
+        checkCorrectOutput()
+        launcher.setDefaultSource()
+    }
 
     // Compacts the image with automatic size (-compact)
     @Test
@@ -43,15 +81,8 @@ class PiktImageProcessingTest {
         CompactCommand().fire()
         checkCorrectOutput()
 
-        with(outImage) {
-            assertTrue {
-                width == 3 && height == 4
-            }
-            assertTrue {
-                getRGB(0, 3).rgbToHex() == "FCFF00"
-                        && getRGB(1, 2).rgbToHex() == "32C832"
-            }
-        }
+        assertImageSize(3, 4)
+        assertImageEquals("exp_autocompact")
     }
 
     // Compacts the image with fixed size (-compact=<size>)
@@ -60,30 +91,26 @@ class PiktImageProcessingTest {
         CompactCommand().fire("w5h3")
         checkCorrectOutput()
 
-        with(outImage) {
-            assertTrue {
-                width == 5 && height == 3
-            }
-            assertTrue {
-                getRGB(4, 1).rgbToHex() == "FCFF00"
-                        && getRGB(2, 1).rgbToHex() == "32C832"
-            }
+        assertImageSize(5, 3)
+        assertImageEquals("exp_manualcompact")
+    }
+
+    // Tries to compact the image (10 elements) into a 9-elements output
+    @Test
+    fun compactManualsizeError() {
+        assertFails {
+            CompactCommand().fire("w3h3")
         }
     }
 
+    // Expands the image (-decompact)
     @Test
     fun decompact() {
         DecompactCommand().fire()
         checkCorrectOutput()
 
-        with(outImage) {
-            assertTrue {
-                width == 6 && height == 4
-            }
-            assertTrue {
-                getRGB(0, 3).rgbToHex() == "FF65FF"
-            }
-        }
+        assertImageSize(6, 4)
+        assertImageEquals("exp_decompact")
     }
 
     // Swaps a variable color with another (-colorswap=<swaps>)
@@ -91,13 +118,7 @@ class PiktImageProcessingTest {
     fun colorswap() {
         ColorSwapCommand().fire("FCFF00:CDDAB6")
         checkCorrectOutput()
-
-        with(outImage) {
-            assertTrue {
-                getRGB(1, 0).rgbToHex() == "CDDAB6"
-                        && getRGB(3, 1).rgbToHex() == "CDDAB6"
-            }
-        }
+        assertImageEquals("exp_colorswap")
     }
 
     // Applies a mask image (-mask=<path>)
@@ -106,14 +127,6 @@ class PiktImageProcessingTest {
         copy("face-mask.png")
         MaskCommand().fire(pathify("face-mask.png"))
         checkCorrectOutput()
-
-        with(outImage) {
-            assertTrue {
-                getRGB(0, 0).rgbToHex() == "FFFFFF" // Top left corner, not in mask
-                        && getRGB(3, 4).rgbToHex() == "FF0000" // Left eye
-                        && getRGB(9, 4).rgbToHex() == "505050" // Right eye
-                        && getRGB(6, 7).rgbToHex() == "FF65FF" // Mouth
-            }
-        }
+        assertImageEquals("exp_mask")
     }
 }
