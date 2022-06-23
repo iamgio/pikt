@@ -2,6 +2,7 @@ package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.command.commands.imageprocessing.ColorSwapCommand
 import eu.iamgio.pikt.command.commands.imageprocessing.CompactCommand
+import eu.iamgio.pikt.command.commands.imageprocessing.DecompactCommand
 import eu.iamgio.pikt.command.commands.imageprocessing.MaskCommand
 import eu.iamgio.pikt.image.rgbToHex
 import org.junit.jupiter.api.Test
@@ -70,6 +71,21 @@ class PiktImageProcessingTest {
         }
     }
 
+    @Test
+    fun decompact() {
+        DecompactCommand().fire()
+        checkCorrectOutput()
+
+        with(outImage) {
+            assertTrue {
+                width == 6 && height == 4
+            }
+            assertTrue {
+                getRGB(0, 3).rgbToHex() == "FF65FF"
+            }
+        }
+    }
+
     // Swaps a variable color with another (-colorswap=<swaps>)
     @Test
     fun colorswap() {
@@ -79,7 +95,7 @@ class PiktImageProcessingTest {
         with(outImage) {
             assertTrue {
                 getRGB(1, 0).rgbToHex() == "CDDAB6"
-                        && getRGB(1, 3).rgbToHex() == "CDDAB6"
+                        && getRGB(3, 1).rgbToHex() == "CDDAB6"
             }
         }
     }
