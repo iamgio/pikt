@@ -5,6 +5,7 @@ import eu.iamgio.pikt.compiler.isAnyJVM
 import eu.iamgio.pikt.compiler.isAnyNative
 import eu.iamgio.pikt.compiler.isAnyNull
 import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.project.PiktProjectInfo
 import java.io.File
 import java.io.FileInputStream
 import kotlin.system.exitProcess
@@ -196,11 +197,20 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     companion object {
         /**
          * @return project info file, if path (without extension) is set
-         * @see PiktProjectInfo
+         * @see eu.iamgio.pikt.project.PiktProjectInfo
          */
         fun getProjectInfoFile(path: String? = System.getProperty("project")): FileInputStream? {
             if(path == null) return null
             return FileInputStream("$path.yml")
+        }
+
+        /**
+         * @return selected project info task, if its name is set
+         * @see eu.iamgio.pikt.project.PiktProjectInfo
+         */
+        fun getProjectInfoTaskFor(projectInfo: PiktProjectInfo, taskName: String? = System.getProperty("task")): PiktProjectInfo? {
+            if(taskName == null) return null
+            return projectInfo.getTaskByName(taskName)
         }
     }
 }

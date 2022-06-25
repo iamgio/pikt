@@ -7,9 +7,9 @@ import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
-import eu.iamgio.pikt.properties.PiktProjectInfo
-import eu.iamgio.pikt.properties.PiktProjectInfo.Companion.mergeArgs
-import eu.iamgio.pikt.properties.PiktProjectInfoParser
+import eu.iamgio.pikt.project.PiktProjectInfo
+import eu.iamgio.pikt.project.PiktProjectInfo.Companion.mergeArgsWith
+import eu.iamgio.pikt.project.PiktProjectInfoParser
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.statement.Statements
 import eu.iamgio.pikt.statement.statements.*
@@ -28,13 +28,25 @@ fun main(args: Array<String>) {
     // Project info is an optional YAML file loaded from -Dproject=path.
     // It may store command-line properties and commands that should be used for a specific project.
     val projectInfo = readProjectInfo()
+
+    // Project task is an optional "small" project info sub-structure loaded from -Dtask=name
+    // where 'name' is the name of the task from the project info YAML configuration.
+    // Tasks can be used to store executable jobs that should be reused within the same project.
+    val projectTask = getProjectInfoTaskFor(projectInfo)
+
     // Properties saved within project info are saved into System properties,
     // so that PiktPropertiesReceiver can read them as if they were inserted from command line.
+    // The importance hierarchy is: (lower number = overrides others)
+    // 1) Command line properties (via -Dproperty=...)
+    // 2) Project task
+    // 3) Project info
+    projectTask?.applyProperties()
     projectInfo?.applyProperties()
 
-    // Look for any command/argument and execute it.
-    // If a project info file is used, arguments from it are loaded as well.
-    executeCommands(projectInfo.mergeArgs(args))
+    // Look for commands/arguments and execute them.
+    // If a project info file is used, arguments from it are loaded as well,
+    // along with the project task ones, if a task is selected.
+    executeCommands(projectInfo mergeArgsWith (projectTask mergeArgsWith args))
 
     // Retrieve organized properties
     val properties = PiktPropertiesRetriever().retrieve()
@@ -85,6 +97,13 @@ private fun readProjectInfo(): PiktProjectInfo? {
 }
 
 /**
+ * @param projectInfo the project info that contains task specifications
+ * @return the selected task to be executed (if exists)
+ */
+private fun getProjectInfoTaskFor(projectInfo: PiktProjectInfo?): PiktProjectInfo? =
+        projectInfo?.let { PiktPropertiesRetriever.getProjectInfoTaskFor(it) }
+
+/**
  * Iterates through the program arguments, finds linked commands and executes them.
  * @param args program arguments
  */
@@ -96,7 +115,7 @@ private fun executeCommands(args: Array<String>) {
     }.sortedByDescending { it.first?.isSettingsCommand }.forEach { (command, args) -> // Sort settings first.
         command?.execute(args)                            // Execute the command.
         if(command?.closeOnComplete == true) exit = true  // If at least one command has a 'close on complete' property,
-                                                          // the program exits after the other commands are evaluated.
+        // the program exits after the other commands are evaluated.
     }
     if(exit) exitProcess(0)
 }

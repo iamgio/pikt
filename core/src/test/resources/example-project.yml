@@ -11,4 +11,13 @@ commands:
   - nocompile
   - printoutput
   - interpret
-  - imageoutput: path
+
+# Tasks are optional lists of sub-projects just like above.
+# Tasks are run via -Dtask=name
+tasks:
+  - paint: # This is the task name
+      properties:
+        - colors: my_color_scheme
+      commands:
+        - imgoutput: repainted.png
+        - recolorize

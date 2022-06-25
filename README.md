@@ -97,6 +97,9 @@ If not specified, points by default to `./libraries/stdlib.jar`;
 
 - `-Dproject` optional path to a [project info](https://github.com/iAmGio/pikt/wiki/Project-info-file) YAML configuration.
 
+
+- `-Dtask` optional [task]((https://github.com/iAmGio/pikt/wiki/Project-info-file)) name (defined within a project info configuration) to be executed.
+
 ## Settings arguments
 
 The following arguments enable settings that affect Pikt's behavior.
@@ -120,7 +123,7 @@ The following arguments enable settings that affect Pikt's behavior.
 The following arguments execute tasks and exit when completed.
 
 - `-downloadcompiler=type[,version]` downloads the zipped Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`).   
-`version` defaults to `1.5.10`.
+`version` defaults to `1.6.10`.
 
 
 - `-createscheme` creates a new [color scheme](core/src/main/resources/colors.properties) with default values.  
@@ -163,7 +166,7 @@ RGB:  72  101  108  108  111  32  80  105  107  116  33
       H   e    l    l    o        P   i    k    t    !   
 ```
 
-- `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`) and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable file.
+- `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`) and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable archive.
 
 > Commands can be chained.
 > For example, `java -Dsource=img.png -Dcolors=scheme -jar pikt.jar -imgoutput=img_new.png -recolorize -compact`
