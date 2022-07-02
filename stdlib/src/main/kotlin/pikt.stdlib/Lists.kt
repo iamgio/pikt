@@ -20,8 +20,22 @@ fun listOf(): MutableList<Any> {
 /**
  * @return size (length) of the [list]
  */
-fun size(list: Any): Int {
+fun listSize(list: Any): Int {
     return if(list is List<*>) list.size else -1
+}
+
+/**
+ * @param list list to get the value from
+ * @param index numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive)
+ */
+fun <T> listGetAt(list: List<T>, index: Any): T {
+    if(index !is Number) {
+        throw RuntimeException("Index (from listGetAt(list, index)) is not a number.")
+    }
+    if(index < 0 || index >= list.size) {
+        throw RuntimeException("Invalid index (from listGetAt(list, index)): index = $index, size = ${list.size}")
+    }
+    return list[index.toInt()]
 }
 
 /**
