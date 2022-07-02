@@ -18,6 +18,13 @@ fun listOf(): MutableList<Any> {
 }
 
 /**
+ * @return size (length) of the [list]
+ */
+fun size(list: Any): Int {
+    return if(list is List<*>) list.size else -1
+}
+
+/**
  * Adds values to a [list].
  * @param list list to be affected
  * @param items items to be added
