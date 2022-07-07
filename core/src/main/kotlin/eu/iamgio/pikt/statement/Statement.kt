@@ -16,7 +16,7 @@ abstract class Statement {
 
     /**
      * Defines whether this statement requires empty lines in the decompacted output image.
-     * @see eu.iamgio.pikt.command.commands.DecompactCommand
+     * @see eu.iamgio.pikt.command.commands.imageprocessing.DecompactCommand
      * @see eu.iamgio.pikt.image.ImageCompacter
      */
     open val decompactionStyle: DecompactionStyle = DecompactionStyle.NO_SPACING
@@ -30,7 +30,7 @@ abstract class Statement {
      * Name of this statement.
      */
     val name: String
-        get() = javaClass.simpleName.removeSuffix("Statement")
+        get() = javaClass.statementName
 
     /**
      * Whether this statement opens a code block.
@@ -84,7 +84,7 @@ abstract class Statement {
     /**
      * Different options for decompaction.
      *
-     * @see eu.iamgio.pikt.command.commands.DecompactCommand
+     * @see eu.iamgio.pikt.command.commands.imageprocessing.DecompactCommand
      * @see eu.iamgio.pikt.image.ImageCompacter
      */
     enum class DecompactionStyle(val hasEmptyLineBefore: Boolean, val hasEmptyLineAfter: Boolean) {
@@ -94,6 +94,12 @@ abstract class Statement {
         BEFORE_AND_AFTER(true, true)
     }
 }
+
+/**
+ * Name of a statement, given its class.
+ */
+val Class<out Statement>.statementName
+    get() = simpleName.removeSuffix("Statement")
 
 /**
  * Class that contains information about single, specific statements.

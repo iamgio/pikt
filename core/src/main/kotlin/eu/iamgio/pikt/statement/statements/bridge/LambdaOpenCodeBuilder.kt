@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.statement.statements.bridge
 
 import eu.iamgio.pikt.image.Pixel
+import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
 
 /**
@@ -21,6 +22,11 @@ abstract class LambdaOpenCodeBuilder(protected val builder: StringBuilder = Stri
         get() = builder.toString()
 
     /**
+     * @return the class of the statement that handles this [LambdaOpenCodeBuilder] implementation.
+     */
+    abstract fun getDelegate(): Class<out Statement>
+
+    /**
      * Called once at the beginning.
      */
     abstract fun open()
@@ -29,10 +35,15 @@ abstract class LambdaOpenCodeBuilder(protected val builder: StringBuilder = Stri
      * Called once for each argument of the lambda statement.
      * @param argument pixel argument
      */
-    abstract fun appendArg(argument: Pixel)
+    abstract fun appendArgument(argument: Pixel)
 
     /**
      * Called once at the end.
      */
     abstract fun close()
+
+    /**
+     *
+     */
+    open fun expectArgsSize(argsSize: Int): Boolean = argsSize >= 0 // No way this could be false but better be careful
 }

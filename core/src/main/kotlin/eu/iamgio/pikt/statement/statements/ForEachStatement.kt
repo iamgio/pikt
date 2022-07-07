@@ -69,11 +69,13 @@ class ForEachStatement : Statement() {
  */
 private class ForEachLambdaOpenCodeBuilder(private val collectionCode: String) : LambdaOpenCodeBuilder() {
 
+    override fun getDelegate() = ForEachStatement::class.java
+
     override fun open() {
         builder.append("(")
     }
 
-    override fun appendArg(argument: Pixel) {
+    override fun appendArgument(argument: Pixel) {
         builder.append(argument)
     }
 
@@ -81,4 +83,6 @@ private class ForEachLambdaOpenCodeBuilder(private val collectionCode: String) :
         if(builder.length == 1) builder.append("_ignored_")
         builder.append(" in (").append(collectionCode).append(").iterable").append(") {")
     }
+
+    override fun expectArgsSize(argsSize: Int) = argsSize == 0 || argsSize == 1
 }

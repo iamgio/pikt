@@ -4,10 +4,7 @@ import eu.iamgio.pikt.eval.ConstantMember
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
-import eu.iamgio.pikt.statement.Statement
-import eu.iamgio.pikt.statement.StatementData
-import eu.iamgio.pikt.statement.StatementOptions
-import eu.iamgio.pikt.statement.StatementSyntax
+import eu.iamgio.pikt.statement.*
 import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
 
 /**
@@ -42,16 +39,23 @@ class LambdaOpenStatement : Statement() {
         val arguments = mutableListOf<Pixel>()
         codeBuilder.open()
 
-        // Reads arguments one by one (one pixel = one argument)
+        // Read arguments one by one (one pixel = one argument)
         reader.whileNotNull { argument ->
-            codeBuilder.appendArg(argument)
+            codeBuilder.appendArgument(argument)
             arguments += argument
-            syntax.mark("args", StatementSyntax.Mark.CORRECT)
             // Registers the argument to the scope.
             data.scope.push(argument, ConstantMember(argument))
         }
 
         codeBuilder.close()
+
+        // Check arguments size
+        if(codeBuilder.expectArgsSize(arguments.size)) {
+            syntax.mark("args", StatementSyntax.Mark.CORRECT)
+        } else {
+            syntax.mark("args", StatementSyntax.Mark.WRONG)
+            reader.error("Invalid amount of lambda arguments: ${arguments.size} found (delegated by ${codeBuilder.getDelegate().statementName}).", syntax)
+        }
 
         // Invoke the callback
         onGenerationCompleted?.invoke(arguments)
@@ -94,11 +98,13 @@ class LambdaCloseStatement : Statement() {
  * ```
  */
 class DefaultLambdaOpenCodeBuilder : LambdaOpenCodeBuilder() {
+    override fun getDelegate() = LambdaOpenStatement::class.java
+
     override fun open() {
         builder.append("{")
     }
 
-    override fun appendArg(argument: Pixel) {
+    override fun appendArgument(argument: Pixel) {
         builder.append(" ").append(argument).append(": Any,")
     }
 
