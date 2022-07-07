@@ -38,7 +38,7 @@ class ForEachStatement : Statement() {
 
         // A following lambda block is required.
         if(data.nextStatement?.isBlock == false) {
-            syntax.mark("lambda with argument", StatementSyntax.Mark.WRONG) // TODO check if argument is one
+            syntax.mark("lambda with argument", StatementSyntax.Mark.WRONG)
             reader.error("A for-each must be followed by a code block.", syntax)
             return ""
         }
