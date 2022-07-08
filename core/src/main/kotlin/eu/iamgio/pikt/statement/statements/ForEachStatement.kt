@@ -16,7 +16,7 @@ import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
  */
 class ForEachStatement : Statement() {
 
-    override val decompactionStyle = DecompactionStyle.BEFORE
+    override val decompactionStyle = DecompactionStyle.SPACE_BEFORE
 
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("foreach", StatementSyntax.Type.SCHEME_OBLIGATORY, StatementSyntax.Mark.CORRECT),

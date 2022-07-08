@@ -25,7 +25,8 @@ class LambdaOpenStatement : Statement() {
      */
     var codeBuilder: LambdaOpenCodeBuilder = DefaultLambdaOpenCodeBuilder()
 
-    override val decompactionStyle = DecompactionStyle.AFTER
+    override val decompactionStyle = DecompactionStyle.SPACE_AFTER
+
     override val options = StatementOptions(opensScope = true)
 
     override fun getSyntax() = StatementSyntax(
@@ -78,7 +79,7 @@ class LambdaOpenStatement : Statement() {
  */
 class LambdaCloseStatement : Statement() {
 
-    override val decompactionStyle = DecompactionStyle.BEFORE_AND_AFTER
+    override val decompactionStyle = DecompactionStyle.SPACE_BEFORE_AND_AFTER
 
     override val options = StatementOptions(closesScope = true)
 

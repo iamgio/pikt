@@ -84,14 +84,16 @@ abstract class Statement {
     /**
      * Different options for decompaction.
      *
+     * @param hasEmptyLineBefore whether this statement should be preceeded by an empty line
+     * @param hasEmptyLineAfter whether this statement should be followed by an empty line
      * @see eu.iamgio.pikt.command.commands.imageprocessing.DecompactCommand
      * @see eu.iamgio.pikt.image.ImageCompacter
      */
     enum class DecompactionStyle(val hasEmptyLineBefore: Boolean, val hasEmptyLineAfter: Boolean) {
         NO_SPACING(false, false),
-        BEFORE(true, false),
-        AFTER(false, true),
-        BEFORE_AND_AFTER(true, true)
+        SPACE_BEFORE(true, false),
+        SPACE_AFTER(false, true),
+        SPACE_BEFORE_AND_AFTER(true, true)
     }
 }
 

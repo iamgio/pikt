@@ -17,7 +17,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
  */
 class StructStatement : Statement() {
 
-    override val decompactionStyle = DecompactionStyle.BEFORE_AND_AFTER
+    override val decompactionStyle = DecompactionStyle.SPACE_BEFORE_AND_AFTER
 
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("struct", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),

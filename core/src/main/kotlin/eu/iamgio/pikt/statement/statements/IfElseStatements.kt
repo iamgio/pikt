@@ -15,7 +15,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
  */
 class IfStatement : Statement() {
 
-    override val decompactionStyle = DecompactionStyle.BEFORE
+    override val decompactionStyle = DecompactionStyle.SPACE_BEFORE
     override val options = StatementOptions(opensTemporaryScope = true)
 
     override fun getSyntax() = StatementSyntax(
