@@ -1,6 +1,20 @@
 package pikt.stdlib
 
 /**
+ * Gets an iterable value from any nullable object value.
+ * This is automatically inserted in for-each blocks.
+ * @return an iterable if this object is a list or a string, a singleton list containing this object otherwise.
+ */
+@Suppress("UNCHECKED_CAST")
+val Any?.iterable: Iterable<Any>
+    get() = when(this) {
+        null -> emptyList()
+        is Iterable<*> -> this as Iterable<Any>
+        is CharSequence -> toList()
+        else -> kotlin.collections.listOf(this)
+    }
+
+/**
  * Creates a list of values.
  * @param items elements of the list
  * @return created list
@@ -18,24 +32,34 @@ fun listOf(): MutableList<Any> {
 }
 
 /**
- * @return size (length) of the [list]
+ * @param list list or string to get the size from
+ * @return size (length) of the [list], or `-1` if [list] is neither a list nor a string
  */
 fun listSize(list: Any): Int {
-    return if(list is List<*>) list.size else -1
+    return when(list) {
+        is List<*> -> list.size
+        is CharSequence -> list.length
+        else -> -1
+    }
 }
 
 /**
- * @param list list to get the value from
+ * @param list list or string to get the value from
  * @param index numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive)
  */
-fun <T> listGetAt(list: List<T>, index: Any): T {
+fun listGetAt(list: Any, index: Any): Any {
     if(index !is Number) {
         throw RuntimeException("Index (from listGetAt(list, index)) is not a number.")
     }
-    if(index < 0 || index >= list.size) {
-        throw RuntimeException("Invalid index (from listGetAt(list, index)): index = $index, size = ${list.size}")
+    if(index < 0 || index >= listSize(list)) {
+        throw RuntimeException("Invalid index (from listGetAt(list, index)): index = $index, size = ${listSize(list)}")
     }
-    return list[index.toInt()]
+    val i = index.toInt()
+    return when(list) {
+        is List<*> -> list[i]
+        is CharSequence -> list[i]
+        else -> throw RuntimeException("List (from listGetAt(list, index)) is not a list or string.")
+    }!!
 }
 
 /**
