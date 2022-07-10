@@ -51,7 +51,7 @@ abstract class LambdaOpenCodeBuilder(protected val builder: StringBuilder = Stri
     abstract fun close()
 
     /**
-     *
+     * @return whether [argsSize] is a proper value (for a specific purpose defined by the implementation of this builder) or not.
      */
     open fun expectArgsSize(argsSize: Int): Boolean = argsSize >= 0 // No way this could be false but better be careful
 }
