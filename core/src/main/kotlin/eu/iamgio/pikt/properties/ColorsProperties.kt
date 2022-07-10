@@ -51,6 +51,7 @@ data class KeywordsColorsProperties(
         val `else`: ColorsProperty,
         val struct: ColorsProperty,
         val forEach: ColorsProperty,
+        val `return`: ColorsProperty,
         val print: ColorsProperty
 )
 
@@ -182,6 +183,7 @@ class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : Prope
                         get("else"),
                         get("struct"),
                         get("foreach"),
+                        get("return"),
                         get("print")
                 ),
                 LambdaColorsProperties(
