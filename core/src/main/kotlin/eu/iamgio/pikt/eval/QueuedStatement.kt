@@ -24,7 +24,7 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
             scopes.removeLastOrNull() ?: System.err.println("There must be at least one active scope.")
         }
         if(statement.options.opensScope || statement.options.opensTemporaryScope) {
-            scopes += Scope(parent = scopes.last())
+            scopes += Scope(parent = scopes.last(), owner = statement)
         }
     }
 

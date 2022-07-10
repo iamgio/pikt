@@ -3,15 +3,17 @@ package eu.iamgio.pikt.eval
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.lib.JarLibrary
 import eu.iamgio.pikt.lib.Libraries
+import eu.iamgio.pikt.statement.Statement
 
 /**
- * A scope that defines which members other statement can access.
+ * A scope that defines which members statements can access.
  *
  * @param parent parent scope. `null` if this scope is the global one
+ * @param owner statement that opened this scope. `null` if this scope is the global one
  * @param ownMembers members defined from this scope
  * @author Giorgio Garofalo
  */
-data class Scope(private val parent: Scope?, private val ownMembers: MutableMap<String, ScopeMember> = hashMapOf()) {
+data class Scope(private val parent: Scope?, val owner: Statement?, private val ownMembers: MutableMap<String, ScopeMember> = hashMapOf()) {
 
     private fun getAllMembers(map: MutableMap<String, ScopeMember> = hashMapOf()): MutableMap<String, ScopeMember> {
         map.putAll(ownMembers)
@@ -32,6 +34,12 @@ data class Scope(private val parent: Scope?, private val ownMembers: MutableMap<
         get() = parent?.level?.plus(1) ?: 0
 
     /**
+     * Whether this scope is the global one.
+     */
+    val isGlobal: Boolean
+        get() = parent == null
+
+    /**
      * Pushes a member, linked by a [Pixel], to this scope.
      * @param pixel pixel to register as a member
      * @param member scope member
@@ -47,6 +55,20 @@ data class Scope(private val parent: Scope?, private val ownMembers: MutableMap<
      */
     fun push(hex: String, member: ScopeMember) {
         ownMembers[hex] = member
+    }
+
+    /**
+     * Checks if a condition is valid for at least one parent scope, including this scope itself.
+     * @param predicate condition to check for every scope, from this up to the global one
+     * @return whether any scope in the ancestors tree matches the [predicate]
+     */
+    fun anyParent(predicate: (Scope) -> Boolean): Boolean {
+        var scope: Scope? = this
+        while(scope != null) {
+            if(predicate(scope)) return true
+            scope = scope.parent
+        }
+        return false
     }
 
     /**
@@ -74,7 +96,7 @@ data class Scope(private val parent: Scope?, private val ownMembers: MutableMap<
          * @return the main scope of the program
          */
         fun buildMainScope(libraries: List<JarLibrary>): Scope {
-            val scope = Scope(parent = null)
+            val scope = Scope(parent = null, owner = null)
             libraries.forEach { library ->
                 // We look up available classes and functions from libraries.
                 val helper = library.reflectionHelper()

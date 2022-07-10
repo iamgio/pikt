@@ -97,9 +97,10 @@ class LambdaCloseStatement : Statement() {
  * ```
  * { arg1: Any, arg2: Any ->
  * ```
+ *
  */
-class DefaultLambdaOpenCodeBuilder : LambdaOpenCodeBuilder() {
-    override fun getDelegate() = LambdaOpenStatement::class.java
+open class DefaultLambdaOpenCodeBuilder : LambdaOpenCodeBuilder() {
+    override fun getDelegate(): Class<out Statement> = LambdaOpenStatement::class.java
 
     override fun open() {
         builder.append("{")

@@ -80,8 +80,10 @@ class SetVariableStatement : Statement() {
         // Push variable to the scope.
         if(!reader.isInvalidated && !isNested) {
             if(isFunction) {
+                val block = data.nextStatement?.asBlock
                 // If this is a function declaration, wait for the next lambda to be evaluated and get the amount of arguments.
-                data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, FunctionMember.Overload(args.size))) }
+                block?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, FunctionMember.Overload(args.size))) }
+                block?.codeBuilder = FunctionDeclarationLambdaOpenCodeBuilder()
             } else {
                 // If this a variable declaration, directly push it to the scope.
                 data.scope.push(name, VariableMember(name))
@@ -102,4 +104,14 @@ class SetVariableStatement : Statement() {
         // [var] name = lambda@ { arg1: Any, arg2: Any ->
         return builder.append(value.code).toString()
     }
+}
+
+// This implementation does not serve a real purpose for code generation,
+// but it is used by the Return statement in order to recognize whether it is placed within a function declaration.
+
+/**
+ * @see ReturnStatement.isPlacementInvalid
+ */
+class FunctionDeclarationLambdaOpenCodeBuilder : DefaultLambdaOpenCodeBuilder() {
+    override fun getDelegate() = SetVariableStatement::class.java
 }
