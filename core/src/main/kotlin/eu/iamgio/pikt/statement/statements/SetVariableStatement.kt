@@ -9,6 +9,7 @@ import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
+import eu.iamgio.pikt.statement.statements.bridge.LAMBDA_DEFAULT_BLOCK_NAME
 
 /**
  * Used to define and set (if already they exist) variables
@@ -30,9 +31,12 @@ class SetVariableStatement : Statement() {
         val builder = StringBuilder()
 
         val sequence = reader.nextSequence()
+        // A nested variable is a struct field.
+        // For instance: a.b.c
+        // c is nested inside b (which is nested inside a).
         val isNested = sequence.isNested
 
-        // Name
+        // Name.
         val name = sequence.last
         if(name == null) {
             syntax.mark("name", StatementSyntax.Mark.WRONG)
@@ -41,10 +45,13 @@ class SetVariableStatement : Statement() {
         }
         syntax.mark("name", StatementSyntax.Mark.CORRECT)
 
-        // Check if the variable were already registered
+        // Whether this variable represents a function (= is followed by a lambda block).
+        val isFunction = data.nextStatement?.isBlock ?: false
+
+        // Check if the variable were already registered.
         // TODO check nested existance
         if(!isNested) when(data.scope[name]) {
-            null -> builder.append("var ") // Variable is not registered
+            null -> builder.append("var ") // Variable or function is not registered.
             is VariableMember -> {}
             is ConstantMember -> {
                 reader.error("${name.hexName} is constant and its value cannot be set.", referenceToFirstPixel = true)
@@ -60,29 +67,39 @@ class SetVariableStatement : Statement() {
             }
         }
 
-        // Whether this variable represents a function
-        val isFunction = data.nextStatement?.isBlock ?: false
-
-        // Value
+        // Value.
         val value = reader.nextExpression(data.scope)
         if(value.isEmpty && !isFunction) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
             reader.error("Variable ${name.hexName} has no value.", syntax)
             return ""
         }
+
         syntax.mark("value", StatementSyntax.Mark.CORRECT)
 
-        // Push variable to the scope
+        // Push variable to the scope.
         if(!reader.isInvalidated && !isNested) {
             if(isFunction) {
-                // If this is a method declaration, wait for the next lambda to be evaluated and get the amount of arguments.
+                // If this is a function declaration, wait for the next lambda to be evaluated and get the amount of arguments.
                 data.nextStatement?.asBlock?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, FunctionMember.Overload(args.size))) }
             } else {
+                // If this a variable declaration, directly push it to the scope.
                 data.scope.push(name, VariableMember(name))
             }
         }
 
-        // Output: [var] name = value
-        return builder.append(sequence).append(" = ").append(value.code).toString()
+        builder.append(sequence).append(" = ")
+
+        // If this is a function declaration, name the following block as a Kotlin annotation.
+        if(isFunction) {
+            builder.append(LAMBDA_DEFAULT_BLOCK_NAME).append("@ ")
+        }
+
+        // Output:
+        // If variable:
+        // [var] name = value
+        // If function (including lambda output):
+        // [var] name = lambda@ { arg1: Any, arg2: Any ->
+        return builder.append(value.code).toString()
     }
 }

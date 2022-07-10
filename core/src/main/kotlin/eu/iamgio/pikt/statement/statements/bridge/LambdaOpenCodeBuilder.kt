@@ -5,6 +5,14 @@ import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
 
 /**
+ * The name that can be used to identify lambda blocks.
+ *
+ * It is used as a Kotlin block annotation: `name@ {`
+ * allows operations such as `return@name value`
+ */
+const val LAMBDA_DEFAULT_BLOCK_NAME = "lambda"
+
+/**
  * Defines the way a [LambdaOpenStatement] generates its corresponding output code.
  * This is meant to be used in other statements as a "bridge" between that statement and lambda blocks that follow it.
  *
