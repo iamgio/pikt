@@ -38,7 +38,7 @@ _* Native support is limited due to the lack of Kotlin/Native libraries and is b
 <p align="center">
   <br>
   <a href="https://github.com/iAmGio/pikt/wiki/Fibonacci-breakdown">
-    <img width="130" src="https://i.imgur.com/1KFhhic.png" alt="Fibonacci" /><br>
+    <img width="130" src="https://i.imgur.com/lytDoDv.png" alt="Fibonacci" /><br>
   </a>
   <i>A high-performance Fibonacci sequence algorithm.</i>
   <br><br>
@@ -194,7 +194,7 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] Loops (`for-each` + `range` function for indexed `for` loop)
 - [ ] Try/catch
 - [x] Structs
-- [ ] [Standard library](stdlib) (2%, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
+- [ ] [Standard library](stdlib) (work in progress, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
 - [x] External libraries support (following certain standards, wiki in progress)
 
 **Generation**
