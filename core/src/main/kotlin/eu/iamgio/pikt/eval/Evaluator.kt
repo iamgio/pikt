@@ -53,7 +53,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
             }
         }
 
-        // Evaluate queued statements
+        // Evaluate queued statements.
         statements.eval(this, Scope.buildMainScope(libraries))
     }
 
@@ -124,9 +124,12 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
     }
 
     /**
-     * Invalidates this evaluator.
+     * Invalidates this evaluator (finishes generating Kotlin code but doesn't compile it).
+     * @param message optional message to print
      */
-    fun invalidate() {
+    fun invalidate(message: String? = null) {
         isInvalidated = true
+
+        if(message != null) System.err.println("Error: $message\n")
     }
 }

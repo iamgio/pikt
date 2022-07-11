@@ -16,10 +16,21 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
     /**
      * Opens and closes scopes if required.
      * @param scopes mutable list of scopes
-     * @param previousStatement the statement that comes before [statement]
+     * @param previousStatement the statement that comes before [statement], if exists
      * @param previousPreviousStatement the statement that comes before [previousStatement], if exists
      */
     private fun handleScopes(scopes: MutableList<Scope>, previousStatement: Statement?, previousPreviousStatement: Statement?) {
+        // Examples:
+
+        // {        <- opens scope
+        //     ...  <- this is in an inner scope
+        // }        <- closes scope
+        // ...      <- this is in an outer scope
+
+        // if (...) <- no explicit lambda: opens a temporary scope
+        //     ...  <- this is in an inner scope
+        // ...      <- this is in an outer scope
+
         if(previousStatement?.options?.closesScope == true || previousPreviousStatement?.options?.opensTemporaryScope == true) {
             scopes.removeLastOrNull() ?: System.err.println("There must be at least one active scope.")
         }
@@ -41,7 +52,11 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
         val scope = scopes.last()
 
         // Generate code.
-        val code = statement.generate(reader, statement.getSyntax(), StatementData(scope, previousStatement, nextStatement))
+        val code = statement.generate(
+                reader = reader,
+                syntax = statement.getSyntax(),
+                data   = StatementData(scope, previousStatement, nextStatement)
+        )
 
         // Apply indentation.
         evaluator.appendIndentation(scope, statement, previousStatement)
@@ -72,10 +87,18 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
 fun List<QueuedStatement>.eval(evaluator: Evaluator, mainScope: Scope) {
     val scopes = mutableListOf(mainScope)
 
+    // Each statement generates its own Kotlin code
     forEachIndexed { index, queued ->
         val previousStatement = elementAtOrNull(index - 1)?.statement
         val nextStatement = elementAtOrNull(index + 1)?.statement
         val previousPreviousStatement = elementAtOrNull(index - 2)?.statement
         queued.eval(scopes, evaluator, previousStatement, nextStatement, previousPreviousStatement)
+    }
+
+    // Checks if blocks are closed properly. Throws an error otherwise.
+    if(scopes.size > 1) {
+        // Amount of unclosed scopes.
+        val unclosed = scopes.size - (if(lastOrNull()?.statement?.options?.closesScope == true) 2 else 1)
+        evaluator.invalidate(message = "$unclosed block${if(unclosed > 1) "s are" else " is"} unclosed. Consider closing lambda blocks.")
     }
 }
