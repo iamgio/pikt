@@ -19,7 +19,7 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
      * @param previousStatement the statement that comes before [statement], if exists
      * @param previousPreviousStatement the statement that comes before [previousStatement], if exists
      */
-    private fun handleScopes(scopes: MutableList<Scope>, previousStatement: Statement?, previousPreviousStatement: Statement?) {
+    fun handleScopes(scopes: MutableList<Scope>, previousStatement: Statement?, previousPreviousStatement: Statement?) {
         // Examples:
 
         // {        <- opens scope
@@ -96,9 +96,29 @@ fun List<QueuedStatement>.eval(evaluator: Evaluator, mainScope: Scope) {
     }
 
     // Checks if blocks are closed properly. Throws an error otherwise.
-    if(scopes.size > 1) {
-        // Amount of unclosed scopes.
-        val unclosed = scopes.size - (if(lastOrNull()?.statement?.options?.closesScope == true) 2 else 1)
-        evaluator.invalidate(message = "$unclosed block${if(unclosed > 1) "s are" else " is"} unclosed. Consider closing lambda blocks.")
+    val last = lastOrNull()
+
+    last?.handleScopes(
+            scopes,
+            previousStatement = last.statement,
+            previousPreviousStatement = elementAtOrNull(size - 2)?.statement
+    )
+
+    // Amount of unclosed scopes.
+    val unclosedScopes = getUnclosedScopes(scopes, this)
+    if(unclosedScopes > 0) {
+        evaluator.invalidate(message = "$unclosedScopes block${if(unclosedScopes != 1) "s are" else " is"} unclosed. Consider closing lambda blocks.")
     }
+}
+
+private fun getUnclosedScopes(scopes: MutableList<Scope>, statements: List<QueuedStatement>): Int {
+    val last = statements.lastOrNull()
+
+    last?.handleScopes(
+            scopes,
+            previousStatement = last.statement,
+            previousPreviousStatement = statements.elementAtOrNull(statements.size - 2)?.statement
+    )
+
+    return scopes.size - 1
 }
