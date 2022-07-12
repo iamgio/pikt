@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
-import eu.iamgio.pikt.image.readImage
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.image.rgbToHex
 import eu.iamgio.pikt.lib.JarLibrary
@@ -18,7 +17,7 @@ import java.util.*
  */
 class RecolorizeCommand : Command("-recolorize", { args ->
     val properties = PiktPropertiesRetriever().retrieve()
-    val sourceImage = readImage(properties.source)
+    val sourceImage = ImageProcessingUtils.read(properties.source)
 
     // Get color choice method from optional =method argument. Defaults to FIRST.
     val method = if(args != null && args.isNotEmpty()) {

@@ -116,7 +116,10 @@ The following arguments enable settings that affect Pikt's behavior.
 - `-pixelinfo` adds information about pixel coordinates to the output code as comments;
 
 
-- `-imgoutput=path` sets the output file for image-generating commands (see below). If not specified, defaults to the source image path followed by a suffix.
+- `-imgoutput=path` sets the output file for image-generating commands (see below). If not specified, defaults to the source image path followed by a suffix;  
+
+
+- `-chainoutput` enables output chaining for image-generating commands: the output of a command becomes the input for the next one. It requires `-imageoutput` to be set.
 
 ## Command arguments
 
@@ -152,7 +155,7 @@ If `size` is not specified, it will try to create a square-ish image with no whi
 
 
 - `-colorswap=<swaps>` swaps colors from the source image.  
-`swaps` is defined as `from1:to1,from2:to2,...` where `from` and `to` are hexadecimal colors. 
+`swaps` is defined as `from1:to1,from2:to2,...` where `from` and `to` are hexadecimal colors; 
 
 
 - `-mask=path` creates a masked copy of the source image, loading the mask image from `path`;
@@ -167,12 +170,6 @@ RGB:  72  101  108  108  111  32  80  105  107  116  33
 ```
 
 - `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`) and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable archive.
-
-> Commands can be chained.
-> For example, `java -Dsource=img.png -Dcolors=scheme -jar pikt.jar -imgoutput=img_new.png -recolorize -compact`
-> applies the `scheme` color scheme to `img.png` and compacts the output to `img_new.png` at the same time.
-> 
-> It is possible to overwrite the source image, albeit highly discouraged.
 
 ## Building
 The [downloadable archive](#begin) is already built off the latest GitHub commit.

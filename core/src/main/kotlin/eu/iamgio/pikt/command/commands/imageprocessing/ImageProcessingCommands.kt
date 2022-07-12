@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.image.readImage
 import eu.iamgio.pikt.image.save
 import java.awt.image.BufferedImage
 import java.io.File
@@ -12,8 +13,15 @@ object ImageProcessingUtils {
 
     /**
      * Processed image output. [getOutputFileFromSource] value will be used by default if this is `null`.
+     * @see ImageOutputCommand
      */
     var output: File? = null
+
+    /**
+     * Enables image output chaining: the output of an image processing command becomes the input for the next command.
+     * @see ChainOutputCommand
+     */
+    var enableChaining: Boolean = false
 
     /**
      * Gets the default output file. E.g.: hello_world.png -> hello_world_tag.png
@@ -22,6 +30,8 @@ object ImageProcessingUtils {
      * @return default output file.
      */
     private fun getOutputFileFromSource(source: File, tag: String) = File(source.parentFile, source.nameWithoutExtension + "_$tag." + source.extension)
+
+    fun read(imageFile: File) = readImage(output?.takeIf { enableChaining } ?: imageFile)
 
     /**
      * Saves the given [image] to a file.
@@ -39,8 +49,9 @@ object ImageProcessingUtils {
 
 /**
  * Triggered by -imgoutput=path argument.
- * Defines the output file name for the operations in this file. It must come before the operation command.
+ * Defines the output file name for the operations in this file.
  *
+ * @see ImageProcessingUtils.output
  * @author Giorgio Garofalo
  */
 class ImageOutputCommand : Command("-imgoutput", { args ->
@@ -49,4 +60,16 @@ class ImageOutputCommand : Command("-imgoutput", { args ->
     } else if(ImageProcessingUtils.output == null) {
         ImageProcessingUtils.output = File(args)
     }
+}, isSettingsCommand = true)
+
+/**
+ * Triggered by -chainoutput argument.
+ * Allows chaining between image transformation commands: the output of an image processing command becomes the input for the next command.
+ * It is recommended to use in combination with [ImageOutputCommand].
+ *
+ * @see ImageProcessingUtils.enableChaining
+ * @author Giorgio Garofalo
+ */
+class ChainOutputCommand : Command("-chainoutput", {
+    ImageProcessingUtils.enableChaining = true
 }, isSettingsCommand = true)
