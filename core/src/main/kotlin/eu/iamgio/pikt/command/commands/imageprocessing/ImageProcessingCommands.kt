@@ -24,6 +24,11 @@ object ImageProcessingUtils {
     var enableChaining: Boolean = false
 
     /**
+     * Whether at least one image has been processed and saved.
+     */
+    private var hasGenerated: Boolean = false
+
+    /**
      * Gets the default output file. E.g.: hello_world.png -> hello_world_tag.png
      * @param source source image that is processed
      * @param tag suffix of the file name representing the operation executed.
@@ -31,7 +36,12 @@ object ImageProcessingUtils {
      */
     private fun getOutputFileFromSource(source: File, tag: String) = File(source.parentFile, source.nameWithoutExtension + "_$tag." + source.extension)
 
-    fun read(imageFile: File) = readImage(output?.takeIf { enableChaining } ?: imageFile)
+    /**
+     * Reads an image from a file.
+     * If chaining is enabled, reads it from the output file of the previous command, from [imageFile] otherwise.
+     * @return input image
+     */
+    fun read(imageFile: File) = readImage(output?.takeIf { enableChaining && hasGenerated } ?: imageFile)
 
     /**
      * Saves the given [image] to a file.
@@ -43,6 +53,7 @@ object ImageProcessingUtils {
     fun save(image: BufferedImage, source: File, tag: String): File {
         val out = output ?: getOutputFileFromSource(source, tag)
         image.save(out)
+        hasGenerated = true
         return out
     }
 }
