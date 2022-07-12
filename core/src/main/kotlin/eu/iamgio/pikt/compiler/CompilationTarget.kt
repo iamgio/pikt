@@ -25,7 +25,10 @@ enum class CompilationTarget(
 
         override fun generateCompileCommand(kotlinFile: File, outputFile: File, properties: PiktProperties) = arrayOf(
                 properties.jvmCompilerPath!!,
-                kotlinFile.absolutePath, "-nowarn", "-include-runtime", "-cp", generateClassPath(properties.libraries), "-d", "$outputFile.jar"
+                kotlinFile.absolutePath,
+                "-nowarn", "-include-runtime", "-no-reflect",
+                "-cp", generateClassPath(properties.libraries),
+                "-d", "$outputFile.jar"
         )
 
         override fun generateInterpretCommand(kotlinFile: File, properties: PiktProperties) = arrayOf(
