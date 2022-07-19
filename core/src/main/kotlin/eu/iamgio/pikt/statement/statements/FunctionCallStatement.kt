@@ -23,7 +23,7 @@ class FunctionCallStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.functionCall
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence {
         val expression = reader.nextExpression(data.scope, ExpressionType.FUNCTION_CALL)
 
         if(expression.isEmpty) {

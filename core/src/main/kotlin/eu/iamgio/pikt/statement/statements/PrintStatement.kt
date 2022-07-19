@@ -22,7 +22,7 @@ class PrintStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.print
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence {
         val expression = reader.nextExpression(data.scope)
 
         if(!expression.isEmpty) {
@@ -30,6 +30,6 @@ class PrintStatement : Statement() {
         }
 
         // Output: println(value), or just println() if there is no value
-        return "println(${expression.code})"
+        return StringBuilder("println(").append(expression.code).append(")")
     }
 }

@@ -21,7 +21,7 @@ const val LAMBDA_DEFAULT_BLOCK_NAME = "lambda"
  * @see eu.iamgio.pikt.statement.statements.ForEachLambdaOpenCodeBuilder
  * @author Giorgio Garofalo
  */
-abstract class LambdaOpenCodeBuilder(protected val builder: StringBuilder = StringBuilder()) {
+abstract class LambdaOpenCodeBuilder(val builder: StringBuilder = StringBuilder()) {
 
     /**
      * The output code for the [LambdaOpenStatement].

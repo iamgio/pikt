@@ -26,13 +26,13 @@ class ForEachStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.forEach
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence? {
         val collection = reader.nextExpression(data.scope)
 
         if(collection.isEmpty) {
             syntax.mark("collection", StatementSyntax.Mark.WRONG)
             reader.error("No list to iterate found.", syntax)
-            return ""
+            return null
         }
         syntax.mark("collection", StatementSyntax.Mark.CORRECT)
 
@@ -40,7 +40,7 @@ class ForEachStatement : Statement() {
         if(data.nextStatement?.isBlock == false) {
             syntax.mark("lambda with argument", StatementSyntax.Mark.WRONG)
             reader.error("A for-each must be followed by a code block.", syntax)
-            return ""
+            return null
         }
         syntax.mark("lambda with argument", StatementSyntax.Mark.CORRECT)
 

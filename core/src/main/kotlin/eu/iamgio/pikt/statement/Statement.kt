@@ -70,7 +70,7 @@ abstract class Statement {
      * @param data information about this generation
      * @return Kotlin code
      */
-    abstract fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String
+    abstract fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence?
 
     /**
      * This method is called upon evaluation and defines the statement the evaluator will use to generate code.

@@ -27,7 +27,7 @@ class SetVariableStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.setVariable
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence? {
         val builder = StringBuilder()
 
         val sequence = reader.nextSequence()
@@ -41,7 +41,7 @@ class SetVariableStatement : Statement() {
         if(name == null) {
             syntax.mark("name", StatementSyntax.Mark.WRONG)
             reader.error("Variable has no name.", syntax)
-            return ""
+            return null
         }
         syntax.mark("name", StatementSyntax.Mark.CORRECT)
 
@@ -55,15 +55,15 @@ class SetVariableStatement : Statement() {
             is VariableMember -> {}
             is ConstantMember -> {
                 reader.error("${name.hexName} is constant and its value cannot be set.", referenceToFirstPixel = true)
-                return ""
+                return null
             }
             is StructMember -> {
                 reader.error("${name.hexName} is already linked to a struct.", referenceToFirstPixel = true)
-                return ""
+                return null
             }
             is FunctionMember -> {
                 reader.error("${name.hexName} is a function and its value cannot be set.", referenceToFirstPixel = true)
-                return ""
+                return null
             }
         }
 
@@ -72,7 +72,7 @@ class SetVariableStatement : Statement() {
         if(value.isEmpty && !isFunction) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
             reader.error("Variable ${name.hexName} has no value.", syntax)
-            return ""
+            return null
         }
 
         syntax.mark("value", StatementSyntax.Mark.CORRECT)
@@ -102,7 +102,7 @@ class SetVariableStatement : Statement() {
         // [var] name = value
         // If function (including lambda output):
         // [var] name = lambda@ { arg1: Any, arg2: Any ->
-        return builder.append(value.code).toString()
+        return builder.append(value.code)
     }
 }
 

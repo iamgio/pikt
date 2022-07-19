@@ -26,7 +26,7 @@ class IfStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.`if`
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence {
         val condition = reader.nextExpression(data.scope)
         if(condition.isEmpty) {
             syntax.mark("condition", StatementSyntax.Mark.WRONG)
@@ -64,7 +64,7 @@ class ElseStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.`else`
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence {
         /*if(previousStatement !is IfStatement) {
             reader.error("\"else\" has no \"if\".")
         }*/

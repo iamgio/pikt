@@ -30,7 +30,7 @@ class ReturnStatement : Statement() {
         return scope.isGlobal || !scope.anyParent { it.owner?.isBlock == true && it.owner.asBlock.codeBuilder is FunctionDeclarationLambdaOpenCodeBuilder }
     }
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): StringBuilder {
         if(isPlacementInvalid(data.scope)) {
             reader.error("A return statement must be placed within a function declaration.", referenceToFirstPixel = true)
         }
@@ -47,6 +47,6 @@ class ReturnStatement : Statement() {
         }
 
         // Output: return@lambda [value]
-        return builder.toString()
+        return builder
     }
 }

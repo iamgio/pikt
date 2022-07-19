@@ -36,7 +36,7 @@ class LambdaOpenStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.lambda.open
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): String {
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence {
         val arguments = mutableListOf<Pixel>()
         codeBuilder.open()
 
@@ -66,7 +66,7 @@ class LambdaOpenStatement : Statement() {
         // Output with arguments:    { arg1: Any, arg2: Any ->
         // When not using the default code builder,
         // the output depends on its implementation.
-        return codeBuilder.code
+        return codeBuilder.builder
     }
 
     override fun getEvaluableInstance() = LambdaOpenStatement()
