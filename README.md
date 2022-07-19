@@ -59,6 +59,9 @@ _* Native support is limited due to the lack of Kotlin/Native libraries and is b
 These examples use [custom color schemes](core/src/test/resources/schemes).  
 Click on the examples for a breakdown/explanation.
 
+
+> [How does Pikt work?](https://github.com/iAmGio/pikt/wiki/How-does-Pikt-work%3F)
+
 ## Table of contents
 
 - [Properties](#properties)
@@ -119,7 +122,7 @@ The following arguments enable settings that affect Pikt's behavior.
 - `-imgoutput=path` sets the output file for image-generating commands (see below). If not specified, defaults to the source image path followed by a suffix;  
 
 
-- `-chainoutput` enables output chaining for image-generating commands: the output of a command becomes the input for the next one. It requires `-imageoutput` to be set.
+- `-chainoutput` enables output chaining for image-generating commands: the output of a command becomes the input for the next one. It requires `-imgoutput` to be set.
 
 ## Command arguments
 
@@ -170,6 +173,7 @@ RGB:  72  101  108  108  111  32  80  105  107  116  33
 ```
 
 - `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`) and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable archive.
+
 
 ## Building
 The [downloadable archive](#begin) is already built off the latest GitHub commit.
