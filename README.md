@@ -59,8 +59,11 @@ _* Native support is limited due to the lack of Kotlin/Native libraries and is b
 These examples use [custom color schemes](core/src/test/resources/schemes).  
 Click on the examples for a breakdown/explanation.
 
+<br>
 
-> [How does Pikt work?](https://github.com/iAmGio/pikt/wiki/How-does-Pikt-work%3F)
+> **[How does Pikt work?](https://github.com/iAmGio/pikt/wiki/How-does-Pikt-work%3F)**
+
+<br>
 
 ## Table of contents
 
