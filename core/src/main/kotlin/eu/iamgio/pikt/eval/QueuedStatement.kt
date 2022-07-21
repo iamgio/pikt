@@ -9,9 +9,10 @@ import eu.iamgio.pikt.statement.StatementData
  *
  * @param statement queued statement
  * @param reader statement reader
+ * @param chainSize amount of chained statements, if it supports chaining
  * @author Giorgio Garofalo
  */
-data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
+data class QueuedStatement(val statement: Statement, val reader: PixelReader, val chainSize: Int = 1) {
 
     /**
      * Opens and closes scopes if required.
@@ -55,7 +56,7 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader) {
         val code = statement.generate(
                 reader = reader,
                 syntax = statement.getSyntax(),
-                data   = StatementData(scope, previousStatement, nextStatement)
+                data   = StatementData(scope, previousStatement, nextStatement, chainSize)
         )
 
         // Apply indentation.

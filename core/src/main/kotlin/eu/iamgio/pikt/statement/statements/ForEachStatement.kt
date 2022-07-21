@@ -67,7 +67,7 @@ class ForEachStatement : Statement() {
  *
  * @param collectionCode the code of the collection to iterate.
  */
-private class ForEachLambdaOpenCodeBuilder(private val collectionCode: String) : LambdaOpenCodeBuilder() {
+class ForEachLambdaOpenCodeBuilder(private val collectionCode: String) : LambdaOpenCodeBuilder() {
 
     override fun getDelegate() = ForEachStatement::class.java
 

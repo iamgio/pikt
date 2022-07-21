@@ -193,12 +193,15 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] Function calls (both as part of expressions and standalone)
 - [x] Function definition
 - [x] If / else / if else
-- [x] Lambdas
+- [x] Lambdas (code blocks)
 - [x] Operators (equality, logical and arithmetic)
-- [x] Loops (`for-each` + `range` function for indexed `for` loop)
+- [x] Loops
+  - [x] For-each
+  - [x] Indexed for (for-each + `range` function)
+  - [ ] While
 - [ ] Try/catch
 - [x] Structs
-- [ ] [Standard library](stdlib) (work in progress, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
+- [x] [Standard library](stdlib) (work in progress, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
 - [x] External libraries support (following certain standards, wiki in progress)
 
 **Generation**

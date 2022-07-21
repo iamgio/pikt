@@ -47,10 +47,25 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
         val statements = mutableListOf<QueuedStatement>()
 
         // Queue statements so that previousStatement and nextStatement can be set.
-        readers.forEach { reader ->
-            reader.next().let { pixel ->
-                pixel?.statement?.let { statements += QueuedStatement(it.getEvaluableInstance(), reader) }
+        for(reader in readers) {
+            val pixel = reader.next()
+            val statement = pixel?.statement ?: continue
+
+            // Statement chaining changes a statement's behavior
+            // depending on the amount of pixels that start it.
+            // For example: <return> exits a function,
+            // but <return> <return> performs a "break" on a loop.
+            if(statement.options.allowsChaining) {
+                val last = statements.last()
+                // If this is a chained statement, overwrite the last queued statement
+                if(last.reader.size == 1 && last.statement::class == statement::class) {
+                    statements[statements.size - 1] = last.copy(reader = reader, chainSize = last.chainSize + 1)
+                    continue
+                }
             }
+
+            // Queue the statement
+            statements += QueuedStatement(statement.getEvaluableInstance(), reader)
         }
 
         // Evaluate queued statements.
