@@ -115,7 +115,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
 
     /**
      * Prints an error preceded by a standard prefix and invalidates this reader.
-     * `Error at [x; y] (index i in Statement): message`
+     * `Error at (x,y) (index i in Statement): message`
      * @param message message to log
      * @param syntax optional [statement]'s syntax that should be printed out
      * @param referenceToFirstPixel whether the error must reference the first pixel in the reader
@@ -123,12 +123,24 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
     fun error(message: String, syntax: StatementSyntax? = null, referenceToFirstPixel: Boolean = false) {
         isInvalidated = true
 
+        // Where the error happened.
         val coordinates = if(pixels.size > 0) {
-            val pixel = pixels[if(referenceToFirstPixel || pixels.size == 1) 0 else index - 1]
+            val pixel = pixels[when {
+                referenceToFirstPixel || index < 0 -> 0
+                index > pixels.size -> pixels.size - 1 // Prevent IndexOutOfBoundsException
+                else -> index - 1
+            }]
             " at (${pixel.x},${pixel.y})"
         } else ""
+
         System.err.println("Error$coordinates (index ${if(referenceToFirstPixel) 0 else index} in ${statement?.name ?: "<no statement>"}):")
         System.err.println("\t$message")
+
+        // Prints a nice message that explains the expected syntax vs the used syntax.
+        // Example from SetVariableStatement:
+        //
+        // Syntax: <%variable.set%> <name> <value>
+        //	               ✓           ✓      ✗
         if(syntax != null) {
             val prefix = "Syntax: "
             System.err.println("\t$prefix" + syntax)
