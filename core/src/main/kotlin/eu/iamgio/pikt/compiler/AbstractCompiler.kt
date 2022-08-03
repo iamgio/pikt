@@ -117,7 +117,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
 
         while(reader.readLine().also { line = it } != null) {
             line?.let {
-                if(!it.startsWith("WARNING") && !it.contains("-Xverify")) {
+                if(!it.startsWith(KOTLIN_COMPILER_WARNING) && !it.contains(KOTLIN_COMPILER_XVERIFY)) {
                     printProcessLine(it, isErrorStream)
                 }
             }

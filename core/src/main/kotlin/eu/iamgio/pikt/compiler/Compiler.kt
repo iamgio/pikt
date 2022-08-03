@@ -13,6 +13,8 @@ import java.io.File
  */
 class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompiler(evaluator, properties) {
 
+    private var hasKotlinError = false
+
     override val sourceKotlinFile = File(outputFolder, properties.output + ".kt")
 
     override fun applyEvaluatorSettings() {
@@ -47,6 +49,10 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
 
     override fun printProcessLine(line: String, isError: Boolean) {
         if(isError) {
+            if(!hasKotlinError) {
+                hasKotlinError = true
+                System.err.println(KOTLIN_COMPILER_ERROR_MESSAGE_HEADER)
+            }
             System.err.println(line)
         } else {
             println(">\t$line")
