@@ -55,7 +55,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
             // depending on the amount of pixels that start it.
             // For example: <return> exits a function,
             // but <return> <return> performs a "break" on a loop.
-            if(statement.options.allowsChaining) {
+            if(statement.options.allowsChaining && statements.isNotEmpty()) {
                 val last = statements.last()
                 // If this is a chained statement, overwrite the last queued statement
                 if(last.reader.size == 1 && last.statement::class == statement::class) {
