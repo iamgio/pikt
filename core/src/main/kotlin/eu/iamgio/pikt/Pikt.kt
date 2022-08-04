@@ -154,6 +154,7 @@ fun registerStatements() = with(Statements) {
     register(ElseStatement())
     register(StructStatement())
     register(ForEachStatement())
+    register(WhileStatement())
     register(ReturnStatement())
     register(LambdaOpenStatement())
     register(LambdaCloseStatement())

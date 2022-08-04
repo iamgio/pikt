@@ -43,10 +43,13 @@ class ReturnStatement : Statement() {
     }
 
     /**
-     * @return whether the statement is placed in a loop
+     * @return whether the statement is placed in a loop ([ForEachStatement] or [WhileStatement])
      */
     private fun isBreakPlacementInvalid(scope: Scope): Boolean {
-        return scope.isGlobal || !scope.anyParent { it.owner?.isBlock == true && it.owner.asBlock.codeBuilder is ForEachLambdaOpenCodeBuilder } // TODO update when "while" is implemented!
+        return scope.isGlobal || !scope.anyParent {
+            (it.owner?.isBlock == true && (it.owner.asBlock.codeBuilder is ForEachLambdaOpenCodeBuilder || it.owner.asBlock.codeBuilder is WhileLambdaOpenCodeBuilder)) ||
+                    it.owner is WhileStatement
+        }
     }
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence? {

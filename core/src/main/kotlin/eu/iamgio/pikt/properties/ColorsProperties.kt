@@ -41,6 +41,7 @@ data class ColorsProperties(
  * @param else runs if the previous if statement did not run
  * @param struct creates a struct
  * @param forEach runs a task for every element of the collection
+ * @param `while` runs a task repeatedly as long as the running condition is satisfied
  * @param print prints an expression or value out
  * @author Giorgio Garofalo
  */
@@ -51,6 +52,7 @@ data class KeywordsColorsProperties(
         val `else`: ColorsProperty,
         val struct: ColorsProperty,
         val forEach: ColorsProperty,
+        val `while`: ColorsProperty,
         val `return`: ColorsProperty,
         val print: ColorsProperty
 )
@@ -183,6 +185,7 @@ class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : Prope
                         get("else"),
                         get("struct"),
                         get("foreach"),
+                        get("while"),
                         get("return"),
                         get("print")
                 ),

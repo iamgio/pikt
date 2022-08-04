@@ -198,7 +198,7 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] Loops
   - [x] For-each
   - [x] Indexed for (for-each + `range` function)
-  - [ ] While
+  - [x] While
 - [ ] Try/catch
 - [x] Structs
 - [x] [Standard library](stdlib) (work in progress, see [CONTRIBUTING](CONTRIBUTING.md) for contribution guidelines)
