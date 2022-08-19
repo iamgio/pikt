@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package pikt.stdlib
 
 /**
@@ -19,7 +21,7 @@ val Any?.iterable: Iterable<Any>
  * @param items elements of the list
  * @return created list
  */
-fun <T> listOf(vararg items: T): MutableList<T> {
+fun listOf(vararg items: Any): MutableList<Any> {
     return mutableListOf(*items)
 }
 
@@ -63,12 +65,32 @@ fun listGetAt(list: Any, index: Any): Any {
 }
 
 /**
+ * @param list list or string to get the value from
+ * @param index numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive)
+ */
+fun listSetAt(list: Any, index: Any, value: Any): Any {
+    if(index !is Number) {
+        throw RuntimeException("Index (from listSetAt(list, index, value)) is not a number.")
+    }
+    if(index < 0 || index >= listSize(list)) {
+        throw RuntimeException("Invalid index (from listSetAt(list, index, value)): index = $index, size = ${listSize(list)}")
+    }
+    val i = index.toInt()
+    return when(list) {
+        is MutableList<*> -> (list as MutableList<Any>)[i] = value
+        is CharSequence -> list[i]
+        else -> throw RuntimeException("List (from listGetAt(list, index)) is not a list or string.")
+    }
+}
+
+/**
  * Adds values to a [list].
  * @param list list to be affected
  * @param items items to be added
  */
-fun <T> addToList(list: MutableList<T>, vararg items: T) {
-    list.addAll(items)
+fun listAdd(list: Any, vararg items: Any) = when(list) {
+    is MutableList<*> -> (list as MutableList<Any>).addAll(items)
+    else -> throw RuntimeException("List (from listAdd(list, items)) is not a list.")
 }
 
 /**
@@ -76,8 +98,9 @@ fun <T> addToList(list: MutableList<T>, vararg items: T) {
  * @param list list to be affected
  * @param items items to be removed
  */
-fun <T> removeFromList(list: MutableList<T>, vararg items: T) {
-    list.removeAll(items)
+fun listRemove(list: Any, vararg items: Any) = when(list) {
+    is MutableList<*> -> (list as MutableList<Any>).removeAll(items)
+    else -> throw RuntimeException("List (from listRemove(list, items)) is not a list.")
 }
 
 /**
@@ -88,7 +111,7 @@ fun <T> removeFromList(list: MutableList<T>, vararg items: T) {
  * @return list of integers from [start] to [end]
  */
 @JvmOverloads
-fun range(start: Any, end: Any, forceUp: Boolean = false): MutableList<Int> {
+fun range(start: Any, end: Any, forceUp: Any = false): MutableList<Int> {
     if(start is Number && end is Number) {
         val step = if(end >= start || forceUp.bool) 1 else -1
         return IntProgression.fromClosedRange(start.toInt(), end.toInt(), step).toMutableList()
