@@ -1,5 +1,7 @@
 package pikt.stdlib
 
+import pikt.error.PiktInvalidOperationException
+
 /**
  * Sometimes the output code may contain something like this:
  * var x = ...
@@ -20,7 +22,10 @@ operator fun Any.plus(other: Any): Any {
         this is String || other is String -> {
             this.toString() + other.toString()
         }
-        else -> throw RuntimeException("Invalid operation $this + $other")
+        else -> throw PiktInvalidOperationException(
+                this, "+", other,
+                reference = object {}
+        )
     }
 }
 
@@ -32,7 +37,10 @@ operator fun Any.minus(other: Any): Any {
         this is Number && other is Number -> {
             this - other
         }
-        else -> throw RuntimeException("Invalid operation $this - $other")
+        else -> throw PiktInvalidOperationException(
+                this, "-", other,
+                reference = object {}
+        )
     }
 }
 
@@ -50,7 +58,10 @@ operator fun Any.times(other: Any): Any {
         this is Number && other is String -> {
             other.repeat(this.toInt())
         }
-        else -> throw RuntimeException("Invalid operation $this * $other")
+        else -> throw PiktInvalidOperationException(
+                this, "*", other,
+                reference = object {}
+        )
     }
 }
 
@@ -62,7 +73,10 @@ operator fun Any.div(other: Any): Any {
         this is Number && other is Number -> {
             this / other
         }
-        else -> throw RuntimeException("Invalid operation $this / $other")
+        else -> throw PiktInvalidOperationException(
+                this, "/", other,
+                reference = object {}
+        )
     }
 }
 
@@ -74,7 +88,10 @@ operator fun Any.rem(other: Any): Any {
         this is Number && other is Number -> {
             this % other
         }
-        else -> throw RuntimeException("Invalid operation $this % $other")
+        else -> throw PiktInvalidOperationException(
+                this, "%", other,
+                reference = object {}
+        )
     }
 }
 

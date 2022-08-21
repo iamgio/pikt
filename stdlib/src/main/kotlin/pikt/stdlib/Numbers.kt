@@ -1,5 +1,7 @@
 package pikt.stdlib
 
+import pikt.error.PiktInvalidOperationException
+
 /**
  * Converts a [String] to an [Int] value. If [value] does not represent an integer, `null` is returned.
  * @param value string input
@@ -20,7 +22,10 @@ operator fun Number.plus(other: Number): Number {
         is Byte   -> this.toByte()   + other.toByte()
         is Double -> this.toDouble() + other.toDouble()
         is Float  -> this.toFloat()  + other.toFloat()
-        else      -> throw RuntimeException("Plus operation (+) called with at least one non-numeric value: $this + $other")
+        else      -> throw PiktInvalidOperationException(
+                this, "+", other,
+                reference = object {}
+        )
     }
 }
 
@@ -37,7 +42,10 @@ operator fun Number.minus(other: Number): Number {
         is Byte   -> this.toByte()   - other.toByte()
         is Double -> this.toDouble() - other.toDouble()
         is Float  -> this.toFloat()  - other.toFloat()
-        else      -> throw RuntimeException("Minus operation (-) called with at least one non-numeric value: $this - $other")
+        else      -> throw PiktInvalidOperationException(
+                this, "-", other,
+                reference = object {}
+        )
     }
 }
 
@@ -54,7 +62,10 @@ operator fun Number.times(other: Number): Number {
         is Byte   -> this.toByte()   * other.toByte()
         is Double -> this.toDouble() * other.toDouble()
         is Float  -> this.toFloat()  * other.toFloat()
-        else      -> throw RuntimeException("Times operation (*) called with at least one non-numeric value: $this * $other")
+        else      -> throw PiktInvalidOperationException(
+                this, "*", other,
+                reference = object {}
+        )
     }
 }
 
@@ -71,7 +82,10 @@ operator fun Number.div(other: Number): Number {
         is Byte   -> this.toByte()   / other.toByte()
         is Double -> this.toDouble() / other.toDouble()
         is Float  -> this.toFloat()  / other.toFloat()
-        else      -> throw RuntimeException("Divide operation (/) called with at least one non-numeric value: $this / $other")
+        else      -> throw PiktInvalidOperationException(
+                this, "/", other,
+                reference = object {}
+        )
     }
 }
 
@@ -88,6 +102,9 @@ operator fun Number.rem(other: Number): Number {
         is Byte   -> this.toByte()   % other.toByte()
         is Double -> this.toDouble() % other.toDouble()
         is Float  -> this.toFloat()  % other.toFloat()
-        else      -> throw RuntimeException("Rem operation (%) called with at least one non-numeric value: $this % $other")
+        else      -> throw PiktInvalidOperationException(
+                this, "%", other,
+                reference = object {}
+        )
     }
 }
