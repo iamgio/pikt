@@ -15,7 +15,8 @@ class PiktWrongArgumentTypeException(
         expectedType: String,
         reference: Any,
 ) : PiktException(
-        "Wrong argument type: $parameterName (in ${reference.enclosingMethod.asString})\n" +
+        "Wrong argument type: $parameterName\n" +
                 "$parameterName = $argumentValue (JVM type ${argumentValue.jvmType}), " +
-                "but $expectedType was expected."
+                "but $expectedType was expected.",
+        reference
 )

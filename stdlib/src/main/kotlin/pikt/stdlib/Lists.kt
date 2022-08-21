@@ -2,6 +2,13 @@
 
 package pikt.stdlib
 
+import pikt.error.PiktException
+import pikt.error.PiktWrongArgumentTypeException
+import pikt.error.ValueType.LIST
+import pikt.error.ValueType.NUMBER
+import pikt.error.ValueType.STRING
+import pikt.error.ValueType.or
+
 /**
  * Gets an iterable value from any nullable object value.
  * This is automatically inserted in for-each blocks.
@@ -51,16 +58,29 @@ fun listSize(list: Any): Int {
  */
 fun listGetAt(list: Any, index: Any): Any {
     if(index !is Number) {
-        throw RuntimeException("Index (from listGetAt(list, index)) is not a number.")
+        throw PiktWrongArgumentTypeException(
+                parameterName = "index",
+                argumentValue = index,
+                expectedType = NUMBER,
+                reference = object {}
+        )
     }
     if(index < 0 || index >= listSize(list)) {
-        throw RuntimeException("Invalid index (from listGetAt(list, index)): index = $index, size = ${listSize(list)}")
+        throw PiktException(
+                "Invalid index: index = $index, size = ${listSize(list)}",
+                reference = object {}
+        )
     }
     val i = index.toInt()
     return when(list) {
         is List<*> -> list[i]
         is CharSequence -> list[i]
-        else -> throw RuntimeException("List (from listGetAt(list, index)) is not a list or string.")
+        else -> throw PiktWrongArgumentTypeException(
+                parameterName = "list",
+                argumentValue = list,
+                expectedType = LIST or STRING,
+                reference = object {}
+        )
     }!!
 }
 
@@ -70,16 +90,29 @@ fun listGetAt(list: Any, index: Any): Any {
  */
 fun listSetAt(list: Any, index: Any, value: Any): Any {
     if(index !is Number) {
-        throw RuntimeException("Index (from listSetAt(list, index, value)) is not a number.")
+        throw PiktWrongArgumentTypeException(
+                parameterName = "index",
+                argumentValue = index,
+                expectedType = NUMBER,
+                reference = object {}
+        )
     }
     if(index < 0 || index >= listSize(list)) {
-        throw RuntimeException("Invalid index (from listSetAt(list, index, value)): index = $index, size = ${listSize(list)}")
+        throw PiktException(
+                "Invalid index: index = $index, size = ${listSize(list)}",
+                reference = object {}
+        )
     }
     val i = index.toInt()
     return when(list) {
         is MutableList<*> -> (list as MutableList<Any>)[i] = value
         is CharSequence -> list[i]
-        else -> throw RuntimeException("List (from listGetAt(list, index)) is not a list or string.")
+        else -> throw PiktWrongArgumentTypeException(
+                parameterName = "list",
+                argumentValue = list,
+                expectedType = LIST or STRING,
+                reference = object {}
+        )
     }
 }
 
@@ -90,7 +123,12 @@ fun listSetAt(list: Any, index: Any, value: Any): Any {
  */
 fun listAdd(list: Any, vararg items: Any) = when(list) {
     is MutableList<*> -> (list as MutableList<Any>).addAll(items)
-    else -> throw RuntimeException("List (from listAdd(list, items)) is not a list.")
+    else -> throw PiktWrongArgumentTypeException(
+            parameterName = "list",
+            argumentValue = list,
+            expectedType = LIST,
+            reference = object {}
+    )
 }
 
 /**
@@ -100,7 +138,12 @@ fun listAdd(list: Any, vararg items: Any) = when(list) {
  */
 fun listRemove(list: Any, vararg items: Any) = when(list) {
     is MutableList<*> -> (list as MutableList<Any>).removeAll(items)
-    else -> throw RuntimeException("List (from listRemove(list, items)) is not a list.")
+    else -> throw PiktWrongArgumentTypeException(
+            parameterName = "list",
+            argumentValue = list,
+            expectedType = LIST,
+            reference = object {}
+    )
 }
 
 /**
@@ -112,9 +155,24 @@ fun listRemove(list: Any, vararg items: Any) = when(list) {
  */
 @JvmOverloads
 fun range(start: Any, end: Any, forceUp: Any = false): MutableList<Int> {
-    if(start is Number && end is Number) {
-        val step = if(end >= start || forceUp.bool) 1 else -1
-        return IntProgression.fromClosedRange(start.toInt(), end.toInt(), step).toMutableList()
+    if(start !is Number) {
+        throw PiktWrongArgumentTypeException(
+                parameterName = "start",
+                argumentValue = start,
+                expectedType = NUMBER,
+                reference = object {}
+        )
     }
-    throw RuntimeException("range(start, end) called with non-numeric values.")
+
+    if(end !is Number) {
+        throw PiktWrongArgumentTypeException(
+                parameterName = "end",
+                argumentValue = end,
+                expectedType = NUMBER,
+                reference = object {}
+        )
+    }
+
+    val step = if(end >= start || forceUp.bool) 1 else -1
+    return IntProgression.fromClosedRange(start.toInt(), end.toInt(), step).toMutableList()
 }

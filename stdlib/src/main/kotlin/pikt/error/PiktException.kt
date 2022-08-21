@@ -6,10 +6,11 @@ import java.lang.reflect.Method
  * A standard exception to be thrown from Pikt libraries.
  *
  * @param message message of the error
+ * @param reference a reference object used to retrieve the caller function, usually defined as `object {}`
  * @author Giorgio Garofalo
  */
-open class PiktException(message: String) : RuntimeException(
-        "A runtime error was thrown!\n\n$message\n"
+open class PiktException(message: String, reference: Any) : RuntimeException(
+        "A runtime error was thrown!\n\n$message\nSource: ${reference.enclosingMethod.asString}"
 ) {
     // Reflection utilities
     protected companion object {
