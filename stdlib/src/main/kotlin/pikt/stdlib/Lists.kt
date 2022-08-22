@@ -2,12 +2,17 @@
 
 package pikt.stdlib
 
-import pikt.error.PiktException
 import pikt.error.PiktWrongArgumentTypeException
 import pikt.error.ValueType.LIST
 import pikt.error.ValueType.NUMBER
 import pikt.error.ValueType.STRING
 import pikt.error.ValueType.or
+import pikt.error.checkIndexValidity
+
+/**
+ * The default value returned by [listSize] if its argument does not provide a size.
+ */
+const val NON_LIST_SIZE = -1
 
 /**
  * Gets an iterable value from any nullable object value.
@@ -48,7 +53,7 @@ fun listSize(list: Any): Int {
     return when(list) {
         is List<*> -> list.size
         is CharSequence -> list.length
-        else -> -1
+        else -> NON_LIST_SIZE
     }
 }
 
@@ -57,21 +62,9 @@ fun listSize(list: Any): Int {
  * @param index numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive)
  */
 fun listGetAt(list: Any, index: Any): Any {
-    if(index !is Number) {
-        throw PiktWrongArgumentTypeException(
-                parameterName = "index",
-                argumentValue = index,
-                expectedType = NUMBER,
-                reference = object {}
-        )
-    }
-    if(index < 0 || index >= listSize(list)) {
-        throw PiktException(
-                "Invalid index: index = $index, size = ${listSize(list)}",
-                reference = object {}
-        )
-    }
-    val i = index.toInt()
+    checkIndexValidity(list, index, reference = object {})
+    val i = (index as Number).toInt()
+
     return when(list) {
         is List<*> -> list[i]
         is CharSequence -> list[i]
@@ -89,21 +82,9 @@ fun listGetAt(list: Any, index: Any): Any {
  * @param index numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive)
  */
 fun listSetAt(list: Any, index: Any, value: Any): Any {
-    if(index !is Number) {
-        throw PiktWrongArgumentTypeException(
-                parameterName = "index",
-                argumentValue = index,
-                expectedType = NUMBER,
-                reference = object {}
-        )
-    }
-    if(index < 0 || index >= listSize(list)) {
-        throw PiktException(
-                "Invalid index: index = $index, size = ${listSize(list)}",
-                reference = object {}
-        )
-    }
-    val i = index.toInt()
+    checkIndexValidity(list, index, reference = object {})
+    val i = (index as Number).toInt()
+
     return when(list) {
         is MutableList<*> -> (list as MutableList<Any>)[i] = value
         is CharSequence -> list[i]
