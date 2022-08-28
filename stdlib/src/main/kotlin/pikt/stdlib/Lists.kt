@@ -58,6 +58,7 @@ fun listSize(list: Any): Int {
 }
 
 /**
+ * Replaced by the [get] operator.
  * @param list list or string to get the value from
  * @param index numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive)
  */
@@ -78,7 +79,8 @@ fun listGetAt(list: Any, index: Any): Any {
 }
 
 /**
- * @param list list or string to get the value from
+ * Replaced by the [set] operator.
+ * @param list list to set the value from
  * @param index numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive)
  */
 fun listSetAt(list: Any, index: Any, value: Any): Any {
@@ -87,7 +89,6 @@ fun listSetAt(list: Any, index: Any, value: Any): Any {
 
     return when(list) {
         is MutableList<*> -> (list as MutableList<Any>)[i] = value
-        is CharSequence -> list[i]
         else -> throw PiktWrongArgumentTypeException(
                 parameterName = "list",
                 argumentValue = list,

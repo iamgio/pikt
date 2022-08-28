@@ -146,11 +146,11 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
     private fun nextFunctionCall(): String {
         val builder = StringBuilder()
 
-        // Function name
+        // Function name (might be nested as well).
         val sequence = reader.nextSequence()
         val name = sequence.last
 
-        builder.append(sequence)
+        builder.append(sequence.toNestedCode(scope))
         builder.append("(")
 
         val functionMember = sequence.first?.also { it.checkExistance() }?.let { scope[it] as? FunctionMember }

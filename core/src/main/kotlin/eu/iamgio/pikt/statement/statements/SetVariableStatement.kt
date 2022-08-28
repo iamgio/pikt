@@ -90,7 +90,7 @@ class SetVariableStatement : Statement() {
             }
         }
 
-        builder.append(sequence).append(" = ")
+        builder.append(sequence.toNestedCode(data.scope)).append(" = ")
 
         // If this is a function declaration, name the following block as a Kotlin annotation.
         if(isFunction) {
@@ -110,7 +110,7 @@ class SetVariableStatement : Statement() {
 // but it is used by the Return statement in order to recognize whether it is placed within a function declaration.
 
 /**
- * @see ReturnStatement.isPlacementInvalid
+ * @see ReturnStatement.isReturnPlacementInvalid
  */
 class FunctionDeclarationLambdaOpenCodeBuilder : DefaultLambdaOpenCodeBuilder() {
     override fun getDelegate() = SetVariableStatement::class.java
