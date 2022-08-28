@@ -68,6 +68,17 @@ class PiktTest {
     }
 
     @Test
+    fun `nesting awareness check`() {
+        // This test mixes the two types of nesting and lets Pikt decide which one to use for each case:
+        // First a struct "dot-type" nesting, then a list "brackets-type" nesting.
+        with(launch("nesting")) {
+            assertTrue {
+                first() == "0"
+            }
+        }
+    }
+
+    @Test
     fun `print numbers from 0 to 10`() {
         with(launch("range_foreach")) {
             assertTrue {
