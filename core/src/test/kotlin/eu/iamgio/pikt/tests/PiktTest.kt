@@ -106,6 +106,16 @@ class PiktTest {
     }
 
     @Test
+    fun `san francisco insertion sort`() {
+        val values = listOf(7, 10, 1, 46, 19, 8)
+        with(launch("insertion_sort", scheme = "insertion_sort")) {
+            assertTrue { size == 2 }
+            assertTrue { component1() == values.toString() }
+            assertTrue { component2() == values.sorted().toString() }
+        }
+    }
+
+    @Test
     fun `a tree that prints 'A tree!'`() {
         with(launch("tree", scheme = "tree")) {
             assertTrue {

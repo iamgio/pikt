@@ -47,6 +47,11 @@ _* Native support is limited due to the lack of Kotlin/Native libraries and is b
   </a>
   <i>A prime numbers algorithm.</i>
   <br><br>
+  <a href="https://github.com/iAmGio/pikt/wiki/Insertion-sort-breakdown">
+    <img width="200" src="https://i.imgur.com/2zNX4eT.png" alt="Insertion sort" /><br>
+  </a>
+  <i>An insertion sort algorithm.</i>
+  <br><br>
   <a href="https://github.com/iAmGio/pikt/wiki/String-reverser-breakdown">
     <img width="130" src="https://i.imgur.com/4Kz9DsI.png" alt="Reverser" /><br></a>
   <i>A string reverser.</i>
@@ -56,7 +61,7 @@ _* Native support is limited due to the lack of Kotlin/Native libraries and is b
   <i>A tree that prints "A tree!".</i>
 </p>
 
-These examples use [custom color schemes](core/src/test/resources/schemes).  
+These examples take advantage of [custom color schemes](core/src/test/resources/schemes).  
 Click on the examples for a breakdown/explanation.
 
 <br>
