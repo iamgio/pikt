@@ -9,7 +9,7 @@ import eu.iamgio.pikt.properties.OperatorColorsProperties
  *
  * @author Giorgio Garofalo
  */
-enum class Operator(override val code: String, val hex: (OperatorColorsProperties) -> ColorsProperty): ExpressionMember {
+enum class Operator(private val symbol: String, val colors: (OperatorColorsProperties) -> ColorsProperty): ExpressionMember {
     PLUS("+",               { colors -> colors.plus            }),
     MINUS("-",              { colors -> colors.minus           }),
     TIMES("*",              { colors -> colors.times           }),
@@ -24,6 +24,9 @@ enum class Operator(override val code: String, val hex: (OperatorColorsPropertie
     LESS("<",               { colors -> colors.less            }),
     LESS_OR_EQUALS("<=",    { colors -> colors.lessOrEquals    });
 
+    override val code: String
+        get() = " $symbol "
+
     companion object {
 
         /**
@@ -32,7 +35,7 @@ enum class Operator(override val code: String, val hex: (OperatorColorsPropertie
          * @return matched operator if exists. `null` otherwise
          */
         fun byPixel(pixel: Pixel): Operator? = values().firstOrNull {
-            pixel.matches(it.hex(pixel.colors.operators))
+            pixel.matches(it.colors(pixel.colors.operators))
         }
     }
 }
