@@ -30,9 +30,9 @@ Indeed, Pikt's most interesting feature is **flexibility**: every keyword, state
   
 Pikt compiles executables via the Kotlin compiler, therefore compilation for both JVM and native* targets is available, along with runtime interpretation.
 
-Make sure to check out the **[wiki](https://github.com/iAmGio/pikt/wiki)** to learn how to create your first Pikt program! 
-
 _* Native support is limited due to the lack of Kotlin/Native libraries and is being discontinued._
+
+Make sure to check out the **[wiki](https://github.com/iAmGio/pikt/wiki)** to learn how to create your first Pikt program!
 
 <!--suppress HtmlDeprecatedAttribute -->
 <p align="center">
@@ -139,7 +139,7 @@ These are handy shortcuts that replace several manual actions, such as image tra
 
 
 - `-createscheme` creates a new [color scheme](core/src/main/resources/colors.properties) with default values.  
-It automatically appends library colors too, i.e. as the [stdlib scheme](stdlib/src/main/resources/colors.properties), loaded from `-Dlib`;
+It automatically appends library colors too, e.g. the [stdlib scheme](stdlib/src/main/resources/colors.properties), loaded from `-Dlib`;
 
 
 - `-exportscheme` generates a useful color palette image out of the given color scheme;
@@ -185,9 +185,9 @@ More in-depth information about image transformation commands can be found [here
 
 ## Building
 The [downloadable archive](#begin) is already built off the latest GitHub commit.
-If you wish to build it yourself from source just run `mvn clean install`.
+If you wish to build it yourself from source simply run `mvn clean install`.
 
-> **Tip:** setting your run configuration to execute `mvn clean install -pl stdlib -am` compiles the standard library before launching Pikt, in case you need to make updates to it.   
+> **Tip:** setting your run configuration to execute `mvn clean install -pl stdlib -am` compiles the standard library before launching Pikt, in case you need to make frequent updates to it.   
 If you are using IntelliJ IDEA consider importing configuration templates from the [runConfigurations](runConfigurations) folder.
 
 ## Roadmap
