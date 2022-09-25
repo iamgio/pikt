@@ -16,8 +16,8 @@
 
 <br>
 
-Pikt is a pixel-based, Turing complete esoteric programming language that generates fast and lightweight programs out of aesthetically pleasant image sources.
-Indeed, Pikt's most interesting feature is flexibility: every keyword, statement, function, operator and so on is linked to one - or more - color, which can be easily customized via [color schemes](core/src/main/resources/colors.properties).
+Pikt is a pixel-based, Turing complete esoteric programming language that is able to generate fast and lightweight programs out of **aesthetically pleasant image sources**.  
+Indeed, Pikt's most interesting feature is **flexibility**: every keyword, statement, function and operator is linked to one - or more - color, easily customized via [color schemes](core/src/main/resources/colors.properties).
 
 <!--suppress HtmlDeprecatedAttribute -->
 <p align="center">
@@ -79,21 +79,21 @@ Click on the examples for a breakdown/explanation.
 - [Roadmap](#roadmap)
 
 ## Properties
-The following properties define parameters needed by Pikt.  
-Example: `java -Dproperty=value -jar pikt.jar -argument`.  
+The following properties define parameters needed by Pikt to run.  
+Syntax: `java -Dproperty=value -jar pikt.jar -arguments`.  
 
 - `-Dsource` source image file;
 
 
-- `-Doutput` output name without extension. It will take `source` name without extension if not specified;
+- `-Doutput` output name without extension. Defaults to the value of `source` if not specified;
 
 
 - `-Dcolors` path to the `.properties` color scheme without extension.  
 Default values will be used if not specified (not recommended);
 
 
-- `-Dtargets` compilation targets divided by a comma. Can be `jvm`, `windows`, `osx` or `linux`.
-Note that Windows and OSX executables can be generated only on those platforms. No compilation will be executed if not specified;
+- `-Dtargets` compilation targets divided by a comma. Only `jvm` is supported,
+while `windows`, `osx` and `linux` compilation is currently disabled.
 
 
 - `-Dlib` path to JAR libraries, including the bundled `stdlib.jar` file, divided by a comma.
@@ -101,9 +101,6 @@ If not specified, points by default to `./libraries/stdlib.jar`;
 
 
 - `-Djvmcompiler` path to the Kotlin/JVM (`kotlinc`) executable compiler. Required if `target` contains `jvm` or if `-interpret` is used;
-
-
-- `-Dnativecompiler` path to the Kotlin/Native (`kotlinc`) executable compiler. Required if `target` contains a native target;
 
 
 - `-Dproject` optional path to a [project info](https://github.com/iAmGio/pikt/wiki/Project-info-file) YAML configuration.
@@ -118,7 +115,7 @@ The following arguments enable settings that affect Pikt's behavior.
 - `-interpret` runs the generated code via the JVM compiler;
 
 
-- `-printoutput` prints the generated Kotlin code;
+- `-printoutput` displays the generated Kotlin code;
 
 
 - `-nocompile` prevents the generation of any executable file;
@@ -134,7 +131,8 @@ The following arguments enable settings that affect Pikt's behavior.
 
 ## Command arguments
 
-The following arguments execute tasks and exit when completed.
+The following arguments execute tasks and exit when completed.  
+These are handy shortcuts that replace several manual actions, such as image transformations, while being unrelated to code generation and compilation.
 
 - `-downloadcompiler=type[,version]` downloads the zipped Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`).   
 `version` defaults to `1.6.10`.
@@ -154,12 +152,12 @@ It automatically appends library colors too, i.e. as the [stdlib scheme](stdlib/
 - `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme;
 
 
-- `-compact[=size]` creates a compacted copy of the source image.  
-If `size` is not specified, it will try to create a square-ish image with no whitespaces.  
+- `-compact[=size]` creates a compacted copy of the source image with no whitespaces between pixels.  
+If `size` is not specified, it will try to create a square-ish image.  
 `size` can be defined via `w?h?`, where both `w`and `h` are optional (in case one is missing, it will be calculated the same way as before) (e.g. `w10h5`, `w10`, `h5`);
 
 
-- `-decompact` creates a decompacted copy of the source image with a statement per line;
+- `-decompact` creates a decompacted copy of the source image with one statement per line;
 
 
 - `-standardecompact` runs `-standardize` + `-decompact`;
@@ -183,11 +181,13 @@ RGB:  72  101  108  108  111  32  80  105  107  116  33
 - `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`) and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable archive.
 
 
+More in-depth information about image transformation commands can be found [here](https://github.com/iAmGio/pikt/wiki/Image-transformation-commands).
+
 ## Building
 The [downloadable archive](#begin) is already built off the latest GitHub commit.
 If you wish to build it yourself from source just run `mvn clean install`.
 
-As a bonus tip, consider setting your run configuration to execute `mvn clean install -pl stdlib -am` in order to compile the standard library before launching Pikt.   
+> **Tip:** setting your run configuration to execute `mvn clean install -pl stdlib -am` compiles the standard library before launching Pikt, in case you need to make updates to it.   
 If you are using IntelliJ IDEA consider importing configuration templates from the [runConfigurations](runConfigurations) folder.
 
 ## Roadmap
