@@ -17,7 +17,8 @@
 <br>
 
 Pikt is a pixel-based, Turing complete esoteric programming language that is able to generate fast and lightweight programs out of **aesthetically pleasant image sources**.  
-Indeed, Pikt's most interesting feature is **flexibility**: every keyword, statement, function and operator is linked to one - or more - color, easily customized via [color schemes](core/src/main/resources/colors.properties).
+Indeed, Pikt's most interesting feature is **flexibility**: every keyword, statement, function and operator
+is linked to one - or more - color, easily customizable via [color schemes](core/src/main/resources/colors.properties).
 
 <!--suppress HtmlDeprecatedAttribute -->
 <p align="center">
@@ -30,9 +31,7 @@ Indeed, Pikt's most interesting feature is **flexibility**: every keyword, state
   
 Pikt compiles executables via the Kotlin compiler, therefore compilation for both JVM and native* targets is available, along with runtime interpretation.
 
-_* Native support is limited due to the lack of Kotlin/Native libraries and is being discontinued._
-
-Make sure to check out the **[wiki](https://github.com/iAmGio/pikt/wiki)** to learn how to create your first Pikt program!
+> Want to create your first Pikt program? **Check out the [wiki](https://github.com/iAmGio/pikt/wiki)**!
 
 <!--suppress HtmlDeprecatedAttribute -->
 <p align="center">
@@ -210,7 +209,9 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] External libraries support (following certain standards, wiki in progress)
 
 **Generation**
-- [x] Compilation (JVM ~~and Native~~)
+- [x] Compilation (JVM ~~and Native~~*)
 - [x] Interpretation (JVM)
 - [x] Error handling
 - [ ] Runtime information
+
+_* Native support is limited due to the lack of Kotlin/Native libraries and is being temporarily discontinued._
