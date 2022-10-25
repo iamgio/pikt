@@ -4,6 +4,8 @@ import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.statements.LambdaCloseStatement
 import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
+import eu.iamgio.pikt.util.ERROR_FAILED_IMAGE_PROCESSING
+import eu.iamgio.pikt.util.exit
 import java.awt.Color
 import java.awt.image.BufferedImage
 import kotlin.math.ceil
@@ -71,10 +73,16 @@ class ImageCompacter(private val piktImage: PiktImage) {
         val (imageWidth, imageHeight) = calcCompactSize(reader.size, width, height)
 
         if(reader.size > imageWidth * imageHeight) {
-            System.err.println("Error while compacting: given size is ${imageWidth * imageHeight} ($imageWidth*$imageHeight), but source has ${reader.size} elements.")
+            exit(
+                ERROR_FAILED_IMAGE_PROCESSING,
+                message = "Error while compacting: given size is ${imageWidth * imageHeight} ($imageWidth*$imageHeight), but source has ${reader.size} elements."
+            )
         }
         if(mask != null && reader.size != mask.size) {
-            System.err.println("Error while masking: mask has ${mask.size} elements, but source has ${reader.size}.")
+            exit(
+                ERROR_FAILED_IMAGE_PROCESSING,
+                message = "Error while masking: mask has ${mask.size} elements, but source has ${reader.size}."
+            )
         }
 
         val image = BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB)

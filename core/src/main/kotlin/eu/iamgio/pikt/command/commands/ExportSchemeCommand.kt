@@ -3,10 +3,12 @@ package eu.iamgio.pikt.command.commands
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.schemes.ColorSchemePalette
+import eu.iamgio.pikt.util.ERROR_BAD_IO
+import eu.iamgio.pikt.util.ERROR_BAD_PROPERTIES
+import eu.iamgio.pikt.util.exit
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
-import kotlin.system.exitProcess
 
 /**
  * Triggered by -exportscheme argument.
@@ -16,11 +18,7 @@ import kotlin.system.exitProcess
  */
 class ExportSchemeCommand : Command("-exportscheme", {
     val schemeFile = PiktPropertiesRetriever().colorsFile()
-
-    if(schemeFile == null) {
-        System.err.println("Color scheme (-Dcolors) not set.\nExiting.")
-        exitProcess(-1)
-    }
+        ?: exit(ERROR_BAD_PROPERTIES, message = "Color scheme (-Dcolors) not set.")
 
     val imageFile = File("${schemeFile.nameWithoutExtension}.png")
 
@@ -35,7 +33,7 @@ class ExportSchemeCommand : Command("-exportscheme", {
     } catch(e: IOException) {
         System.err.println("An error occurred while exporting color scheme:")
         e.printStackTrace()
-        exitProcess(-1)
+        exit(ERROR_BAD_IO)
     }
 
     println("Color palette successfully generated at $schemeFile")

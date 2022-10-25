@@ -1,9 +1,10 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.util.ERROR_BAD_ARGUMENT_VALUE
 import eu.iamgio.pikt.util.KotlinCompilerDownloader
 import eu.iamgio.pikt.util.KotlinCompilerType
-import kotlin.system.exitProcess
+import eu.iamgio.pikt.util.exit
 
 /**
  * Triggered by -downloadcompiler=type[,version] argument
@@ -20,8 +21,8 @@ class DownloadCompilerCommand : Command("-downloadcompiler", { args ->
     }
 
     if(type == null) {
-        System.err.println("Please specify a valid compiler type: " + KotlinCompilerType.values().joinToString(", ") { it.name.lowercase() } + ".")
-        exitProcess(-1)
+        val types = KotlinCompilerType.values().joinToString(", ") { it.name.lowercase() }
+        exit(ERROR_BAD_ARGUMENT_VALUE, message = "Please specify a valid compiler type: $types.")
     }
 
     KotlinCompilerDownloader.download(version, type)

@@ -1,11 +1,12 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.util.ERROR_BAD_IO
+import eu.iamgio.pikt.util.exit
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
-import kotlin.system.exitProcess
 
 // Utilities for working with (Buffered)Images
 
@@ -18,8 +19,7 @@ fun readImage(file: File): BufferedImage {
     return try {
         ImageIO.read(file)
     } catch(e: IOException) {
-        System.err.println("Could not read image $file.\nExiting.")
-        exitProcess(-1)
+        exit(ERROR_BAD_IO, message = "Could not read image $file.")
     }
 }
 
@@ -31,8 +31,7 @@ fun BufferedImage.save(file: File) {
     try {
         ImageIO.write(this, "png", file)
     } catch(e: IOException) {
-        System.err.println("Could not save image to $file.\nExiting.")
-        exitProcess(-1)
+        exit(ERROR_BAD_IO, message = "Could not save image to $file.")
     }
 }
 

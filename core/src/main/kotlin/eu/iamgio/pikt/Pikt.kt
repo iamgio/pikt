@@ -13,7 +13,8 @@ import eu.iamgio.pikt.project.PiktProjectInfoParser
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.statement.Statements
 import eu.iamgio.pikt.statement.statements.*
-import kotlin.system.exitProcess
+import eu.iamgio.pikt.util.SUCCESS
+import eu.iamgio.pikt.util.exit
 
 fun main(args: Array<String>) {
     // Record when Pikt was started.
@@ -117,7 +118,7 @@ private fun executeCommands(args: Array<String>) {
         if(command?.closeOnComplete == true) exit = true  // If at least one command has a 'close on complete' property,
         // the program exits after the other commands are evaluated.
     }
-    if(exit) exitProcess(0)
+    if(exit) exit(SUCCESS)
 }
 
 /**
