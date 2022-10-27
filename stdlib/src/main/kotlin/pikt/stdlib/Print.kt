@@ -17,8 +17,7 @@ fun printError(message: Any) {
 }
 
 /**
- * Reads an input from command line.
- * It does not work with interpretation.
+ * Reads a line from the standard input.
  * @return input as a string
  */
 fun readInput(): String {

@@ -3,6 +3,7 @@ package eu.iamgio.pikt.compiler
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.File
+import java.io.OutputStream
 
 /**
  * Compiles Kotlin code into an executable file.
@@ -46,6 +47,9 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
             it.create(getTargetFolder(target), name = properties.output)
         }
     }
+
+    // No input expected during compilation.
+    override fun handleInput(stdin: OutputStream) {}
 
     override fun printProcessLine(line: String, isError: Boolean) {
         if(isError) {

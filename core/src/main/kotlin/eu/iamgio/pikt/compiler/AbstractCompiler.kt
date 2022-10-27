@@ -2,10 +2,7 @@ package eu.iamgio.pikt.compiler
 
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.properties.PiktProperties
-import java.io.BufferedReader
-import java.io.File
-import java.io.InputStream
-import java.io.InputStreamReader
+import java.io.*
 
 /**
  * Defines the generic way the content of [evaluator] can be used.
@@ -61,6 +58,13 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
     protected abstract fun onPostCompile(target: CompilationTarget)
 
     /**
+     * Reads user input and writes its value to the [stdin].
+     * The implementation can choose not to handle input.
+     * @param stdin the standard input stream of the process
+     */
+    protected abstract fun handleInput(stdin: OutputStream)
+
+    /**
      * Prints a line from the process stream.
      * @param line line to be printed
      * @param isError whether the line is from the error stream or not
@@ -93,11 +97,15 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
             onPreCompile(target)
 
             // Generate and execute the command.
-            val process = Runtime.getRuntime().exec(generateCommand(target))
+            val command: Array<String> = generateCommand(target)
+            val process = ProcessBuilder().command(*command).start()
+
+            // Reads user input if needed.
+            handleInput(process.outputStream) // stdin
 
             // Print the command output.
-            printStream(process.inputStream, isErrorStream = false)
-            printStream(process.errorStream, isErrorStream = true)
+            printStream(process.inputStream, isErrorStream = false) // stdout
+            printStream(process.errorStream, isErrorStream = true)  // stderr
 
             // Post-compilation task.
             onPostCompile(target)

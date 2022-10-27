@@ -1,6 +1,5 @@
 package eu.iamgio.pikt.tests
 
-import eu.iamgio.pikt.compiler.AbstractInterpreter
 import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.image.PiktImage
@@ -71,8 +70,6 @@ abstract class PiktTestLauncher {
                 }.retrieve()
         )
 
-        val lines = mutableListOf<String>()
-
         val image = PiktImage(ImageIO.read(getImage(name)), properties.colors)
 
         val evaluator = Evaluator()
@@ -80,19 +77,9 @@ abstract class PiktTestLauncher {
 
         println(evaluator.outputCode)
 
-        val interpreter = object : AbstractInterpreter(evaluator, properties) {
-            override fun printProcessLine(line: String, isError: Boolean) {
-                if(isError) {
-                    System.err.println(line)
-                } else {
-                    println("[$name] $line")
-                    lines.add(line)
-                }
-            }
-        }
-
+        val interpreter = PiktTestInterpreter(name, evaluator, properties)
         interpreter.compile()
 
-        return lines
+        return interpreter.lines
     }
 }
