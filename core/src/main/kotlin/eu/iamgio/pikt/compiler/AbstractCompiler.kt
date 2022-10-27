@@ -101,7 +101,8 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
             val process = ProcessBuilder().command(*command).start()
 
             // Reads user input if needed.
-            handleInput(process.outputStream) // stdin
+            // TODO: stop reading lines after the process ends
+            // handleInput(process.outputStream) // stdin
 
             // Print the command output.
             printStream(process.inputStream, isErrorStream = false) // stdout

@@ -40,11 +40,11 @@ class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractIn
 
     private var hasKotlinError = false
 
-    private lateinit var stdinReader: Reader
+    private var stdinReader: Reader? = null
 
     override fun onPostCompile(target: CompilationTarget) {
         super.onPostCompile(target)
-        stdinReader.close()
+        stdinReader?.close()
     }
 
     override fun handleInput(stdin: OutputStream) {
