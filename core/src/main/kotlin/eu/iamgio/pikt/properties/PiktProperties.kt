@@ -196,12 +196,17 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
 
     companion object {
         /**
-         * @return project info file, if path (without extension) is set
+         * @return project info file, if path (without extension) is set and if it exists
          * @see eu.iamgio.pikt.project.PiktProjectInfo
          */
         fun getProjectInfoFile(path: String? = System.getProperty("project")): FileInputStream? {
             if(path == null) return null
-            return FileInputStream("$path.yml")
+
+            val file = File("$path.yml")
+            if(!file.exists()) {
+                exit(ERROR_BAD_PROPERTIES, message = "Project info file ${file.name} does not exist.")
+            }
+            return FileInputStream(file)
         }
 
         /**
@@ -210,7 +215,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
          */
         fun getProjectInfoTaskFor(projectInfo: PiktProjectInfo, taskName: String? = System.getProperty("task")): PiktProjectInfo? {
             if(taskName == null) return null
-            return projectInfo.getTaskByName(taskName)
+            return projectInfo.getTaskByName(taskName) ?: exit(ERROR_BAD_PROPERTIES, message = "Task $taskName does not exist.")
         }
     }
 }
