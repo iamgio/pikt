@@ -98,21 +98,29 @@ operator fun Any.rem(other: Any): Any {
 /**
  * Generic `[...]` operation.
  *
- * Gets a value from a list or string. It can be accessed from Pikt via the dot operator.
- * @param index numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive)
+ * Gets a value from a list, string or struct. It can be accessed from Pikt via the dot operator.
+ * @param property - If this is a list or string, the numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive).
+ * - If this is a struct instance, the struct field to access
  */
-operator fun Any.get(index: Any): Any {
-    return listGetAt(this, index)
+operator fun Any.get(property: Any): Any {
+    return when(this) {
+        is Struct -> this[property]
+        else -> listGetAt(this, property)
+    }
 }
 
 /**
  * Generic `[...] = ...` operation.
  *
- * Sets a value in a list. It can be accessed from Pikt via the set variable + dot operators.
- * @param index numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive)
+ * Sets a value in a list or struct. It can be accessed from Pikt via the set variable + dot operators.
+ * @param property - If this is a list, the numeric index of the value within the list, from 0 (inclusive) to the size of the list (exclusive).
+ * - If this is a struct instance, the struct field to access
  */
-operator fun Any.set(index: Any, value: Any): Any {
-    return listSetAt(this, index, value)
+operator fun Any.set(property: Any, value: Any): Any {
+    return when(this) {
+        is Struct -> this[property] = value
+        else -> listSetAt(this, property, value)
+    }
 }
 
 /**

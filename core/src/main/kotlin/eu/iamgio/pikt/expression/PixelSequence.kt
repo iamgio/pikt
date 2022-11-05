@@ -43,12 +43,12 @@ class PixelSequence(pixels: Array<Pixel>) : PixelArray(pixels) {
     fun toNestedCode(scope: Scope) = buildString {
         pixels.forEachIndexed { index, pixel ->
             when {
-                index == 0          -> append(pixel)
+                index == 0        -> append(pixel)
                 // If the pixel is in the current scope (or it's a number/character) it is used as index (for lists, strings and more): first[second].
-                pixel in scope      -> append("[").append(pixel).append("]")
-                pixel.isCharacter   -> append("[").append(pixel.characterContent).append("]")
-                // If the pixel is not in the current scope, then it's read as a nested property, possibly of a struct: first.second.
-                else                -> append(".").append(pixel)
+                pixel in scope    -> append("[").append(pixel).append("]")
+                pixel.isCharacter -> append("[").append(pixel.characterContent).append("]")
+                // If the pixel is not in the current scope, then it's read as a nested property, possibly of a struct: first["second"].
+                else              -> append("[\"").append(pixel).append("\"]")
             }
         }
     }

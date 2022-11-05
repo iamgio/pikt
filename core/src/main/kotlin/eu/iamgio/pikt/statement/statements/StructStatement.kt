@@ -28,7 +28,7 @@ class StructStatement : Statement() {
     override fun getColors(colors: ColorsProperties) = colors.keywords.struct
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence {
-        val builder = StringBuilder("data class ")
+        val builder = StringBuilder("class ")
 
         // The name of the struct
         val name = reader.next()
@@ -38,12 +38,12 @@ class StructStatement : Statement() {
             return builder.toString()
         }
 
-        builder.append(name).append("(")
+        builder.append(name).append(" : Struct(")
         val arguments = mutableListOf<Pixel>()
 
         // The members (parameters) of the struct
         reader.whileNotNull { argument ->
-            builder.append("var ").append(argument).append(": Any = 0, ")
+            builder.append("\"").append(argument).append("\" to 0, ")
             arguments += argument
             syntax.mark("members", StatementSyntax.Mark.CORRECT)
         }
@@ -54,7 +54,7 @@ class StructStatement : Statement() {
 
         data.scope.push(name, StructMember(name, FunctionMember.Overload(arguments.size)))
 
-        // Output: data class Name(var arg1: Any = 0, var arg2: Any = 0, ...)
+        // Output: class Name : Struct(arg1 to 0, arg2 to 0, ...)
         return builder
     }
 }

@@ -68,6 +68,18 @@ class PiktTest {
     }
 
     @Test
+    fun `struct typing`() {
+        // This test creates a struct and accesses its members inside a function
+        // where an instance is passed as an argument.
+        // See: https://github.com/iamgio/pikt/issues/4
+        with(launch("struct_typing")) {
+            assertTrue {
+                first() == "2"
+            }
+        }
+    }
+
+    @Test
     fun `nesting awareness check`() {
         // This test mixes the two types of nesting and lets Pikt decide which one to use for each case:
         // First a struct "dot-type" nesting, then a list "brackets-type" nesting.
