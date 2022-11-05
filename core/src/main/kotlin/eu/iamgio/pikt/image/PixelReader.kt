@@ -84,6 +84,17 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
     }
 
     /**
+     * Executes a task for every non-empty pixel sequence
+     * @param task task to be executed if the current sequence is not empty.
+     */
+    fun forEachNextSequence(task: (PixelSequence) -> Unit) {
+        var sequence: PixelSequence
+        while(!nextSequence().also { sequence = it }.isEmpty) {
+            task(sequence)
+        }
+    }
+
+    /**
      * Creates a copy of this reader sliced from [start] to [end].
      * @return sliced copy of this reader
      */

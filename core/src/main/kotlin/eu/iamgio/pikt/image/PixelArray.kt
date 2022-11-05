@@ -8,10 +8,16 @@ package eu.iamgio.pikt.image
 open class PixelArray(protected val pixels: Array<Pixel>) {
 
     /**
-     * Size of the array
+     * Size of the array.
      */
     val size: Int
         get() = pixels.size
+
+    /**
+     * Whether the array is empty.
+     */
+    val isEmpty: Boolean
+        get() = pixels.isEmpty()
 
     /**
      * Creates a copy of this array sliced from [start] to [end].

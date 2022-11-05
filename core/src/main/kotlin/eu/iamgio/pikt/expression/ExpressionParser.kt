@@ -117,23 +117,23 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
     private fun nextString(requireNumber: Boolean = false): String {
         val builder = StringBuilder()
 
-        reader.whileNotNull { pixel ->
-            builder.append(
-                    if(pixel.isCharacter) {
-                        if(requireNumber && !pixel.isNumber) {
-                            reader.error("Member not expected while parsing number.")
-                            ""
-                        } else {
-                            // Grayscale pixel -> character, except for null character (code 0)
-                            // Therefore, the null character is useful to force string initialization or concatenation.
-                            pixel.characterContent.takeIf { it.code != 0 } ?: ""
-                        }
+        reader.forEachNextSequence { sequence ->
+            if(!sequence.isNested && sequence.first?.isCharacter == true) {
+                val pixel = sequence.first!!
+                if(pixel.isCharacter) {
+                    if(requireNumber && !pixel.isNumber) {
+                        reader.error("Member not expected while parsing number.")
                     } else {
-                        // Variable/method reference
-                        pixel.checkExistance(suffix = "(in string literal)")
-                        "\${$pixel}"
+                        // Grayscale pixel -> character, except for null character (code 0)
+                        // Therefore, the null character is useful to force string initialization or concatenation.
+                        builder.append(pixel.characterContent.takeIf { it.code != 0 } ?: "")
                     }
-            )
+                }
+            } else {
+                // Variable/method reference
+                sequence.first?.checkExistance(suffix = "(in string literal)") // TODO check nested existance at compile time
+                builder.append("\${${sequence.toNestedCode(scope)}}")
+            }
         }
 
         return builder.toString()
