@@ -15,7 +15,7 @@ open class Struct(vararg members: Pair<String, Any>) {
     /**
      * Struct members as a read-and-write map.
      */
-    private val properties: HashMap<String, Any> = hashMapOf(*members)
+    private val properties = mutableMapOf(*members)
 
     /**
      * @return the value associated with [property]'s `toString()`
