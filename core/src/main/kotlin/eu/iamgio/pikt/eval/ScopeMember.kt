@@ -62,11 +62,18 @@ data class FunctionMember(override val name: String, val overloads: MutableList<
      */
     data class Overload(val argumentsSize: Int) {
         val hasVarArgs: Boolean
-            get() = argumentsSize == -1
+            get() = argumentsSize == VARARG_ARGUMENTS_AMOUNT
 
         /**
          * @return whether the amount of arguments of this overload matches [argumentsSize]
          */
         fun isApplicableFor(argumentsSize: Int) = this.argumentsSize == argumentsSize
+
+        companion object {
+            /**
+             * The standard amount of arguments if an [Overload] includes varargs.
+             */
+            const val VARARG_ARGUMENTS_AMOUNT = -1
+        }
     }
 }

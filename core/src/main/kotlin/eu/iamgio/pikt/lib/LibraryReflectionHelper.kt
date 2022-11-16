@@ -40,6 +40,9 @@ class LibraryReflectionHelper(private val library: JarLibrary) {
      * @return Pikt function overload
      */
     fun createFunctionOverload(method: Method): FunctionMember.Overload {
-        return FunctionMember.Overload(if(method.parameters.none { it.isVarArgs }) method.parameterCount else -1)
+        return FunctionMember.Overload(
+            argumentsSize = method.parameterCount.takeIf { method.parameters.none { it.isVarArgs } }
+                ?: FunctionMember.Overload.VARARG_ARGUMENTS_AMOUNT
+        )
     }
 }
