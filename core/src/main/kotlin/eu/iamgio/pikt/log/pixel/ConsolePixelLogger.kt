@@ -3,6 +3,7 @@ package eu.iamgio.pikt.log.pixel
 import com.diogonunes.jcolor.Ansi
 import com.diogonunes.jcolor.Attribute
 import eu.iamgio.pikt.image.Pixel
+import java.awt.Color
 import java.io.PrintStream
 
 /**
@@ -33,8 +34,8 @@ abstract class ConsoleColoredPixelLogger(stream: PrintStream) : ConsolePixelLogg
     override fun log(pixel: Pixel, mark: Boolean) {
         super.logColorized(
             content = if(mark) MARKED_CONTENT_STRING else CONTENT_STRING,
-            getBackground(pixel),
-            Attribute.TEXT_COLOR(0),
+            getBackgroundColor(pixel),
+            getTextColor(pixel),
             Attribute.BOLD()
         )
     }
@@ -42,7 +43,12 @@ abstract class ConsoleColoredPixelLogger(stream: PrintStream) : ConsolePixelLogg
     /**
      * @return ANSI background attribute for the [pixel]
      */
-    abstract fun getBackground(pixel: Pixel): Attribute
+    abstract fun getBackgroundColor(pixel: Pixel): Attribute
+
+    /**
+     * @return ANSI text color attribute for the mark
+     */
+    abstract fun getTextColor(pixel: Pixel): Attribute
 
     companion object {
         /**
@@ -64,7 +70,17 @@ abstract class ConsoleColoredPixelLogger(stream: PrintStream) : ConsolePixelLogg
  * @author Giorgio Garofalo
  */
 class RGBConsolePixelLogger(stream: PrintStream = System.out) : ConsoleColoredPixelLogger(stream) {
-    override fun getBackground(pixel: Pixel): Attribute {
+    override fun getBackgroundColor(pixel: Pixel): Attribute {
         return Attribute.BACK_COLOR(pixel.color.red, pixel.color.green, pixel.color.blue)
+    }
+
+    override fun getTextColor(pixel: Pixel): Attribute {
+        val color = pixel.color
+        val complementary = Color(
+            255 - color.red,
+            255 - color.green,
+            255 - color.blue,
+        )
+        return Attribute.TEXT_COLOR(complementary.red, complementary.green, complementary.blue)
     }
 }
