@@ -156,9 +156,10 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
         System.err.println("Error$coordinates (index $pixelIndex in ${statement?.name ?: "<no statement>"}):")
         System.err.println("\t$message")
 
+        // Logs this reader with the selected logger.
         val logger = RGBConsolePixelLogger(System.err) // TODO get from system properties
         logger.newLine()
-        logger.logReader(this)
+        logger.logReaderWithMark(this, markIndex = pixelIndex)
         logger.newLine()
 
         // Prints a nice message that explains the expected syntax vs the used syntax.
