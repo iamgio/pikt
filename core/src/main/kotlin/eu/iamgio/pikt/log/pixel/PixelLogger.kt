@@ -38,4 +38,20 @@ interface PixelLogger {
      * Logs the whole content of a [reader] from its start to its end via a copy.
      */
     fun logReader(reader: PixelReader) = logReaderWithMark(reader, null)
+
+    companion object {
+        /**
+         * The active, global, pixel logger to be used.
+         */
+        var currentLogger: PixelLogger? = null
+    }
+
+    /**
+     * Pixel logger types.
+     *
+     * @param newLogger corresponding logger factory
+     */
+    enum class Type(val newLogger: () -> PixelLogger) {
+        RGB({ RGBConsolePixelLogger() })
+    }
 }

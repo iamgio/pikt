@@ -5,7 +5,7 @@ import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.expression.ExpressionParser
 import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.expression.PixelSequence
-import eu.iamgio.pikt.log.pixel.RGBConsolePixelLogger
+import eu.iamgio.pikt.log.pixel.PixelLogger
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementSyntax
@@ -157,10 +157,12 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
         System.err.println("\t$message")
 
         // Logs this reader with the selected logger.
-        val logger = RGBConsolePixelLogger(System.err) // TODO get from system properties
-        logger.newLine()
-        logger.logReaderWithMark(this, markIndex = pixelIndex)
-        logger.newLine()
+        val logger = PixelLogger.currentLogger
+        if(logger != null) {
+            logger.newLine()
+            logger.logReaderWithMark(this, markIndex = pixelIndex)
+            logger.newLine()
+        }
 
         // Prints a nice message that explains the expected syntax vs the used syntax.
         // Example from SetVariableStatement:

@@ -133,6 +133,7 @@ fun registerCommands() = with(Commands) {
     register(PrintOutputCommand())
     register(PixelInfoCommand())
     register(NoCompileCommand())
+    register(PixelLoggerCommand())
     register(ImageOutputCommand())
     register(ChainOutputCommand())
     register(StandardizeCommand())
