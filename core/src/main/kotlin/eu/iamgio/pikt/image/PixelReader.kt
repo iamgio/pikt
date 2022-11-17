@@ -5,6 +5,7 @@ import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.expression.ExpressionParser
 import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.expression.PixelSequence
+import eu.iamgio.pikt.log.pixel.RGBConsolePixelLogger
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementSyntax
@@ -36,6 +37,11 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
      */
     var isInvalidated: Boolean = false
         private set
+
+    /**
+     * @return a non-deep copy of this reader with its index set to `0`
+     */
+    fun softCopy(): PixelReader = PixelReader(pixels, colors, statement)
 
     /**
      * Gets the next pixel available.
@@ -145,8 +151,15 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
             " at (${pixel.x},${pixel.y})"
         } else ""
 
-        System.err.println("Error$coordinates (index ${if(referenceToFirstPixel) 0 else index} in ${statement?.name ?: "<no statement>"}):")
+        val pixelIndex = if(referenceToFirstPixel) 0 else index
+
+        System.err.println("Error$coordinates (index $pixelIndex in ${statement?.name ?: "<no statement>"}):")
         System.err.println("\t$message")
+
+        val logger = RGBConsolePixelLogger(System.err) // TODO get from system properties
+        logger.newLine()
+        logger.logReader(this)
+        logger.newLine()
 
         // Prints a nice message that explains the expected syntax vs the used syntax.
         // Example from SetVariableStatement:

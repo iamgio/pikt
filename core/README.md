@@ -9,6 +9,7 @@ This module contains the key features of Pikt, including code generation, interp
 - `expression`: expression parsing;
 - `image`: image parsing and transformation;
 - `lib`: external libraries management, including stdlib;
+- `log`: logging utilities;
 - `properties`: VM properties and color scheme parsing;
 - `schemes`: color-based processing and operations;
 - `statements`: statements (such as `if`, `variable.set`, etc.) and their behaviors;
