@@ -49,9 +49,10 @@ interface PixelLogger {
     /**
      * Pixel logger types.
      *
-     * @param newLogger corresponding logger factory
+     * @param newLogger corresponding logger factory.
      */
+    @Suppress("unused")
     enum class Type(val newLogger: () -> PixelLogger) {
-        RGB({ RGBConsolePixelLogger() })
+        RGB({ RGBConsolePixelLogger(System.err) })
     }
 }
