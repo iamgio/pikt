@@ -10,7 +10,7 @@ import java.io.PrintStream
  * @param stream target stream
  * @author Giorgio Garofalo
  */
-abstract class ConsolePixelLogger(private val stream: PrintStream) : PixelLogger {
+abstract class ConsolePixelLogger(protected val stream: PrintStream) : PixelLogger {
 
     /**
      * Logs a string [content] with ANSI [attributes] to [stream]
