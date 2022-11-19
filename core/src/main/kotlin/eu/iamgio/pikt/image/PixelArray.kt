@@ -26,11 +26,23 @@ open class PixelArray(protected val pixels: Array<Pixel>) {
     fun sliced(start: Int, end: Int): PixelArray = PixelArray(pixels.sliceArray(IntRange(start, end)))
 
     /**
-     * Gets a pixel from the array from given index.
-     * @param index item index
+     * Gets a pixel from the array from given [index].
+     * @param index element index
      * @return pixel by index
      */
     operator fun get(index: Int): Pixel = pixels[index]
+
+    /**
+     * Gets a pixel from the array from given [index].
+     * @param index element index
+     * @return pixel by index, or `null` if [index] is out of bounds
+     */
+    fun getOrNull(index: Int) = pixels.getOrNull(index)
+
+    /**
+     * @return the last element
+     */
+    fun last() = pixels.last()
 
     override fun toString() = "PixelArray(size=${pixels.size}, pixels=[${pixels.joinToString()}])"
 }

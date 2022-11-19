@@ -141,22 +141,19 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
     fun error(message: String, syntax: StatementSyntax? = null, referenceToFirstPixel: Boolean = false) {
         isInvalidated = true
 
+        // Index of the pixel that caused the error
+        val pixelIndex = if(referenceToFirstPixel || index < 0) 0 else index - 1
+
         // Where the error happened.
-        val coordinates = if(pixels.size > 0) {
-            val pixel = pixels[when {
-                referenceToFirstPixel || index < 0 -> 0
-                index > pixels.size -> pixels.size - 1 // Prevent IndexOutOfBoundsException
-                else -> index - 1
-            }]
+        val coordinates = if(!pixels.isEmpty) {
+            val pixel = pixels.getOrNull(pixelIndex) ?: pixels.last()
             " at (${pixel.x},${pixel.y})"
         } else ""
-
-        val pixelIndex = if(referenceToFirstPixel) 0 else index
 
         System.err.println("Error$coordinates (index $pixelIndex in ${statement?.name ?: "<no statement>"}):")
         System.err.println("\t$message")
 
-        // Logs this reader with the selected logger.
+        // Logs the pixels of this reader with the selected logger.
         PixelLogger.currentLogger?.logReaderWithMark(this, markIndex = pixelIndex)
 
         // Prints a nice message that explains the expected syntax vs the used syntax.
