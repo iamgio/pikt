@@ -50,7 +50,7 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
             val y: Int = it / image.width
             getPixel(x, y)
         }
-        return PixelArray(pixels.filter { !it.isWhitespace }.toTypedArray())
+        return PixelArray(pixels.filter { !it.isWhitespace })
     }
 
     /**

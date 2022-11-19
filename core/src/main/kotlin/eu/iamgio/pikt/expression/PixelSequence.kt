@@ -11,19 +11,7 @@ import eu.iamgio.pikt.image.PixelReader
  * @param pixels pixels contained in this sequence, in nesting order (a pixel with index `i` is nested within the pixel with index `i - 1`)
  * @see PixelReader.nextSequence
  */
-class PixelSequence(pixels: Array<Pixel>) : PixelArray(pixels) {
-
-    /**
-     * The first pixel of the sequence
-     */
-    val first: Pixel?
-        get() = pixels.firstOrNull()
-
-    /**
-     * The last pixel of the sequence
-     */
-    val last: Pixel?
-        get() = pixels.lastOrNull()
+class PixelSequence(pixels: List<Pixel>) : PixelArray(pixels) {
 
     /**
      * Whether this sequence contains nested data.

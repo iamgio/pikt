@@ -118,8 +118,8 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         val builder = StringBuilder()
 
         reader.forEachNextSequence { sequence ->
-            if(!sequence.isNested && sequence.first?.isCharacter == true) {
-                val pixel = sequence.first!!
+            if(sequence.size == 1 && sequence.first().isCharacter) {
+                val pixel = sequence.first()
                 if(pixel.isCharacter) {
                     if(requireNumber && !pixel.isNumber) {
                         reader.error("Member not expected while parsing number.")
@@ -131,7 +131,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
                 }
             } else {
                 // Variable/method reference
-                sequence.first?.checkExistance(suffix = "(in string literal)") // TODO check nested existance at compile time
+                sequence.firstOrNull()?.checkExistance(suffix = "(in string literal)") // TODO check nested existance at compile time
                 builder.append("\${${sequence.toNestedCode(scope)}}")
             }
         }
@@ -148,12 +148,12 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
 
         // Function name (might be nested as well).
         val sequence = reader.nextSequence()
-        val name = sequence.last
+        val name = sequence.lastOrNull()
 
         builder.append(sequence.toNestedCode(scope))
         builder.append("(")
 
-        val functionMember = sequence.first?.also { it.checkExistance() }?.let { scope[it] as? FunctionMember }
+        val functionMember = sequence.firstOrNull()?.also { it.checkExistance() }?.let { scope[it] as? FunctionMember }
         val args = mutableListOf<String>()
 
         // Read arguments only if this is an actual function,

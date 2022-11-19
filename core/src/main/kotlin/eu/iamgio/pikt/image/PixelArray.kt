@@ -1,48 +1,18 @@
 package eu.iamgio.pikt.image
 
 /**
- * Represents a collection of [Pixel]s.
+ * An immutable collection of [Pixel]s.
  *
+ * @param pixels pixels contained in this collection
  * @author Giorgio Garofalo
  */
-open class PixelArray(protected val pixels: Array<Pixel>) {
-
-    /**
-     * Size of the array.
-     */
-    val size: Int
-        get() = pixels.size
-
-    /**
-     * Whether the array is empty.
-     */
-    val isEmpty: Boolean
-        get() = pixels.isEmpty()
+open class PixelArray(protected val pixels: List<Pixel>) : List<Pixel> by pixels {
 
     /**
      * Creates a copy of this array sliced from [start] to [end].
      * @return sliced copy of this array
      */
-    fun sliced(start: Int, end: Int): PixelArray = PixelArray(pixels.sliceArray(IntRange(start, end)))
+    fun sliced(start: Int, end: Int): PixelArray = PixelArray(pixels.subList(start, end))
 
-    /**
-     * Gets a pixel from the array from given [index].
-     * @param index element index
-     * @return pixel by index
-     */
-    operator fun get(index: Int): Pixel = pixels[index]
-
-    /**
-     * Gets a pixel from the array from given [index].
-     * @param index element index
-     * @return pixel by index, or `null` if [index] is out of bounds
-     */
-    fun getOrNull(index: Int) = pixels.getOrNull(index)
-
-    /**
-     * @return the last element
-     */
-    fun last() = pixels.last()
-
-    override fun toString() = "PixelArray(size=${pixels.size}, pixels=[${pixels.joinToString()}])"
+    override fun toString() = "PixelArray(size=${pixels.size}, pixels=$pixels)"
 }

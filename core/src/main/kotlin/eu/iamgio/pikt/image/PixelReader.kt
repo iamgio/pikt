@@ -75,7 +75,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
                 break
             }
         }
-        return PixelSequence(sequence.toTypedArray())
+        return PixelSequence(sequence)
     }
 
     /**
@@ -95,7 +95,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
      */
     fun forEachNextSequence(task: (PixelSequence) -> Unit) {
         var sequence: PixelSequence
-        while(!nextSequence().also { sequence = it }.isEmpty) {
+        while(nextSequence().also { sequence = it }.isNotEmpty()) {
             task(sequence)
         }
     }
@@ -145,7 +145,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
         val pixelIndex = if(referenceToFirstPixel || index < 0) 0 else index - 1
 
         // Where the error happened.
-        val coordinates = if(!pixels.isEmpty) {
+        val coordinates = if(pixels.isNotEmpty()) {
             val pixel = pixels.getOrNull(pixelIndex) ?: pixels.last()
             " at (${pixel.x},${pixel.y})"
         } else ""
