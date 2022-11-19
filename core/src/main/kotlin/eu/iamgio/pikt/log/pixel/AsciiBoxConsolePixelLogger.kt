@@ -9,6 +9,7 @@ private const val BOTTOM_LEFT_CORNER = '└'
 private const val BOTTOM_RIGHT_CORNER = '┘'
 private const val HORIZONTAL_LINE = '─'
 private const val VERTICAL_LINE = '│'
+private const val MARK = '✖'
 private const val SPACER = ' '
 
 /**
@@ -23,6 +24,7 @@ class AsciiBoxConsolePixelLogger(stream: PrintStream) : ConsolePixelLogger(strea
 
     override fun log(pixel: Pixel, mark: Boolean) {
         builder.text = " ${pixel.hexName} "
+        builder.hasMark = mark
         builder.buildTop()
         builder.buildCenter()
         builder.buildBottom()
@@ -48,6 +50,11 @@ private class AsciiBoxBuilder {
      * The input text.
      */
     var text: String = ""
+
+    /**
+     * Whether the box should contain a mark.
+     */
+    var hasMark: Boolean = false
 
     /**
      * The output text.
@@ -91,7 +98,16 @@ private class AsciiBoxBuilder {
     fun buildBottom() {
         with(builder3) {
             append(BOTTOM_LEFT_CORNER)
-            append(HORIZONTAL_LINE.repeat(text.length))
+            if(hasMark && text.isNotEmpty()) {
+                // Add mark at the center of the box.
+                append(HORIZONTAL_LINE.repeat(text.length / 2 - 1))
+                append(SPACER)
+                append(MARK)
+                append(SPACER)
+                append(HORIZONTAL_LINE.repeat(text.length / 2 - 1))
+            } else {
+                append(HORIZONTAL_LINE.repeat(text.length))
+            }
             append(BOTTOM_RIGHT_CORNER)
             append(SPACER)
         }
