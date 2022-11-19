@@ -11,7 +11,8 @@ import eu.iamgio.pikt.log.pixel.PixelLogger
  * @author Giorgio Garofalo
  */
 class PixelLoggerCommand : Command("-pl", { args ->
-    val type = PixelLogger.Type.values().firstOrNull { it.name.equals(args, ignoreCase = true) }
+    // If no type is specified, the first one is picked.
+    val type = PixelLogger.Type.values().firstOrNull { args == null || it.name.equals(args, ignoreCase = true) }
 
     if(type == null) {
         System.err.println("Pixel logger type $args not found. Available types: "

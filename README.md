@@ -120,9 +120,10 @@ The following arguments enable settings that affect Pikt's behavior.
 - `-nocompile` prevents the generation of any executable file;
 
 
-- `-pl=type` sets the active pixel logger type.
+- `-pl[=type]` sets the active pixel logger type.
 A pixel logger is responsible for printing pixels on screen,
-for example in case of compile-time errors. If not set, it is disabled by default.  
+for example in case of compile-time errors.  
+If not set, it is disabled by default. If `type` is not specified, `rgb` is used.  
 Available types:
   - `rgb`: prints each pixel as a square with its RGB color.
   Not all terminals support this;
