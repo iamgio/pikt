@@ -37,7 +37,7 @@ class SetVariableStatement : Statement() {
         val isNested = sequence.isNested
 
         // Name.
-        val name = sequence.last
+        val name = sequence.lastOrNull()
         if(name == null) {
             syntax.mark("name", StatementSyntax.Mark.WRONG)
             reader.error("Variable has no name.", syntax)
