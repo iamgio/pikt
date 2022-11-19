@@ -15,25 +15,37 @@ import java.util.*
  *
  * @author Giorgio Garofalo
  */
-class RecolorizeCommand : Command("-recolorize", { args ->
-    val properties = PiktPropertiesRetriever().retrieve()
-    val sourceImage = ImageProcessingUtils.read(properties.source)
+class RecolorizeCommand : Command("-recolorize", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        val properties = PiktPropertiesRetriever().retrieve()
+        val sourceImage = ImageProcessingUtils.read(properties.source)
 
-    // Get color choice method from optional =method argument. Defaults to FIRST.
-    val method = if(args != null && args.isNotEmpty()) {
-        RecolorizeImageProcessing.ColorChoiceMethod.values().firstOrNull { it.name.equals(args, ignoreCase = true) }
+        // Get color choice method from optional =method argument. Defaults to FIRST.
+        val method = if(!args.isNullOrEmpty()) {
+            RecolorizeImageProcessing.ColorChoiceMethod.values().firstOrNull { it.name.equals(args, ignoreCase = true) }
                 ?: RecolorizeImageProcessing.ColorChoiceMethod.FIRST.also {
-                    System.err.println("Color choice method $args not found. Available methods: ${RecolorizeImageProcessing.ColorChoiceMethod.values().joinToString { it.name.lowercase() }}. Using 'first'.")
+                    System.err.println(
+                        "Color choice method $args not found. Available methods: ${
+                            RecolorizeImageProcessing.ColorChoiceMethod.values().joinToString { it.name.lowercase() }
+                        }. Using 'first'."
+                    )
                 }
-    } else {
-        RecolorizeImageProcessing.ColorChoiceMethod.FIRST
+        } else {
+            RecolorizeImageProcessing.ColorChoiceMethod.FIRST
+        }
+
+        val finalImage = RecolorizeImageProcessing(
+            sourceImage,
+            properties.colors.rawProperties,
+            properties.libraries,
+            method
+        ).process()
+
+        val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "recolorized")
+
+        println("Recolorized image successfully saved as $file.")
     }
-
-    val finalImage = RecolorizeImageProcessing(sourceImage, properties.colors.rawProperties, properties.libraries, method).process()
-    val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "recolorized")
-
-    println("Recolorized image successfully saved as $file.")
-}, closeOnComplete = true)
+}
 
 class RecolorizeImageProcessing(image: BufferedImage, customScheme: Properties, libraries: List<JarLibrary>, private val method: ColorChoiceMethod) : ImageSchemeProcessing(image, customScheme, libraries) {
 

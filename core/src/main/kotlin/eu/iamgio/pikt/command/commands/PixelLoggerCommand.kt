@@ -10,14 +10,17 @@ import eu.iamgio.pikt.log.pixel.PixelLogger
  * @see PixelLogger.currentLogger
  * @author Giorgio Garofalo
  */
-class PixelLoggerCommand : Command("-pl", { args ->
-    // If no type is specified, the first one is picked.
-    val type = PixelLogger.Type.values().firstOrNull { args == null || it.name.equals(args, ignoreCase = true) }
+class PixelLoggerCommand : Command("-pl", isSettingsCommand = true) {
 
-    if(type == null) {
-        System.err.println("Pixel logger type $args not found. Available types: "
-                + PixelLogger.Type.values().joinToString { it.name.lowercase() })
-    } else {
+    override fun execute(args: String?) {
+        // If no type is specified, the first one is picked.
+        val type = PixelLogger.Type.values().firstOrNull { args == null || it.name.equals(args, ignoreCase = true) }
+
+        if(type == null) {
+            System.err.println("Pixel logger type $args not found. Available types: "
+                    + PixelLogger.Type.values().joinToString { it.name.lowercase() })
+            return
+        }
         PixelLogger.currentLogger = type.newLogger()
     }
-}, isSettingsCommand = true)
+}

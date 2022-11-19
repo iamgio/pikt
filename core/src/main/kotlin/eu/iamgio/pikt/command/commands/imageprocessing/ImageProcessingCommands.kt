@@ -1,6 +1,5 @@
 package eu.iamgio.pikt.command.commands.imageprocessing
 
-import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.readImage
 import eu.iamgio.pikt.image.save
 import java.awt.image.BufferedImage
@@ -57,30 +56,3 @@ object ImageProcessingUtils {
         return out
     }
 }
-
-/**
- * Triggered by -imgoutput=path argument.
- * Defines the output file name for the operations in this file.
- *
- * @see ImageProcessingUtils.output
- * @author Giorgio Garofalo
- */
-class ImageOutputCommand : Command("-imgoutput", { args ->
-    if(args == null) {
-        System.err.println("Expected -imgoutput=<path>. Using default path.")
-    } else if(ImageProcessingUtils.output == null) {
-        ImageProcessingUtils.output = File(args)
-    }
-}, isSettingsCommand = true)
-
-/**
- * Triggered by -chainoutput argument.
- * Allows chaining between image transformation commands: the output of an image processing command becomes the input for the next command.
- * It is recommended to use in combination with [ImageOutputCommand].
- *
- * @see ImageProcessingUtils.enableChaining
- * @author Giorgio Garofalo
- */
-class ChainOutputCommand : Command("-chainoutput", {
-    ImageProcessingUtils.enableChaining = true
-}, isSettingsCommand = true)

@@ -13,24 +13,28 @@ import java.io.File
  *
  * @author Giorgio Garofalo
  */
-class MaskCommand : Command("-mask", { args ->
-    if(args == null) {
-        System.err.println("Expected -mask=<mask path>. Exiting.")
-    } else {
+class MaskCommand : Command("-mask", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        if(args == null) {
+            System.err.println("Expected -mask=<mask path>. Exiting.")
+            return
+        }
+
         val properties = PiktPropertiesRetriever().retrieve()
         val piktImage = PiktImage(ImageProcessingUtils.read(properties.source), properties.colors)
         val maskFile = File(args)
 
         if(!maskFile.exists()) {
             System.err.println("Mask image $maskFile does not exist.")
-        } else {
-            val maskImage = readImage(maskFile)
-            val mask = PixelMask.createFrom(maskImage)
-
-            val compacted = piktImage.compacter.compact(maskImage.width, maskImage.height, mask)
-            val file = ImageProcessingUtils.save(compacted, properties.source, tag = "masked")
-
-            println("Masked image successfully saved as $file.")
+            return
         }
+
+        val maskImage = readImage(maskFile)
+        val mask = PixelMask.createFrom(maskImage)
+
+        val compacted = piktImage.compacter.compact(maskImage.width, maskImage.height, mask)
+        val file = ImageProcessingUtils.save(compacted, properties.source, tag = "masked")
+
+        println("Masked image successfully saved as $file.")
     }
-}, closeOnComplete = true)
+}

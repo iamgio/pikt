@@ -16,7 +16,7 @@ private const val TESTS_FOLDER = "/imageprocessing-tests"
 private const val SOURCE = "source.png"
 private const val OUT = "out.png"
 
-fun Command.fire(args: String? = null) = this.action(args)
+fun Command.fire(args: String? = null) = this.execute(args)
 
 class PiktImageProcessingTestLauncher : PiktTestLauncher() {
     private val folder: File = File(tempDirectory, "imageprocessing")
@@ -37,7 +37,9 @@ class PiktImageProcessingTestLauncher : PiktTestLauncher() {
         copy("source.png")
     }
 
-    fun setDefaultSource() = System.setProperty("source", sourceFilePath)
+    fun setDefaultSource() {
+        System.setProperty("source", sourceFilePath)
+    }
 
     fun copy(name: String) {
         Files.copy(

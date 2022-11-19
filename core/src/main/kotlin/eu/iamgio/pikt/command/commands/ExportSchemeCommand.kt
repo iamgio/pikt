@@ -16,25 +16,27 @@ import java.io.IOException
  *
  * @author Giorgio Garofalo
  */
-class ExportSchemeCommand : Command("-exportscheme", {
-    val schemeFile = PiktPropertiesRetriever().colorsFile()
-        ?: exit(ERROR_BAD_PROPERTIES, message = "Color scheme (-Dcolors) not set.")
+class ExportSchemeCommand : Command("-exportscheme", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        val schemeFile = PiktPropertiesRetriever().colorsFile()
+            ?: exit(ERROR_BAD_PROPERTIES, message = "Color scheme (-Dcolors) not set.")
 
-    val imageFile = File("${schemeFile.nameWithoutExtension}.png")
+        val imageFile = File("${schemeFile.nameWithoutExtension}.png")
 
-    if(imageFile.exists()) {
-        println("Overwriting color palette.")
-    } else {
-        println("Creating color palette.")
+        if(imageFile.exists()) {
+            println("Overwriting color palette.")
+        } else {
+            println("Creating color palette.")
+        }
+
+        try {
+            ColorSchemePalette(FileInputStream(schemeFile)).generate(imageFile)
+        } catch(e: IOException) {
+            System.err.println("An error occurred while exporting color scheme:")
+            e.printStackTrace()
+            exit(ERROR_BAD_IO)
+        }
+
+        println("Color palette successfully generated at $schemeFile")
     }
-
-    try {
-        ColorSchemePalette(FileInputStream(schemeFile)).generate(imageFile)
-    } catch(e: IOException) {
-        System.err.println("An error occurred while exporting color scheme:")
-        e.printStackTrace()
-        exit(ERROR_BAD_IO)
-    }
-
-    println("Color palette successfully generated at $schemeFile")
-}, closeOnComplete = true)
+}

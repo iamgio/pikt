@@ -16,14 +16,16 @@ import java.util.*
  *
  * @author Giorgio Garofalo
  */
-class StandardizeCommand : Command("-standardize", {
-    val properties = PiktPropertiesRetriever().retrieve()
-    val sourceImage = ImageProcessingUtils.read(properties.source)
-    val finalImage = StandardizeImageProcessing(sourceImage, properties.colors.rawProperties, properties.libraries).process()
-    val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "standardized")
+class StandardizeCommand : Command("-standardize", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        val properties = PiktPropertiesRetriever().retrieve()
+        val sourceImage = ImageProcessingUtils.read(properties.source)
+        val finalImage = StandardizeImageProcessing(sourceImage, properties.colors.rawProperties, properties.libraries).process()
+        val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "standardized")
 
-    println("Standardized image successfully saved as $file.")
-}, closeOnComplete = true)
+        println("Standardized image successfully saved as $file.")
+    }
+}
 
 /**
  * Triggered by -standardecompact argument.
@@ -32,17 +34,19 @@ class StandardizeCommand : Command("-standardize", {
  *
  * @author Giorgio Garofalo
  */
-class StandardizeDecompactCommand : Command("-standardecompact", {
-    val properties = PiktPropertiesRetriever().retrieve()
-    val piktImage = PiktImage(properties)
+class StandardizeDecompactCommand : Command("-standardecompact", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        val properties = PiktPropertiesRetriever().retrieve()
+        val piktImage = PiktImage(properties)
 
-    val image = piktImage.compacter.decompact()
-    val finalImage = StandardizeImageProcessing(image, properties.colors.rawProperties, properties.libraries).process()
+        val image = piktImage.compacter.decompact()
+        val finalImage = StandardizeImageProcessing(image, properties.colors.rawProperties, properties.libraries).process()
 
-    val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "standardecompacted")
+        val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "standardecompacted")
 
-    println("Standardized and decompacted image successfully saved as $file.")
-}, closeOnComplete = true)
+        println("Standardized and decompacted image successfully saved as $file.")
+    }
+}
 
 class StandardizeImageProcessing(image: BufferedImage, customScheme: Properties, libraries: List<JarLibrary>) : ImageSchemeProcessing(image, customScheme, libraries) {
 

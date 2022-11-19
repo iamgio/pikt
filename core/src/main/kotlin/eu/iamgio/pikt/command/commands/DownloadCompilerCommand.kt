@@ -11,19 +11,25 @@ import eu.iamgio.pikt.util.exit
  *
  * @author Giorgio Garofalo
  */
-class DownloadCompilerCommand : Command("-downloadcompiler", { args ->
-    val type: KotlinCompilerType?
-    val version: String?
+class DownloadCompilerCommand : Command("-downloadcompiler", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        val type: KotlinCompilerType?
+        val version: String?
 
-    with(args?.split(",") ?: emptyList()) {
-        type = if(isNotEmpty()) KotlinCompilerType.values().firstOrNull { it.name.equals(this[0], ignoreCase = true) } else null
-        version = if(this.size > 1) this[1] else null
+        with(args?.split(",") ?: emptyList()) {
+            type = if(isNotEmpty()) {
+                KotlinCompilerType.values().firstOrNull { it.name.equals(this[0], ignoreCase = true) }
+            } else {
+                null
+            }
+            version = getOrNull(1)
+        }
+
+        if(type == null) {
+            val types = KotlinCompilerType.values().joinToString(", ") { it.name.lowercase() }
+            exit(ERROR_BAD_ARGUMENT_VALUE, message = "Please specify a valid compiler type: $types.")
+        }
+
+        KotlinCompilerDownloader.download(version, type)
     }
-
-    if(type == null) {
-        val types = KotlinCompilerType.values().joinToString(", ") { it.name.lowercase() }
-        exit(ERROR_BAD_ARGUMENT_VALUE, message = "Please specify a valid compiler type: $types.")
-    }
-
-    KotlinCompilerDownloader.download(version, type)
-}, closeOnComplete = true)
+}

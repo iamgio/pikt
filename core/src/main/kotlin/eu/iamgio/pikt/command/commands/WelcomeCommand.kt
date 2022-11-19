@@ -10,13 +10,15 @@ import eu.iamgio.pikt.util.KotlinCompilerType
  *
  * @author Giorgio Garofalo
  */
-class WelcomeCommand : Command("-welcome", {
-    println("-----\nWelcome to Pikt!\n-----\n")
+class WelcomeCommand : Command("-welcome", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        println("-----\nWelcome to Pikt!\n-----\n")
 
-    // Target color scheme
-    System.setProperty("colors", "colors")
+        // Target color scheme
+        System.setProperty("colors", "colors")
 
-    CreateSchemeCommand().execute()
-    ExportSchemeCommand().execute()
-    KotlinCompilerDownloader.download(version = null, KotlinCompilerType.JVM)
-}, closeOnComplete = true)
+        CreateSchemeCommand().execute()
+        ExportSchemeCommand().execute()
+        KotlinCompilerDownloader.download(version = null, KotlinCompilerType.JVM)
+    }
+}

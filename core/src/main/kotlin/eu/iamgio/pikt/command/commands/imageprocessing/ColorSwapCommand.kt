@@ -15,10 +15,13 @@ import java.awt.image.BufferedImage
  *
  * @author Giorgio Garofalo
  */
-class ColorSwapCommand : Command("-colorswap", { args ->
-    if(args == null) {
-        System.err.println("Usage: -colorswap=<from1:to1,from2,to2,...>. Exiting.")
-    } else {
+class ColorSwapCommand : Command("-colorswap", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        if(args == null) {
+            System.err.println("Usage: -colorswap=<from1:to1,from2,to2,...>. Exiting.")
+            return
+        }
+
         val properties = PiktPropertiesRetriever().retrieve()
         val image = ImageProcessingUtils.read(properties.source)
 
@@ -28,7 +31,7 @@ class ColorSwapCommand : Command("-colorswap", { args ->
 
         println("Color-swapped image successfully saved as $file.")
     }
-}, closeOnComplete = true)
+}
 
 /**
  * Represents a color swap from an image.

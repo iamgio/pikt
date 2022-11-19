@@ -14,26 +14,28 @@ import java.io.IOException
  *
  * @author Giorgio Garofalo
  */
-class CreateSchemeCommand : Command("-createscheme", {
-    val retriever = PiktPropertiesRetriever()
-    val file = retriever.colorsFile()
-        ?: exit(ERROR_BAD_PROPERTIES, message = "Color scheme (-Dcolors) not set.")
-    val libraries = retriever.libraries()
+class CreateSchemeCommand : Command("-createscheme", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        val retriever = PiktPropertiesRetriever()
+        val libraries = retriever.libraries()
+        val file = retriever.colorsFile()
+            ?: exit(ERROR_BAD_PROPERTIES, message = "Color scheme (-Dcolors) not set.")
 
-    if(file.exists()) {
-        println("Overwriting color scheme.")
-    } else {
-        println("Creating color scheme file.")
+        if(file.exists()) {
+            println("Overwriting color scheme.")
+        } else {
+            println("Creating color scheme file.")
+        }
+
+        try {
+            Command::class.java.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!.copyTo(FileOutputStream(file))
+            libraries.forEach { it.colorScheme?.appendToScheme(file) }
+        } catch(e: IOException) {
+            System.err.println("An error occurred while creating color scheme:")
+            e.printStackTrace()
+            exit(ERROR_BAD_IO)
+        }
+
+        println("Color scheme successfully created at $file")
     }
-
-    try {
-        Command::class.java.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!.copyTo(FileOutputStream(file))
-        libraries.forEach { it.colorScheme?.appendToScheme(file) }
-    } catch(e: IOException) {
-        System.err.println("An error occurred while creating color scheme:")
-        e.printStackTrace()
-        exit(ERROR_BAD_IO)
-    }
-
-    println("Color scheme successfully created at $file")
-}, closeOnComplete = true)
+}

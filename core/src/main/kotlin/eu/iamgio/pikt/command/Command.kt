@@ -6,21 +6,18 @@ import eu.iamgio.pikt.GlobalSettings
  * Represents a command that can be executed from program arguments.
  *
  * @param name the name of the command
- * @param action the task to be run. (args) -> task. Arguments can be `null` if not specified.
  * @param isSettingsCommand whether this command affects either [GlobalSettings] or any other behavior.
  * @param closeOnComplete whether the program should exit after the commands completed their execution.
  * @see eu.iamgio.pikt.executeCommands
  * @author Giorgio Garofalo
  */
-open class Command(val name: String, val action: (String?) -> Unit, val isSettingsCommand: Boolean = false, val closeOnComplete: Boolean = false) {
+abstract class Command(val name: String, val isSettingsCommand: Boolean = false, val closeOnComplete: Boolean = false) {
 
     /**
      * Executes the command.
-     * @param arguments command arguments
+     * @param args command arguments
      */
-    fun execute(arguments: String? = null) {
-        action(arguments)
-    }
+    abstract fun execute(args: String? = null)
 
     override fun toString(): String = "Command[name=$name]"
 }

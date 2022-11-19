@@ -9,12 +9,14 @@ import eu.iamgio.pikt.properties.PiktPropertiesRetriever
  *
  * @author Giorgio Garofalo
  */
-class DecompactCommand : Command("-decompact", {
-    val properties = PiktPropertiesRetriever().retrieve()
-    val piktImage = PiktImage(properties)
+class DecompactCommand : Command("-decompact", closeOnComplete = true) {
+    override fun execute(args: String?) {
+        val properties = PiktPropertiesRetriever().retrieve()
+        val piktImage = PiktImage(properties)
 
-    val image = piktImage.compacter.decompact()
-    val file = ImageProcessingUtils.save(image, properties.source, tag = "decompacted")
+        val image = piktImage.compacter.decompact()
+        val file = ImageProcessingUtils.save(image, properties.source, tag = "decompacted")
 
-    println("Decompacted image successfully saved as $file.")
-}, closeOnComplete = true)
+        println("Decompacted image successfully saved as $file.")
+    }
+}
