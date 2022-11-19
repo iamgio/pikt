@@ -157,12 +157,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
         System.err.println("\t$message")
 
         // Logs this reader with the selected logger.
-        val logger = PixelLogger.currentLogger
-        if(logger != null) {
-            logger.newLine()
-            logger.logReaderWithMark(this, markIndex = pixelIndex)
-            logger.newLine()
-        }
+        PixelLogger.currentLogger?.logReaderWithMark(this, markIndex = pixelIndex)
 
         // Prints a nice message that explains the expected syntax vs the used syntax.
         // Example from SetVariableStatement:
@@ -171,8 +166,8 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
         //	               ✓           ✓      ✗
         if(syntax != null) {
             val prefix = "Syntax: "
-            System.err.println("\t$prefix" + syntax)
-            System.err.println("\t${" ".repeat(prefix.length)}" + syntax.marksLine)
+            System.err.println("\t" + prefix + syntax)
+            System.err.println("\t" + " ".repeat(prefix.length) + syntax.marksLine)
         }
         System.err.println()
     }
