@@ -1,13 +1,9 @@
 package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
-import eu.iamgio.pikt.image.PiktImage
-import eu.iamgio.pikt.image.clone
-import eu.iamgio.pikt.image.readLineByLine
-import eu.iamgio.pikt.image.rgbToHex
+import eu.iamgio.pikt.image.*
 import eu.iamgio.pikt.lib.JarLibrary
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
-import java.awt.Color
 import java.awt.image.BufferedImage
 import java.util.*
 
@@ -63,7 +59,7 @@ class StandardizeImageProcessing(image: BufferedImage, customScheme: Properties,
             schemes.custom.forEach { (key, color) ->
                 if(color.has(hex)) {
                     // If found, replace with default color.
-                    image.setRGB(x, y, Color.decode("#" + schemes.internal.getValue(key).colors.first()).rgb)
+                    image.setRGB(x, y, Color.fromHex(schemes.internal.getValue(key).colors.first()).rgb)
                     return@forEach
                 }
             }

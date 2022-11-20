@@ -1,8 +1,8 @@
 package eu.iamgio.pikt.log.pixel
 
 import com.diogonunes.jcolor.Attribute
+import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.Pixel
-import java.awt.Color
 import java.io.PrintStream
 
 /**

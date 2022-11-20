@@ -1,12 +1,12 @@
 package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.image.rgbToHex
 import eu.iamgio.pikt.lib.JarLibrary
 import eu.iamgio.pikt.properties.ColorsProperty
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
-import java.awt.Color
 import java.awt.image.BufferedImage
 import java.util.*
 
@@ -83,7 +83,7 @@ class RecolorizeImageProcessing(image: BufferedImage, customScheme: Properties, 
             schemes.internal.forEach { (key, color) ->
                 if(color.has(hex)) {
                     // If found, replace with custom color. Its behavior is handled by [method]
-                    image.setRGB(x, y, Color.decode("#" + method.get(schemes.custom.getValue(key))).rgb)
+                    image.setRGB(x, y, Color.fromHex(method.get(schemes.custom.getValue(key))).rgb)
                     return@forEach
                 }
             }

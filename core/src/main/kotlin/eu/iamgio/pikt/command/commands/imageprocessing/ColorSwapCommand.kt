@@ -1,10 +1,10 @@
 package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.image.rgbToHex
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
-import java.awt.Color
 import java.awt.image.BufferedImage
 
 /**
@@ -61,7 +61,7 @@ class ColorSwapProcessing(private val image: BufferedImage, private val swaps: L
         image.readLineByLine { x, y ->
             val hex = image.getRGB(x, y).rgbToHex()
             val swap = swaps.firstOrNull { it.fromHex == hex }
-            if(swap != null) image.setRGB(x, y, Color.decode("#" + swap.toHex).rgb)
+            if(swap != null) image.setRGB(x, y, Color.fromHex(swap.toHex).rgb)
         }
         return image
     }

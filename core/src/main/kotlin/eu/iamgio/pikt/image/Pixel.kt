@@ -8,12 +8,6 @@ import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.properties.ColorsProperty
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.Statements
-import java.awt.Color
-
-/**
- * @return integer RGB converted into hexadecimal string
- */
-fun Int.rgbToHex(): String = Integer.toHexString(this).substring(2).uppercase()
 
 /**
  * Represents a single pixel of a [PiktImage]
@@ -29,7 +23,7 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
     /**
      * [color] as hexadecimal.
      */
-    private val hex: String = color.rgb.rgbToHex()
+    private val hex: String = color.hex
 
     /**
      * Used for identification.
@@ -53,13 +47,13 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
      * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.
      */
     val isWhitespace: Boolean
-        get() = color.rgb == -1 || color.alpha != 255 || matches(colors.whitespace)
+        get() = color.rgb == -1 || !color.isOpaque || matches(colors.whitespace)
 
     /**
      * Whether this pixel is a string character (grayscale 1-255).
      */
     val isCharacter: Boolean
-        get() = !isWhitespace && color.red == color.green && color.green == color.blue
+        get() = !isWhitespace && color.isGrayscale
 
     /**
      * Whether this pixel is a numeric character (grayscale 48-57).

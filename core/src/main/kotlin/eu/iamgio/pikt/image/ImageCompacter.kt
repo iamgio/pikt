@@ -6,7 +6,6 @@ import eu.iamgio.pikt.statement.statements.LambdaCloseStatement
 import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
 import eu.iamgio.pikt.util.ERROR_FAILED_IMAGE_PROCESSING
 import eu.iamgio.pikt.util.exit
-import java.awt.Color
 import java.awt.image.BufferedImage
 import kotlin.math.ceil
 import kotlin.math.sqrt
@@ -17,7 +16,7 @@ import kotlin.math.sqrt
 class ImageCompacter(private val piktImage: PiktImage) {
 
     private fun BufferedImage.applyBackground(colors: ColorsProperties, startIndex: Int = 0) {
-        val background = colors.whitespace.colors.firstOrNull()?.let { Color.decode("#$it") } ?: Color.WHITE
+        val background = colors.whitespace.colors.firstOrNull()?.let { Color.fromHex(it) } ?: Color.WHITE
         (startIndex until width * height).forEach {
             setRGB(it, background)
         }

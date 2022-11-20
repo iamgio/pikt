@@ -2,7 +2,6 @@ package eu.iamgio.pikt.image
 
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.properties.PiktProperties
-import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
 
