@@ -3,7 +3,6 @@ package eu.iamgio.pikt.image
 import eu.iamgio.pikt.GlobalSettings
 import eu.iamgio.pikt.command.commands.CMD_PIXELINFO
 import eu.iamgio.pikt.expression.Operator
-import eu.iamgio.pikt.lib.Libraries
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.properties.ColorsProperty
 import eu.iamgio.pikt.statement.Statement
@@ -111,7 +110,7 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
     /**
      * Name of the library member linked to this pixel if exists. `null` otherwise.
      */
-    private val libraryMemberName: String? by lazy { Libraries.getMemberName(hex) }
+    private val libraryMemberName: String? by lazy { colors.libraries.getMemberName(hex) }
 
     /**
      * Whether this pixel is linked to a library member/function.

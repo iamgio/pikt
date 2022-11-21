@@ -2,7 +2,7 @@ package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.lib.JarLibrary
-import eu.iamgio.pikt.lib.Libraries
+import eu.iamgio.pikt.lib.LibrariesColors
 import eu.iamgio.pikt.statement.Statement
 
 /**
@@ -93,18 +93,21 @@ data class Scope(private val parent: Scope?, val owner: Statement?, private val 
         /**
          * Builds the main scope filled with library functions.
          * @param libraries supplied libraries
+         * @param librariesColors function-color links
          * @return the main scope of the program
          */
-        fun buildMainScope(libraries: List<JarLibrary>): Scope {
+        fun buildMainScope(libraries: List<JarLibrary>, librariesColors: LibrariesColors): Scope {
             val scope = Scope(parent = null, owner = null)
             libraries.forEach { library ->
-                // We look up available classes and functions from libraries.
+                // Classes and functions from libraries are looked up.
                 val helper = library.reflectionHelper()
                 helper.getAllMethods().forEach { method ->
-                    // The colors of the function are retrieved.
-                    Libraries.getColorsFor(method.name)?.colors?.forEach { hex ->
+                    // The colors linked to the function are retrieved, if they exist.
+                    librariesColors.getColorsFor(method.name)?.colors?.forEach { hex ->
                         // The linked function member is created or updated.
-                        val function = scope[hex] as? FunctionMember ?: FunctionMember(method.name, mutableListOf(), isLibraryFunction = true)
+                        val function = scope[hex] as? FunctionMember
+                            ?: FunctionMember(method.name, overloads = mutableListOf(), isLibraryFunction = true)
+                        // A function overload is created out of a reflection method.
                         function.overloads += helper.createFunctionOverload(method)
                         // The function is pushed to the scope.
                         scope.push(hex, function)

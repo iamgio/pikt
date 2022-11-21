@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.properties
 
 import eu.iamgio.pikt.lib.JarLibrary
-import eu.iamgio.pikt.lib.Libraries
+import eu.iamgio.pikt.lib.LibrariesColors
 import java.io.InputStream
 import java.io.InputStreamReader
 
@@ -28,7 +28,7 @@ data class ColorsProperties(
         val lambda: LambdaColorsProperties,
         val boolean: BooleanColorsProperties,
         val operators: OperatorColorsProperties,
-        val libraries: Map<String, ColorsProperty>,
+        val libraries: LibrariesColors,
         val rawProperties: java.util.Properties
 ) : Properties
 
@@ -213,7 +213,7 @@ class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : Prope
                         get("op.less"),
                         get("op.less_or_equals")
                 ),
-                libraries = Libraries.generateColorProperties(internalProperties.keys, ::get),
+                libraries = LibrariesColors().withGeneratedColorProperties(internalProperties.keys, ::get),
                 properties
         )
     }

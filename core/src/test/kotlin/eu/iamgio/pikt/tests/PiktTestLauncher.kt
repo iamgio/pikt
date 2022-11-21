@@ -2,6 +2,7 @@ package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.eval.Evaluator
+import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.properties.ColorsPropertiesRetriever
 import eu.iamgio.pikt.properties.PiktProperties
@@ -73,7 +74,7 @@ abstract class PiktTestLauncher {
         val image = PiktImage(ImageIO.read(getImage(name)), properties.colors)
 
         val evaluator = Evaluator()
-        evaluator.evaluate(image, properties.libraries)
+        evaluator.evaluate(image, Scope.buildMainScope(properties.libraries, properties.colors.libraries))
 
         println(evaluator.outputCode)
 

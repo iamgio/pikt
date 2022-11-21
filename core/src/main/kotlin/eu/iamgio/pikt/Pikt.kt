@@ -6,6 +6,7 @@ import eu.iamgio.pikt.command.commands.imageprocessing.*
 import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.eval.Evaluator
+import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.project.PiktProjectInfo
 import eu.iamgio.pikt.project.PiktProjectInfo.Companion.mergeArgsWith
@@ -57,7 +58,7 @@ fun main(args: Array<String>) {
 
     // Evaluate the image pixel-by-pixel
     val evaluator = Evaluator()
-    evaluator.evaluate(image, properties.libraries)
+    evaluator.evaluate(image, Scope.buildMainScope(properties.libraries, properties.colors.libraries))
 
     // Print Kotlin output if -printoutput is enabled.
     if(CMD_PRINTOUTPUT in GlobalSettings) {
