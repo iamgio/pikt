@@ -3,19 +3,25 @@ package eu.iamgio.pikt.image
 private typealias AWTColor = java.awt.Color
 
 /**
- * An immutable RGB(A) color.
+ * An immutable RGBA color.
  *
- * @param color AWT color
+ * @param red the red component in 0-255 value
+ * @param green the green component in 0-255 value
+ * @param blue the blue component in 0-255 value
+ * @param alpha the alpha component in 0-255 value
  * @author Giorgio Garofalo
  */
-class Color(private val color: AWTColor) {
+data class Color(
+    val red: Int,
+    val green: Int,
+    val blue: Int,
+    val alpha: Int = 255
+) {
 
     /**
-     * @param red red component in 0-255 range
-     * @param green green component in 0-255 range
-     * @param blue blue component in 0-255 range
+     * @param color AWT color
      */
-    constructor(red: Int, green: Int, blue: Int) : this(AWTColor(red, green, blue))
+    constructor(color: AWTColor) : this(color.red, color.green, color.blue, color.alpha)
 
     /**
      * @param rgb combined RGB components
@@ -23,28 +29,9 @@ class Color(private val color: AWTColor) {
     constructor(rgb: Int) : this(AWTColor(rgb))
 
     /**
-     * The red component in 0-255 range.
-     */
-    val red: Int
-        get() = color.red
-
-    /**
-     * The green component in 0-255 range.
-     */
-    val green: Int
-        get() = color.green
-
-    /**
-     * The blue component in 0-255 range.
-     */
-    val blue: Int
-        get() = color.blue
-
-    /**
      * The combined RGB components.
      */
-    val rgb: Int
-        get() = color.rgb
+    val rgb: Int = AWTColor(red, green, blue).rgb
 
     /**
      * The hexadecimal value of this color, without `#`.
@@ -55,20 +42,19 @@ class Color(private val color: AWTColor) {
      * Whether this color is gray (black, white and in-between).
      */
     val isGrayscale: Boolean
-        get() = color.red == color.green && color.green == color.blue
+        get() = red == green && green == blue
 
     /**
      * Whether this color is not transparent.
      */
     val isOpaque: Boolean
-        get() = color.alpha == 255
+        get() = alpha == 255
 
     companion object {
         /**
          * The white color.
          */
-        val WHITE: Color
-            get() = Color(AWTColor.WHITE)
+        val WHITE = Color(255, 255, 255)
 
         /**
          * Decodes a [Color] from a hexadecimal string.
