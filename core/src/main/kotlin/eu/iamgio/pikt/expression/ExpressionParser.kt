@@ -118,16 +118,14 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         val builder = StringBuilder()
 
         reader.forEachNextSequence { sequence ->
-            if(sequence.size == 1 && sequence.first().isCharacter) {
-                val pixel = sequence.first()
-                if(pixel.isCharacter) {
-                    if(requireNumber && !pixel.isNumber) {
-                        reader.error("Member not expected while parsing number.")
-                    } else {
-                        // Grayscale pixel -> character, except for null character (code 0)
-                        // Therefore, the null character is useful to force string initialization or concatenation.
-                        builder.append(pixel.characterContent.takeIf { it.code != 0 } ?: "")
-                    }
+            if(!sequence.isNested && sequence.first().isCharacter) {
+                val characterPixel = sequence.first()
+                if(requireNumber && !characterPixel.isNumber) {
+                    reader.error("Member not expected while parsing number.")
+                } else {
+                    // Grayscale pixel -> character, except for null character (code 0)
+                    // Therefore, the null character is useful to force string initialization or concatenation.
+                    builder.append(characterPixel.characterContent.takeIf { it.code != 0 } ?: "")
                 }
             } else {
                 // Variable/method reference
