@@ -187,7 +187,8 @@ RGB:  72  101  108  108  111  32  80  105  107  116  33
       H   e    l    l    o        P   i    k    t    !   
 ```
 
-- `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`) and `-downloadcompiler=jvm`. Its output is already zipped in the downloadable archive.
+- `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`), `-downloadcompiler=jvm` and creates a ready-to-use Hello World source.
+Its output is already zipped in the downloadable archive.
 
 
 More in-depth information about image transformation commands can be found [here](https://github.com/iAmGio/pikt/wiki/Image-transformation-commands).
