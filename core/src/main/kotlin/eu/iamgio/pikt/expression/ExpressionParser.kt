@@ -7,6 +7,8 @@ import eu.iamgio.pikt.eval.StructMember
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 
+private const val ERROR_UNRESOLVED_REFERENCE = "Unresolved reference: "
+
 /**
  * Parses [Expression]s
  *
@@ -17,14 +19,29 @@ import eu.iamgio.pikt.image.PixelReader
  */
 class ExpressionParser(private val reader: PixelReader, private val scope: Scope, private val isComplexParser: Boolean = false) {
 
+    private fun Pixel.isInScope(): Boolean {
+        return this in scope || this.isBoolean || this.isLibraryMember
+    }
+
+//    /**
+//     * Checks if the pixel is registered within [scope], throws an error otherwise.
+//     * @param message error message
+//     */
+//    private fun Pixel.checkExistance(message: String = ERROR_UNRESOLVED_REFERENCE + this.hexName) {
+//        if(!this.isInScope()) {
+//            reader.error(message)
+//        }
+//    }
+
     /**
-     * Checks if the pixel is registered within [scope], throws an error otherwise.
-     * @param message error message
-     * @param suffix text appended to [message]
+     * Checks if the first pixel of the sequence is registered within [scope],
+     * and every next pixel is in the scope of the previous one. Throws an error otherwise.
      */
-    private fun Pixel.checkExistance(message: String = "Unresolved reference: $hexName", suffix: String = "") {
-        if(this !in scope && !this.isBoolean && !this.isLibraryMember) {
-            reader.error(message + (if(suffix.isNotEmpty()) " " else "") + suffix)
+    private fun PixelSequence.checkNestedExistance() {
+        val pixel = this.first()
+        // TODO scan nested levels: each pixel could have its own scope?
+        if(!pixel.isInScope()) {
+            reader.error(ERROR_UNRESOLVED_REFERENCE + pixel.hexName, atPixel = pixel)
         }
     }
 
@@ -129,7 +146,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
                 }
             } else {
                 // Variable/method reference
-                sequence.firstOrNull()?.checkExistance(suffix = "(in string literal)") // TODO check nested existance at compile time
+                sequence.checkNestedExistance()
                 builder.append("\${${sequence.toNestedCode(scope)}}")
             }
         }
@@ -151,7 +168,8 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         builder.append(sequence.toNestedCode(scope))
         builder.append("(")
 
-        val functionMember = sequence.firstOrNull()?.also { it.checkExistance() }?.let { scope[it] as? FunctionMember }
+        sequence.checkNestedExistance()
+        val functionMember = sequence.firstOrNull()?.let { scope[it] } as? FunctionMember
         val args = mutableListOf<String>()
 
         // Read arguments only if this is an actual function,

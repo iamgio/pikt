@@ -136,13 +136,10 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
      * `Error at (x,y) (index i in Statement): message`
      * @param message message to log
      * @param syntax optional [statement]'s syntax that should be printed out
-     * @param referenceToFirstPixel whether the error must reference the first pixel in the reader
+     * @param pixelIndex index of the pixel that caused the error
      */
-    fun error(message: String, syntax: StatementSyntax? = null, referenceToFirstPixel: Boolean = false) {
+    fun error(message: String, syntax: StatementSyntax? = null, pixelIndex: Int) {
         isInvalidated = true
-
-        // Index of the pixel that caused the error
-        val pixelIndex = if(referenceToFirstPixel || index < 0) 0 else index - 1
 
         // Where the error happened.
         val coordinates = if(pixels.isNotEmpty()) {
@@ -167,5 +164,36 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
             System.err.println("\t" + " ".repeat(prefix.length) + syntax.marksLine)
         }
         System.err.println()
+    }
+
+    /**
+     * Prints an error preceded by a standard prefix and invalidates this reader.
+     * `Error at (x,y) (index i in Statement): message`
+     * @param message message to log
+     * @param syntax optional [statement]'s syntax that should be printed out
+     * @param referenceToFirstPixel whether the error must reference the first pixel in the reader
+     */
+    fun error(message: String, syntax: StatementSyntax? = null, referenceToFirstPixel: Boolean = false) {
+        error(message, syntax, if(referenceToFirstPixel) 0 else this.index - 1)
+    }
+
+    /**
+     * Prints an error preceded by a standard prefix and invalidates this reader.
+     * @param message message to log
+     * @param syntax optional [statement]'s syntax that should be printed out
+     * @param atPixel pixel that caused the error (contained within this reader)
+     */
+    fun error(message: String, syntax: StatementSyntax? = null, atPixel: Pixel) {
+        val copy = this.softCopy() // A soft copy starts from index 0.
+
+        // Search for target pixel
+        copy.whileNotNull {
+            if(it === atPixel) error(message, syntax, copy.index)
+        }
+
+        // Fallback if the target pixel was not found.
+        if(!isInvalidated) {
+            error(message, syntax, referenceToFirstPixel = true)
+        }
     }
 }
