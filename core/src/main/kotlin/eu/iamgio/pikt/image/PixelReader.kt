@@ -147,8 +147,8 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
             " at (${pixel.x},${pixel.y})"
         } else ""
 
-        System.err.println("Error$coordinates (index $pixelIndex in ${statement?.name ?: "<no statement>"}):")
-        System.err.println("\t$message")
+        Log.error("Error$coordinates (index $pixelIndex in ${statement?.name ?: "<no statement>"}):")
+        Log.error("\t$message")
 
         // Logs the pixels of this reader with the selected logger.
         Log.pixelLogger?.logReaderWithMark(this, markIndex = pixelIndex)
@@ -160,10 +160,11 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
         //	               ✓           ✓      ✗
         if(syntax != null) {
             val prefix = "Syntax: "
-            System.err.println("\t" + prefix + syntax)
-            System.err.println("\t" + " ".repeat(prefix.length) + syntax.marksLine)
+            Log.error("\t" + prefix + syntax)
+            Log.error("\t" + " ".repeat(prefix.length) + syntax.marksLine)
         }
-        System.err.println()
+
+        Log.error("")
     }
 
     /**

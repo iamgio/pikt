@@ -8,6 +8,7 @@ import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.project.PiktProjectInfo
 import eu.iamgio.pikt.project.PiktProjectInfo.Companion.mergeArgsWith
 import eu.iamgio.pikt.project.PiktProjectInfoParser
@@ -62,12 +63,12 @@ fun main(args: Array<String>) {
 
     // Print Kotlin output if -printoutput is enabled.
     if(CMD_PRINTOUTPUT in GlobalSettings) {
-        println("Output:\n${evaluator.outputCode}\n")
+        Log.info("Output:\n${evaluator.outputCode}\n")
     }
 
     // Stop execution if at least one error has occurred during code generation.
     if(evaluator.isInvalidated) {
-        println("Please fix these issues and try again.")
+        Log.warn("Please fix these issues and try again.")
         return
     }
 
@@ -86,7 +87,7 @@ fun main(args: Array<String>) {
 
     // Print total time elapsed.
     val totalTime = (System.currentTimeMillis() - startTime) / 1000.0
-    println("Done. (${totalTime}s)")
+    Log.info("Done. (${totalTime}s)")
 }
 
 /**
