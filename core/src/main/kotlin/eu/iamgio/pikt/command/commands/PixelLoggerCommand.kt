@@ -2,12 +2,13 @@ package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.log.pixel.PixelLogger
+import eu.iamgio.pikt.logger.Log
 
 /**
  * Triggered by the -pl=type argument.
  * Defines the logger used to log pixels, e.g. in case of errors.
  *
- * @see PixelLogger.currentLogger
+ * @see Log.pixelLogger
  * @author Giorgio Garofalo
  */
 class PixelLoggerCommand : Command("-pl", isSettingsCommand = true) {
@@ -21,6 +22,6 @@ class PixelLoggerCommand : Command("-pl", isSettingsCommand = true) {
                     + PixelLogger.Type.values().joinToString { it.name.lowercase() })
             return
         }
-        PixelLogger.currentLogger = type.newLogger()
+        Log.pixelLogger = type.newLogger()
     }
 }

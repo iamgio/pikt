@@ -50,13 +50,6 @@ interface PixelLogger {
      */
     fun logReader(reader: PixelReader) = logReaderWithMark(reader, null)
 
-    companion object {
-        /**
-         * The active, global, pixel logger to be used.
-         */
-        var currentLogger: PixelLogger? = null
-    }
-
     /**
      * Pixel logger types.
      *
