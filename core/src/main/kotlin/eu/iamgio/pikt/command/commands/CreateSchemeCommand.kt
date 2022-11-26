@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.INTERNAL_COLORS_SCHEME_PATH
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.util.ERROR_BAD_IO
@@ -22,20 +23,20 @@ class CreateSchemeCommand : Command("-createscheme", closeOnComplete = true) {
             ?: exit(ERROR_BAD_PROPERTIES, message = "Color scheme (-Dcolors) not set.")
 
         if(file.exists()) {
-            println("Overwriting color scheme.")
+            Log.info("Overwriting color scheme.")
         } else {
-            println("Creating color scheme file.")
+            Log.info("Creating color scheme file.")
         }
 
         try {
             Command::class.java.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!.copyTo(FileOutputStream(file))
             libraries.forEach { it.colorScheme?.appendToScheme(file) }
         } catch(e: IOException) {
-            System.err.println("An error occurred while creating color scheme:")
+            Log.error("An error occurred while creating color scheme:")
             e.printStackTrace()
             exit(ERROR_BAD_IO)
         }
 
-        println("Color scheme successfully created at $file")
+        Log.info("Color scheme successfully created at $file")
     }
 }

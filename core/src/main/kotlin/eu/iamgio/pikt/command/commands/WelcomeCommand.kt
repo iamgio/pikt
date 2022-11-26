@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.util.KotlinCompilerDownloader
 import eu.iamgio.pikt.util.KotlinCompilerType
 import java.io.FileOutputStream
@@ -18,7 +19,7 @@ private const val HELLO_WORLD = "helloworld.png"
  */
 class WelcomeCommand : Command("-welcome", closeOnComplete = true) {
     override fun execute(args: String?) {
-        println("-----\nWelcome to Pikt!\n-----\n")
+        Log.info("-----\nWelcome to Pikt!\n-----\n")
 
         // Target color scheme
         System.setProperty("colors", "colors")
@@ -30,8 +31,8 @@ class WelcomeCommand : Command("-welcome", closeOnComplete = true) {
     }
 
     private fun copyHelloWorld() {
-        println("Copying $HELLO_WORLD")
+        Log.info("Copying $HELLO_WORLD")
         javaClass.getResourceAsStream("/$HELLO_WORLD")?.copyTo(FileOutputStream(HELLO_WORLD))
-            ?: System.err.println("Could not find $HELLO_WORLD")
+            ?: Log.error("Could not find $HELLO_WORLD")
     }
 }

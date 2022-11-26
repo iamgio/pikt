@@ -2,6 +2,7 @@ package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.PiktImage
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 
 /**
@@ -17,6 +18,6 @@ class DecompactCommand : Command("-decompact", closeOnComplete = true) {
         val image = piktImage.compacter.decompact()
         val file = ImageProcessingUtils.save(image, properties.source, tag = "decompacted")
 
-        println("Decompacted image successfully saved as $file.")
+        Log.info("Decompacted image successfully saved as $file.")
     }
 }

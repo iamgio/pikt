@@ -4,6 +4,7 @@ import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.image.rgbToHex
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import java.awt.image.BufferedImage
 
@@ -18,7 +19,7 @@ import java.awt.image.BufferedImage
 class ColorSwapCommand : Command("-colorswap", closeOnComplete = true) {
     override fun execute(args: String?) {
         if(args == null) {
-            System.err.println("Usage: -colorswap=<from1:to1,from2,to2,...>. Exiting.")
+            Log.error("Usage: -colorswap=<from1:to1,from2,to2,...>. Exiting.")
             return
         }
 
@@ -29,7 +30,7 @@ class ColorSwapCommand : Command("-colorswap", closeOnComplete = true) {
 
         val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "swapped")
 
-        println("Color-swapped image successfully saved as $file.")
+        Log.info("Color-swapped image successfully saved as $file.")
     }
 }
 

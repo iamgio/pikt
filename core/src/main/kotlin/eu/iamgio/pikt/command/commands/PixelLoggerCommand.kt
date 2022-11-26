@@ -18,7 +18,7 @@ class PixelLoggerCommand : Command("-pl", isSettingsCommand = true) {
         val type = PixelLogger.Type.values().firstOrNull { args == null || it.name.equals(args, ignoreCase = true) }
 
         if(type == null) {
-            System.err.println("Pixel logger type $args not found. Available types: "
+            Log.error("Pixel logger type $args not found. Available types: "
                     + PixelLogger.Type.values().joinToString { it.name.lowercase() })
             return
         }

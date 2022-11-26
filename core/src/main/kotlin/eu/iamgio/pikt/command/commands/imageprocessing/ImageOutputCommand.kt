@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.logger.Log
 import java.io.File
 
 /**
@@ -13,7 +14,7 @@ import java.io.File
 class ImageOutputCommand : Command("-imgoutput", isSettingsCommand = true) {
     override fun execute(args: String?) {
         if(args == null) {
-            System.err.println("Expected -imgoutput=<path>. Using default path.")
+            Log.warn("Expected -imgoutput=<path>. Using default path.")
             return
         }
         if(ImageProcessingUtils.output == null) {

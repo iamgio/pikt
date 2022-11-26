@@ -3,6 +3,7 @@ package eu.iamgio.pikt.command.commands.imageprocessing
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.*
 import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import java.awt.image.BufferedImage
 import java.util.*
@@ -19,7 +20,7 @@ class StandardizeCommand : Command("-standardize", closeOnComplete = true) {
         val finalImage = StandardizeImageProcessing(sourceImage, properties.colors.rawProperties, properties.libraries).process()
         val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "standardized")
 
-        println("Standardized image successfully saved as $file.")
+        Log.info("Standardized image successfully saved as $file.")
     }
 }
 
@@ -40,7 +41,7 @@ class StandardizeDecompactCommand : Command("-standardecompact", closeOnComplete
 
         val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "standardecompacted")
 
-        println("Standardized and decompacted image successfully saved as $file.")
+        Log.info("Standardized and decompacted image successfully saved as $file.")
     }
 }
 

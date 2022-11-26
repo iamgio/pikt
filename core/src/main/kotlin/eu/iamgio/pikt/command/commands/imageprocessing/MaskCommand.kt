@@ -4,6 +4,7 @@ import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.image.PixelMask
 import eu.iamgio.pikt.image.readImage
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import java.io.File
 
@@ -16,7 +17,7 @@ import java.io.File
 class MaskCommand : Command("-mask", closeOnComplete = true) {
     override fun execute(args: String?) {
         if(args == null) {
-            System.err.println("Expected -mask=<mask path>. Exiting.")
+            Log.error("Expected -mask=<mask path>. Exiting.")
             return
         }
 
@@ -25,7 +26,7 @@ class MaskCommand : Command("-mask", closeOnComplete = true) {
         val maskFile = File(args)
 
         if(!maskFile.exists()) {
-            System.err.println("Mask image $maskFile does not exist.")
+            Log.error("Mask image $maskFile does not exist.")
             return
         }
 
@@ -35,6 +36,6 @@ class MaskCommand : Command("-mask", closeOnComplete = true) {
         val compacted = piktImage.compacter.compact(maskImage.width, maskImage.height, mask)
         val file = ImageProcessingUtils.save(compacted, properties.source, tag = "masked")
 
-        println("Masked image successfully saved as $file.")
+        Log.info("Masked image successfully saved as $file.")
     }
 }

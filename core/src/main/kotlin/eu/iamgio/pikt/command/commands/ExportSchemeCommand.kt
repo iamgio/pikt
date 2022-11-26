@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.schemes.ColorSchemePalette
 import eu.iamgio.pikt.util.ERROR_BAD_IO
@@ -24,19 +25,19 @@ class ExportSchemeCommand : Command("-exportscheme", closeOnComplete = true) {
         val imageFile = File("${schemeFile.nameWithoutExtension}.png")
 
         if(imageFile.exists()) {
-            println("Overwriting color palette.")
+            Log.info("Overwriting color palette.")
         } else {
-            println("Creating color palette.")
+            Log.info("Creating color palette.")
         }
 
         try {
             ColorSchemePalette(FileInputStream(schemeFile)).generate(imageFile)
         } catch(e: IOException) {
-            System.err.println("An error occurred while exporting color scheme:")
+            Log.error("An error occurred while exporting color scheme:")
             e.printStackTrace()
             exit(ERROR_BAD_IO)
         }
 
-        println("Color palette successfully generated at $schemeFile")
+        Log.info("Color palette successfully generated at $schemeFile")
     }
 }

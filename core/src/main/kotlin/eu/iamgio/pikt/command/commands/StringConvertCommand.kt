@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.logger.Log
 
 /**
  * Triggered by -strconvert=string argument.
@@ -11,25 +12,25 @@ import eu.iamgio.pikt.command.Command
 class StringConvertCommand : Command("-strconvert", closeOnComplete = true) {
     override fun execute(args: String?) {
         if(args == null) {
-            System.err.println("Usage: -strconvert=<string>. Exiting.")
+            Log.error("Usage: -strconvert=<string>. Exiting.")
             return
         }
 
-        val prefix = "RGB:  "
-        var bottomLine = " ".repeat(prefix.length) // The bottom line contains ASCII characters aligned with their code.
+        var topLine = "RGB:  "
+        var bottomLine = " ".repeat(topLine.length) // The bottom line contains ASCII characters aligned with their code.
 
         var containsNullChar = false // Whether \0 (char code 0) appears within the string in order to show a warning message.
 
-        print(prefix)
-
         args.toCharArray().forEach { char ->
-            // Prints the char code and aligns the ASCII caracter below
-            print("${char.code}  ".also { bottomLine += char + " ".repeat(it.length - 1) })
+            // Appens the char code and aligns the ASCII caracter below
+            val append = "${char.code} "
+            topLine += append
+            bottomLine += char + " ".repeat(append.length - 1)
             if(char.code == 0) containsNullChar = true
         }
 
-        println()
-        println(bottomLine)
-        if(containsNullChar) println("(!) The string contains a null character that could be misread by Pikt.")
+        Log.info(topLine)
+        Log.info(bottomLine)
+        if(containsNullChar) Log.warn("(!) The string contains a null character that could be misread.")
     }
 }
