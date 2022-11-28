@@ -31,6 +31,6 @@ class StringConvertCommand : Command("-strconvert", closeOnComplete = true) {
 
         Log.info(topLine)
         Log.info(bottomLine)
-        if(containsNullChar) Log.warn("(!) The string contains a null character that could be misread.")
+        if(containsNullChar) Log.warn("The string contains a null character that could be misread.")
     }
 }
