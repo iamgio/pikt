@@ -5,6 +5,7 @@ import eu.iamgio.pikt.compiler.isAnyJVM
 import eu.iamgio.pikt.compiler.isAnyNative
 import eu.iamgio.pikt.compiler.isAnyNull
 import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.project.PiktProjectInfo
 import eu.iamgio.pikt.util.ERROR_BAD_PROPERTIES
 import eu.iamgio.pikt.util.exit
@@ -47,7 +48,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         private set
 
     private fun error(message: String) {
-        System.err.println(message)
+        Log.error(message)
         isError = true
     }
 
@@ -155,8 +156,8 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         if(colorsFile != null && colorsFile.exists()) {
             retriever.loadProperties(FileInputStream(colorsFile))
         } else if(!isError) {
-            println("Color scheme not found. Using the default one.")
-            println("Run Pikt with the -createscheme argument to create a scheme.\n")
+            Log.info("Color scheme not found. Using the default one.")
+            Log.info("Run Pikt with the -createscheme argument to create a scheme.\n")
         }
         return retriever
     }
