@@ -179,8 +179,9 @@ If `size` is not specified, it will try to create a square-ish image.
 - `-mask=path` creates a masked copy of the source image, loading the mask image from `path`;
 
 
-- `-strconvert=string` converts a string into a sequence of RGB (grayscale) values supported by Pikt and prints them out.  
-  _See [Hello world!](https://github.com/iAmGio/pikt/wiki/Hello-world) for further information._  
+- `-strconvert[=string]` converts a string into a sequence of RGB (grayscale) values supported by Pikt and prints them out.  
+If `string` is not specified, input is read from stdin.  
+_See [Hello world!](https://github.com/iAmGio/pikt/wiki/Hello-world) for further information._  
 For instance, `-strconvert="Hello Pikt!"` prints:
 ```
 RGB:  72  101  108  108  111  32  80  105  107  116  33  
