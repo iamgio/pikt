@@ -12,7 +12,7 @@ import java.io.File
  * @param colors color scheme
  * @author Giorgio Garofalo
  */
-class PiktImage(private val image: BufferedImage, private val colors: ColorsProperties) {
+class PiktImage(private val image: BufferedImage, val colors: ColorsProperties) {
 
     /**
      * Used for compacting/decompacting copies of this image.
@@ -55,5 +55,5 @@ class PiktImage(private val image: BufferedImage, private val colors: ColorsProp
     /**
      * @return a new pixel-by-pixel reader for the image
      */
-    fun reader(): PixelReader = PixelReader(generatePixelArray(), colors)
+    fun reader(): PixelReader = PixelReader(generatePixelArray())
 }

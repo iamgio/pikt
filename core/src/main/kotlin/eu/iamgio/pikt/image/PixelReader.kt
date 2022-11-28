@@ -6,7 +6,6 @@ import eu.iamgio.pikt.expression.ExpressionParser
 import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.expression.PixelSequence
 import eu.iamgio.pikt.logger.Log
-import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementSyntax
 
@@ -14,11 +13,10 @@ import eu.iamgio.pikt.statement.StatementSyntax
  * Pixel-by-pixel reader of a [PiktImage]
  *
  * @param pixels collection of [Pixel]s
- * @param colors color scheme
  * @param statement statement of this reader, if already subdivided
  * @author Giorgio Garofalo
  */
-class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, val statement: Statement? = null) {
+class PixelReader(private val pixels: PixelArray, val statement: Statement? = null) {
 
     /**
      * Current pixel index.
@@ -41,7 +39,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
     /**
      * @return a non-deep copy of this reader with its index set to `0`
      */
-    fun softCopy(): PixelReader = PixelReader(pixels, colors, statement)
+    fun softCopy(): PixelReader = PixelReader(pixels, statement)
 
     /**
      * Gets the next pixel available.
@@ -104,7 +102,7 @@ class PixelReader(private val pixels: PixelArray, val colors: ColorsProperties, 
      * Creates a copy of this reader sliced from [start] to [end].
      * @return sliced copy of this reader
      */
-    fun sliced(start: Int, end: Int, statement: Statement? = null) = PixelReader(pixels.sliced(start, if(end < size) end else size - 1), colors, statement)
+    fun sliced(start: Int, end: Int, statement: Statement? = null) = PixelReader(pixels.sliced(start, if(end < size) end else size - 1), statement)
 
     /**
      * Subdivides this reader into one minor reader for each statement.

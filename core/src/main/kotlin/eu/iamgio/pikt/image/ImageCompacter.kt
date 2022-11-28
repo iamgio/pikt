@@ -88,7 +88,7 @@ class ImageCompacter(private val piktImage: PiktImage) {
 
         // Fill the remaining space with whitespaces (when using a mask, otherwise it's done at the end to save time).
         if(mask != null) {
-            image.applyBackground(reader.colors)
+            image.applyBackground(piktImage.colors)
         }
 
         // Copy PixelReader content to the output image.
@@ -103,7 +103,7 @@ class ImageCompacter(private val piktImage: PiktImage) {
 
         // Fill the remaining space with whitespaces (when not using a mask, otherwise it's done at the beginning).
         if(mask == null) {
-            image.applyBackground(reader.colors, reader.index)
+            image.applyBackground(piktImage.colors, reader.index)
         }
 
         return image
@@ -165,7 +165,7 @@ class ImageCompacter(private val piktImage: PiktImage) {
 
         // Create image.
         val image = BufferedImage(lines.maxByOrNull { it.size }!!.size, lines.size, BufferedImage.TYPE_INT_RGB)
-        image.applyBackground(reader.colors)
+        image.applyBackground(piktImage.colors)
 
         // Append lines to the image.
         lines.forEachIndexed { y, line ->
