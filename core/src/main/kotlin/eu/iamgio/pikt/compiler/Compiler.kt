@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.compiler
 
 import eu.iamgio.pikt.eval.Evaluator
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.File
 import java.io.OutputStream
@@ -26,7 +27,7 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
 
     override fun onPreCompile(target: CompilationTarget) {
         getTargetFolder(target).mkdir()
-        println("\nCompiling for target $target. Please wait...\n")
+        Log.info("\nCompiling for target $target. Please wait...\n")
     }
 
     override fun generateCommand(target: CompilationTarget): Array<String> {
@@ -55,11 +56,11 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
         if(isError) {
             if(!hasKotlinError) {
                 hasKotlinError = true
-                System.err.println(KOTLIN_COMPILER_ERROR_MESSAGE_HEADER)
+                Log.error(KOTLIN_COMPILER_ERROR_MESSAGE_HEADER)
             }
-            System.err.println(line)
+            Log.error(line)
         } else {
-            println(">\t$line")
+            Log.info(">\t$line")
         }
     }
 

@@ -3,6 +3,7 @@ package eu.iamgio.pikt.eval
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementOptions
@@ -146,6 +147,6 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
     fun invalidate(message: String? = null) {
         isInvalidated = true
 
-        if(message != null) System.err.println("Error: $message\n")
+        if(message != null) Log.error("Error: $message\n")
     }
 }

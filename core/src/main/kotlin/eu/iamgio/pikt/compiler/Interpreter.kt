@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.compiler
 
 import eu.iamgio.pikt.eval.Evaluator
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.*
 import kotlin.concurrent.thread
@@ -60,7 +61,7 @@ class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractIn
                     stdin.flush()
                 }
             } catch(e: IOException) {
-                System.err.println("An error occurred while reading input:")
+                Log.error("An error occurred while reading input:")
                 e.printStackTrace()
             }
         }
@@ -70,11 +71,11 @@ class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractIn
         if(isError) {
             if(!hasKotlinError) {
                 hasKotlinError = true
-                System.err.println(KOTLIN_COMPILER_ERROR_MESSAGE_HEADER)
+                Log.error(KOTLIN_COMPILER_ERROR_MESSAGE_HEADER)
             }
-            System.err.println(line)
+            Log.error(line)
         } else {
-            println(line)
+            Log.info(line)
         }
     }
 }

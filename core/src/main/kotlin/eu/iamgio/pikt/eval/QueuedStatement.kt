@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PixelReader
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 
@@ -33,7 +34,7 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader, va
         // ...      <- this is in an outer scope
 
         if(previousStatement?.options?.closesScope == true || previousPreviousStatement?.options?.opensTemporaryScope == true) {
-            scopes.removeLastOrNull() ?: System.err.println("There must be at least one active scope.")
+            scopes.removeLastOrNull() ?: Log.error("There must be at least one active scope.")
         }
         if(statement.options.opensScope || statement.options.opensTemporaryScope) {
             scopes += Scope(parent = scopes.last(), owner = statement)
