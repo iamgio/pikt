@@ -3,6 +3,7 @@ package eu.iamgio.pikt.tests
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.command.commands.imageprocessing.ImageOutputCommand
 import eu.iamgio.pikt.image.readLineByLine
+import eu.iamgio.pikt.logger.Log
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileInputStream
@@ -29,7 +30,7 @@ class PiktImageProcessingTestLauncher : PiktTestLauncher() {
 
     init {
         folder.mkdirs()
-        println("Storing to: $folder")
+        Log.info("Storing to: $folder")
 
         setDefaultSource()
         // Set output file
@@ -64,7 +65,7 @@ class PiktImageProcessingTestLauncher : PiktTestLauncher() {
             var equals = true
             image1.readLineByLine { x, y ->
                 if(image1.getRGB(x, y) != image2.getRGB(x, y)) {
-                    System.err.println("Different value at [$x, $y]")
+                    Log.error("Different value at [$x, $y]")
                     equals = false
                 }
             }

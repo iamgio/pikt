@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.util
 
+import eu.iamgio.pikt.logger.Log
 import kotlin.system.exitProcess
 
 // Exit codes that can be used to represent different types of error.
@@ -45,8 +46,8 @@ const val ERROR_FAILED_IMAGE_PROCESSING = 11
  */
 fun exit(code: Int, message: String? = null): Nothing {
     if(message != null) {
-        System.err.println(message)
-        System.err.println("Exiting. (code $code)")
+        Log.error(message)
+        Log.error("Exiting. (code $code)")
     }
     exitProcess(code)
 }

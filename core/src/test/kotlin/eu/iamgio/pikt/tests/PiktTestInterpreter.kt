@@ -2,6 +2,7 @@ package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.compiler.AbstractInterpreter
 import eu.iamgio.pikt.eval.Evaluator
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.OutputStream
 
@@ -30,9 +31,9 @@ class PiktTestInterpreter(
 
     override fun printProcessLine(line: String, isError: Boolean) {
         if(isError) {
-            System.err.println(line)
+            Log.error(line)
         } else {
-            println("[$name] $line")
+            Log.info("[$name] $line")
             lines += line
         }
     }

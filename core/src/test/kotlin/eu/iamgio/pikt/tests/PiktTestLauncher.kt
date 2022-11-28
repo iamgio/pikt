@@ -4,6 +4,7 @@ import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
+import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.ColorsPropertiesRetriever
 import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
@@ -46,7 +47,7 @@ abstract class PiktTestLauncher {
      * @return non-error lines in order
      */
     fun launch(name: String, colorSchemeName: String? = null): List<String> {
-        println("Launching test $name")
+        Log.info("Launching test $name")
 
         val propertiesRetriever = PiktPropertiesRetriever()
         val libraries = propertiesRetriever.libraries()
@@ -76,7 +77,7 @@ abstract class PiktTestLauncher {
         val evaluator = Evaluator()
         evaluator.evaluate(image, Scope.buildMainScope(properties.libraries, properties.colors.libraries))
 
-        println(evaluator.outputCode)
+        Log.info(evaluator.outputCode)
 
         val interpreter = PiktTestInterpreter(name, evaluator, properties)
         interpreter.compile()
