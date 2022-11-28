@@ -18,7 +18,9 @@ class StringConvertCommand : Command("-strconvert", closeOnComplete = true) {
             // Read lines from stdin
             while(true) {
                 print("> ")
-                convertAndPrint(readLine() ?: break)
+                val text = readLine() ?: break
+                if(text.isEmpty()) break
+                convertAndPrint(text)
             }
         } else {
             convertAndPrint(args)
