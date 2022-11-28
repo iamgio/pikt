@@ -62,6 +62,11 @@ data class Color(
          * @return corresponding color
          */
         fun fromHex(hex: String) = Color(AWTColor.decode("#$hex"))
+
+        /**
+         * @return a grayscale color where red, green and blue components are equals to [rgb].
+         */
+        fun grayscale(rgb: Int) = Color(rgb, rgb, rgb)
     }
 }
 

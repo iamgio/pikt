@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.log.pixel
 
 import eu.iamgio.pikt.image.Pixel
+import eu.iamgio.pikt.image.PixelArray
 import eu.iamgio.pikt.image.PixelReader
 
 /**
@@ -49,6 +50,13 @@ interface PixelLogger {
      * Logs the whole content of a [reader] from its start to its end via a copy.
      */
     fun logReader(reader: PixelReader) = logReaderWithMark(reader, null)
+
+    /**
+     * Logs the content of a pixel list.
+     */
+    fun logAll(pixels: List<Pixel>) {
+        logReader(PixelReader(PixelArray(pixels)))
+    }
 
     /**
      * Pixel logger types.
