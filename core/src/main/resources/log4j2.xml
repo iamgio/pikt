@@ -20,7 +20,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Root level="${sys:loglevel:-info}">
             <AppenderRef ref="STDOUT"/>
             <AppenderRef ref="STDERR"/>
         </Root>
