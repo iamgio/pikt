@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.util
 
+import eu.iamgio.pikt.logger.Log
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -38,10 +39,11 @@ object KotlinCompilerDownloader {
         val url = MessageFormat.format(DOWNLOAD_URL, version
                 ?: DEFAULT_KOTLIN_VERSION, type.downloadName, type.extension)
 
-        print("Downloading $url")
+        Log.info("Fetching $url")
 
         val connection = URL(url).openConnection()
-        println(" [${connection.contentLength * 10 / 1024 / 1024 / 10.0} MB]") // File size, one decimal.
+        val size = connection.contentLength * 10 / 1024 / 1024 / 10.0 // File size in MB, one decimal.
+        Log.info("Downloading $size MB")
 
         // 'Please wait...' animated output.
         val waitingText = AnimatedWaitMessage()
@@ -52,7 +54,9 @@ object KotlinCompilerDownloader {
         val file = File(folder, url.substring(url.lastIndexOf("/")))
         FileOutputStream(file).channel.transferFrom(channel, 0, Long.MAX_VALUE)
 
-        waitingText.stop(message = "Done.\nSaved to ${file.canonicalPath}")
+        waitingText.stop()
+        Log.info("Done.")
+        Log.info("Saved to ${file.canonicalPath}")
     }
 }
 
