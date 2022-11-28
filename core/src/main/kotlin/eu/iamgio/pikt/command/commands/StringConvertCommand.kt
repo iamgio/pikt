@@ -27,16 +27,16 @@ class StringConvertCommand : Command("-strconvert", closeOnComplete = true) {
      * and prints out both lines (ASCII string and numeric string).
      */
     private fun convertAndPrint(text: String) {
-        var topLine = "RGB:  "
-        var bottomLine = " ".repeat(topLine.length) // The bottom line contains ASCII characters aligned with their code.
+        val topLine = StringBuilder("RGB:  ")
+        val bottomLine = StringBuilder(" ".repeat(topLine.length)) // The bottom line contains ASCII characters aligned with their code.
 
         var containsNullChar = false // Whether \0 (char code 0) appears within the string in order to show a warning message.
 
         text.forEach { char ->
             // Appens the char code and aligns the ASCII caracter below
-            val append = "${char.code} "
-            topLine += append
-            bottomLine += char + " ".repeat(append.length - 1)
+            val code = "${char.code} "
+            topLine.append(code)
+            bottomLine.append(char).append(" ".repeat(code.length - 1))
             if(char.code == 0) containsNullChar = true
         }
 
