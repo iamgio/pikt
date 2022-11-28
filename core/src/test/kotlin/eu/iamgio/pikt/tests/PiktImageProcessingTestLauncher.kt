@@ -1,6 +1,5 @@
 package eu.iamgio.pikt.tests
 
-import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.command.commands.imageprocessing.ImageOutputCommand
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.logger.Log
@@ -17,8 +16,6 @@ private const val TESTS_FOLDER = "/imageprocessing-tests"
 private const val SOURCE = "source.png"
 private const val OUT = "out.png"
 
-fun Command.fire(args: String? = null) = this.execute(args)
-
 class PiktImageProcessingTestLauncher : PiktTestLauncher() {
     private val folder: File = File(tempDirectory, "imageprocessing")
 
@@ -34,7 +31,7 @@ class PiktImageProcessingTestLauncher : PiktTestLauncher() {
 
         setDefaultSource()
         // Set output file
-        ImageOutputCommand().fire(outFilePath)
+        ImageOutputCommand().execute(outFilePath)
         copy("source.png")
     }
 

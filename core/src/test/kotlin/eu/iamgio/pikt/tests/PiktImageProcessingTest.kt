@@ -51,7 +51,7 @@ class PiktImageProcessingTest {
         copy("test-scheme.properties")
         System.setProperty("colors", pathify("test-scheme"))
 
-        RecolorizeCommand().fire()
+        RecolorizeCommand().execute()
         checkCorrectOutput(colorSchemeName = "test-scheme")
         launcher.assertImageEquals("exp_recolorized")
 
@@ -66,7 +66,7 @@ class PiktImageProcessingTest {
         System.setProperty("source", pathify("exp_recolorized.png"))
         System.setProperty("colors", pathify("test-scheme"))
 
-        StandardizeCommand().fire()
+        StandardizeCommand().execute()
         launcher.assertImageEquals("source")
 
         System.clearProperty("colors")
@@ -78,7 +78,7 @@ class PiktImageProcessingTest {
     // Compacts the image with automatic size (-compact)
     @Test
     fun compactAutosize() {
-        CompactCommand().fire()
+        CompactCommand().execute()
         checkCorrectOutput()
 
         assertImageSize(3, 4)
@@ -88,7 +88,7 @@ class PiktImageProcessingTest {
     // Compacts the image with fixed size (-compact=<size>)
     @Test
     fun compactManualsize() {
-        CompactCommand().fire("w5h3")
+        CompactCommand().execute("w5h3")
         checkCorrectOutput()
 
         assertImageSize(5, 3)
@@ -99,14 +99,14 @@ class PiktImageProcessingTest {
     @Test
     fun compactManualsizeError() {
         assertFails {
-            CompactCommand().fire("w3h3")
+            CompactCommand().execute("w3h3")
         }
     }
 
     // Expands the image (-decompact)
     @Test
     fun decompact() {
-        DecompactCommand().fire()
+        DecompactCommand().execute()
         checkCorrectOutput()
 
         assertImageSize(6, 4)
@@ -116,7 +116,7 @@ class PiktImageProcessingTest {
     // Swaps a variable color with another (-colorswap=<swaps>)
     @Test
     fun colorswap() {
-        ColorSwapCommand().fire("FCFF00:CDDAB6")
+        ColorSwapCommand().execute("FCFF00:CDDAB6")
         checkCorrectOutput()
         assertImageEquals("exp_colorswap")
     }
@@ -125,7 +125,7 @@ class PiktImageProcessingTest {
     @Test
     fun mask() {
         copy("face-mask.png")
-        MaskCommand().fire(pathify("face-mask.png"))
+        MaskCommand().execute(pathify("face-mask.png"))
         checkCorrectOutput()
         assertImageEquals("exp_mask")
     }
