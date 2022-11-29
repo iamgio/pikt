@@ -2,7 +2,6 @@ package eu.iamgio.pikt.log.pixel
 
 import com.diogonunes.jcolor.Attribute
 import eu.iamgio.pikt.image.Pixel
-import java.io.PrintStream
 
 /**
  * The string to be printed in order to display pixels to console.
@@ -17,10 +16,9 @@ private const val MARKED_CONTENT_STRING = " ✗ "
 /**
  * A logger that prints pixels as colored rectangles, with a mark on some if requested.
  *
- * @param stream target stream
  * @author Giorgio Garofalo
  */
-abstract class ConsoleColoredPixelLogger(stream: PrintStream) : ConsolePixelLogger(stream) {
+abstract class ConsoleColoredPixelLogger : ConsolePixelLogger() {
 
     override val surroundByEmptyLines: Boolean = true
 

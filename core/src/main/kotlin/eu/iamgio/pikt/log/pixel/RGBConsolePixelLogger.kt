@@ -3,15 +3,13 @@ package eu.iamgio.pikt.log.pixel
 import com.diogonunes.jcolor.Attribute
 import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.Pixel
-import java.io.PrintStream
 
 /**
  * A logger that prints pixels as RGB (256) colors, if they are supported by the terminal.
  *
- * @param stream target stream to print on
  * @author Giorgio Garofalo
  */
-class RGBConsolePixelLogger(stream: PrintStream) : ConsoleColoredPixelLogger(stream) {
+class RGBConsolePixelLogger : ConsoleColoredPixelLogger() {
     override fun getBackgroundColor(pixel: Pixel): Attribute {
         return Attribute.BACK_COLOR(pixel.color.red, pixel.color.green, pixel.color.blue)
     }

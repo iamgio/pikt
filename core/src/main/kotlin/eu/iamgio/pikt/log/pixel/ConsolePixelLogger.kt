@@ -7,10 +7,14 @@ import java.io.PrintStream
 /**
  * A logger that prints pixels to a [stream], usually on a console.
  *
- * @param stream target stream
  * @author Giorgio Garofalo
  */
-abstract class ConsolePixelLogger(protected val stream: PrintStream) : PixelLogger {
+abstract class ConsolePixelLogger : PixelLogger {
+
+    /**
+     * The target stream to print onto.
+     */
+    var stream: PrintStream = System.out
 
     /**
      * Logs a string [content] with ANSI [attributes] to [stream]

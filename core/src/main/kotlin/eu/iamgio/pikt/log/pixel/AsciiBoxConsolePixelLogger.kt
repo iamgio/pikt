@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.log.pixel
 
 import eu.iamgio.pikt.image.Pixel
-import java.io.PrintStream
 
 private const val TOP_LEFT_CORNER = '┌'
 private const val TOP_RIGHT_CORNER = '┐'
@@ -15,10 +14,9 @@ private const val SPACER = ' '
 /**
  * A logger that prints pixels as ASCII boxes with their hex code inside.
  *
- * @param stream target stream to print on
  * @author Giorgio Garofalo
  */
-class AsciiBoxConsolePixelLogger(stream: PrintStream) : ConsolePixelLogger(stream) {
+class AsciiBoxConsolePixelLogger : ConsolePixelLogger() {
 
     private val builder = AsciiBoxBuilder()
 
@@ -33,7 +31,7 @@ class AsciiBoxConsolePixelLogger(stream: PrintStream) : ConsolePixelLogger(strea
     override fun newLine() {
         super.newLine()
         val boxText = builder.boxText
-        stream.println(boxText)
+        super.stream.println(boxText)
         builder.clear()
     }
 }

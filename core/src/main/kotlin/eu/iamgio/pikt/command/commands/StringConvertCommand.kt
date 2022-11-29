@@ -3,6 +3,7 @@ package eu.iamgio.pikt.command.commands
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.Pixel
+import eu.iamgio.pikt.log.pixel.ConsolePixelLogger
 import eu.iamgio.pikt.logger.Log
 import eu.iamgio.pikt.properties.ColorsPropertiesRetriever
 
@@ -59,10 +60,13 @@ class StringConvertCommand : Command("-strconvert", closeOnComplete = true) {
      * @param codes list of R=G=B (grayscale) 0-255 values
      */
     private fun logPixels(codes: List<Int>) = Log.pixelLogger?.let { logger ->
+        (logger as? ConsolePixelLogger)?.stream = System.out
+
         val colors = ColorsPropertiesRetriever(libraries = emptyList()).retrieve() // Dummy color data
         val pixels = codes.mapIndexed { index, rgb ->
             Pixel(Color.grayscale(rgb), x = index, y = 0, colors) // Grayscale pixels
         }
+
         logger.logAll(pixels)
     }
 }
