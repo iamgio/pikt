@@ -149,12 +149,6 @@ class PixelReader(private val pixels: PixelArray, val statement: Statement? = nu
         Log.error("Error$coordinates (index $pixelIndex in ${statement?.name ?: "<no statement>"}):")
         Log.error("\t$message")
 
-        // Logs the pixels of this reader with the selected logger.
-        Log.pixelLogger?.let { logger ->
-            (logger as? ConsolePixelLogger)?.stream = System.err
-            logger.logReaderWithMark(this, markIndex = pixelIndex)
-        }
-
         // Prints a nice message that explains the expected syntax vs the used syntax.
         // Example from SetVariableStatement:
         //
@@ -164,6 +158,12 @@ class PixelReader(private val pixels: PixelArray, val statement: Statement? = nu
             val prefix = "Syntax: "
             Log.error("\t" + prefix + syntax)
             Log.error("\t" + " ".repeat(prefix.length) + syntax.marksLine)
+        }
+
+        // Logs the pixels of this reader with the selected logger.
+        Log.pixelLogger?.let { logger ->
+            (logger as? ConsolePixelLogger)?.stream = System.err
+            logger.logReaderWithMark(this, markIndex = pixelIndex)
         }
 
         Log.error("")
