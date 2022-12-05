@@ -22,7 +22,7 @@ private const val GRAYSCALE_ADD = 8
  *
  * @author Giorgio Garofalo
  */
-object EightBitColorPalette : ColorPalette {
+object EightBitColorPalette : ColorPalette, PaletteColorApproximator {
 
     /**
      * Color indexes of the 256 color palette (in range 16-255) associated with their RGB color.
@@ -44,8 +44,6 @@ object EightBitColorPalette : ColorPalette {
             else -> throw IllegalArgumentException("Color number not in $BEGIN-$END range.")
         }
     }
-
-
 
     /**
      * Computes the RGB color of a 256 color in range 16-231.
