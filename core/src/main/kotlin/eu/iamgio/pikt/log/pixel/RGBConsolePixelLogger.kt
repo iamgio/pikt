@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.log.pixel
 
 import com.diogonunes.jcolor.Attribute
-import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.Pixel
 
 /**
@@ -15,12 +14,7 @@ class RGBConsolePixelLogger : ConsoleColoredPixelLogger() {
     }
 
     override fun getTextColor(pixel: Pixel): Attribute {
-        val color = pixel.color
-        val complementary = Color(
-            255 - color.red,
-            255 - color.green,
-            255 - color.blue,
-        )
+        val complementary = pixel.color.complementary
         return Attribute.TEXT_COLOR(complementary.red, complementary.green, complementary.blue)
     }
 }

@@ -50,6 +50,16 @@ data class Color(
     val isOpaque: Boolean
         get() = alpha == 255
 
+    /**
+     * The opposite color.
+     */
+    val complementary: Color
+        get() = Color(
+            255 - red,
+            255 - green,
+            255 - blue,
+        )
+
     companion object {
         /**
          * The white color.

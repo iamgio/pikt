@@ -127,6 +127,7 @@ If not set, it is disabled by default. If `type` is not specified, `rgb` is used
 Available types:
   - `rgb`: prints each pixel as a square with its RGB color.
   Not all terminals support this;
+  - `eight`: prints each pixel as a square with its color approximated to the closest 8-bit (256) color.
   - `box`: prints each pixel in an ASCII box with its hex code inside.
 
 
@@ -183,6 +184,7 @@ If `size` is not specified, it will try to create a square-ish image.
 If `string` is not specified, input is read from stdin.  
 _See [Hello world!](https://github.com/iAmGio/pikt/wiki/Hello-world) for further information._  
 For instance, `-strconvert="Hello Pikt!"` prints:
+- 
 ```
 RGB:  72  101  108  108  111  32  80  105  107  116  33  
       H   e    l    l    o        P   i    k    t    !   

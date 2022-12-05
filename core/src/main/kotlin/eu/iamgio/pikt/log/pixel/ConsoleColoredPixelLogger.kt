@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.log.pixel
 
+import com.diogonunes.jcolor.Ansi
 import com.diogonunes.jcolor.Attribute
 import eu.iamgio.pikt.image.Pixel
 
@@ -22,8 +23,15 @@ abstract class ConsoleColoredPixelLogger : ConsolePixelLogger() {
 
     override val surroundByEmptyLines: Boolean = true
 
+    /**
+     * Logs a string [content] with ANSI [attributes] to [stream]
+     */
+    private fun logColorized(content: String, vararg attributes: Attribute) {
+        stream.print(Ansi.colorize(content, *attributes))
+    }
+
     override fun log(pixel: Pixel, mark: Boolean) {
-        super.logColorized(
+        logColorized(
             content = if(mark) MARKED_CONTENT_STRING else CONTENT_STRING,
             getBackgroundColor(pixel),
             getTextColor(pixel),
