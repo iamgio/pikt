@@ -2,7 +2,7 @@ package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.command.commands.imageprocessing.ImageOutputCommand
 import eu.iamgio.pikt.image.readLineByLine
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileInputStream

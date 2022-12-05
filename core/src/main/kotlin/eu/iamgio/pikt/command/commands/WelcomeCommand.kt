@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.util.KotlinCompilerDownloader
 import eu.iamgio.pikt.util.KotlinCompilerType
 import java.io.FileOutputStream

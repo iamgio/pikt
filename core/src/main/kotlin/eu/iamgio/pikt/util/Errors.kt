@@ -1,6 +1,6 @@
 package eu.iamgio.pikt.util
 
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import kotlin.system.exitProcess
 
 // Exit codes that can be used to represent different types of error.

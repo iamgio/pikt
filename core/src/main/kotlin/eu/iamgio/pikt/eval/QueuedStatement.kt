@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PixelReader
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 

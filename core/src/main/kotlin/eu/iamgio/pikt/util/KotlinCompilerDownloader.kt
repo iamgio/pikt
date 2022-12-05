@@ -1,6 +1,6 @@
 package eu.iamgio.pikt.util
 
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL

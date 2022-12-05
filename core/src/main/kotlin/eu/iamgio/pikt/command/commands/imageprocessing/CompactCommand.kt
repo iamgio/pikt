@@ -2,7 +2,7 @@ package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.PiktImage
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 
 /**

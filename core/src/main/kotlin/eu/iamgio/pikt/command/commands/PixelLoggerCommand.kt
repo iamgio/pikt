@@ -1,8 +1,8 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.log.pixel.PixelLogger
-import eu.iamgio.pikt.logger.Log
 
 /**
  * Triggered by the -pl=type argument.

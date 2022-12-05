@@ -2,7 +2,7 @@ package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.compiler.AbstractInterpreter
 import eu.iamgio.pikt.eval.Evaluator
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.OutputStream
 

@@ -4,7 +4,7 @@ import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.ColorsPropertiesRetriever
 import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever

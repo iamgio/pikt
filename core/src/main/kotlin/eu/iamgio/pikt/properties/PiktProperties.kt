@@ -5,7 +5,7 @@ import eu.iamgio.pikt.compiler.isAnyJVM
 import eu.iamgio.pikt.compiler.isAnyNative
 import eu.iamgio.pikt.compiler.isAnyNull
 import eu.iamgio.pikt.lib.JarLibrary
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.project.PiktProjectInfo
 import eu.iamgio.pikt.util.ERROR_BAD_PROPERTIES
 import eu.iamgio.pikt.util.exit

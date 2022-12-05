@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.compiler
 
 import eu.iamgio.pikt.eval.Evaluator
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.File
 import java.io.OutputStream

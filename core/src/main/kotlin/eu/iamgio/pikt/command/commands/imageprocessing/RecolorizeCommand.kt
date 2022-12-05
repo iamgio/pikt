@@ -5,7 +5,7 @@ import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.image.rgbToHex
 import eu.iamgio.pikt.lib.JarLibrary
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.ColorsProperty
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import java.awt.image.BufferedImage

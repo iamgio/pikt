@@ -1,4 +1,4 @@
-package eu.iamgio.pikt.logger
+package eu.iamgio.pikt.log
 
 import eu.iamgio.pikt.log.pixel.PixelLogger
 import org.apache.logging.log4j.LogManager

@@ -8,7 +8,7 @@ import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
-import eu.iamgio.pikt.logger.Log
+import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.project.PiktProjectInfo
 import eu.iamgio.pikt.project.PiktProjectInfo.Companion.mergeArgsWith
 import eu.iamgio.pikt.project.PiktProjectInfoParser
