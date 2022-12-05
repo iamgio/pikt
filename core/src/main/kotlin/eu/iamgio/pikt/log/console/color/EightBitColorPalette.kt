@@ -18,18 +18,16 @@ private const val GRAYSCALE_SCALE = 10
 private const val GRAYSCALE_ADD = 8
 
 /**
- * Utility class that handles the 256 color palette.
+ * Utility class that handles the 256 (8-bit) color palette.
  *
  * @author Giorgio Garofalo
  */
-object Palette256Colors {
+object EightBitColorPalette : ColorPalette {
 
     /**
      * Color indexes of the 256 color palette (in range 16-255) associated with their RGB color.
      */
-    val colors: Map<Int, Color> by lazy {
-        (BEGIN..END).associateWith { getRGBColorFor(it) }
-    }
+    override val colors: Map<Int, Color> by super.lazyRangeColorMapping(BEGIN, END)
 
     // https://stackoverflow.com/questions/27159322/rgb-values-of-the-colors-in-the-ansi-extended-colors-index-17-255
 
@@ -39,18 +37,20 @@ object Palette256Colors {
      * @return the RGB color of the 256 color.
      * @throws IllegalArgumentException if [colorNumber] is out of range
      */
-    private fun getRGBColorFor(colorNumber: Int): Color {
+    override fun computeRGBColorFor(colorNumber: Int): Color {
         return when(colorNumber) {
-            in BEGIN until GRAYSCALE_BEGIN -> getRGBColorFromTint(colorNumber)
-            in GRAYSCALE_BEGIN..END -> getRGBColorFromGrayscale(colorNumber)
+            in BEGIN until GRAYSCALE_BEGIN -> computeRGBColorFromTint(colorNumber)
+            in GRAYSCALE_BEGIN..END -> computeRGBColorFromGrayscale(colorNumber)
             else -> throw IllegalArgumentException("Color number not in $BEGIN-$END range.")
         }
     }
 
+
+
     /**
      * Computes the RGB color of a 256 color in range 16-231.
      */
-    private fun getRGBColorFromTint(colorNumber: Int): Color {
+    private fun computeRGBColorFromTint(colorNumber: Int): Color {
         val relative = colorNumber - BEGIN
 
         fun getComponent(index: Int) = if(index > 0) TINT_ADD + index * TINT_SCALE else 0
@@ -65,7 +65,7 @@ object Palette256Colors {
     /**
      * Computes the RGB color of a 256 color in range 232-255.
      */
-    private fun getRGBColorFromGrayscale(colorNumber: Int): Color {
+    private fun computeRGBColorFromGrayscale(colorNumber: Int): Color {
         val rgb = (colorNumber - GRAYSCALE_BEGIN) * GRAYSCALE_SCALE + GRAYSCALE_ADD
         return Color.grayscale(rgb)
     }
