@@ -64,9 +64,10 @@ interface PixelLogger {
      * @param newLogger corresponding logger factory.
      */
     @Suppress("unused")
-    enum class Type(val newLogger: () -> PixelLogger) {
+    enum class Type(val newLogger: () -> PixelLogger?) {
         RGB({ RGBConsolePixelLogger() }),
         A256({ Ansi256ConsolePixelLogger() }),
-        BOX({ AsciiBoxConsolePixelLogger() })
+        BOX({ AsciiBoxConsolePixelLogger() }),
+        NONE({ null })
     }
 }
