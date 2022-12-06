@@ -54,8 +54,8 @@ object EightBitColorPalette : ColorPalette, PaletteColorApproximator {
         fun getComponent(index: Int) = if(index > 0) TINT_ADD + index * TINT_SCALE else 0
 
         val red = getComponent(relative / RED_DIVIDEND)
-        val green = getComponent(relative % GREEN_DIVIDEND)
-        val blue = getComponent((relative % RED_DIVIDEND) / GREEN_DIVIDEND)
+        val green = getComponent((relative % RED_DIVIDEND) / GREEN_DIVIDEND)
+        val blue = getComponent(relative % GREEN_DIVIDEND)
 
         return Color(red, green, blue)
     }
