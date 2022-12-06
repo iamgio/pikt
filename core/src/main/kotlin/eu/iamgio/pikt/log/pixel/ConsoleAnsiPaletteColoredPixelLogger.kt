@@ -2,6 +2,7 @@ package eu.iamgio.pikt.log.pixel
 
 import com.diogonunes.jcolor.Attribute
 import eu.iamgio.pikt.image.Pixel
+import eu.iamgio.pikt.log.console.color.Ansi16ColorPalette
 import eu.iamgio.pikt.log.console.color.Ansi256ColorPalette
 import eu.iamgio.pikt.log.console.color.PaletteColorApproximator
 
@@ -26,8 +27,15 @@ open class ConsoleAnsiPaletteColoredPixelLogger(private val approximator: Palett
 }
 
 /**
- * A logger that prints pixels with a 256 (8-bit) color palette, if it is supported by the terminal.
+ * A logger that prints pixels with an ANSI 256 (8-bit) color palette, if it is supported by the terminal.
  *
  * @author Giorgio Garofalo
  */
 class Ansi256ConsolePixelLogger : ConsoleAnsiPaletteColoredPixelLogger(Ansi256ColorPalette)
+
+/**
+ * A logger that prints pixels with an ANSI 16 color palette.
+ *
+ * @author Giorgio Garofalo
+ */
+class Ansi16ConsolePixelLogger : ConsoleAnsiPaletteColoredPixelLogger(Ansi16ColorPalette)

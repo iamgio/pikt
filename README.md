@@ -126,7 +126,8 @@ for example in case of compile-time errors.
 If `type` is not specified, `a256` is used.  
 Available types: 
   - `none`: pixel logging is disabled (default);
-  - `a256`: prints each pixel as a square whose color is approximated to the closest 8-bit (256) ANSI color.
+  - `a256`: prints each pixel as a square whose color is approximated to the closest ANSI 8-bit (256) color.
+  - `a16`: prints each pixel as a square whose color is approximated to the closest ANSI 16 color.
   - `rgb`: prints each pixel as a square with its RGB color.
   Not all terminals support this;
   - `box`: prints each pixel in an ASCII box with its hex code inside.
