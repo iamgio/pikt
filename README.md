@@ -123,12 +123,12 @@ The following arguments enable settings that affect Pikt's behavior.
 - `-pl[=type]` sets the active pixel logger type.
 A pixel logger is responsible for printing pixels on screen,
 for example in case of compile-time errors.  
-If `type` is not specified, `rgb` is used.  
+If `type` is not specified, `a256` is used.  
 Available types: 
   - `none`: pixel logging is disabled (default);
+  - `a256`: prints each pixel as a square whose color is approximated to the closest 8-bit (256) ANSI color.
   - `rgb`: prints each pixel as a square with its RGB color.
   Not all terminals support this;
-  - `a256`: prints each pixel as a square with its color approximated to the closest 8-bit (256) color.
   - `box`: prints each pixel in an ASCII box with its hex code inside.
 
 
