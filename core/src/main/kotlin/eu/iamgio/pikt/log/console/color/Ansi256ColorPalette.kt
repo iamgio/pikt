@@ -22,7 +22,7 @@ private const val GRAYSCALE_ADD = 8
  *
  * @author Giorgio Garofalo
  */
-object EightBitColorPalette : ColorPalette, PaletteColorApproximator {
+object Ansi256ColorPalette : ColorPalette, PaletteColorApproximator {
 
     /**
      * Color indexes of the 256 color palette (in range 16-255) associated with their RGB color.

@@ -2,7 +2,7 @@ package eu.iamgio.pikt.log.pixel
 
 import com.diogonunes.jcolor.Attribute
 import eu.iamgio.pikt.image.Pixel
-import eu.iamgio.pikt.log.console.color.EightBitColorPalette
+import eu.iamgio.pikt.log.console.color.Ansi256ColorPalette
 import eu.iamgio.pikt.log.console.color.PaletteColorApproximator
 
 /**
@@ -30,4 +30,4 @@ open class ConsoleAnsiPaletteColoredPixelLogger(private val approximator: Palett
  *
  * @author Giorgio Garofalo
  */
-class EightBitConsolePixelLogger : ConsoleAnsiPaletteColoredPixelLogger(EightBitColorPalette)
+class Ansi256ConsolePixelLogger : ConsoleAnsiPaletteColoredPixelLogger(Ansi256ColorPalette)

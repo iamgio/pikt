@@ -66,7 +66,7 @@ interface PixelLogger {
     @Suppress("unused")
     enum class Type(val newLogger: () -> PixelLogger) {
         RGB({ RGBConsolePixelLogger() }),
-        EIGHT({ EightBitConsolePixelLogger() }),
+        A256({ Ansi256ConsolePixelLogger() }),
         BOX({ AsciiBoxConsolePixelLogger() })
     }
 }
