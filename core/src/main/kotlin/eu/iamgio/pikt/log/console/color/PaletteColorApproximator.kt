@@ -21,7 +21,7 @@ interface PaletteColorApproximator {
      * @return the color index (within the palette) whose color is the closest to [color]
      */
     fun getClosestTo(color: Color): Int {
-        return colors.entries.minByOrNull { it.value.getSquaredDistanceFrom(color) }!!.key
+        return colors.entries.minBy { it.value.getSquaredDistanceFrom(color) }.key
     }
 }
 
