@@ -2,11 +2,14 @@ package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.log.Log
-import eu.iamgio.pikt.log.pixel.PixelLogger
+import eu.iamgio.pikt.log.pixel.Ansi16ConsolePixelLogger
+import eu.iamgio.pikt.log.pixel.Ansi256ConsolePixelLogger
+import eu.iamgio.pikt.log.pixel.AsciiBoxConsolePixelLogger
+import eu.iamgio.pikt.log.pixel.RGBConsolePixelLogger
 
 /**
  * Triggered by the -pl=type argument.
- * Defines the logger used to log pixels, e.g. in case of errors.
+ * Defines the logger used to log pixels, for example in case of errors.
  *
  * @see Log.pixelLogger
  * @author Giorgio Garofalo
@@ -14,14 +17,16 @@ import eu.iamgio.pikt.log.pixel.PixelLogger
 class PixelLoggerCommand : Command("-pl", isSettingsCommand = true) {
 
     override fun execute(args: String?) {
-        // If no type is specified, the first one is picked.
-        val type = PixelLogger.Type.values().firstOrNull { args == null || it.name.equals(args, ignoreCase = true) }
-
-        if(type == null) {
-            Log.error("Pixel logger type $args not found. Available types: "
-                    + PixelLogger.Type.values().joinToString { it.name.lowercase() })
-            return
+        Log.pixelLogger = when(args) {
+            "256", null -> Ansi256ConsolePixelLogger()
+            "16" -> Ansi16ConsolePixelLogger()
+            "rgb" -> RGBConsolePixelLogger()
+            "box" -> AsciiBoxConsolePixelLogger()
+            "none" -> null
+            else -> {
+                Log.warn("Pixel logger type '$args' not found. Using '256'.")
+                Ansi256ConsolePixelLogger()
+            }
         }
-        Log.pixelLogger = type.newLogger()
     }
 }
