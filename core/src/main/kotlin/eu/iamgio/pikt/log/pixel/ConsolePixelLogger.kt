@@ -14,6 +14,8 @@ abstract class ConsolePixelLogger : PixelLogger {
      */
     var stream: PrintStream = System.out
 
-    override fun newLine() = stream.println()
+    protected fun print(message: Any?) = stream.print(message)
+    protected fun println(message: Any?) = stream.println(message)
+    protected fun newLine() = stream.println()
 }
 

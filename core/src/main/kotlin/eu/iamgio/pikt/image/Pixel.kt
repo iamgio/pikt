@@ -40,7 +40,7 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
      * Pixel as a hex color, e.g. #FF0000.
      */
     val hexName: String
-        get() = "#$hex"
+        get() = color.hexName
 
     /**
      * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.

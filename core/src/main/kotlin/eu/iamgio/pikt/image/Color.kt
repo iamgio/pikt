@@ -39,6 +39,12 @@ data class Color(
     val hex: String = rgb.rgbToHex()
 
     /**
+     * The hexadecimal value of this color, with `#` at the beginning.
+     */
+    val hexName: String
+        get() = "#$hex"
+
+    /**
      * Whether this color is gray (black, white and in-between).
      */
     val isGrayscale: Boolean

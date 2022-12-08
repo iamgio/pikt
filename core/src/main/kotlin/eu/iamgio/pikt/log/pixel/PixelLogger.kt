@@ -1,60 +1,43 @@
 package eu.iamgio.pikt.log.pixel
 
+import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.Pixel
-import eu.iamgio.pikt.image.PixelArray
 import eu.iamgio.pikt.image.PixelReader
 
 /**
- * A logger of pixels.
+ * A logger of colors and pixels.
  *
  * @author Giorgio Garofalo
  */
 interface PixelLogger {
 
     /**
-     * Whether there should be empty lines (via [newLine]) before and after logging pixel sequences.
+     * Logs a sequence of colors.
+     * @param markIndex if not `null`, applies an implementation-determined mark at the given index.
      */
-    val surroundByEmptyLines: Boolean
-        get() = false
+    fun logAll(colors: Iterable<Color>, markIndex: Int? = null)
 
     /**
-     * Logs [pixel].
-     * @param mark whether a mark should be applied on the output
+     * Logs the colors of a sequence of pixels.
+     * @param markIndex if not `null`, applies an implementation-determined mark at the given index.
      */
-    fun log(pixel: Pixel, mark: Boolean = false)
-
-    /**
-     * Goes on a new line.
-     */
-    fun newLine()
-
-    /**
-     * Logs the whole content of a [reader] from its start to its end via a copy.
-     * @param markIndex if not `null`, applies a mark on the pixel of the given index
-     */
-    fun logReaderWithMark(reader: PixelReader, markIndex: Int? = null) {
-        if(surroundByEmptyLines) newLine()
-
-        val copy = reader.softCopy() // Copies the reader with its index set to 0
-        var index = 0
-        copy.whileNotNull {
-            log(it, mark = index == markIndex)
-            index++
-        }
-        newLine()
-
-        if(surroundByEmptyLines) newLine()
+    fun logAll(pixels: List<Pixel>, markIndex: Int? = null) {
+        logAll(pixels.map { it.color }, markIndex)
     }
 
     /**
-     * Logs the whole content of a [reader] from its start to its end via a copy.
+     * Logs a single color.
+     * @param mark if `true`, applies an implementation-determined mark.
      */
-    fun logReader(reader: PixelReader) = logReaderWithMark(reader, null)
+    fun log(color: Color, mark: Boolean = false) {
+        logAll(setOf(color), 0.takeIf { mark })
+    }
 
     /**
-     * Logs the content of a pixel list.
+     * Logs the whole content of a [reader] from start to end.
+     * @param markIndex if not `null`, applies an implementation-determined mark at the given index.
      */
-    fun logAll(pixels: List<Pixel>) {
-        logReader(PixelReader(PixelArray(pixels)))
+    fun logReader(reader: PixelReader, markIndex: Int? = null) {
+        logAll(reader.pixels, markIndex)
     }
 }

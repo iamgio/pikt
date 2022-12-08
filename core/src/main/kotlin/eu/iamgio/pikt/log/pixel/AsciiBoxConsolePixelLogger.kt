@@ -1,6 +1,6 @@
 package eu.iamgio.pikt.log.pixel
 
-import eu.iamgio.pikt.image.Pixel
+import eu.iamgio.pikt.image.Color
 
 private const val TOP_LEFT_CORNER = '┌'
 private const val TOP_RIGHT_CORNER = '┐'
@@ -18,20 +18,24 @@ private const val SPACER = ' '
  */
 class AsciiBoxConsolePixelLogger : ConsolePixelLogger() {
 
-    private val builder = AsciiBoxBuilder()
-
-    override fun log(pixel: Pixel, mark: Boolean) {
-        builder.text = " ${pixel.hexName} "
+    private fun buildBox(color: Color, mark: Boolean, builder: AsciiBoxBuilder) {
+        builder.text = " ${color.hexName} "
         builder.hasMark = mark
         builder.buildTop()
         builder.buildCenter()
         builder.buildBottom()
     }
 
-    override fun newLine() {
+    override fun logAll(colors: Iterable<Color>, markIndex: Int?) {
+        val builder = AsciiBoxBuilder()
+
+        colors.forEachIndexed { index, color ->
+            buildBox(color, index == markIndex, builder)
+        }
+
         super.newLine()
         val boxText = builder.boxText
-        super.stream.println(boxText)
+        super.println(boxText)
         builder.clear()
     }
 }

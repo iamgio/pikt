@@ -11,13 +11,13 @@ import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
- * Pixel-by-pixel reader of a [PiktImage]
+ * Pixel-by-pixel reader of a [PixelArray]
  *
  * @param pixels collection of [Pixel]s
  * @param statement statement of this reader, if already subdivided
  * @author Giorgio Garofalo
  */
-class PixelReader(private val pixels: PixelArray, val statement: Statement? = null) {
+class PixelReader(val pixels: PixelArray, val statement: Statement? = null) {
 
     /**
      * Current pixel index.
@@ -163,7 +163,7 @@ class PixelReader(private val pixels: PixelArray, val statement: Statement? = nu
         // Logs the pixels of this reader with the selected logger.
         Log.pixelLogger?.let { logger ->
             (logger as? ConsolePixelLogger)?.stream = System.err
-            logger.logReaderWithMark(this, markIndex = pixelIndex)
+            logger.logReader(this, markIndex = pixelIndex)
         }
 
         Log.error("")
