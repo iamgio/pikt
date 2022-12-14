@@ -1,5 +1,7 @@
 package eu.iamgio.pikt.command
 
+import eu.iamgio.pikt.log.Log
+
 /**
  * Utilities for command-line command parsing.
  *
@@ -54,8 +56,13 @@ object CliCommandsUtils {
     fun RawCommandsMap.parsed(): CommandsMap {
         return this
             // Command linked to the raw name paired to its arguments.
-            .map { (name, args) -> Commands.getCommand(name) to args }
-            // Settings come first.
+            .map { (name, args) ->
+                val command = Commands.getCommand(name)
+                if(command == null) {
+                    Log.warn("Unknown command: $name")
+                }
+                command to args
+            }
             .toMap()
     }
 }

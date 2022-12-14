@@ -49,14 +49,14 @@ object Commands {
     fun executeAll(commands: CommandsMap) {
         var exit = false
         // Setting commands are executed first.
-        commands.entries
+        commands.asSequence()
             .sortedByDescending { (command, _) -> command?.isSettingsCommand } // Settings come first.
             .forEach { (command, args) ->
-            // Execute the command.
-            command?.execute(args)
-            // If at least one command has a 'close on complete' property, the program exits after the other commands are evaluated.
-            if(command?.closeOnComplete == true) exit = true
-        }
+                // Execute the command.
+                command?.execute(args)
+                // If at least one command has a 'close on complete' property, the program exits after the other commands are evaluated.
+                if(command?.closeOnComplete == true) exit = true
+            }
         if(exit) exit(SUCCESS)
     }
 }
