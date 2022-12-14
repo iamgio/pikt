@@ -68,15 +68,25 @@ class PiktProjectInfoParser(private val inputStream: InputStream) {
      * @return [inputStream] raw file into a [PiktProjectInfo] containing properties and commands maps.
      */
     fun parse(data: Map<String, *> = load(), includeTasks: Boolean = true): PiktProjectInfo {
-        val properties = data["properties"] as? List<*>
-        val commands = data["commands"] as? List<*>
+        // Raw data
+        val propertiesData = data["properties"] as? List<*>
+        val commandsData = data["commands"] as? List<*>
 
+        // Task data
         var tasks: PiktProjectTasks? = null
         if(includeTasks) {
             val tasksList = data["tasks"] as? List<*>
             tasks = tasksList?.let { parseTask(it) }
         }
 
-        return PiktProjectInfo(listToMap(properties), listToMap(commands), tasks)
+        // Parsed data
+
+        val properties = listToMap(propertiesData)
+
+        val commands = listToMap(commandsData)
+            .mapKeys { "-" + it.key } // Commands start with a '-', but they don't in the project info file.
+            .mapValues { it.value?.toString() }
+
+        return PiktProjectInfo(properties, commands, tasks)
     }
 }

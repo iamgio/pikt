@@ -1,5 +1,8 @@
 package eu.iamgio.pikt
 
+import eu.iamgio.pikt.command.CliCommandsUtils
+import eu.iamgio.pikt.command.CliCommandsUtils.merge
+import eu.iamgio.pikt.command.CliCommandsUtils.parsed
 import eu.iamgio.pikt.command.Commands
 import eu.iamgio.pikt.command.commands.*
 import eu.iamgio.pikt.command.commands.imageprocessing.*
@@ -10,13 +13,10 @@ import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.project.PiktProjectInfo
-import eu.iamgio.pikt.project.PiktProjectInfo.Companion.mergeArgsWith
 import eu.iamgio.pikt.project.PiktProjectInfoParser
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.statement.Statements
 import eu.iamgio.pikt.statement.statements.*
-import eu.iamgio.pikt.util.SUCCESS
-import eu.iamgio.pikt.util.exit
 
 fun main(args: Array<String>) {
     // Record when Pikt was started.
@@ -48,8 +48,13 @@ fun main(args: Array<String>) {
 
     // Look for commands/arguments and execute them.
     // If a project info file is used, arguments from it are loaded as well,
-    // along with the project task ones, if a task is selected.
-    executeCommands(projectInfo mergeArgsWith (projectTask mergeArgsWith args))
+    // along with the project task ones, if a task is selected,
+    // still following the priority above.
+    val commands = CliCommandsUtils.getRawCommands(args)
+        .merge(projectInfo?.commands)
+        .merge(projectTask?.commands)
+        .parsed()
+    Commands.executeAll(commands)
 
     // Retrieve organized properties
     val properties = PiktPropertiesRetriever().retrieve()
@@ -105,23 +110,6 @@ private fun readProjectInfo(): PiktProjectInfo? {
  */
 private fun getProjectInfoTaskFor(projectInfo: PiktProjectInfo?): PiktProjectInfo? =
         projectInfo?.let { PiktPropertiesRetriever.getProjectInfoTaskFor(it) }
-
-/**
- * Iterates through the program arguments, finds linked commands and executes them.
- * @param args program arguments
- */
-private fun executeCommands(args: Array<String>) {
-    var exit = false
-    args.map {
-        val split = Commands.splitCommandLineArgument(it) // Split raw program arguments. cmd=args -> [cmd, args]; cmd -> [cmd, null]
-        Commands.getCommand(split.first) to split.second  // Command linked to the first string paired to its arguments.
-    }.sortedByDescending { it.first?.isSettingsCommand }.forEach { (command, args) -> // Sort settings first.
-        command?.execute(args)                            // Execute the command.
-        if(command?.closeOnComplete == true) exit = true  // If at least one command has a 'close on complete' property,
-        // the program exits after the other commands are evaluated.
-    }
-    if(exit) exit(SUCCESS)
-}
 
 /**
  * Registers commands triggered by command-line arguments.
