@@ -40,14 +40,37 @@ const val ERROR_BAD_IO = 10
 const val ERROR_FAILED_IMAGE_PROCESSING = 11
 
 /**
+ * If this system property is enabled, [exit] throws an exception instead of exiting.
+ */
+const val NO_EXIT_PROPERTY = "noexit"
+
+/**
  * Exits the program.
+ * If the [NO_EXIT_PROPERTY] system property is set, an exception is thrown instead (mainly for tests).
  * @param code exit code. Any non-zero ([SUCCESS]) code specifies an error
- * @param message optional message to print to the [System.err] stream
+ * @param message optional message to print
+ * @throws ExitAttemptException if [NO_EXIT_PROPERTY] is enabled
  */
 fun exit(code: Int, message: String? = null): Nothing {
+    // The -Dnoexit system property prevents the process from closing
+    // and throws an exception instead.
+    if(System.getProperty(NO_EXIT_PROPERTY) != null) {
+        throw ExitAttemptException(message, code)
+    }
     if(message != null) {
         Log.error(message)
-        Log.error("Exiting. (code $code)")
     }
+    Log.error("Exiting. (code $code)")
     exitProcess(code)
 }
+
+/**
+ * Thrown it is not possible to exit the process.
+ *
+ * @param message exit message
+ * @param code exit code
+ * @see exit
+ */
+class ExitAttemptException(message: String?, val code: Int) : Exception(
+    "Exit attempt: $message (code $code)"
+)

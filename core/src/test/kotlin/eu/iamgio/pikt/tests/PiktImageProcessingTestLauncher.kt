@@ -3,6 +3,7 @@ package eu.iamgio.pikt.tests
 import eu.iamgio.pikt.command.commands.imageprocessing.ImageOutputCommand
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.log.Log
+import eu.iamgio.pikt.util.NO_EXIT_PROPERTY
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileInputStream
@@ -29,6 +30,7 @@ class PiktImageProcessingTestLauncher : PiktTestLauncher() {
         folder.mkdirs()
         Log.info("Storing to: $folder")
 
+        setNoExit()
         setDefaultSource()
         // Set output file
         ImageOutputCommand().execute(outFilePath)
@@ -37,6 +39,10 @@ class PiktImageProcessingTestLauncher : PiktTestLauncher() {
 
     fun setDefaultSource() {
         System.setProperty("source", sourceFilePath)
+    }
+
+    private fun setNoExit() {
+        System.setProperty(NO_EXIT_PROPERTY, "")
     }
 
     fun copy(name: String) {

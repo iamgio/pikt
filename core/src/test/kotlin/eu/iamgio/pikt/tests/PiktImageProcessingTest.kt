@@ -1,8 +1,11 @@
 package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.command.commands.imageprocessing.*
+import eu.iamgio.pikt.util.ERROR_FAILED_IMAGE_PROCESSING
+import eu.iamgio.pikt.util.ExitAttemptException
 import org.junit.jupiter.api.Test
 import java.awt.image.BufferedImage
+import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertTrue
 
@@ -87,7 +90,7 @@ class PiktImageProcessingTest {
 
     // Compacts the image with fixed size (-compact=<size>)
     @Test
-    fun compactManualsize() {
+    fun compactManualSize() {
         CompactCommand().execute("w5h3")
         checkCorrectOutput()
 
@@ -97,10 +100,12 @@ class PiktImageProcessingTest {
 
     // Tries to compact the image (10 elements) into a 9-elements output
     @Test
-    fun compactManualsizeError() {
-        assertFails {
+    fun compactManualSizeError() {
+        val exception = assertFails {
             CompactCommand().execute("w3h3")
         }
+        println(exception.message)
+        assertEquals(ERROR_FAILED_IMAGE_PROCESSING, (exception as? ExitAttemptException)?.code)
     }
 
     // Expands the image (-decompact)
