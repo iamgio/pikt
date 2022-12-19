@@ -1,10 +1,7 @@
 package eu.iamgio.pikt.log.pixel
 
-import com.diogonunes.jcolor.Attribute
 import eu.iamgio.pikt.image.Color
-import eu.iamgio.pikt.log.console.color.Ansi16ColorPalette
-import eu.iamgio.pikt.log.console.color.Ansi256ColorPalette
-import eu.iamgio.pikt.log.console.color.PaletteColorApproximator
+import eu.iamgio.pikt.log.console.color.*
 
 /**
  * An extendable logger that approximates pixel colors to their closest value in an ANSI color palette.
@@ -14,15 +11,15 @@ import eu.iamgio.pikt.log.console.color.PaletteColorApproximator
  */
 open class ConsoleAnsiPaletteColoredPixelLogger(private val approximator: PaletteColorApproximator) : ConsoleColoredPixelLogger() {
 
-    override fun getBackgroundColor(color: Color): Attribute {
+    override fun getBackgroundColor(color: Color): ConsoleAttributeColor {
         val colorNumber = approximator.getClosestTo(color)
-        return Attribute.BACK_COLOR(colorNumber)
+        return ColorNumberConsoleAttributeColor(colorNumber)
     }
 
-    override fun getTextColor(color: Color): Attribute {
+    override fun getTextColor(color: Color): ConsoleAttributeColor {
         val complementary = color.complementary
         val colorNumber = approximator.getClosestTo(complementary)
-        return Attribute.TEXT_COLOR(colorNumber)
+        return ColorNumberConsoleAttributeColor(colorNumber)
     }
 }
 
