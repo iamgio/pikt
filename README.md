@@ -120,19 +120,6 @@ The following arguments enable settings that affect Pikt's behavior.
 - `-nocompile` prevents the generation of any executable file;
 
 
-- `-pl[=type]` sets the active pixel logger type.
-A pixel logger is responsible for printing pixels on screen,
-for example in case of compile-time errors.  
-If `type` is not specified, `256` is used.  
-Available types: 
-  - `none`: pixel logging is disabled (default);
-  - `256`: prints each pixel as a square whose color is approximated to the closest ANSI 8-bit (256) color.
-  - `16`: prints each pixel as a square whose color is approximated to the closest ANSI 16 color.
-  - `rgb`: prints each pixel as a square with its RGB color.
-  Not all terminals support this;
-  - `box`: prints each pixel in an ASCII box with its hex code inside.
-
-
 - `-pixelinfo` adds information about pixel coordinates to the output code as comments;
 
 
@@ -140,6 +127,39 @@ Available types:
 
 
 - `-chainoutput` enables output chaining for image-generating commands: the output of a command becomes the input for the next one. It requires `-imgoutput` to be set.
+
+
+- `-pl[=type]` sets the active pixel logger type.
+  A pixel logger is responsible for printing pixels on screen,
+  for example in case of compile-time errors.  
+  Available types: `none`, `256`, `16`, `rgb`, `box`.  
+  If `type` is not specified, `256` is used.
+
+  <details>
+  <summary><i>Click to see more...</i></summary>
+
+  - `none`: pixel logging is disabled (default);
+
+  ![none](https://i.imgur.com/BsyRsgG.png)
+
+  - `256`: each pixel is a square whose color is approximated to the closest ANSI 8-bit (256) color.
+  
+  ![256](https://i.imgur.com/aOhlIgF.png)
+
+  - `16`: each pixel is a square whose color is approximated to the closest ANSI 16 color.
+  
+  ![16](https://i.imgur.com/tEgfqYv.png)
+
+  - `rgb`: each pixel is a square with its RGB color.
+    Not all terminals support this;
+  
+  ![rgb](https://i.imgur.com/VrhgJxG.png)
+
+  - `box`: each pixel is an ASCII box with its hex code inside.
+
+  ![box](https://i.imgur.com/veraYFA.png)
+
+  </details>
 
 ## Command arguments
 
