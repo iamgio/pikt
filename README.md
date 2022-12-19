@@ -132,32 +132,32 @@ The following arguments enable settings that affect Pikt's behavior.
 - `-pl[=type]` sets the active pixel logger type.
   A pixel logger is responsible for printing pixels on screen,
   for example in case of compile-time errors.  
-  Available types: `none`, `256`, `16`, `rgb`, `box`.  
+  Available types: `none`, `16`, `256`, `rgb`, `box`.  
   If `type` is not specified, `256` is used.
 
   <details>
   <summary><i>Click to see more...</i></summary>
 
-  - `none`: pixel logging is disabled (default);
+  - `none`: pixel logging is disabled (default).<br>
 
-  ![none](https://i.imgur.com/BsyRsgG.png)
+  <img src="https://i.imgur.com/BsyRsgG.png" alt="none" width="500">
 
-  - `256`: each pixel is a square whose color is approximated to the closest ANSI 8-bit (256) color.
+- `16`: each pixel is a square whose color is approximated to the closest ANSI 16 color.<br>
+
+  <img src="https://i.imgur.com/tEgfqYv.png" alt="16" width="500">
+
+  - `256`: each pixel is a square whose color is approximated to the closest ANSI 8-bit (256) color.<br>
   
-  ![256](https://i.imgur.com/aOhlIgF.png)
-
-  - `16`: each pixel is a square whose color is approximated to the closest ANSI 16 color.
-  
-  ![16](https://i.imgur.com/tEgfqYv.png)
+  <img src="https://i.imgur.com/aOhlIgF.png" alt="256" width="500">
 
   - `rgb`: each pixel is a square with its RGB color.
-    Not all terminals support this;
-  
-  ![rgb](https://i.imgur.com/VrhgJxG.png)
+    Not all terminals support this.<br>
 
-  - `box`: each pixel is an ASCII box with its hex code inside.
+  <img src="https://i.imgur.com/VrhgJxG.png" alt="rgb" width="500">
 
-  ![box](https://i.imgur.com/veraYFA.png)
+  - `box`: each pixel is an ASCII box with its hex code inside.<br>
+
+  <img src="https://i.imgur.com/veraYFA.png" alt="rgb" width="500">
 
   </details>
 
