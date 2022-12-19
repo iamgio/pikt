@@ -35,8 +35,3 @@ const val ERROR_BAD_IO = 10
  */
 // TODO commands should make more use of this!
 const val ERROR_FAILED_IMAGE_PROCESSING = 11
-
-/**
- * If this system property is enabled, [exit] throws an exception instead of exiting.
- */
-const val NO_EXIT_PROPERTY = "noexit"

@@ -96,7 +96,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     /**
      * Gets the source image file from a given path.
      */
-    private fun source(sourceProperty: String? = System.getProperty("source")) =
+    private fun source(sourceProperty: String? = System.getProperty(SystemPropertyConstants.SOURCE)) =
             if(sourceProperty == null) {
                 error("Source file (-Dsource) is not set.")
                 null
@@ -109,7 +109,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     /**
      * Gets the output executable name from a property if given, uses source name otherwise.
      */
-    private fun output(outputProperty: String? = System.getProperty("output"), source: File?) = when {
+    private fun output(outputProperty: String? = System.getProperty(SystemPropertyConstants.OUTPUT), source: File?) = when {
         outputProperty != null -> outputProperty
         source != null -> source.nameWithoutExtension
         else -> "out"
@@ -118,7 +118,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     /**
      * Gets the compilation targets from a given property, split by commas.
      */
-    private fun compilationTargets(compilationTargetsProperty: String? = System.getProperty("targets")): List<CompilationTarget> {
+    private fun compilationTargets(compilationTargetsProperty: String? = System.getProperty(SystemPropertyConstants.TARGETS)): List<CompilationTarget> {
         val targets = compilationTargetsProperty?.split(",")?.map { targetArg ->
             CompilationTarget.values().firstOrNull { it.argName == targetArg }
         } ?: emptyList()
@@ -131,12 +131,12 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     /**
      * Gets the standard library JAR from a property if given, `[./stdlib.jar]` otherwise.
      */
-    fun libraries(librariesProperty: String? = System.getProperty("lib")): List<JarLibrary> {
+    fun libraries(librariesProperty: String? = System.getProperty(SystemPropertyConstants.LIBRARIES)): List<JarLibrary> {
         val rawLibraries = librariesProperty?.split(",") ?: listOf("libraries/stdlib.jar")
         return rawLibraries.map {
             val file = File(it)
             if(!file.exists()) {
-                error("Library file $file (-Dlib) does not exist.")
+                error("Library file $file (-${SystemPropertyConstants.LIBRARIES}) does not exist.")
             }
             JarLibrary(File(it))
         }
@@ -145,7 +145,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     /**
      * File of the optional color scheme file from a given property.
      */
-    fun colorsFile(colorsProperty: String? = System.getProperty("colors")): File? =
+    fun colorsFile(colorsProperty: String? = System.getProperty(SystemPropertyConstants.COLOR_SCHEME)): File? =
             colorsProperty?.let { File("$colorsProperty.properties") }
 
     /**
@@ -165,12 +165,12 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     /**
      * Gets the JVM compiler from a given property (without running checks).
      */
-    fun jvmCompiler(jvmCompilerPathProperty: String? = System.getProperty("jvmcompiler")) = jvmCompilerPathProperty
+    fun jvmCompiler(jvmCompilerPathProperty: String? = System.getProperty(SystemPropertyConstants.JVM_COMPILER)) = jvmCompilerPathProperty
 
     /**
      * Gets the Native compiler from a given property (without running checks).
      */
-    private fun nativeCompiler(nativeCompilerPathProperty: String? = System.getProperty("nativecompiler")) = nativeCompilerPathProperty
+    private fun nativeCompiler(nativeCompilerPathProperty: String? = System.getProperty(SystemPropertyConstants.NATIVE_COMPILER)) = nativeCompilerPathProperty
 
     /**
      * Checks for compilers' existance based on active compilation [targets].
@@ -179,7 +179,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         // JVM compiler
         if(jvmCompilerPath == null) {
             if(targets.isAnyJVM()) {
-                error("JVM compiler (-Djvmcompiler) is not set but one target is JVM or interpretation is enabled.")
+                error("JVM compiler (-D${SystemPropertyConstants.JVM_COMPILER}) is not set but one target is JVM or interpretation is enabled.")
             }
         } else if(!File(jvmCompilerPath).exists()) {
             error("JVM compiler $jvmCompilerPath does not exist.")
@@ -188,7 +188,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
         // Native compiler
         if(nativeCompilerPath == null) {
             if(targets.isAnyNative()) {
-                error("Native compiler (-Dnativecompiler) is not set but at least target is native.")
+                error("Native compiler (-D${SystemPropertyConstants.NATIVE_COMPILER}) is not set but at least target is native.")
             }
         } else if(!File(nativeCompilerPath).exists()) {
             error("Native compiler $nativeCompilerPath does not exist.")
@@ -200,7 +200,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
          * @return project info file, if path (without extension) is set and if it exists
          * @see eu.iamgio.pikt.project.PiktProjectInfo
          */
-        fun getProjectInfoFile(path: String? = System.getProperty("project")): FileInputStream? {
+        fun getProjectInfoFile(path: String? = System.getProperty(SystemPropertyConstants.PROJECT_INFO)): FileInputStream? {
             if(path == null) return null
 
             val file = File("$path.yml")
@@ -214,7 +214,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
          * @return selected project info task, if its name is set
          * @see eu.iamgio.pikt.project.PiktProjectInfo
          */
-        fun getProjectInfoTaskFor(projectInfo: PiktProjectInfo, taskName: String? = System.getProperty("task")): PiktProjectInfo? {
+        fun getProjectInfoTaskFor(projectInfo: PiktProjectInfo, taskName: String? = System.getProperty(SystemPropertyConstants.PROJECT_INFO_TASK)): PiktProjectInfo? {
             if(taskName == null) return null
             return projectInfo.getTaskByName(taskName) ?: exit(ERROR_BAD_PROPERTIES, message = "Task $taskName does not exist.")
         }
