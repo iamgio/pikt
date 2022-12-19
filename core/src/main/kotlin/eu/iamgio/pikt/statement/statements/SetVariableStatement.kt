@@ -5,6 +5,7 @@ import eu.iamgio.pikt.eval.FunctionMember
 import eu.iamgio.pikt.eval.StructMember
 import eu.iamgio.pikt.eval.VariableMember
 import eu.iamgio.pikt.image.PixelReader
+import eu.iamgio.pikt.log.pixel.loggableName
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
@@ -54,15 +55,15 @@ class SetVariableStatement : Statement() {
             null -> builder.append("var ") // Variable or function is not registered.
             is VariableMember -> {}
             is ConstantMember -> {
-                reader.error("${name.hexName} is constant and its value cannot be set.", referenceToFirstPixel = true)
+                reader.error("${name.loggableName} is constant and its value cannot be set.", referenceToFirstPixel = true)
                 return null
             }
             is StructMember -> {
-                reader.error("${name.hexName} is already linked to a struct.", referenceToFirstPixel = true)
+                reader.error("${name.loggableName} is already linked to a struct.", referenceToFirstPixel = true)
                 return null
             }
             is FunctionMember -> {
-                reader.error("${name.hexName} is a function and its value cannot be set.", referenceToFirstPixel = true)
+                reader.error("${name.loggableName} is a function and its value cannot be set.", referenceToFirstPixel = true)
                 return null
             }
         }
@@ -71,7 +72,7 @@ class SetVariableStatement : Statement() {
         val value = reader.nextExpression(data.scope)
         if(value.isEmpty && !isFunction) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
-            reader.error("Variable ${name.hexName} has no value.", syntax)
+            reader.error("Variable ${name.loggableName} has no value.", syntax)
             return null
         }
 

@@ -3,6 +3,7 @@ package eu.iamgio.pikt.log.pixel
 import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
+import eu.iamgio.pikt.log.Log
 
 /**
  * A logger of colors and pixels.
@@ -40,4 +41,17 @@ interface PixelLogger {
     fun logReader(reader: PixelReader, markIndex: Int? = null) {
         logAll(reader.pixels, markIndex)
     }
+
+    /**
+     * Defines a custom single-pixel visualization, e.g. in case of errors.
+     * @param pixel the pixel to get the name for
+     * @return a string that identifies the [pixel]
+     */
+    fun getLoggableNameFor(pixel: Pixel): String = pixel.hexName
 }
+
+/**
+ * A log-ready name of the pixel that depends on the active [PixelLogger].
+ */
+val Pixel.loggableName: String
+    get() = Log.pixelLogger?.getLoggableNameFor(this) ?: this.hexName

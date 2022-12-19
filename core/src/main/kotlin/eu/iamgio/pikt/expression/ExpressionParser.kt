@@ -6,6 +6,7 @@ import eu.iamgio.pikt.eval.ScopeMember
 import eu.iamgio.pikt.eval.StructMember
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
+import eu.iamgio.pikt.log.pixel.loggableName
 
 private const val ERROR_UNRESOLVED_REFERENCE = "Unresolved reference: "
 
@@ -41,7 +42,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         val pixel = this.first()
         // TODO scan nested levels: each pixel could have its own scope?
         if(!pixel.isInScope()) {
-            reader.error(ERROR_UNRESOLVED_REFERENCE + pixel.hexName, atPixel = pixel)
+            reader.error(ERROR_UNRESOLVED_REFERENCE + pixel.loggableName, atPixel = pixel)
         }
     }
 
@@ -190,12 +191,12 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         builder.append(")")
 
         if(args.isNotEmpty()) {
-            name?.checkType({ it is FunctionMember }, message = "${name.hexName} is not a valid function.")
+            name?.checkType({ it is FunctionMember }, message = "${name.loggableName} is not a valid function.")
         }
 
         // Check whether this is a proper call
         if(name != null && functionMember != null && !functionMember.isApplicableFor(args.size)) {
-            val functionName = (if(functionMember.isLibraryFunction) "${functionMember.name} " else "") + name.hexName
+            val functionName = (if(functionMember.isLibraryFunction) "${functionMember.name} " else "") + name.loggableName
             val passedArguments = if(args.isNotEmpty()) " (${args.joinToString()})" else ""
             val argumentsSize = functionMember.overloads.joinToString(" or ") { it.argumentsSize.toString() }
             reader.error("Function $functionName called with ${args.size} arguments$passedArguments, but $argumentsSize expected.", referenceToFirstPixel = true)
@@ -217,7 +218,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         }
 
         if(scope[struct] !is StructMember) {
-            reader.error("Attempted initialization of invalid struct ${struct.hexName}.")
+            reader.error("Attempted initialization of invalid struct ${struct.loggableName}.")
             return ""
         }
 

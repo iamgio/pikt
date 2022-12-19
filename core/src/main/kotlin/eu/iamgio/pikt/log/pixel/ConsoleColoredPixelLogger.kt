@@ -3,6 +3,7 @@ package eu.iamgio.pikt.log.pixel
 import com.diogonunes.jcolor.Ansi
 import com.diogonunes.jcolor.Attribute
 import eu.iamgio.pikt.image.Color
+import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.log.console.color.ConsoleAttributeColor
 
 /**
@@ -16,6 +17,11 @@ private const val CONTENT_STRING = "   "
 private const val MARKED_CONTENT_STRING = " ✗ "
 
 /**
+ * The string to be printed in order to display a smaller version of a pixel.
+ */
+private const val SMALL_CONTENT_STRING = "■"
+
+/**
  * A logger that prints pixels as colored rectangles, with a mark on some if requested.
  *
  * @author Giorgio Garofalo
@@ -25,7 +31,7 @@ abstract class ConsoleColoredPixelLogger : ConsolePixelLogger() {
     /**
      * @return a copy of [content] with ANSI [attributes]
      */
-    fun colorize(content: String, vararg attributes: Attribute): String {
+    private fun colorize(content: String, vararg attributes: Attribute): String {
         return Ansi.colorize(content, *attributes)
     }
 
@@ -47,6 +53,14 @@ abstract class ConsoleColoredPixelLogger : ConsolePixelLogger() {
             )
         }
         super.newLine()
+    }
+
+    /**
+     * @return the hex of [pixel] with a small colored square next to it
+     */
+    override fun getLoggableNameFor(pixel: Pixel): String {
+        val square = colorize(SMALL_CONTENT_STRING, getBackgroundColor(pixel.color).asText())
+        return "${pixel.hexName} $square"
     }
 
     /**
