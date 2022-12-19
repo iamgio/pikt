@@ -37,7 +37,7 @@ class ForEachStatement : Statement() {
         syntax.mark("collection", StatementSyntax.Mark.CORRECT)
 
         // A following lambda block is required.
-        if(data.nextStatement?.isBlock == false) {
+        if(data.nextStatement == null || !data.nextStatement.isBlock) {
             syntax.mark("lambda with argument", StatementSyntax.Mark.WRONG)
             reader.error("A for-each must be followed by a code block.", syntax)
             return null
@@ -45,7 +45,7 @@ class ForEachStatement : Statement() {
         syntax.mark("lambda with argument", StatementSyntax.Mark.CORRECT)
 
         // Makes the lambda block that follows generate the correct output.
-        data.nextStatement?.asBlock?.codeBuilder = ForEachLambdaOpenCodeBuilder(collection.code)
+        data.nextStatement.asBlock.codeBuilder = ForEachLambdaOpenCodeBuilder(collection.code)
 
         // Output (including lambda output): for(name in collection) {
         return "for"
