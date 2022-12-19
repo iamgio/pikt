@@ -1,9 +1,9 @@
 package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.command.commands.imageprocessing.ImageOutputCommand
+import eu.iamgio.pikt.exit.NO_EXIT_PROPERTY
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.log.Log
-import eu.iamgio.pikt.util.NO_EXIT_PROPERTY
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileInputStream

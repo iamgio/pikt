@@ -4,11 +4,11 @@ import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.compiler.isAnyJVM
 import eu.iamgio.pikt.compiler.isAnyNative
 import eu.iamgio.pikt.compiler.isAnyNull
+import eu.iamgio.pikt.exit.ERROR_BAD_PROPERTIES
+import eu.iamgio.pikt.exit.exit
 import eu.iamgio.pikt.lib.JarLibrary
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.project.PiktProjectInfo
-import eu.iamgio.pikt.util.ERROR_BAD_PROPERTIES
-import eu.iamgio.pikt.util.exit
 import java.io.File
 import java.io.FileInputStream
 

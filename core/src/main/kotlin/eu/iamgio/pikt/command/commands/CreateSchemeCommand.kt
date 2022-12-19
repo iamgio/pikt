@@ -1,12 +1,12 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
+import eu.iamgio.pikt.exit.ERROR_BAD_IO
+import eu.iamgio.pikt.exit.ERROR_BAD_PROPERTIES
+import eu.iamgio.pikt.exit.exit
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.INTERNAL_COLORS_SCHEME_PATH
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
-import eu.iamgio.pikt.util.ERROR_BAD_IO
-import eu.iamgio.pikt.util.ERROR_BAD_PROPERTIES
-import eu.iamgio.pikt.util.exit
 import java.io.FileOutputStream
 import java.io.IOException
 

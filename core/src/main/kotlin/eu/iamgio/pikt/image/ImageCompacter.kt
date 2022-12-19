@@ -1,11 +1,11 @@
 package eu.iamgio.pikt.image
 
+import eu.iamgio.pikt.exit.ERROR_FAILED_IMAGE_PROCESSING
+import eu.iamgio.pikt.exit.exit
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.statements.LambdaCloseStatement
 import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
-import eu.iamgio.pikt.util.ERROR_FAILED_IMAGE_PROCESSING
-import eu.iamgio.pikt.util.exit
 import java.awt.image.BufferedImage
 import kotlin.math.ceil
 import kotlin.math.sqrt

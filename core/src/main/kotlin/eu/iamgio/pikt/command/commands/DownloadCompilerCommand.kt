@@ -1,10 +1,10 @@
 package eu.iamgio.pikt.command.commands
 
 import eu.iamgio.pikt.command.Command
-import eu.iamgio.pikt.util.ERROR_BAD_ARGUMENT_VALUE
+import eu.iamgio.pikt.exit.ERROR_BAD_ARGUMENT_VALUE
+import eu.iamgio.pikt.exit.exit
 import eu.iamgio.pikt.util.KotlinCompilerDownloader
 import eu.iamgio.pikt.util.KotlinCompilerType
-import eu.iamgio.pikt.util.exit
 
 /**
  * Triggered by -downloadcompiler=type[,version] argument

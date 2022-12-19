@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.image
 
-import eu.iamgio.pikt.util.ERROR_BAD_IO
-import eu.iamgio.pikt.util.exit
+import eu.iamgio.pikt.exit.ERROR_BAD_IO
+import eu.iamgio.pikt.exit.exit
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException

@@ -6,11 +6,12 @@ This module contains the key features of Pikt, including code generation, interp
 - `command`: command-line arguments that trigger certain actions or settings;
 - `compiler`: bridge to the Kotlin compilers to allow compilation and interpretation;
 - `eval`: code generation;
+- `exit`: process closure handling;
 - `expression`: expression parsing;
 - `image`: image parsing and transformation;
 - `lib`: external libraries management, including stdlib;
 - `log`: logging utilities;
-- `properties`: VM properties and color scheme parsing;
+- `properties`: system properties and color scheme parsing;
 - `schemes`: color-based processing and operations;
 - `statements`: statements (such as `if`, `variable.set`, etc.) and their behaviors;
 - `util`: general utilities.

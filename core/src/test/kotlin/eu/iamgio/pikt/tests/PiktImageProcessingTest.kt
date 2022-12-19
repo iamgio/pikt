@@ -1,8 +1,8 @@
 package eu.iamgio.pikt.tests
 
 import eu.iamgio.pikt.command.commands.imageprocessing.*
-import eu.iamgio.pikt.util.ERROR_FAILED_IMAGE_PROCESSING
-import eu.iamgio.pikt.util.ExitAttemptException
+import eu.iamgio.pikt.exit.ERROR_FAILED_IMAGE_PROCESSING
+import eu.iamgio.pikt.exit.ExitAttemptException
 import org.junit.jupiter.api.Test
 import java.awt.image.BufferedImage
 import kotlin.test.assertEquals

@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.command
 
-import eu.iamgio.pikt.util.SUCCESS
-import eu.iamgio.pikt.util.exit
+import eu.iamgio.pikt.exit.SUCCESS
+import eu.iamgio.pikt.exit.exit
 
 /**
  * Command names associated with their optional argument string.
