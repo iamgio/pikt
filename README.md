@@ -138,24 +138,24 @@ The following arguments enable settings that affect Pikt's behavior.
   <details>
   <summary><i>Click to see more...</i></summary>
 
-  - `none`: pixel logging is disabled (default).<br>
+  - `none`: pixel logging is disabled (default).
 
   <img src="https://i.imgur.com/BsyRsgG.png" alt="none" width="500">
 
-- `16`: each pixel is a square whose color is approximated to the closest ANSI 16 color.<br>
+  - `16`: each pixel is a square whose color is approximated to the closest ANSI 16 color.
 
   <img src="https://i.imgur.com/tEgfqYv.png" alt="16" width="500">
 
-  - `256`: each pixel is a square whose color is approximated to the closest ANSI 8-bit (256) color.<br>
+  - `256`: each pixel is a square whose color is approximated to the closest ANSI 8-bit (256) color.
   
   <img src="https://i.imgur.com/aOhlIgF.png" alt="256" width="500">
 
   - `rgb`: each pixel is a square with its RGB color.
-    Not all terminals support this.<br>
+    Not all terminals support this.
 
   <img src="https://i.imgur.com/VrhgJxG.png" alt="rgb" width="500">
 
-  - `box`: each pixel is an ASCII box with its hex code inside.<br>
+  - `box`: each pixel is an ASCII box with its hex code inside.
 
   <img src="https://i.imgur.com/veraYFA.png" alt="rgb" width="500">
 
