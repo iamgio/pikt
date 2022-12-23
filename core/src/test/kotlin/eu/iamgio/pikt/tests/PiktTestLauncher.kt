@@ -8,6 +8,7 @@ import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.ColorsPropertiesRetriever
 import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
+import eu.iamgio.pikt.properties.SystemPropertyConstants
 import eu.iamgio.pikt.registerStatements
 import java.io.File
 import java.io.InputStream
@@ -26,6 +27,8 @@ abstract class PiktTestLauncher {
     init {
         tempDirectory.mkdir()
         registerStatements()
+
+        System.setProperty(SystemPropertyConstants.THROW_EXCEPTION_ON_READER_ERROR, "")
     }
 
     /**

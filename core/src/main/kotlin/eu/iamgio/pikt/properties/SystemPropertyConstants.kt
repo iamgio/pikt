@@ -60,6 +60,11 @@ object SystemPropertyConstants {
     // Other properties
 
     /**
+     * If this system property is enabled, [eu.iamgio.pikt.image.PixelReader] throws an exception on error.
+     */
+    const val THROW_EXCEPTION_ON_READER_ERROR = "readerexc"
+
+    /**
      * If this system property is enabled, [eu.iamgio.pikt.exit.exit] throws an exception instead of exiting.
      */
     const val NO_EXIT = "noexit"

@@ -7,6 +7,7 @@ import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.expression.PixelSequence
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.log.pixel.ConsolePixelLogger
+import eu.iamgio.pikt.properties.SystemPropertyConstants
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementSyntax
 
@@ -40,7 +41,7 @@ class PixelReader(val pixels: PixelArray, val statement: Statement? = null) {
     /**
      * @return a non-deep copy of this reader with its index set to `0`
      */
-    fun softCopy(): PixelReader = PixelReader(pixels, statement)
+    private fun softCopy(): PixelReader = PixelReader(pixels, statement)
 
     /**
      * Gets the next pixel available.
@@ -136,6 +137,7 @@ class PixelReader(val pixels: PixelArray, val statement: Statement? = null) {
      * @param message message to log
      * @param syntax optional [statement]'s syntax that should be printed out
      * @param pixelIndex index of the pixel that caused the error
+     * @throws PixelReaderException if [SystemPropertyConstants.THROW_EXCEPTION_ON_READER_ERROR] is enabled
      */
     fun error(message: String, syntax: StatementSyntax? = null, pixelIndex: Int) {
         isInvalidated = true
@@ -167,6 +169,10 @@ class PixelReader(val pixels: PixelArray, val statement: Statement? = null) {
         }
 
         Log.error("")
+
+        if(System.getProperty(SystemPropertyConstants.THROW_EXCEPTION_ON_READER_ERROR) != null) {
+            throw PixelReaderException(message, this)
+        }
     }
 
     /**

@@ -2,6 +2,7 @@ package eu.iamgio.pikt.tests
 
 import org.junit.jupiter.api.Test
 import java.io.InputStream
+import kotlin.test.assertFails
 import kotlin.test.assertTrue
 
 private class InternalTestLauncher : PiktTestLauncher() {
@@ -143,5 +144,20 @@ class PiktTest {
                 first() == "Reversed".reversed()
             }
         }
+    }
+
+    @Test
+    fun `error, unresolved reference`() {
+        assertFails { launch("error_unresolved") }
+    }
+
+    @Test
+    fun `error, foreach with no body`() {
+        assertFails { launch("error_foreach_no_body") }
+    }
+
+    @Test
+    fun `error, variable not initialized`() {
+        assertFails { launch("error_variable_not_initialized") }
     }
 }
