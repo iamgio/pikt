@@ -6,7 +6,7 @@ import eu.iamgio.pikt.exit.ExitAttemptException
 import org.junit.jupiter.api.Test
 import java.awt.image.BufferedImage
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 // These tests apply image processing filters to the same image (/imageprocessing-tests/source.png)
@@ -101,11 +101,11 @@ class PiktImageProcessingTest {
     // Tries to compact the image (10 elements) into a 9-elements output
     @Test
     fun compactManualSizeError() {
-        val exception = assertFails {
+        val exception = assertFailsWith<ExitAttemptException> {
             CompactCommand().execute("w3h3")
         }
         println(exception.message)
-        assertEquals(ERROR_FAILED_IMAGE_PROCESSING, (exception as? ExitAttemptException)?.code)
+        assertEquals(ERROR_FAILED_IMAGE_PROCESSING, exception.code)
     }
 
     // Expands the image (-decompact)
