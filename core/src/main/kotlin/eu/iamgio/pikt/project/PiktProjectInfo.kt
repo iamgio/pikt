@@ -10,7 +10,7 @@ typealias PiktProjectTasks = Map<String, PiktProjectInfo>
 /**
  * Project info allows to load properties and commands to use for a single Pikt project.
  *
- * An example file can be found at /test/resources/example-project.yml
+ * An example file can be found at /test/resources/projectinfo/example-project.yml
  *
  * @param properties name=value properties
  * @param commands name=args commands
