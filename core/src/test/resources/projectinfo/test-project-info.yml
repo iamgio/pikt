@@ -1,0 +1,17 @@
+properties:
+  - source: source.png
+  - colors: colors
+  - targets: jvm
+
+commands:
+  - printoutput
+  - interpret
+  - imgoutput: something_from_project_info
+
+tasks:
+  - mytask:
+      properties:
+        - colors: newcolors
+      commands:
+        - imgoutput: something_from_task
+        - recolorize
