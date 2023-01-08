@@ -59,7 +59,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
     }
 
     /**
-     * Analizes the next pixels an finds the expression type.
+     * Analizes the next pixels and finds the expression type.
      * @return type of the expression
      */
     private fun analyze(): ExpressionType {
@@ -73,7 +73,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
                 type == ExpressionType.COMPLEX -> {
                     type
                 }
-                // If there is only one pixel and it is a struct,
+                // If there is only one pixel, and it is a struct,
                 // the expression is a struct initialization
                 type == null && scope[pixel] is StructMember -> {
                     ExpressionType.STRUCT_INIT
@@ -83,14 +83,15 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
                 pixel.isOperator -> {
                     ExpressionType.COMPLEX
                 }
+                // An expression is a number if every pixel in it is an integer,
+                // except for an optional '-' at the beginning.
+                (type == null || type == ExpressionType.NUMBER) && pixel.isCharacter && (pixel.isNumber || (type == null && pixel.characterContent == '-')) -> {
+                    ExpressionType.NUMBER
+                }
                 // An expression is a string literal if at least one pixel in it is a non-number character.
                 // Every non-character in the string will be treated as a variable.
                 pixel.isCharacter && !pixel.isNumber -> {
                     ExpressionType.STRING
-                }
-                // An expression is a number if every pixel in it is an integer.
-                (type == null || type == ExpressionType.NUMBER) && pixel.isCharacter && pixel.isNumber -> {
-                    ExpressionType.NUMBER
                 }
                 // An expression is a boolean if its only pixel matches either bool.true or bool.false.
                 type == null && pixel.isBoolean -> {
@@ -138,12 +139,12 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
         reader.forEachNextSequence { sequence ->
             if(!sequence.isNested && sequence.first().isCharacter) {
                 val characterPixel = sequence.first()
-                if(requireNumber && !characterPixel.isNumber) {
-                    reader.error("Member not expected while parsing number.")
-                } else {
+                if(!requireNumber || characterPixel.isNumber || (characterPixel.characterContent == '-' && builder.isEmpty())) {
                     // Grayscale pixel -> character, except for null character (code 0)
                     // Therefore, the null character is useful to force string initialization or concatenation.
                     builder.append(characterPixel.characterContent.takeIf { it.code != 0 } ?: "")
+                } else {
+                    reader.error("Member not expected while parsing number.")
                 }
             } else {
                 // Variable/method reference
