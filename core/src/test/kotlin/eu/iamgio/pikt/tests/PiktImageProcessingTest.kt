@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 import java.awt.image.BufferedImage
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
 
 // These tests apply image processing filters to the same image (/imageprocessing-tests/source.png)
 // which generates the following pseudocode:
@@ -32,16 +31,15 @@ class PiktImageProcessingTest {
 
     // Checks whether the transformed image outputs the correct result.
     private fun checkCorrectOutput(colorSchemeName: String? = null) =
-            assertTrue { launch(colorSchemeName).firstOrNull() == EXPECTED_RESULT }
+            assertEquals(EXPECTED_RESULT, launch(colorSchemeName).firstOrNull())
 
     // Compares the output image to another image loaded from the internal tests folder
     private fun assertImageEquals(name: String) = launcher.assertImageEquals(name)
 
     // Compares the output image size to given values
     private fun assertImageSize(width: Int, height: Int) = with(outImage) {
-        assertTrue {
-            this.width == width && this.height == height
-        }
+        assertEquals(width, this.width)
+        assertEquals(height, this.height)
     }
 
     // Latest generated image

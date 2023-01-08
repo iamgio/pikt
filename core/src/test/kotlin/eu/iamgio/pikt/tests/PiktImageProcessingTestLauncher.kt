@@ -11,6 +11,7 @@ import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import javax.imageio.ImageIO
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 private const val TESTS_FOLDER = "/imageprocessing-tests"
@@ -60,10 +61,10 @@ class PiktImageProcessingTestLauncher : PiktTestLauncher() {
     fun assertImageEquals(name: String) {
         val image1 = getOutputImage()
         val image2 = ImageIO.read(PiktTest::class.java.getResourceAsStream("$TESTS_FOLDER/$name.png")!!)
-        assertTrue(message = "Different size") {
-            image1.width == image2.width
-                    && image1.height == image2.height
-        }
+
+        assertEquals(image2.width, image1.width, message = "Different width")
+        assertEquals(image2.height, image1.height, message = "Different height")
+
         assertTrue {
             var equals = true
             image1.readLineByLine { x, y ->

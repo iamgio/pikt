@@ -2,8 +2,10 @@ package eu.iamgio.pikt.tests
 
 import org.junit.jupiter.api.Test
 import java.io.InputStream
+import kotlin.test.assertContains
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
 import kotlin.test.assertFails
-import kotlin.test.assertTrue
 
 private class InternalTestLauncher : PiktTestLauncher() {
     override fun getImage(name: String): InputStream {
@@ -23,36 +25,28 @@ class PiktTest {
     @Test
     fun `hello world`() {
         with(launch("hello_world")) {
-            assertTrue {
-                first() == "Hello world!"
-            }
+            assertEquals("Hello world!", first())
         }
     }
 
     @Test
     fun `sum of 3 integers`() {
         with(launch("int_sum")) {
-            assertTrue {
-                contains("51")
-            }
+            assertContains(this, "51")
         }
     }
 
     @Test
     fun `check if string is not an integer`() {
         with(launch("not_int")) {
-            assertTrue {
-                first() == "OK"
-            }
+            assertEquals("OK", first())
         }
     }
 
     @Test
     fun `print each element of an int list`() {
         with(launch("list_foreach")) {
-            assertTrue {
-                equals(listOf("13", "32", "60"))
-            }
+            assertContentEquals(listOf("13", "32", "60"), this)
         }
     }
 
@@ -62,9 +56,7 @@ class PiktTest {
         // The first one is set to 1, the second one is set to 2.
         // The third one is the sum of the other two.
         with(launch("structs_sum")) {
-            assertTrue {
-                equals(listOf("1", "2", "3"))
-            }
+            assertContentEquals(listOf("1", "2", "3"), this)
         }
     }
 
@@ -74,9 +66,7 @@ class PiktTest {
         // where an instance is passed as an argument.
         // See: https://github.com/iamgio/pikt/issues/4
         with(launch("struct_typing")) {
-            assertTrue {
-                first() == "2"
-            }
+            assertEquals("2", first())
         }
     }
 
@@ -85,36 +75,30 @@ class PiktTest {
         // This test mixes the two types of nesting and lets Pikt decide which one to use for each case:
         // First a struct "dot-type" nesting, then a list "brackets-type" nesting.
         with(launch("nesting")) {
-            assertTrue {
-                first() == "0"
-            }
+            assertEquals("0", first())
         }
     }
 
     @Test
     fun `print numbers from 0 to 10`() {
         with(launch("range_foreach")) {
-            assertTrue {
-                equals((0..10).map { it.toString() })
-            }
+            assertContentEquals((0..10).map { it.toString() }, this)
         }
     }
 
     @Test
     fun `fibonacci n=20`() {
         with(launch("fibonacci", scheme = "fibonacci")) {
-            assertTrue {
-                last() == "4181"
-            }
+            assertEquals("4181", last())
         }
     }
 
     @Test
     fun `print prime numbers from 0 to 30`() {
         with(launch("prime_numbers", scheme = "prime_numbers")) {
-            assertTrue {
-                size == 10 && first() == "2" && last() == "29"
-            }
+            assertEquals(10, size)
+            assertEquals("2", first())
+            assertEquals("29", last())
         }
     }
 
@@ -122,27 +106,23 @@ class PiktTest {
     fun `san francisco insertion sort`() {
         val values = listOf(7, 10, 1, 46, 19, 8)
         with(launch("insertion_sort", scheme = "insertion_sort")) {
-            assertTrue { size == 2 }
-            assertTrue { component1() == values.toString() }
-            assertTrue { component2() == values.sorted().toString() }
+            assertEquals(2, size)
+            assertEquals(values.toString(), component1())
+            assertEquals(values.sorted().toString(), component2())
         }
     }
 
     @Test
     fun `a tree that prints 'A tree!'`() {
         with(launch("tree", scheme = "tree")) {
-            assertTrue {
-                first() == "A tree!"
-            }
+            assertEquals("A tree!", first())
         }
     }
 
     @Test
     fun `reverse string`() {
         with(launch("reverse", scheme = "reverse")) {
-            assertTrue {
-                first() == "Reversed".reversed()
-            }
+            assertEquals("Reversed".reversed(), first())
         }
     }
 
