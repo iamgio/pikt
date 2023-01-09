@@ -2,6 +2,7 @@ package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.log.Log
+import eu.iamgio.pikt.log.pixel.loggableName
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 
@@ -79,6 +80,20 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader, va
         // for
         // (...) {
         if(nextStatement?.isBlock == false) evaluator.codeBuilder.append("\n")
+
+        // Checks for any excess pixel.
+        checkUnexpectedSymbols()
+    }
+
+    /**
+     * Throws a reader error for each unread pixel at the end of the statement, if there is any.
+     */
+    private fun checkUnexpectedSymbols() {
+        if(!reader.isInvalidated && !reader.hasEnded) {
+            reader.whileNotNull { pixel ->
+                reader.error("Unexpected symbol: ${pixel.loggableName}", atPixel = pixel)
+            }
+        }
     }
 }
 

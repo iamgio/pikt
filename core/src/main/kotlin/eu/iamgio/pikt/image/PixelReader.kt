@@ -32,6 +32,12 @@ class PixelReader(val pixels: PixelArray, val statement: Statement? = null) {
         get() = pixels.size
 
     /**
+     * Whether there are no more pixels to read.
+     */
+    val hasEnded: Boolean
+        get() = index >= size - 1
+
+    /**
      * Whether this reader has come into an error.
      * @see error
      */
