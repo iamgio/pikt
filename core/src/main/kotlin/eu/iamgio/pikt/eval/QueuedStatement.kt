@@ -64,6 +64,9 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader, va
         // Apply indentation.
         evaluator.appendIndentation(scope, statement, previousStatement)
 
+        // Checks for any excess pixel.
+        checkUnexpectedSymbols()
+
         // Check if the reader has been invalidated and append generated code.
         if(reader.isInvalidated) {
             evaluator.codeBuilder.append("// Output of ${statement.name} was invalidated. See errors for details. ")
@@ -80,9 +83,6 @@ data class QueuedStatement(val statement: Statement, val reader: PixelReader, va
         // for
         // (...) {
         if(nextStatement?.isBlock == false) evaluator.codeBuilder.append("\n")
-
-        // Checks for any excess pixel.
-        checkUnexpectedSymbols()
     }
 
     /**
