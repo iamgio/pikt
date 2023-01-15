@@ -16,7 +16,7 @@
 
 <br>
 
-Pikt is a pixel-based, Turing complete esoteric programming language that is able to generate fast and lightweight programs out of **aesthetically pleasant image sources**.  
+Pikt is a pixel-based, dynamically typed, Turing complete esoteric programming language able to generate fast and lightweight programs out of **aesthetically pleasant image sources**.  
 Indeed, Pikt's most interesting feature is **flexibility**: every keyword, statement, function and operator
 is linked to one - or more - color, easily customizable via [color schemes](core/src/main/resources/colors.properties).
 
@@ -255,4 +255,5 @@ If you are using IntelliJ IDEA consider importing configuration templates from t
 - [x] Error handling
 - [ ] Runtime information
 
-_* Native support is limited due to the lack of Kotlin/Native libraries and is being temporarily discontinued._
+_* Native support is limited due to the lack of Kotlin/Native libraries
+and is being temporarily discontinued. Bringing it back is planned in the long term._
