@@ -94,6 +94,20 @@ class PiktTest {
     }
 
     @Test
+    fun `fizzbuzz n=30`() {
+        with(launch("fizzbuzz", scheme = "fizzbuzz")) {
+            assertEquals(31, size)
+            assertEquals("FizzBuzz", first())
+            assertEquals("1", this[1])
+            assertEquals("2", this[2])
+            assertEquals("Fizz", this[3])
+            assertEquals("4", this[4])
+            assertEquals("Buzz", this[5])
+            assertEquals("FizzBuzz", last())
+        }
+    }
+
+    @Test
     fun `print prime numbers from 0 to 30`() {
         with(launch("prime_numbers", scheme = "prime_numbers")) {
             assertEquals(10, size)
