@@ -41,6 +41,10 @@ class ColorSwapCommand : Command("-colorswap", closeOnComplete = true) {
  */
 data class ColorSwap(val fromHex: String, val toHex: String) {
     companion object {
+
+        private const val LIST_SEPARATOR = ","
+        private const val PARTS_SEPARATOR = ":"
+
         /**
          * Parses a list of [ColorSwap]s from a raw string.
          * The string is defined as:
@@ -49,10 +53,20 @@ data class ColorSwap(val fromHex: String, val toHex: String) {
          * ```
          */
         fun parseSwaps(raw: String): List<ColorSwap> {
-            return raw.split(",").map {
-                val (from, to) = it.split(":")
-                ColorSwap(from.uppercase(), to.uppercase())
-            }
+            return raw.split(LIST_SEPARATOR).asSequence()
+                .map { it.split(PARTS_SEPARATOR) }
+                .filter {
+                    (it.size == 2).also { valid ->
+                        if(!valid) {
+                            Log.warn("Invalid color swap: $it")
+                        }
+                    }
+                }
+                .map {
+                    val (from, to) = it
+                    ColorSwap(from.uppercase(), to.uppercase())
+                }
+                .toList()
         }
     }
 }
@@ -62,7 +76,9 @@ class ColorSwapProcessing(private val image: BufferedImage, private val swaps: L
         image.readLineByLine { x, y ->
             val hex = image.getRGB(x, y).rgbToHex()
             val swap = swaps.firstOrNull { it.fromHex == hex }
-            if(swap != null) image.setRGB(x, y, Color.fromHex(swap.toHex).rgb)
+            if(swap != null) {
+                image.setRGB(x, y, Color.fromHex(swap.toHex).rgb)
+            }
         }
         return image
     }
