@@ -46,6 +46,11 @@ Pikt compiles executables via the Kotlin compiler, therefore compilation for bot
   </a>
   <i>A prime numbers algorithm.</i>
   <br><br>
+  <a href="https://github.com/iAmGio/pikt/wiki/FizzBuzz-breakdown">
+    <img width="170" src="https://i.imgur.com/PVWHDDs.png" alt="FizzBuzz" /><br>
+  </a>
+  <i>A FizzBuzz algorithm.</i>
+  <br><br>
   <a href="https://github.com/iAmGio/pikt/wiki/Insertion-sort-breakdown">
     <img width="200" src="https://i.imgur.com/2zNX4eT.png" alt="Insertion sort" /><br>
   </a>
