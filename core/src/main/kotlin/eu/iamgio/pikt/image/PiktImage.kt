@@ -15,11 +15,6 @@ import java.io.File
 class PiktImage(private val image: BufferedImage, val colors: ColorsProperties) {
 
     /**
-     * Used for compacting/decompacting copies of this image.
-     */
-    val compacter = ImageCompacter(this)
-
-    /**
      * @param file image file
      * @param colors color scheme
      */

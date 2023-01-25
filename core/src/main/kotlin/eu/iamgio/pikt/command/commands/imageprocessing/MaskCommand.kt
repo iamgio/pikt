@@ -3,6 +3,7 @@ package eu.iamgio.pikt.command.commands.imageprocessing
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.image.PixelMask
+import eu.iamgio.pikt.image.processing.ImageCompacter
 import eu.iamgio.pikt.image.readImage
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
@@ -33,7 +34,7 @@ class MaskCommand : Command("-mask", closeOnComplete = true) {
         val maskImage = readImage(maskFile)
         val mask = PixelMask.createFrom(maskImage)
 
-        val compacted = piktImage.compacter.compact(maskImage.width, maskImage.height, mask)
+        val compacted = ImageCompacter(piktImage).compact(maskImage.width, maskImage.height, mask)
         val file = ImageProcessingUtils.save(compacted, properties.source, tag = "masked")
 
         Log.info("Masked image successfully saved as $file.")

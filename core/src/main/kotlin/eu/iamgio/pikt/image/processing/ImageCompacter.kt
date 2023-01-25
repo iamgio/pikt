@@ -1,7 +1,11 @@
-package eu.iamgio.pikt.image
+package eu.iamgio.pikt.image.processing
 
 import eu.iamgio.pikt.exit.ERROR_FAILED_IMAGE_PROCESSING
 import eu.iamgio.pikt.exit.exit
+import eu.iamgio.pikt.image.Color
+import eu.iamgio.pikt.image.PiktImage
+import eu.iamgio.pikt.image.PixelMask
+import eu.iamgio.pikt.image.setRGB
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.statements.LambdaCloseStatement
@@ -128,24 +132,32 @@ class ImageCompacter(private val piktImage: PiktImage) {
             }
 
             // Add empty line before the statement if required.
-            if(currentDecompactionStyle.hasEmptyLineBefore) addLine(emptyList())
+            if(currentDecompactionStyle.hasEmptyLineBefore) {
+                addLine(emptyList())
+            }
 
             // Add current line.
             addLine(pixels)
 
             // Add empty line after the statement if required.
-            if(currentDecompactionStyle.hasEmptyLineAfter && !isLast) addLine(emptyList())
+            if(currentDecompactionStyle.hasEmptyLineAfter && !isLast) {
+                addLine(emptyList())
+            }
         }
 
         // Changes the shift (amount of TABs) if there is a lambda statement and adds null pixels for each shift.
         fun applyShift(statement: Statement) {
-            if(statement is LambdaCloseStatement) currentShift--
+            if(statement is LambdaCloseStatement) {
+                currentShift--
+            }
 
             repeat(currentShift) {
                 pixels += null
             }
 
-            if(statement is LambdaOpenStatement) currentShift++
+            if(statement is LambdaOpenStatement) {
+                currentShift++
+            }
         }
 
         // Reads the content and updates lines.

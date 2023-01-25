@@ -2,6 +2,7 @@ package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.PiktImage
+import eu.iamgio.pikt.image.processing.ImageCompacter
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 
@@ -27,7 +28,7 @@ class CompactCommand : Command("-compact", closeOnComplete = true) {
             height = Regex("(?<=h)\\d+").find(args)?.value?.toInt()
         }
 
-        val image = piktImage.compacter.compact(width, height)
+        val image = ImageCompacter(piktImage).compact(width, height)
         val file = ImageProcessingUtils.save(image, properties.source, tag = "compacted")
 
         Log.info("Compacted image successfully saved as $file.")
