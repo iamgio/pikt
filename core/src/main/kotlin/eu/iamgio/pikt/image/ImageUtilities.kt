@@ -2,6 +2,7 @@ package eu.iamgio.pikt.image
 
 import eu.iamgio.pikt.exit.ERROR_BAD_IO
 import eu.iamgio.pikt.exit.exit
+import eu.iamgio.pikt.properties.ColorsProperties
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
@@ -53,5 +54,17 @@ fun BufferedImage.readLineByLine(action: (Int, Int) -> Unit) {
         (0 until width).forEach { x ->
             action(x, y)
         }
+    }
+}
+
+/**
+ * Applies a solid background to a [BufferedImage] according to the whitespace property of the given [ColorsProperties].
+ * @param colors color scheme data
+ * @param startIndex index to start applying the background from. Defaults to `0`.
+ */
+fun BufferedImage.applyBackground(colors: ColorsProperties, startIndex: Int = 0) {
+    val background = colors.whitespace.colors.firstOrNull()?.let { Color.fromHex(it) } ?: Color.WHITE
+    (startIndex until width * height).forEach {
+        setRGB(it, background)
     }
 }

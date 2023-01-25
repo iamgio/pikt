@@ -34,7 +34,7 @@ class MaskCommand : Command("-mask", closeOnComplete = true) {
         val maskImage = readImage(maskFile)
         val mask = PixelMask.createFrom(maskImage)
 
-        val compacted = ImageCompacter(piktImage).compact(maskImage.width, maskImage.height, mask)
+        val compacted = ImageCompacter(piktImage, maskImage.width, maskImage.height, mask).process()
         val file = ImageProcessingUtils.save(compacted, properties.source, tag = "masked")
 
         Log.info("Masked image successfully saved as $file.")

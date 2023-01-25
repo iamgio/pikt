@@ -28,7 +28,7 @@ class CompactCommand : Command("-compact", closeOnComplete = true) {
             height = Regex("(?<=h)\\d+").find(args)?.value?.toInt()
         }
 
-        val image = ImageCompacter(piktImage).compact(width, height)
+        val image = ImageCompacter(piktImage, width, height).process()
         val file = ImageProcessingUtils.save(image, properties.source, tag = "compacted")
 
         Log.info("Compacted image successfully saved as $file.")

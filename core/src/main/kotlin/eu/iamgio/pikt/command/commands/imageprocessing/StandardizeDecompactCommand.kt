@@ -2,7 +2,7 @@ package eu.iamgio.pikt.command.commands.imageprocessing
 
 import eu.iamgio.pikt.command.Command
 import eu.iamgio.pikt.image.PiktImage
-import eu.iamgio.pikt.image.processing.ImageCompacter
+import eu.iamgio.pikt.image.processing.ImageDecompacter
 import eu.iamgio.pikt.image.processing.ImageStandardizer
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
@@ -19,7 +19,7 @@ class StandardizeDecompactCommand : Command("-standardecompact", closeOnComplete
         val properties = PiktPropertiesRetriever().retrieve()
         val piktImage = PiktImage(properties)
 
-        val image = ImageCompacter(piktImage).decompact()
+        val image = ImageDecompacter(piktImage).process()
         val finalImage = ImageStandardizer(image, properties.colors.rawProperties, properties.libraries).process()
 
         val file = ImageProcessingUtils.save(finalImage, properties.source, tag = "standardecompacted")
