@@ -1,0 +1,17 @@
+# Shown via the -help command
+
+sections:
+  - name: Settings
+    description: Commands that affect Pikt's behavior.
+    members:
+      - interpret: Runs the generated code on the fly via the JVM compiler.
+      - printoutput: Prints the generated Kotlin code.
+      - pixelinfo: Adds information about pixel coordinates to the output code.
+      - nocompile: Disables the generation of any executable file.
+
+  # more to do
+
+  - name: Misc
+    description: Other commands.
+    members:
+      - help: Shows available commands.

@@ -115,6 +115,7 @@ private fun getProjectInfoTaskFor(projectInfo: PiktProjectInfo?): PiktProjectInf
  * Registers commands triggered by command-line arguments.
  */
 fun registerCommands() = with(Commands) {
+    register(HelpCommand())
     register(WelcomeCommand())
     register(InterpretCommand())
     register(DownloadCompilerCommand())
