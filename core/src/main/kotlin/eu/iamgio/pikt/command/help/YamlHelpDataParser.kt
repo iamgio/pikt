@@ -23,7 +23,11 @@ class YamlHelpDataParser : HelpDataParser {
                 is String -> HelpMember(name, description = member)
                 is Map<*, *> -> {
                     // Here there could be support for arguments explanation.
-                    HelpMember(name, description = member["description"]?.toString() ?: "<no description>")
+                    HelpMember(
+                        name,
+                        description = member["description"]?.toString() ?: "<no description>",
+                        isOptional = (member["optional"] as? Boolean) ?: false
+                    )
                 }
                 else -> {
                     Log.warn("Invalid member found while parsing help data")

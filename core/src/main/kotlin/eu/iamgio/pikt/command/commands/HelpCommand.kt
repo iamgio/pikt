@@ -36,11 +36,29 @@ class HelpCommand : Command("-help", closeOnComplete = true) {
     }
 
     /**
+     * Aligns [left] and [right] in two columns separated by a fixed [padding].
+     * @param left text in the left column
+     * @param right text in the right column
+     * @param padding space between columns
+     * @return text built by the two columns
+     */
+    private fun columns(left: String, right: String, padding: Int = 30): String {
+        val format = "%-${padding}s%s" // Align columns
+        return format.format(left, right)
+    }
+
+    /**
      * Logs the content of a [member].
      */
     private fun logMember(member: HelpMember) {
-        val format = "%-30s%s" // Align columns
-        Log.info(format.format(formatTitle(member.name), member.description))
+        val name = formatTitle(member.name)
+        val description = buildString {
+            if(member.isOptional) {
+                append(formatSubtitle("(optional) "))
+            }
+            append(member.description)
+        }
+        Log.info(this.columns(name, description))
     }
 
     /**

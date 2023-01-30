@@ -30,4 +30,8 @@ data class HelpSection(
  * @param name name of the member
  * @param description description of the member
  */
-data class HelpMember(val name: String, val description: String)
+data class HelpMember(
+    val name: String,
+    val description: String,
+    val isOptional: Boolean = false
+)
