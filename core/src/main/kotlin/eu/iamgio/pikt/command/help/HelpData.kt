@@ -33,5 +33,6 @@ data class HelpSection(
 data class HelpMember(
     val name: String,
     val description: String,
-    val isOptional: Boolean = false
+    val isOptional: Boolean = false,
+    val defaultsTo: String? = null
 )

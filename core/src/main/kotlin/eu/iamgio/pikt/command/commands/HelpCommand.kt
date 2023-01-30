@@ -58,7 +58,12 @@ class HelpCommand : Command("-help", closeOnComplete = true) {
             }
             append(member.description)
         }
+
         Log.info(this.columns(name, description))
+
+        if(member.defaultsTo != null) {
+            Log.info(this.columns("\tDefault:", member.defaultsTo))
+        }
     }
 
     /**

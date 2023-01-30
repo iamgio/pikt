@@ -26,7 +26,8 @@ class YamlHelpDataParser : HelpDataParser {
                     HelpMember(
                         name,
                         description = member["description"]?.toString() ?: "<no description>",
-                        isOptional = (member["optional"] as? Boolean) ?: false
+                        isOptional = (member["optional"] as? Boolean) ?: false,
+                        defaultsTo = member["default"]?.toString()
                     )
                 }
                 else -> {
