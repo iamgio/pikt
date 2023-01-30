@@ -39,7 +39,8 @@ class HelpCommand : Command("-help", closeOnComplete = true) {
      * Logs the content of a [member].
      */
     private fun logMember(member: HelpMember) {
-        Log.info(formatTitle(member.name) + "\t\t" + member.description)
+        val format = "%-30s%s" // Align columns
+        Log.info(format.format(formatTitle(member.name), member.description))
     }
 
     /**
