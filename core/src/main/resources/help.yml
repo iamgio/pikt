@@ -37,4 +37,22 @@ sections:
   - name: Misc
     description: Other commands.
     members:
+      - -downloadcompiler=type[,version]:
+          description: Downloads the Kotlin compiler for the given platform
+          args:
+            - type:
+                description: Platform to target
+                values: [jvm, windows, macos, linux]
+            - version:
+                description: Version of the Kotlin compiler
+                default: 1.7.20
+                optional: true
+      - -pl[=type]:
+          description: Sets the active pixel logger type.
+          args:
+            - type:
+                description: Pixel logger type.
+                values: [none, 16, 256, rgb, box]
+                default: 256
+                optional: true
       - -help: Shows available commands.

@@ -25,14 +25,20 @@ data class HelpSection(
 
 /**
  * An element to be explained within some help data.
- * This usually represents a command or a property.
+ * This usually represents a command, or a property or even a command argument.
  *
  * @param name name of the member
  * @param description description of the member
+ * @param isOptional whether the member optional
+ * @param defaultsTo the optional default value
+ * @param values accepted values
+ * @param args possible sub-members
  */
 data class HelpMember(
     val name: String,
     val description: String,
     val isOptional: Boolean = false,
-    val defaultsTo: String? = null
+    val defaultsTo: String? = null,
+    val values: List<String>? = null,
+    val args: List<HelpMember> = emptyList()
 )

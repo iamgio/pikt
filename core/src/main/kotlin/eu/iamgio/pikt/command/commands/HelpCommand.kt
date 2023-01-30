@@ -42,15 +42,15 @@ class HelpCommand : Command("-help", closeOnComplete = true) {
      * @param padding space between columns
      * @return text built by the two columns
      */
-    private fun columns(left: String, right: String, padding: Int = 30): String {
-        val format = "%-${padding}s%s" // Align columns
-        return format.format(left, right)
+    private fun columns(left: String, right: String, padding: Int = 30, shift: Int = 0): String {
+        val format = "%-${padding}s %s" // Align columns.
+        return format.format("  ".repeat(shift) + left, right)
     }
 
     /**
      * Logs the content of a [member].
      */
-    private fun logMember(member: HelpMember) {
+    private fun logMember(member: HelpMember, level: Int = 0) {
         val name = formatTitle(member.name)
         val description = buildString {
             if(member.isOptional) {
@@ -59,10 +59,20 @@ class HelpCommand : Command("-help", closeOnComplete = true) {
             append(member.description)
         }
 
-        Log.info(this.columns(name, description))
+        // Supports recursively-accessed nested members.
+        fun columns(left: String, right: String) = this.columns(left, right, shift = level)
 
+        Log.info(columns(name, description))
+
+        if(member.values != null) {
+            Log.info(columns("Values:", member.values.joinToString(", "), shift = level + 1))
+        }
         if(member.defaultsTo != null) {
-            Log.info(this.columns("\tDefault:", member.defaultsTo))
+            Log.info(columns("Default:", member.defaultsTo, shift = level + 1))
+        }
+
+        member.args.forEach {
+            logMember(it, level + 1)
         }
     }
 
