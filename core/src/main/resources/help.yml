@@ -6,13 +6,21 @@ sections:
       java -Dproperty=value -jar pikt.jar commands..."
     members:
       - -Dsource: The source image file.
-      - -Doutput: (optional) Output name without extension.
+      - -Doutput:
+          description: Output name without extension.
+          optional: true
       - -Dcolors: The .properties color scheme file without extension.
       - -Dtargets: "Compilation targets divided by a comma. Available values: jvm"
       - -Djvmcompiler: Path to the Kotlin/JVM (kotlinc) executable compiler.
-      - -Dlib: (optional) Path to JAR libraries, including the bundled stdlib.jar file, divided by a comma.
-      - -Dproject: (optional) Path to a project info YAML configuration without extension.
-      - -Dtask: (optional) Name of the task (defined within a project info configuration) to be executed.
+      - -Dlib:
+          description: Path to JAR libraries, including the bundled stdlib.jar file, divided by a comma.
+          optional: true
+      - -Dproject:
+          description: Path to a project info YAML configuration without extension.
+          optional: true
+      - -Dtask:
+          description: Name of the task (defined within a project info configuration) to be executed.
+          optional: true
 
   - name: Settings
     description: Commands that affect Pikt's behavior.
