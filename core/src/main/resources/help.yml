@@ -1,17 +1,30 @@
 # Shown via the -help command
 
 sections:
+  - name: Properties
+    description: "Values needed by the compiler. These are JVM properties:\n\
+      java -Dproperty=value -jar pikt.jar commands..."
+    members:
+      - -Dsource: The source image file.
+      - -Doutput: (optional) Output name without extension.
+      - -Dcolors: The .properties color scheme file without extension.
+      - -Dtargets: "Compilation targets divided by a comma. Available values: jvm"
+      - -Djvmcompiler: Path to the Kotlin/JVM (kotlinc) executable compiler.
+      - -Dlib: (optional) Path to JAR libraries, including the bundled stdlib.jar file, divided by a comma.
+      - -Dproject: (optional) Path to a project info YAML configuration without extension.
+      - -Dtask: (optional) Name of the task (defined within a project info configuration) to be executed.
+
   - name: Settings
     description: Commands that affect Pikt's behavior.
     members:
-      - interpret: Runs the generated code on the fly via the JVM compiler.
-      - printoutput: Prints the generated Kotlin code.
-      - pixelinfo: Adds information about pixel coordinates to the output code.
-      - nocompile: Disables the generation of any executable file.
+      - -interpret: Runs the generated code on the fly via the JVM compiler.
+      - -printoutput: Prints the generated Kotlin code.
+      - -pixelinfo: Adds information about pixel coordinates to the output code.
+      - -nocompile: Disables the generation of any executable file.
 
   # more to do
 
   - name: Misc
     description: Other commands.
     members:
-      - help: Shows available commands.
+      - -help: Shows available commands.
