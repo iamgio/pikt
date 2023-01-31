@@ -44,14 +44,13 @@ class HelpCommand : Command("-help", closeOnComplete = true) {
      */
     private fun columns(left: String, right: String, padding: Int = 30, shift: Int = 0): String {
         val format = "%-${padding}s %s" // Align columns.
-        return format.format("  ".repeat(shift) + left, right)
+        return format.format("  ".repeat(shift) + formatTitle(left), right)
     }
 
     /**
      * Logs the content of a [member].
      */
     private fun logMember(member: HelpMember, level: Int = 0) {
-        val name = formatTitle(member.name)
         val description = buildString {
             if(member.isOptional) {
                 append(formatSubtitle("(optional) "))
@@ -62,7 +61,7 @@ class HelpCommand : Command("-help", closeOnComplete = true) {
         // Supports recursively-accessed nested members.
         fun columns(left: String, right: String) = this.columns(left, right, shift = level)
 
-        Log.info(columns(name, description))
+        Log.info(columns(member.name, description))
 
         if(member.values != null) {
             Log.info(columns("Values:", member.values.joinToString(", "), shift = level + 1))
