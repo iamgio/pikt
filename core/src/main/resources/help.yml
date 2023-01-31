@@ -38,7 +38,45 @@ sections:
       - -createscheme: Creates a new color scheme with default values.
       - -exportscheme: Generates a color palette image out of the currently set color scheme.
 
-  # more to do
+  - name: Image transformations
+    description: "Commands that transform an image without altering its source content.\n\
+      They don't affect the image itself but create a copy instead.\n\
+      More info at https://github.com/iamgio/pikt/wiki/Image-transformation-commands"
+    members:
+      - -imgoutput=path:
+          description: Sets the output file for image transformation commands.
+          default: The source image path followed by a suffix.
+          args:
+            - path: Path of the image files to be created.
+      - -chainoutput:
+          description: "Enables output chaining: the output of a command becomes input for the next one."
+          note: -imgoutput must be set.
+      - -recolorize[=method]:
+          description: Adapts the source image from the default color scheme to the current one.
+          args:
+            - method:
+                description: The way to pick a color for multi-color properties.
+                values: [first, last, random]
+                default: first
+                optional: true
+      - -standardize: Adapts the source image to the current custom color scheme to the default one.
+      - -compact[=size]:
+          description: Removes whitespace from the source image.
+          args:
+            - size:
+                description: Width and/or height of the final image, e.g. w10h5, w10, h5.
+                default: The optimal size for a square-ish image.
+                optional: true
+      - -decompact: Adds whitespaces to the source image in order to have one statement per line.
+      - -standardecompact: -standardize + -decompact.
+      - -colorswap=swaps:
+          description: Swaps colors from the source image.
+          args:
+            - swaps: Sequence of from:to colors (as hex) separated by commas.
+      - -mask=path:
+          description: Gives a shape to the source image.
+          args:
+            - path: Path to the mask image, where the shape is defined by solid pixels.
 
   - name: Misc
     description: Other commands.
