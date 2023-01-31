@@ -29,6 +29,7 @@ class YamlHelpDataParser : HelpDataParser {
                         isOptional = (member["optional"] as? Boolean) ?: false,
                         defaultsTo = member["default"]?.toString(),
                         values = (member["values"] as? List<*>)?.map { it.toString() },
+                        note = member["note"]?.toString(),
                         args = (member["args"] as? List<*>)?.let { parseMembers(it) } ?: emptyList()
                     )
                 }

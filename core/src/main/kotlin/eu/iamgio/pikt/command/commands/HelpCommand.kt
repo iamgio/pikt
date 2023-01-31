@@ -61,14 +61,18 @@ class HelpCommand : Command("-help", closeOnComplete = true) {
         // Supports recursively-accessed nested members.
         fun columns(left: String, right: String) = this.columns(left, right, shift = level)
 
+        // Logs a value only if it is not null.
+        fun logIfNotNull(label: String, value: String?) {
+            if(value != null) {
+                Log.info(columns(label, value, shift = level + 1))
+            }
+        }
+
         Log.info(columns(member.name, description))
 
-        if(member.values != null) {
-            Log.info(columns("Values:", member.values.joinToString(", "), shift = level + 1))
-        }
-        if(member.defaultsTo != null) {
-            Log.info(columns("Default:", member.defaultsTo, shift = level + 1))
-        }
+        logIfNotNull("Values:", member.values?.joinToString(", "))
+        logIfNotNull("Default:", member.defaultsTo)
+        logIfNotNull("Note:", member.note)
 
         member.args.forEach {
             logMember(it, level + 1)

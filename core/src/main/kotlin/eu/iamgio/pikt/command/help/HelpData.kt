@@ -32,6 +32,7 @@ data class HelpSection(
  * @param isOptional whether the member optional
  * @param defaultsTo the optional default value
  * @param values accepted values
+ * @param note additional notes
  * @param args possible sub-members
  */
 data class HelpMember(
@@ -40,5 +41,6 @@ data class HelpMember(
     val isOptional: Boolean = false,
     val defaultsTo: String? = null,
     val values: List<String>? = null,
+    val note: String? = null,
     val args: List<HelpMember> = emptyList()
 )
