@@ -32,21 +32,17 @@ sections:
       - -pixelinfo: Adds information about pixel coordinates to the output code.
       - -nocompile: Disables the generation of any executable file.
 
+  - name: Color schemes
+    description: Utilities for color scheme files.
+    members:
+      - -createscheme: Creates a new color scheme with default values.
+      - -exportscheme: Generates a color palette image out of the currently set color scheme.
+
   # more to do
 
   - name: Misc
     description: Other commands.
     members:
-      - -downloadcompiler=type[,version]:
-          description: Downloads the Kotlin compiler for the given platform
-          args:
-            - type:
-                description: Platform to target
-                values: [jvm, windows, macos, linux]
-            - version:
-                description: Version of the Kotlin compiler
-                default: 1.7.20
-                optional: true
       - -pl[=type]:
           description: Sets the active pixel logger type.
           args:
@@ -54,5 +50,22 @@ sections:
                 description: Pixel logger type.
                 values: [none, 16, 256, rgb, box]
                 default: 256
+                optional: true
+      - -strconvert[=string]:
+          description: Converts a string into a sequence of ready-to-use RGB values.
+          args:
+            - string:
+                description: Text to convert.
+                default: None, will be read from stdin.
+                optional: true
+      - -downloadcompiler=type[,version]:
+          description: Downloads the Kotlin compiler for the given platform.
+          args:
+            - type:
+                description: Platform to target.
+                values: [jvm, windows, macos, linux]
+            - version:
+                description: Version of the Kotlin compiler.
+                default: 1.7.20
                 optional: true
       - -help: Shows available commands.
