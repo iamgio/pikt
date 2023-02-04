@@ -211,14 +211,17 @@ If `size` is not specified, it will try to create a square-ish image.
 If `string` is not specified, input is read from stdin.  
 _See [Hello world!](https://github.com/iAmGio/pikt/wiki/Hello-world) for further information._  
 For instance, `-strconvert="Hello Pikt!"` prints:
-- 
-```
-RGB:  72  101  108  108  111  32  80  105  107  116  33  
-      H   e    l    l    o        P   i    k    t    !   
-```
+
+  ```
+  RGB:  72  101  108  108  111  32  80  105  107  116  33  
+        H   e    l    l    o        P   i    k    t    !   
+  ```
 
 - `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`), `-downloadcompiler=jvm` and creates a ready-to-use Hello World source.
-Its output is already zipped in the downloadable archive.
+Its output is already zipped in the downloadable archive;
+
+
+- `-help` shows these commands.
 
 
 More in-depth information about image transformation commands can be found [here](https://github.com/iAmGio/pikt/wiki/Image-transformation-commands).
