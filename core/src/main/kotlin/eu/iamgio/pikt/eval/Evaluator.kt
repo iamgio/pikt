@@ -81,30 +81,32 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
      * @param previousStatement statement that comes before [statement], if exists
      */
     fun appendIndentation(scope: Scope, statement: Statement, previousStatement: Statement?) {
-        /**
-         * Case 0:              Applied: (nothing changes)
-         * statement1           statement1
-         * statement2           statement2
-         *
-         * Case 1:              Applied:
-         * var function =       var function =
-         *     {                {
-         *     statement            statement
-         *     }                }
-         *
-         * Case 2:              Applied:
-         * if(condition)        if(condition)
-         *     {                {
-         *     statement            statement
-         * }                    }
-         */
-        codeBuilder.append(
-                "\t".repeat(scope.level - when {
-                    statement.options.handlesScopes && previousStatement?.options?.opensTemporaryScope == true -> 2
-                    statement.options.handlesScopes -> 1
-                    else -> 0
-                })
-        )
+        /*
+        Case 0:              Applied: (nothing changes)
+        statement1           statement1
+        statement2           statement2
+
+        Case 1:              Applied:
+        var function =       var function =
+            {                {
+            statement            statement
+            }                }
+
+        Case 2:              Applied:
+        if(condition)        if(condition)
+            {                {
+            statement            statement
+        }                    }
+        */
+        val indentationLevel = scope.level - when {
+            statement.options.handlesScopes && previousStatement?.options?.opensTemporaryScope == true -> 2
+            statement.options.handlesScopes -> 1
+            else -> 0
+        }
+
+        if(indentationLevel >= 0) {
+            codeBuilder.append("\t".repeat(indentationLevel))
+        }
     }
 
     /**
