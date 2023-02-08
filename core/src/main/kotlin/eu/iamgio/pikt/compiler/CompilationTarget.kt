@@ -74,29 +74,27 @@ enum class CompilationTarget(
      */
     val isNative: Boolean
         get() = name.startsWith("NATIVE")
-
-    private companion object {
-        /**
-         * Generates the classpath for the `-cp` command.
-         * @param libraries list of JAR libraries
-         * @return built classpath
-         */
-        fun generateClassPath(libraries: List<JarLibrary>) = libraries.joinToString(File.pathSeparator) { it.absolutePath }
-
-        /**
-         * Generates the command needed by native compilers.
-         * @param platform target platform
-         * @param kotlinFile temporary .kt source file
-         * @param outputFile output file path without extension
-         * @param properties Pikt properties
-         * @return generated command
-         */
-        fun generateNativeCompileCommand(platform: String, kotlinFile: File, outputFile: File, properties: PiktProperties) = arrayOf(
-            properties.nativeCompilerPath!!, kotlinFile.absolutePath,
-                "-nowarn", "-opt", "-target", platform, "-o", outputFile.absolutePath
-        )
-    }
 }
+
+/**
+ * Generates the classpath for the `-cp` command.
+ * @param libraries list of JAR libraries
+ * @return built classpath
+ */
+private fun generateClassPath(libraries: List<JarLibrary>) = libraries.joinToString(File.pathSeparator) { it.absolutePath }
+
+/**
+ * Generates the command needed by native compilers.
+ * @param platform target platform
+ * @param kotlinFile temporary .kt source file
+ * @param outputFile output file path without extension
+ * @param properties Pikt properties
+ * @return generated command
+ */
+private fun generateNativeCompileCommand(platform: String, kotlinFile: File, outputFile: File, properties: PiktProperties) = arrayOf(
+        properties.nativeCompilerPath!!, kotlinFile.absolutePath,
+        "-nowarn", "-opt", "-target", platform, "-o", outputFile.absolutePath
+)
 
 /**
  * Functional interface that allows defining target-specific compilation and interpretation commands.
