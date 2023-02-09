@@ -33,7 +33,7 @@ jobs:
         run: |
           rm -rf */target/*-without-dependencies.jar
           cp */target/*.jar staging
-          cp staging/*lib.jar staging/libraries
+          mv staging/*lib.jar staging/libraries
       - name: Run -welcome
         run: |
           cd staging
