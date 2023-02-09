@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>image</artifactId>
+    <artifactId>imagelib</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -32,7 +32,7 @@
     </dependencies>
 
     <build>
-        <finalName>image-without-dependencies</finalName>
+        <finalName>imagelib-without-dependencies</finalName>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <plugins>
             <plugin>
@@ -67,7 +67,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>image</finalName>
+                    <finalName>imagelib</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>

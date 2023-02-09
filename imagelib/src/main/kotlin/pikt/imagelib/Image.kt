@@ -1,4 +1,4 @@
-package pikt.image
+package pikt.imagelib
 
 import pikt.stdlib.newFile
 import java.awt.image.BufferedImage
