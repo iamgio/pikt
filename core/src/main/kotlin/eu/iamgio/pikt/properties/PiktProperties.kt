@@ -6,7 +6,9 @@ import eu.iamgio.pikt.compiler.isAnyNative
 import eu.iamgio.pikt.compiler.isAnyNull
 import eu.iamgio.pikt.exit.ERROR_BAD_PROPERTIES
 import eu.iamgio.pikt.exit.exit
-import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.lib.Libraries
+import eu.iamgio.pikt.lib.jar.JarLibraries
+import eu.iamgio.pikt.lib.jar.JarLibrary
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.project.PiktProjectInfo
 import java.io.File
@@ -18,7 +20,7 @@ import java.io.FileInputStream
  * @param source source image file ("-Dsource")
  * @param output output executable file without extension ("-Doutput")
  * @param compilationTargets compilation targets ("-Dtarget")
- * @param libraries external JAR libraries, including stdlib
+ * @param libraries external libraries, including stdlib
  * @param jvmCompilerPath optional path to the Kotlin/JVM compiler (required if any of [compilationTargets] is [CompilationTarget.JVM]) ("-Djvmcompiler")
  * @param nativeCompilerPath optional path to the Kotlin/Native compiler (required if any of [compilationTargets] is native) ("-Dnativecompiler")
  * @param colors color scheme ("-Dcolors")
@@ -28,7 +30,7 @@ data class PiktProperties(
         val source: File,
         val output: String,
         val compilationTargets: List<CompilationTarget>,
-        val libraries: List<JarLibrary>,
+        val libraries: Libraries,
         val jvmCompilerPath: String?,
         val nativeCompilerPath: String?,
         val colors: ColorsProperties
@@ -131,15 +133,18 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     /**
      * Gets the standard library JAR from a property if given, `[./stdlib.jar]` otherwise.
      */
-    fun libraries(librariesProperty: String? = System.getProperty(SystemPropertyConstants.LIBRARIES)): List<JarLibrary> {
+    fun libraries(librariesProperty: String? = System.getProperty(SystemPropertyConstants.LIBRARIES)): Libraries {
         val rawLibraries = librariesProperty?.split(",") ?: listOf("libraries/stdlib.jar")
-        return rawLibraries.map {
+        val jarLibraries = rawLibraries.map {
             val file = File(it)
             if(!file.exists()) {
                 error("Library file $file (-${SystemPropertyConstants.LIBRARIES}) does not exist.")
             }
             JarLibrary(File(it))
         }
+
+        // In the future there could be other types of libraries.
+        return JarLibraries(jarLibraries)
     }
 
     /**
@@ -151,7 +156,7 @@ class PiktPropertiesRetriever : PropertiesRetriever<PiktProperties> {
     /**
      * Gets the color scheme from a given property.
      */
-    private fun colors(colorsFile: File? = colorsFile(), libraries: List<JarLibrary>): ColorsPropertiesRetriever {
+    private fun colors(colorsFile: File? = colorsFile(), libraries: Libraries): ColorsPropertiesRetriever {
         val retriever = ColorsPropertiesRetriever(libraries)
         if(colorsFile != null && colorsFile.exists()) {
             retriever.loadProperties(FileInputStream(colorsFile))

@@ -1,16 +1,15 @@
-package eu.iamgio.pikt.lib
+package eu.iamgio.pikt.lib.jar
 
-import eu.iamgio.pikt.eval.FunctionMember
 import java.lang.reflect.Method
 import java.net.URLClassLoader
 
 /**
- * This helper allows accessing members from a JAR library via reflection.
+ * A helper that allows accessing members from a JAR library via reflection.
  *
  * @param library corresponding JAR library
  * @author Giorgio Garofalo
  */
-class LibraryReflectionHelper(private val library: JarLibrary) {
+class JarLibraryReflectionHelper(private val library: JarLibrary) {
 
     // The class loader of the library
     private val classLoader: URLClassLoader by lazy {
@@ -32,17 +31,5 @@ class LibraryReflectionHelper(private val library: JarLibrary) {
             methods.addAll(getClass(it).methods)
         }
         return methods
-    }
-
-    /**
-     * Transforms a Java Reflection [method] into a Pikt function overload.
-     * @param method Java Reflection method
-     * @return Pikt function overload
-     */
-    fun createFunctionOverload(method: Method): FunctionMember.Overload {
-        return FunctionMember.Overload(
-            argumentsSize = method.parameterCount.takeIf { method.parameters.none { it.isVarArgs } }
-                ?: FunctionMember.Overload.VARARG_ARGUMENTS_AMOUNT
-        )
     }
 }

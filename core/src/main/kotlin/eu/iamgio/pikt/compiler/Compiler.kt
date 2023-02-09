@@ -39,7 +39,7 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
         // include libraries into the output JAR file.
         if(target == CompilationTarget.JVM) {
             properties.libraries.forEach {
-                it.extractTo(targetJarFile = File(getOutputFile(target).absolutePath + ".jar"))
+                it.applyTo(executableFile = File(getOutputFile(target).absolutePath + ".jar"))
             }
         }
 

@@ -5,13 +5,13 @@ import java.io.InputStream
 import java.util.*
 
 /**
- * The color scheme (colors.properties) bundled in a [JarLibrary].
+ * The color scheme bundled in a [Library].
  *
  * @param library library containing this scheme
  * @param inputStream color scheme input stream
  * @author Giorgio Garofalo
  */
-class LibraryColorScheme(private val library: JarLibrary, private val inputStream: InputStream) {
+class LibraryColorScheme(private val library: Library, private val inputStream: InputStream) {
 
     /**
      * Color scheme as [Properties].

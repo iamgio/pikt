@@ -1,6 +1,6 @@
 package eu.iamgio.pikt.properties
 
-import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.lib.Libraries
 import eu.iamgio.pikt.lib.LibrariesColors
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -123,7 +123,7 @@ data class OperatorColorsProperties(
  *
  * @author Giorgio Garofalo
  */
-class ColorsPropertiesRetriever(private val libraries: List<JarLibrary>) : PropertiesRetriever<ColorsProperties> {
+class ColorsPropertiesRetriever(private val libraries: Libraries) : PropertiesRetriever<ColorsProperties> {
 
     /**
      * External properties.

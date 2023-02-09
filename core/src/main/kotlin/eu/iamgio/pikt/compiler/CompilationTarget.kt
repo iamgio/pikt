@@ -2,7 +2,6 @@ package eu.iamgio.pikt.compiler
 
 import eu.iamgio.pikt.GlobalSettings
 import eu.iamgio.pikt.command.commands.CMD_INTERPRET
-import eu.iamgio.pikt.lib.JarLibrary
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.File
 
@@ -27,12 +26,12 @@ enum class CompilationTarget(
                 properties.jvmCompilerPath!!,
                 kotlinFile.absolutePath,
                 "-nowarn", "-include-runtime", "-no-reflect",
-                "-cp", generateClassPath(properties.libraries),
+                "-cp", properties.libraries.getPath(),
                 "-d", "$outputFile.jar"
         )
 
         override fun generateInterpretCommand(kotlinFile: File, properties: PiktProperties) = arrayOf(
-                properties.jvmCompilerPath!!, "-script", kotlinFile.absolutePath, "-cp", generateClassPath(properties.libraries)
+                properties.jvmCompilerPath!!, "-script", kotlinFile.absolutePath, "-cp", properties.libraries.getPath()
         )
     }),
 
@@ -75,13 +74,6 @@ enum class CompilationTarget(
     val isNative: Boolean
         get() = name.startsWith("NATIVE")
 }
-
-/**
- * Generates the classpath for the `-cp` command.
- * @param libraries list of JAR libraries
- * @return built classpath
- */
-private fun generateClassPath(libraries: List<JarLibrary>) = libraries.joinToString(File.pathSeparator) { it.absolutePath }
 
 /**
  * Generates the command needed by native compilers.

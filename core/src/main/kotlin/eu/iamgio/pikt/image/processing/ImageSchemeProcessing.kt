@@ -1,6 +1,6 @@
 package eu.iamgio.pikt.image.processing
 
-import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.lib.Libraries
 import eu.iamgio.pikt.properties.ColorsProperty
 import eu.iamgio.pikt.properties.INTERNAL_COLORS_SCHEME_PATH
 import java.awt.image.BufferedImage
@@ -25,7 +25,7 @@ interface ImageProcessing {
 sealed class ImageSchemeProcessing(
     protected val image: BufferedImage,
     private val customScheme: Properties,
-    private val libraries: List<JarLibrary>
+    private val libraries: Libraries
 ) : ImageProcessing {
 
     /**

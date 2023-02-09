@@ -3,7 +3,7 @@ package eu.iamgio.pikt.image.processing
 import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.image.rgbToHex
-import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.lib.Libraries
 import eu.iamgio.pikt.properties.ColorsProperty
 import java.awt.image.BufferedImage
 import java.util.*
@@ -17,10 +17,10 @@ import java.util.*
  * @param libraries external libraries
  */
 class ImageRecolorizer(
-    image: BufferedImage,
-    customScheme: Properties,
-    libraries: List<JarLibrary>,
-    private val method: ColorChoiceMethod
+        image: BufferedImage,
+        customScheme: Properties,
+        libraries: Libraries,
+        private val method: ColorChoiceMethod
 ) : ImageSchemeProcessing(image, customScheme, libraries) {
 
     /**

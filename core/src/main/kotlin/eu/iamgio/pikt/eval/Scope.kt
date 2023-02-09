@@ -1,7 +1,7 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.Pixel
-import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.lib.Libraries
 import eu.iamgio.pikt.lib.LibrariesColors
 import eu.iamgio.pikt.statement.Statement
 
@@ -96,21 +96,20 @@ data class Scope(private val parent: Scope?, val owner: Statement?, private val 
          * @param librariesColors function-color links
          * @return the main scope of the program
          */
-        fun buildMainScope(libraries: List<JarLibrary>, librariesColors: LibrariesColors): Scope {
+        fun buildMainScope(libraries: Libraries, librariesColors: LibrariesColors): Scope {
             val scope = Scope(parent = null, owner = null)
             libraries.forEach { library ->
                 // Classes and functions from libraries are looked up.
-                val helper = library.reflectionHelper()
-                helper.getAllMethods().forEach { method ->
+                library.getFunctions().forEach { function ->
                     // The colors linked to the function are retrieved, if they exist.
-                    librariesColors.getColorsFor(method.name)?.colors?.forEach { hex ->
+                    librariesColors.getColorsFor(function.name)?.colors?.forEach { hex ->
                         // The linked function member is created or updated.
-                        val function = scope[hex] as? FunctionMember
-                            ?: FunctionMember(method.name, overloads = mutableListOf(), isLibraryFunction = true)
+                        val member = scope[hex] as? FunctionMember
+                            ?: FunctionMember(function.name, overloads = mutableListOf(), isLibraryFunction = true)
                         // A function overload is created out of a reflection method.
-                        function.overloads += helper.createFunctionOverload(method)
+                        member.overloads += function.createFunctionOverload()
                         // The function is pushed to the scope.
-                        scope.push(hex, function)
+                        scope.push(hex, member)
                     }
                 }
             }

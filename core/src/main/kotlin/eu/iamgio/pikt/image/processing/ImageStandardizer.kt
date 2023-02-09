@@ -4,7 +4,7 @@ import eu.iamgio.pikt.image.Color
 import eu.iamgio.pikt.image.clone
 import eu.iamgio.pikt.image.readLineByLine
 import eu.iamgio.pikt.image.rgbToHex
-import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.lib.Libraries
 import java.awt.image.BufferedImage
 import java.util.*
 
@@ -19,7 +19,7 @@ import java.util.*
 class ImageStandardizer(
     image: BufferedImage,
     customScheme: Properties,
-    libraries: List<JarLibrary>
+    libraries: Libraries
 ) : ImageSchemeProcessing(image, customScheme, libraries) {
 
     override fun process(): BufferedImage {

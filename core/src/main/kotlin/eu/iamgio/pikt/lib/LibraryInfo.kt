@@ -7,7 +7,6 @@ import java.util.*
  *
  * @param `package` package to import
  * @param prefix color scheme prefix
- * @see LIBRARY_INFO_NAME
  * @author Giorgio Garofalo
  */
 data class LibraryInfo(

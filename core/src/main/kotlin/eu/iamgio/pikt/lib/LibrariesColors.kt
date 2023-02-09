@@ -3,6 +3,11 @@ package eu.iamgio.pikt.lib
 import eu.iamgio.pikt.properties.ColorsProperty
 
 /**
+ * Prefix of library members within a color scheme.
+ */
+const val LIBRARY_COLOR_SCHEME_KEY_PREFIX = "lib."
+
+/**
  * A bridge between library symbols (Kotlin) and their colors.
  *
  * @author Giorgio Garofalo
@@ -42,7 +47,7 @@ class LibrariesColors {
     }
 
     /**
-     * Generates a name=colors map for a given properties sub-section specified by [prefix].
+     * Generates a name=colors map for a given properties subsection specified by [prefix].
      *
      * Example:
      * ```
@@ -56,7 +61,7 @@ class LibrariesColors {
      * `{property1=colors1, property2=colors2}`
      *
      * @param keys color properties keys
-     * @param prefix sub-section prefix
+     * @param prefix subsection prefix
      * @param get function getting color value from key
      * @return standard library color scheme
      */

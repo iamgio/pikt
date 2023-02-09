@@ -2,7 +2,7 @@ package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.image.PixelReader
-import eu.iamgio.pikt.lib.JarLibrary
+import eu.iamgio.pikt.lib.Libraries
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.statement.Statement
@@ -121,7 +121,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
      * Imports library functions.
      * @param libraries loaded libraries
      */
-    fun insertImports(libraries: List<JarLibrary>) {
+    fun insertImports(libraries: Libraries) {
         val imports = buildString {
             libraries.forEach { library ->
                 append("import ${library.info.`package`}.*\n")
