@@ -95,10 +95,13 @@ class JarLibrary(private val libraryJar: ZipFile) : Library {
                 .filterNot { it.fileName.endsWith("/") }
                 // Copying the resource to the target file.
                 .forEach { header ->
-                    val inputStream = libraryJar.getInputStream(header)
-                    val parameters = ZipParameters().apply { fileNameInZip = header.fileName; isIncludeRootFolder = true }
-                    targetJar.addStream(inputStream, parameters)
-                    inputStream.close()
+                    libraryJar.getInputStream(header).use {
+                        val parameters = ZipParameters().apply {
+                            fileNameInZip = header.fileName
+                            isIncludeRootFolder = true
+                        }
+                        targetJar.addStream(it, parameters)
+                    }
                 }
     }
 }
