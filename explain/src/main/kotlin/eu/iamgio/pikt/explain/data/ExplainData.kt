@@ -1,6 +1,6 @@
 package eu.iamgio.pikt.explain.data
 
-import eu.iamgio.pikt.explain.SourceImage
+import eu.iamgio.pikt.explain.image.SourceImage
 
 /**
  * Data needed for code explanation.
