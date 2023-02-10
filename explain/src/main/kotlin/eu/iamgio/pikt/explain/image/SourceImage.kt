@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage
  * @param image image data
  * @author Giorgio Garofalo
  */
-class SourceImage(private val image: BufferedImage) {
+class SourceImage(val image: BufferedImage) {
 
     /**
      * Image width.
@@ -21,4 +21,8 @@ class SourceImage(private val image: BufferedImage) {
      */
     val height: Int
         get() = image.height
+
+    fun scale(scaling: ImageScaling, factor: Int): SourceImage {
+        return SourceImage(scaling.scale(this.image, factor))
+    }
 }
