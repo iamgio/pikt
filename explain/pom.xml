@@ -54,6 +54,10 @@
                         <manifest>
                             <mainClass>eu.iamgio.pikt.explain.ExplainKt</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <!-- Dependency to the core jar is resolved at runtime -->
+                            <Class-Path>./pikt.jar</Class-Path>
+                        </manifestEntries>
                     </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -73,4 +77,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.iamgio.pikt</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
