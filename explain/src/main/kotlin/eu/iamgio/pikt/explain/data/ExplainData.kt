@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.explain.data
 
 import eu.iamgio.pikt.explain.image.SourceImage
+import eu.iamgio.pikt.properties.Properties
 
 /**
  * Data needed for code explanation.
@@ -12,4 +13,4 @@ import eu.iamgio.pikt.explain.image.SourceImage
 data class ExplainData(
         val image: SourceImage,
         val codeLines: List<String>
-)
+) : Properties
