@@ -17,29 +17,24 @@ object ExplainDataParser {
     private const val DEFAULT_CODE = "" // Human-readable code for explanation.
 
     /**
-     * @param rawData raw data
+     * @param data raw data
      * @return parsed data
      * @throws IllegalArgumentException if required data is missing
      * @throws IOException if the image could not be read
      */
-    fun parse(rawData: RawExplainData): ExplainData {
-        if(rawData.sourceImagePath == null) {
+    fun parse(data: RawExplainData): ExplainData {
+        if(data.sourceImagePath == null) {
             throw IllegalArgumentException("Source image is missing.")
         }
 
-        val image = this.sourceImage(rawData.sourceImagePath)
+        val image = this.sourceImage(data.sourceImagePath)
                 ?: throw IOException("An error occurred while reading the source image.")
 
         return ExplainData(
                 image,
-                output = this.outputImage(rawData.outputImagePath ?: DEFAULT_OUTPUT_NAME),
-                codeLines = this.codeSource(rawData.codeSource).getCodeLines(rawData.code ?: DEFAULT_CODE),
-                imageSpecs = this.imageSpecs(
-                        rawData.imageBackgroundColor,
-                        rawData.imageLineHeight,
-                        rawData.imageSeparatorColor,
-                        rawData.imageSeparatorSize
-                )
+                output = this.outputImage(data.outputImagePath ?: DEFAULT_OUTPUT_NAME),
+                codeLines = this.codeSource(data.codeSource).getCodeLines(data.code ?: DEFAULT_CODE),
+                imageSpecs = this.imageSpecs(data)
         )
     }
 
@@ -61,17 +56,15 @@ object ExplainDataParser {
         return string?.let { Color.decode(it) }
     }
 
-    private fun imageSpecs(
-            backgroundColor: String?,
-            lineHeight: String?,
-            separatorColor: String?,
-            separatorSize: String?
-    ): ImageSpecsData = with(ImageSpecsData.Defaults) {
+    private fun imageSpecs(data: RawExplainData): ImageSpecsData = with(ImageSpecsData.Defaults) {
         ImageSpecsData(
-                backgroundColor = parseColor(backgroundColor) ?: BACKGROUND_COLOR,
-                lineHeight = lineHeight?.toIntOrNull() ?: LINE_HEIGHT,
-                separatorColor = parseColor(separatorColor) ?: SEPARATOR_COLOR,
-                separatorSize = separatorSize?.toIntOrNull() ?: SEPARATOR_SIZE
+                backgroundColor = parseColor(data.imageBackgroundColor) ?: BACKGROUND_COLOR,
+                lineHeight = data.imageLineHeight?.toIntOrNull() ?: LINE_HEIGHT,
+                textColor = parseColor(data.imageTextColor) ?: TEXT_COLOR,
+                fontFamily = data.imageFontFamily ?: FONT_FAMILY,
+                fontSize = data.imageFontSize?.toIntOrNull() ?: FONT_SIZE,
+                separatorColor = parseColor(data.imageSeparatorColor) ?: SEPARATOR_COLOR,
+                separatorSize = data.imageSeparatorColor?.toIntOrNull() ?: SEPARATOR_SIZE,
         )
     }
 }

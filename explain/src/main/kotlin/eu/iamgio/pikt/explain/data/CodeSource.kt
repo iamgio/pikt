@@ -15,10 +15,10 @@ sealed interface CodeSource {
 }
 
 /**
- * A code retriever directly from source.
+ * A code retriever directly from text.
  */
 object PlainTextCodeSource : CodeSource {
     override fun getCodeLines(codeSource: String): List<String> {
-        return codeSource.lines()
+        return codeSource.replace("\\n", "\n").lines()
     }
 }

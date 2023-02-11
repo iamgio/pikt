@@ -2,12 +2,16 @@ package eu.iamgio.pikt.explain.data
 
 import eu.iamgio.pikt.properties.Properties
 import java.awt.Color
+import java.awt.Font
 
 /**
  * Values that change the look of the output image.
  * 
  * @param backgroundColor background color of the image
  * @param lineHeight height (scale) of a pixel of the source image
+ * @param textColor default code text color
+ * @param fontFamily font family of the code text
+ * @param fontSize font size of the code text
  * @param separatorColor color of the line separators
  * @param separatorSize height of the line separators
  * @author Giorgio Garofalo
@@ -15,6 +19,9 @@ import java.awt.Color
 data class ImageSpecsData(
         val backgroundColor: Color,
         val lineHeight: Int,
+        val textColor: Color,
+        val fontFamily: String,
+        val fontSize: Int,
         val separatorColor: Color,
         val separatorSize: Int,
 ) : Properties {
@@ -33,6 +40,21 @@ data class ImageSpecsData(
          * Default value for [ImageSpecsData.lineHeight].
          */
         const val LINE_HEIGHT = 30
+
+        /**
+         * Default value for [ImageSpecsData.textColor]
+         */
+        val TEXT_COLOR: Color = Color.WHITE
+
+        /**
+         * Default value for [ImageSpecsData.fontFamily]
+         */
+        const val FONT_FAMILY = Font.MONOSPACED
+
+        /**
+         * Default value for [ImageSpecsData.fontSize]
+         */
+        const val FONT_SIZE = 18
 
         /**
          * Default value for [ImageSpecsData.separatorColor].

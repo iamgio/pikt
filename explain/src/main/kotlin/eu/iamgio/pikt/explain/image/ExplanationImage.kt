@@ -1,11 +1,18 @@
 package eu.iamgio.pikt.explain.image
 
 import eu.iamgio.pikt.explain.data.ImageSpecsData
+import java.awt.Font
 import java.awt.Graphics2D
+import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 
 // This will be removed and automatically generated depending on code length.
 private const val IMAGE_WIDTH = 500
+
+/**
+ * Value to add to the Y coordinate of each line of code to have aligned text.
+ */
+private const val TEXT_Y_OFFSET = 5
 
 /**
  * The final image that contains human-readable explanation of a Pikt source.
@@ -59,6 +66,22 @@ class ExplanationImage(
     }
 
     /**
+     * Draws the content of [codeLines].
+     */
+    private fun drawCode() {
+        this.graphics.font = Font(this.imageSpecs.fontFamily, Font.BOLD, this.imageSpecs.fontSize)
+        this.graphics.color = this.imageSpecs.textColor
+
+        this.codeLines.forEachIndexed { index, line ->
+            this.graphics.drawString(
+                    line,
+                    this.sourceImage.width + this.imageSpecs.lineHeight / 2,
+                    index * this.imageSpecs.lineHeight + this.imageSpecs.lineHeight / 2 + TEXT_Y_OFFSET
+            )
+        }
+    }
+
+    /**
      * Generates the explanation image.
      * @return the output image that contains the [sourceImage]
      *  and its human-readable explanation.
@@ -68,10 +91,12 @@ class ExplanationImage(
         this.width = image.width
         this.height = image.height
         this.graphics = image.createGraphics()
+        this.graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB)
 
         this.drawBackground()
         this.drawSeparatorLines()
         this.drawSourceImage()
+        this.drawCode()
 
         return image
     }
