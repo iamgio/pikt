@@ -2,6 +2,8 @@ package eu.iamgio.pikt.explain.data
 
 import eu.iamgio.pikt.explain.image.SourceImage
 import eu.iamgio.pikt.explain.image.SourceImageFactory
+import java.awt.Color
+import java.io.IOException
 
 /**
  * Converter from raw explanation data to parsed one.
@@ -14,7 +16,7 @@ object ExplainDataParser {
      * @param rawData raw data
      * @return parsed data
      * @throws IllegalArgumentException if required data is missing
-     * @throws IllegalStateException if the image could not be read
+     * @throws IOException if the image could not be read
      */
     fun parse(rawData: RawExplainData): ExplainData {
         if(rawData.sourceImagePath == null) {
@@ -22,11 +24,12 @@ object ExplainDataParser {
         }
 
         val image = this.sourceImage(rawData.sourceImagePath)
-                ?: throw IllegalStateException("An error occurred while reading the source image.")
+                ?: throw IOException("An error occurred while reading the source image.")
 
         return ExplainData(
                 image,
-                codeLines = this.codeSource(rawData.codeSource).getCodeLines(rawData.code ?: "")
+                codeLines = this.codeSource(rawData.codeSource).getCodeLines(rawData.code ?: ""),
+                imageSpecs = this.imageSpecs(rawData.imageBackgroundColor, rawData.imageLineHeight)
         )
     }
 
@@ -38,5 +41,12 @@ object ExplainDataParser {
         "plain" -> PlainTextCodeSource
         // TODO text file path
         else -> PlainTextCodeSource
+    }
+
+    private fun imageSpecs(backgroundColor: String?, lineHeight: String?): ImageSpecsData {
+        return ImageSpecsData(
+                backgroundColor = backgroundColor?.let { Color.decode(it) } ?: ImageSpecsData.Defaults.BACKGROUND_COLOR,
+                lineHeight = lineHeight?.toIntOrNull() ?: ImageSpecsData.Defaults.LINE_HEIGHT
+        )
     }
 }

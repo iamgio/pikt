@@ -8,9 +8,11 @@ import eu.iamgio.pikt.properties.Properties
  *
  * @param image source Pikt image
  * @param codeLines lines of explanation code
+ * @param imageSpecs style of the output image
  * @author Giorgio Garofalo
  */
 data class ExplainData(
         val image: SourceImage,
-        val codeLines: List<String>
+        val codeLines: List<String>,
+        val imageSpecs: ImageSpecsData
 ) : Properties
