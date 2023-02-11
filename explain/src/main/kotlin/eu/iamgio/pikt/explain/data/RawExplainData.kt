@@ -14,6 +14,7 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  */
 data class RawExplainData(
         val sourceImagePath: String?,
+        val outputImagePath: String?,
         val codeSource: String?,
         val code: String?,
         val imageBackgroundColor: String?,
@@ -28,6 +29,7 @@ data class RawExplainData(
 object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainData> {
 
     private const val PROPERTY_SOURCE_IMAGE = "source"
+    private const val PROPERTY_OUTPUT_IMAGE = "out"
     private const val PROPERTY_CODE_SOURCE = "codesrc"
     private const val PROPERTY_CODE = "code"
     private const val PROPERTY_BACKGROUND_COLOR = "imgbg"
@@ -35,6 +37,7 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
 
     override fun retrieve() = RawExplainData(
             sourceImagePath = System.getProperty(PROPERTY_SOURCE_IMAGE),
+            outputImagePath = System.getProperty(PROPERTY_OUTPUT_IMAGE),
             codeSource = System.getProperty(PROPERTY_CODE_SOURCE),
             code = System.getProperty(PROPERTY_CODE),
             imageBackgroundColor = System.getProperty(PROPERTY_BACKGROUND_COLOR),

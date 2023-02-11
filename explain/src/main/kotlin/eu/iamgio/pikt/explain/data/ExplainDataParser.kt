@@ -3,6 +3,7 @@ package eu.iamgio.pikt.explain.data
 import eu.iamgio.pikt.explain.image.SourceImage
 import eu.iamgio.pikt.explain.image.SourceImageFactory
 import java.awt.Color
+import java.io.File
 import java.io.IOException
 
 /**
@@ -11,6 +12,9 @@ import java.io.IOException
  * @author Giorgio Garofalo
  */
 object ExplainDataParser {
+
+    private const val DEFAULT_OUTPUT_NAME = "explain.png"
+    private const val DEFAULT_CODE = "" // Human-readable code for explanation.
 
     /**
      * @param rawData raw data
@@ -28,13 +32,18 @@ object ExplainDataParser {
 
         return ExplainData(
                 image,
-                codeLines = this.codeSource(rawData.codeSource).getCodeLines(rawData.code ?: ""),
+                output = this.outputImage(rawData.outputImagePath ?: DEFAULT_OUTPUT_NAME),
+                codeLines = this.codeSource(rawData.codeSource).getCodeLines(rawData.code ?: DEFAULT_CODE),
                 imageSpecs = this.imageSpecs(rawData.imageBackgroundColor, rawData.imageLineHeight)
         )
     }
 
     private fun sourceImage(sourceImagePath: String): SourceImage? {
         return SourceImageFactory.fromPath(sourceImagePath)
+    }
+
+    private fun outputImage(outputImagePath: String): File {
+        return File(outputImagePath)
     }
 
     private fun codeSource(codeSource: String?): CodeSource = when(codeSource) {
