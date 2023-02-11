@@ -1,6 +1,8 @@
 package eu.iamgio.pikt.explain.image
 
 import eu.iamgio.pikt.explain.data.ImageSpecsData
+import java.awt.Color
+import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 // This will be removed and automatically generated depending on code length.
@@ -19,10 +21,40 @@ class ExplanationImage(
         private val codeLines: List<String>,
         private val imageSpecs: ImageSpecsData
 ) {
+
+    // Width and height of the output image, set during the generation.
+    private var width = 0
+    private var height = 0
+
     /**
-     * The image being generated.
+     * Graphics of the image being generated.
      */
-    private lateinit var image: BufferedImage
+    private lateinit var graphics: Graphics2D
+
+    /**
+     * Fills the image with [ImageSpecsData.backgroundColor].
+     */
+    private fun drawBackground() {
+        this.graphics.background = this.imageSpecs.backgroundColor
+        this.graphics.clearRect(0, 0, this.width, this.height)
+    }
+
+    /**
+     * Drawing lines with a spacing of [ImageSpecsData.lineHeight].
+     */
+    private fun drawSeparatorLines() {
+        this.graphics.color = Color.WHITE
+        for(y in this.imageSpecs.lineHeight until this.height step this.imageSpecs.lineHeight) {
+            this.graphics.fillRect(0, y, this.width, 1) // TODO customize separator height
+        }
+    }
+
+    /**
+     * Draws the [sourceImage].
+     */
+    private fun drawSourceImage() {
+        this.graphics.drawImage(this.sourceImage.image, 0, 0, null)
+    }
 
     /**
      * Generates the explanation image.
@@ -30,7 +62,13 @@ class ExplanationImage(
      *  and its human-readable explanation.
      */
     fun generate(): BufferedImage {
-        this.image = BufferedImage(IMAGE_WIDTH, this.sourceImage.height, BufferedImage.TYPE_INT_RGB)
+        val image = BufferedImage(IMAGE_WIDTH, this.sourceImage.height, BufferedImage.TYPE_INT_RGB)
+        this.width = image.width
+        this.height = image.height
+        this.graphics = image.createGraphics()
+        this.drawBackground()
+        this.drawSeparatorLines()
+        this.drawSourceImage()
         return image
     }
 }
