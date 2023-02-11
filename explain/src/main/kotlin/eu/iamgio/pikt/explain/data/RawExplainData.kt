@@ -8,8 +8,15 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  *  to be turned to parsed [ExplainData].
  *
  * @param sourceImagePath path to the source Pikt image
+ * @param outputImagePath path to the output image file
  * @param codeSource strategy used to get code
  * @param code text code. Its parsing depends on the [codeSource]
+ * @param imageBackgroundColor background color of the output image
+ * @param imageLineHeight height of a pixel from the source image
+ * @param imageSeparatorColor color of the line separators
+ * @param imageSeparatorSize height of the line separators
+ * @see ExplainData
+ * @see ImageSpecsData
  * @author Giorgio Garofalo
  */
 data class RawExplainData(
@@ -19,6 +26,8 @@ data class RawExplainData(
         val code: String?,
         val imageBackgroundColor: String?,
         val imageLineHeight: String?,
+        val imageSeparatorColor: String?,
+        val imageSeparatorSize: String?
 ) : Properties
 
 /**
@@ -34,6 +43,8 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     private const val PROPERTY_CODE = "code"
     private const val PROPERTY_BACKGROUND_COLOR = "imgbg"
     private const val PROPERTY_LINE_HEIGHT = "imglineheight"
+    private const val PROPERTY_SEPARATOR_COLOR = "imgseparatorcolor"
+    private const val PROPERTY_SEPARATOR_SIZE = "imgseparatorsize"
 
     override fun retrieve() = RawExplainData(
             sourceImagePath = System.getProperty(PROPERTY_SOURCE_IMAGE),
@@ -41,6 +52,8 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
             codeSource = System.getProperty(PROPERTY_CODE_SOURCE),
             code = System.getProperty(PROPERTY_CODE),
             imageBackgroundColor = System.getProperty(PROPERTY_BACKGROUND_COLOR),
-            imageLineHeight = System.getProperty(PROPERTY_LINE_HEIGHT)
+            imageLineHeight = System.getProperty(PROPERTY_LINE_HEIGHT),
+            imageSeparatorColor = System.getProperty(PROPERTY_SEPARATOR_COLOR),
+            imageSeparatorSize = System.getProperty(PROPERTY_SEPARATOR_SIZE)
     )
 }

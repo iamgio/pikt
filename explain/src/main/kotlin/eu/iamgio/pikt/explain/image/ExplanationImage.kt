@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.explain.image
 
 import eu.iamgio.pikt.explain.data.ImageSpecsData
-import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
@@ -43,9 +42,12 @@ class ExplanationImage(
      * Drawing lines with a spacing of [ImageSpecsData.lineHeight].
      */
     private fun drawSeparatorLines() {
-        this.graphics.color = Color.WHITE
+        this.graphics.color = this.imageSpecs.separatorColor
         for(y in this.imageSpecs.lineHeight until this.height step this.imageSpecs.lineHeight) {
-            this.graphics.fillRect(0, y, this.width, 1) // TODO customize separator height
+            this.graphics.fillRect(
+                    0, y - this.imageSpecs.separatorSize / 2,
+                    this.width, this.imageSpecs.separatorSize
+            )
         }
     }
 
@@ -66,9 +68,11 @@ class ExplanationImage(
         this.width = image.width
         this.height = image.height
         this.graphics = image.createGraphics()
+
         this.drawBackground()
         this.drawSeparatorLines()
         this.drawSourceImage()
+
         return image
     }
 }

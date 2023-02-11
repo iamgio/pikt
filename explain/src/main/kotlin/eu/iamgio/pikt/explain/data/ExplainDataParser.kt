@@ -34,7 +34,12 @@ object ExplainDataParser {
                 image,
                 output = this.outputImage(rawData.outputImagePath ?: DEFAULT_OUTPUT_NAME),
                 codeLines = this.codeSource(rawData.codeSource).getCodeLines(rawData.code ?: DEFAULT_CODE),
-                imageSpecs = this.imageSpecs(rawData.imageBackgroundColor, rawData.imageLineHeight)
+                imageSpecs = this.imageSpecs(
+                        rawData.imageBackgroundColor,
+                        rawData.imageLineHeight,
+                        rawData.imageSeparatorColor,
+                        rawData.imageSeparatorSize
+                )
         )
     }
 
@@ -52,10 +57,21 @@ object ExplainDataParser {
         else -> PlainTextCodeSource
     }
 
-    private fun imageSpecs(backgroundColor: String?, lineHeight: String?): ImageSpecsData {
-        return ImageSpecsData(
-                backgroundColor = backgroundColor?.let { Color.decode(it) } ?: ImageSpecsData.Defaults.BACKGROUND_COLOR,
-                lineHeight = lineHeight?.toIntOrNull() ?: ImageSpecsData.Defaults.LINE_HEIGHT
+    private fun parseColor(string: String?): Color? {
+        return string?.let { Color.decode(it) }
+    }
+
+    private fun imageSpecs(
+            backgroundColor: String?,
+            lineHeight: String?,
+            separatorColor: String?,
+            separatorSize: String?
+    ): ImageSpecsData = with(ImageSpecsData.Defaults) {
+        ImageSpecsData(
+                backgroundColor = parseColor(backgroundColor) ?: BACKGROUND_COLOR,
+                lineHeight = lineHeight?.toIntOrNull() ?: LINE_HEIGHT,
+                separatorColor = parseColor(separatorColor) ?: SEPARATOR_COLOR,
+                separatorSize = separatorSize?.toIntOrNull() ?: SEPARATOR_SIZE
         )
     }
 }

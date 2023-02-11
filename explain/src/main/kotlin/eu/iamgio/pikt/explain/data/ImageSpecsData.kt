@@ -8,11 +8,15 @@ import java.awt.Color
  * 
  * @param backgroundColor background color of the image
  * @param lineHeight height (scale) of a pixel of the source image
+ * @param separatorColor color of the line separators
+ * @param separatorSize height of the line separators
  * @author Giorgio Garofalo
  */
 data class ImageSpecsData(
         val backgroundColor: Color,
         val lineHeight: Int,
+        val separatorColor: Color,
+        val separatorSize: Int,
 ) : Properties {
 
     /**
@@ -28,6 +32,16 @@ data class ImageSpecsData(
         /**
          * Default value for [ImageSpecsData.lineHeight].
          */
-        const val LINE_HEIGHT = 10
+        const val LINE_HEIGHT = 30
+
+        /**
+         * Default value for [ImageSpecsData.separatorColor].
+         */
+        val SEPARATOR_COLOR: Color = Color(1F, 1F, 1F, .1F)
+
+        /**
+         * Default value for [ImageSpecsData.separatorSize].
+         */
+        const val SEPARATOR_SIZE = 2
     }
 }
