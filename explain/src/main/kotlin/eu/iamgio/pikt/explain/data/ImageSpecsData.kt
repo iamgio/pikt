@@ -6,7 +6,8 @@ import java.awt.Font
 
 /**
  * Values that change the look of the output image.
- * 
+ *
+ * @param width optional width of the image
  * @param backgroundColor background color of the image
  * @param lineHeight height (scale) of a pixel of the source image
  * @param textColor default code text color
@@ -17,13 +18,14 @@ import java.awt.Font
  * @author Giorgio Garofalo
  */
 data class ImageSpecsData(
-        val backgroundColor: Color,
-        val lineHeight: Int,
-        val textColor: Color,
-        val fontFamily: String,
-        val fontSize: Int,
-        val separatorColor: Color,
-        val separatorSize: Int,
+    val width: Int?,
+    val backgroundColor: Color,
+    val lineHeight: Int,
+    val textColor: Color,
+    val fontFamily: String,
+    val fontSize: Int,
+    val separatorColor: Color,
+    val separatorSize: Int,
 ) : Properties {
 
     /**

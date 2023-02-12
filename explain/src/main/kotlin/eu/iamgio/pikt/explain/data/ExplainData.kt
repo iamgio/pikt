@@ -14,8 +14,8 @@ import java.io.File
  * @author Giorgio Garofalo
  */
 data class ExplainData(
-        val image: SourceImage,
-        val output: File,
-        val codeLines: List<String>,
-        val imageSpecs: ImageSpecsData
+    val image: SourceImage,
+    val output: File,
+    val codeLines: List<String>,
+    val imageSpecs: ImageSpecsData
 ) : Properties

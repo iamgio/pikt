@@ -11,6 +11,7 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  * @param outputImagePath path to the output image file
  * @param codeSource strategy used to get code
  * @param code text code. Its parsing depends on the [codeSource]
+ * @param imageWidth optional width of the output image
  * @param imageBackgroundColor background color of the output image
  * @param imageLineHeight height of a pixel from the source image
  * @param imageTextColor default code text color
@@ -23,17 +24,18 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  * @author Giorgio Garofalo
  */
 data class RawExplainData(
-        val sourceImagePath: String?,
-        val outputImagePath: String?,
-        val codeSource: String?,
-        val code: String?,
-        val imageBackgroundColor: String?,
-        val imageLineHeight: String?,
-        val imageTextColor: String?,
-        val imageFontFamily: String?,
-        val imageFontSize: String?,
-        val imageSeparatorColor: String?,
-        val imageSeparatorSize: String?
+    val sourceImagePath: String?,
+    val outputImagePath: String?,
+    val codeSource: String?,
+    val code: String?,
+    val imageWidth: String?,
+    val imageBackgroundColor: String?,
+    val imageLineHeight: String?,
+    val imageTextColor: String?,
+    val imageFontFamily: String?,
+    val imageFontSize: String?,
+    val imageSeparatorColor: String?,
+    val imageSeparatorSize: String?
 ) : Properties
 
 /**
@@ -47,6 +49,7 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     private const val PROPERTY_OUTPUT_IMAGE = "out"
     private const val PROPERTY_CODE_SOURCE = "codesrc"
     private const val PROPERTY_CODE = "code"
+    private const val PROPERTY_IMAGE_WIDTH = "imgwidth"
     private const val PROPERTY_BACKGROUND_COLOR = "imgbg"
     private const val PROPERTY_LINE_HEIGHT = "imglineheight"
     private const val PROPERTY_TEXT_COLOR = "imgtextcolor"
@@ -56,16 +59,17 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     private const val PROPERTY_SEPARATOR_SIZE = "imgseparatorsize"
 
     override fun retrieve() = RawExplainData(
-            sourceImagePath = System.getProperty(PROPERTY_SOURCE_IMAGE),
-            outputImagePath = System.getProperty(PROPERTY_OUTPUT_IMAGE),
-            codeSource = System.getProperty(PROPERTY_CODE_SOURCE),
-            code = System.getProperty(PROPERTY_CODE),
-            imageBackgroundColor = System.getProperty(PROPERTY_BACKGROUND_COLOR),
-            imageLineHeight = System.getProperty(PROPERTY_LINE_HEIGHT),
-            imageTextColor = System.getProperty(PROPERTY_TEXT_COLOR),
-            imageFontFamily = System.getProperty(PROPERTY_FONT_FAMILY),
-            imageFontSize = System.getProperty(PROPERTY_FONT_SIZE),
-            imageSeparatorColor = System.getProperty(PROPERTY_SEPARATOR_COLOR),
-            imageSeparatorSize = System.getProperty(PROPERTY_SEPARATOR_SIZE)
+        sourceImagePath = System.getProperty(PROPERTY_SOURCE_IMAGE),
+        outputImagePath = System.getProperty(PROPERTY_OUTPUT_IMAGE),
+        codeSource = System.getProperty(PROPERTY_CODE_SOURCE),
+        code = System.getProperty(PROPERTY_CODE),
+        imageWidth = System.getProperty(PROPERTY_IMAGE_WIDTH),
+        imageBackgroundColor = System.getProperty(PROPERTY_BACKGROUND_COLOR),
+        imageLineHeight = System.getProperty(PROPERTY_LINE_HEIGHT),
+        imageTextColor = System.getProperty(PROPERTY_TEXT_COLOR),
+        imageFontFamily = System.getProperty(PROPERTY_FONT_FAMILY),
+        imageFontSize = System.getProperty(PROPERTY_FONT_SIZE),
+        imageSeparatorColor = System.getProperty(PROPERTY_SEPARATOR_COLOR),
+        imageSeparatorSize = System.getProperty(PROPERTY_SEPARATOR_SIZE)
     )
 }

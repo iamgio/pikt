@@ -28,13 +28,13 @@ object ExplainDataParser {
         }
 
         val image = this.sourceImage(data.sourceImagePath)
-                ?: throw IOException("An error occurred while reading the source image.")
+            ?: throw IOException("An error occurred while reading the source image.")
 
         return ExplainData(
-                image,
-                output = this.outputImage(data.outputImagePath ?: DEFAULT_OUTPUT_NAME),
-                codeLines = this.codeSource(data.codeSource).getCodeLines(data.code ?: DEFAULT_CODE),
-                imageSpecs = this.imageSpecs(data)
+            image,
+            output = this.outputImage(data.outputImagePath ?: DEFAULT_OUTPUT_NAME),
+            codeLines = this.codeSource(data.codeSource).getCodeLines(data.code ?: DEFAULT_CODE),
+            imageSpecs = this.imageSpecs(data)
         )
     }
 
@@ -57,13 +57,14 @@ object ExplainDataParser {
 
     private fun imageSpecs(data: RawExplainData): ImageSpecsData = with(ImageSpecsData.Defaults) {
         ImageSpecsData(
-                backgroundColor = parseColor(data.imageBackgroundColor) ?: BACKGROUND_COLOR,
-                lineHeight = data.imageLineHeight?.toIntOrNull() ?: LINE_HEIGHT,
-                textColor = parseColor(data.imageTextColor) ?: TEXT_COLOR,
-                fontFamily = data.imageFontFamily ?: FONT_FAMILY,
-                fontSize = data.imageFontSize?.toIntOrNull() ?: FONT_SIZE,
-                separatorColor = parseColor(data.imageSeparatorColor) ?: SEPARATOR_COLOR,
-                separatorSize = data.imageSeparatorColor?.toIntOrNull() ?: SEPARATOR_SIZE,
+            width = data.imageWidth?.toIntOrNull(),
+            backgroundColor = parseColor(data.imageBackgroundColor) ?: BACKGROUND_COLOR,
+            lineHeight = data.imageLineHeight?.toIntOrNull() ?: LINE_HEIGHT,
+            textColor = parseColor(data.imageTextColor) ?: TEXT_COLOR,
+            fontFamily = data.imageFontFamily ?: FONT_FAMILY,
+            fontSize = data.imageFontSize?.toIntOrNull() ?: FONT_SIZE,
+            separatorColor = parseColor(data.imageSeparatorColor) ?: SEPARATOR_COLOR,
+            separatorSize = data.imageSeparatorColor?.toIntOrNull() ?: SEPARATOR_SIZE,
         )
     }
 }

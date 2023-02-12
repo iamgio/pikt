@@ -49,12 +49,13 @@ class ExplanationImage(
     }
 
     /**
-     * Calculates the width of the image based on its content.
+     * Calculates the width of the image based on its content, or fixed if [ImageSpecsData.width] is set.
      * @param font text font
      * @return image width
      */
     private fun calcImageWidth(font: Font): Int {
-        return this.codeX + (this.codeLines.maxByOrNull { it.length }?.length?.times(font.size) ?: 0)
+        return this.imageSpecs.width
+            ?: (this.codeX + (this.codeLines.maxByOrNull { it.length }?.length?.times(font.size) ?: 0))
     }
 
     /**
