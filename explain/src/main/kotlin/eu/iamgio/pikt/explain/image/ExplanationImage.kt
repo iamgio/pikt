@@ -6,9 +6,6 @@ import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 
-// This will be removed and automatically generated depending on code length.
-private const val IMAGE_WIDTH = 500
-
 /**
  * Value to add to the Y coordinate of each line of code to have aligned text.
  */
@@ -36,6 +33,29 @@ class ExplanationImage(
      * Graphics of the image being generated.
      */
     private lateinit var graphics: Graphics2D
+
+    /**
+     * X coordinate of code text.
+     */
+    private val codeX: Int
+        get() = this.sourceImage.width + this.imageSpecs.lineHeight / 2
+
+    /**
+     * Creates the font used for text.
+     * @return the text font
+     */
+    private fun createFont(): Font {
+        return Font(this.imageSpecs.fontFamily, Font.PLAIN, this.imageSpecs.fontSize)
+    }
+
+    /**
+     * Calculates the width of the image based on its content.
+     * @param font text font
+     * @return image width
+     */
+    private fun calcImageWidth(font: Font): Int {
+        return this.codeX + (this.codeLines.maxByOrNull { it.length }?.length?.times(font.size) ?: 0)
+    }
 
     /**
      * Fills the image with [ImageSpecsData.backgroundColor].
@@ -67,15 +87,16 @@ class ExplanationImage(
 
     /**
      * Draws the content of [codeLines].
+     * @param font text font
      */
-    private fun drawCode() {
-        this.graphics.font = Font(this.imageSpecs.fontFamily, Font.BOLD, this.imageSpecs.fontSize)
+    private fun drawCode(font: Font) {
+        this.graphics.font = font
         this.graphics.color = this.imageSpecs.textColor
 
         this.codeLines.forEachIndexed { index, line ->
             this.graphics.drawString(
                     line,
-                    this.sourceImage.width + this.imageSpecs.lineHeight / 2,
+                    this.codeX,
                     index * this.imageSpecs.lineHeight + this.imageSpecs.lineHeight / 2 + TEXT_Y_OFFSET
             )
         }
@@ -87,7 +108,8 @@ class ExplanationImage(
      *  and its human-readable explanation.
      */
     fun generate(): BufferedImage {
-        val image = BufferedImage(IMAGE_WIDTH, this.sourceImage.height, BufferedImage.TYPE_INT_RGB)
+        val font = this.createFont()
+        val image = BufferedImage(this.calcImageWidth(font), this.sourceImage.height, BufferedImage.TYPE_INT_RGB)
         this.width = image.width
         this.height = image.height
         this.graphics = image.createGraphics()
@@ -96,7 +118,7 @@ class ExplanationImage(
         this.drawBackground()
         this.drawSeparatorLines()
         this.drawSourceImage()
-        this.drawCode()
+        this.drawCode(font)
 
         return image
     }
