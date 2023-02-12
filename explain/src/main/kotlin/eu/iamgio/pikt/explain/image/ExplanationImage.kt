@@ -1,7 +1,10 @@
 package eu.iamgio.pikt.explain.image
 
 import eu.iamgio.pikt.explain.data.ImageSpecsData
-import eu.iamgio.pikt.explain.image.layers.*
+import eu.iamgio.pikt.explain.image.layers.BackgroundLayer
+import eu.iamgio.pikt.explain.image.layers.CodeLayer
+import eu.iamgio.pikt.explain.image.layers.SeparatorLinesLayer
+import eu.iamgio.pikt.explain.image.layers.SourceImageLayer
 import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.RenderingHints
@@ -26,8 +29,10 @@ class ExplanationImage(
      */
     private lateinit var graphics: Graphics2D
 
-    // Text font, set during generation.
-    private lateinit var font: Font
+    /**
+     * Text font.
+     */
+    private val font: Font = this.createFont()
 
     /**
      * X coordinate of code text.
@@ -38,13 +43,12 @@ class ExplanationImage(
     /**
      * Layers to draw.
      */
-    private val layers: List<ImageLayer>
-        get() = listOf(
-            BackgroundLayer(),
-            SeparatorLinesLayer(),
-            SourceImageLayer(this.sourceImage),
-            CodeLayer(this.codeLines, this.font, this.codeX)
-        )
+    private val layers = listOf(
+        BackgroundLayer(),
+        SeparatorLinesLayer(),
+        SourceImageLayer(this.sourceImage),
+        CodeLayer(this.codeLines, this.font, this.codeX)
+    )
 
     /**
      * Creates the font used for text.
