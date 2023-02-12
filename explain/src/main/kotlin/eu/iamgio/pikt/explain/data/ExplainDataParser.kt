@@ -47,8 +47,7 @@ object ExplainDataParser {
     }
 
     private fun codeSource(codeSource: String?): CodeSource = when(codeSource) {
-        "plain" -> PlainTextCodeSource
-        // TODO text file path
+        "file" -> FileCodeSource
         else -> PlainTextCodeSource
     }
 

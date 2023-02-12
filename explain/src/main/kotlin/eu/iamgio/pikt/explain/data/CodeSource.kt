@@ -1,5 +1,7 @@
 package eu.iamgio.pikt.explain.data
 
+import java.io.File
+
 /**
  * Defines a way to retrieve code from a given input.
  *
@@ -20,5 +22,14 @@ sealed interface CodeSource {
 object PlainTextCodeSource : CodeSource {
     override fun getCodeLines(codeSource: String): List<String> {
         return codeSource.replace("\\n", "\n").lines()
+    }
+}
+
+/**
+ * A code retriever from a text file.
+ */
+object FileCodeSource : CodeSource {
+    override fun getCodeLines(codeSource: String): List<String> {
+        return File(codeSource).readLines()
     }
 }
