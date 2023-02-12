@@ -8,6 +8,13 @@ import eu.iamgio.pikt.log.Log
 import javax.imageio.ImageIO
 
 fun main() {
+    try {
+        // Accessing core's classes to check classpath.
+        Log.debug("Started")
+    } catch(e: NoClassDefFoundError) {
+        return System.err.println("Could not find pikt.jar in this directory.")
+    }
+
     val data = try {
         ExplainDataParser.parse(RawExplainDataSystemPropertiesRetriever.retrieve())
     } catch(e: Exception) {
