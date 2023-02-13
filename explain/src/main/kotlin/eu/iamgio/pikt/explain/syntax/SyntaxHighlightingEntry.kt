@@ -14,9 +14,9 @@ data class SyntaxHighlightingEntry(
 
     /**
      * @param text text to find occurrences in
-     * @return pattern match result, if it exists
+     * @return pattern match results
      */
-    fun getMatchResult(text: String): MatchResult? {
-        return this.regex.find(text)
+    fun getMatchResults(text: String): Sequence<MatchResult> {
+        return this.regex.findAll(text)
     }
 }
