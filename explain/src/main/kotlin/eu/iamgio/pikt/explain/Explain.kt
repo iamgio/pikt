@@ -22,7 +22,7 @@ fun main() {
     }
 
     val scaled = data.image.scale(PixelPerfectImageScaling, factor = data.imageSpecs.lineHeight)
-    val output = ExplanationImage(scaled, data.codeLines, data.imageSpecs)
+    val output = ExplanationImage(scaled, data.codeLines, data.syntaxHighlighting, data.imageSpecs)
 
     ImageIO.write(output.generate(), data.output.extension, data.output)
 }

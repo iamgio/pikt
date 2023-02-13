@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.explain.image.layers
 
 import eu.iamgio.pikt.explain.data.ImageSpecsData
+import eu.iamgio.pikt.explain.syntax.SyntaxHighlighting
 import java.awt.Font
 import java.awt.Graphics2D
 
@@ -17,7 +18,12 @@ private const val TEXT_Y_OFFSET = 5
  * @param x X coordinate of the text
  * @author Giorgio Garofalo
  */
-class CodeLayer(private val codeLines: List<String>, private val font: Font, private val x: Int) : ImageLayer {
+class CodeLayer(
+    private val codeLines: List<String>,
+    private val syntaxHighlighting: SyntaxHighlighting,
+    private val font: Font,
+    private val x: Int
+) : ImageLayer {
 
     override fun draw(graphics: Graphics2D, imageSpecs: ImageSpecsData, imageWidth: Int, imageHeight: Int) {
         graphics.font = this.font

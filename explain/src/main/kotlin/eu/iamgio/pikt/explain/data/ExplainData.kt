@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.explain.data
 
 import eu.iamgio.pikt.explain.image.SourceImage
+import eu.iamgio.pikt.explain.syntax.SyntaxHighlighting
 import eu.iamgio.pikt.properties.Properties
 import java.io.File
 
@@ -19,5 +20,5 @@ data class ExplainData(
     val output: File,
     val codeLines: List<String>,
     val imageSpecs: ImageSpecsData,
-    val syntaxHighlighting: Set<SyntaxHighlightingEntry>
+    val syntaxHighlighting: SyntaxHighlighting
 ) : Properties

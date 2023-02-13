@@ -1,15 +1,13 @@
-package eu.iamgio.pikt.explain.data
-
-import java.awt.Color
+package eu.iamgio.pikt.explain.syntax
 
 /**
  * A syntax highlighting rule.
  *
  * @param regex the pattern that specifies the syntax
- * @param color the color the given pattern should have
+ * @param style the style the given pattern should have
  * @author Giorgio Garofalo
  */
 data class SyntaxHighlightingEntry(
     val regex: Regex,
-    val color: Color
+    val style: SyntaxHighlightingEntryStyle
 )
