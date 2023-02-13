@@ -10,4 +10,13 @@ package eu.iamgio.pikt.explain.syntax
 data class SyntaxHighlightingEntry(
     val regex: Regex,
     val style: SyntaxHighlightingEntryStyle
-)
+) {
+
+    /**
+     * @param text text to find occurrences in
+     * @return pattern match result, if it exists
+     */
+    fun getMatchResult(text: String): MatchResult? {
+        return this.regex.find(text)
+    }
+}
