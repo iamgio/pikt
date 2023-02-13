@@ -11,11 +11,13 @@ import java.io.File
  * @param output output image file
  * @param codeLines lines of explanation code
  * @param imageSpecs style of the output image
+ * @param syntaxHighlighting syntax highlighting rules
  * @author Giorgio Garofalo
  */
 data class ExplainData(
     val image: SourceImage,
     val output: File,
     val codeLines: List<String>,
-    val imageSpecs: ImageSpecsData
+    val imageSpecs: ImageSpecsData,
+    val syntaxHighlighting: Set<SyntaxHighlightingEntry>
 ) : Properties

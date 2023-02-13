@@ -11,6 +11,7 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  * @param outputImagePath path to the output image file
  * @param codeSource strategy used to get code
  * @param code text code. Its parsing depends on the [codeSource]
+ * @param syntaxHighlighting syntax highlighting rules as pattern-color pairs
  * @param imageWidth optional width of the output image
  * @param imageBackgroundColor background color of the output image
  * @param imageLineHeight height of a pixel from the source image
@@ -28,6 +29,7 @@ data class RawExplainData(
     val outputImagePath: String?,
     val codeSource: String?,
     val code: String?,
+    val syntaxHighlighting: Map<String, String>?,
     val imageWidth: String?,
     val imageBackgroundColor: String?,
     val imageLineHeight: String?,
@@ -58,11 +60,16 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     private const val PROPERTY_SEPARATOR_COLOR = "imgseparatorcolor"
     private const val PROPERTY_SEPARATOR_SIZE = "imgseparatorsize"
 
+    // Syntax highlighting is defined via properties that begins with a prefix:
+    // -Dsyntax::MYREGEX=MYCOLOR
+    private const val SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX = "syntax::"
+
     override fun retrieve() = RawExplainData(
         sourceImagePath = System.getProperty(PROPERTY_SOURCE_IMAGE),
         outputImagePath = System.getProperty(PROPERTY_OUTPUT_IMAGE),
         codeSource = System.getProperty(PROPERTY_CODE_SOURCE),
         code = System.getProperty(PROPERTY_CODE),
+        syntaxHighlighting = this.retrieveRawSyntaxHighlighting(),
         imageWidth = System.getProperty(PROPERTY_IMAGE_WIDTH),
         imageBackgroundColor = System.getProperty(PROPERTY_BACKGROUND_COLOR),
         imageLineHeight = System.getProperty(PROPERTY_LINE_HEIGHT),
@@ -72,4 +79,18 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
         imageSeparatorColor = System.getProperty(PROPERTY_SEPARATOR_COLOR),
         imageSeparatorSize = System.getProperty(PROPERTY_SEPARATOR_SIZE)
     )
+
+    /**
+     * Converts syntax highlighting properties to pattern-color pairs.
+     * @return syntax highlighting rules as a raw pattern-color map.
+     *  For instance, `-Dsyntax::MYREGEX=MYCOLOR` is turned into a `MYREGEX-MYCOLOR` pair
+     */
+    private fun retrieveRawSyntaxHighlighting(): Map<String, String>? {
+        return System.getProperties()?.asSequence()
+            ?.filter { it.key.toString().startsWith(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX) }
+            ?.map { (pattern, color) ->
+                pattern.toString().substring(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX.length) to color.toString()
+            }
+            ?.toMap()
+    }
 }

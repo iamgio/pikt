@@ -34,7 +34,8 @@ object ExplainDataParser {
             image,
             output = this.outputImage(data.outputImagePath ?: DEFAULT_OUTPUT_NAME),
             codeLines = this.codeSource(data.codeSource).getCodeLines(data.code ?: DEFAULT_CODE),
-            imageSpecs = this.imageSpecs(data)
+            imageSpecs = this.imageSpecs(data),
+            syntaxHighlighting = this.syntaxHighlighting(data.syntaxHighlighting)
         )
     }
 
@@ -66,5 +67,11 @@ object ExplainDataParser {
             separatorColor = parseColor(data.imageSeparatorColor) ?: SEPARATOR_COLOR,
             separatorSize = data.imageSeparatorColor?.toIntOrNull() ?: SEPARATOR_SIZE,
         )
+    }
+
+    private fun syntaxHighlighting(rawSyntaxHighlighting: Map<String, String>?): Set<SyntaxHighlightingEntry> {
+        return rawSyntaxHighlighting?.asSequence()
+            ?.map { (pattern, color) -> SyntaxHighlightingEntry(pattern.toRegex(), parseColor(color)!!) }
+            ?.toSet() ?: emptySet()
     }
 }
