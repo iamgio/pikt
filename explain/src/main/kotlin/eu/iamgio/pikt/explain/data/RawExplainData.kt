@@ -64,6 +64,10 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     // -Dsyntax::MYREGEX=MYCOLOR
     private const val SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX = "syntax::"
 
+    // '=' can't be used in system property keys, so '~~' (double tilde) can be used as a substitute.
+    private const val SYNTAX_HIGHLIGHTING_EQUALS_SUBSTITUTE = "~~"
+    private const val SYNTAX_HIGHLIGHTING_EQUALS_REPLACEMENT = "="
+
     override fun retrieve() = RawExplainData(
         sourceImagePath = System.getProperty(PROPERTY_SOURCE_IMAGE),
         outputImagePath = System.getProperty(PROPERTY_OUTPUT_IMAGE),
@@ -87,9 +91,14 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
      */
     private fun retrieveRawSyntaxHighlighting(): Map<String, String>? {
         return System.getProperties()?.asSequence()
+            // Only get selected properties that begin with the given prefix.
             ?.filter { it.key.toString().startsWith(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX) }
             ?.map { (pattern, color) ->
-                pattern.toString().substring(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX.length) to color.toString()
+                pattern.toString()
+                    // Replace equals sign '=' with a supported alternative.
+                    .replace(SYNTAX_HIGHLIGHTING_EQUALS_SUBSTITUTE, SYNTAX_HIGHLIGHTING_EQUALS_REPLACEMENT)
+                    // Remove prefix.
+                    .substring(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX.length) to color.toString()
             }
             ?.toMap()
     }
