@@ -2,9 +2,7 @@ package eu.iamgio.pikt.explain.data
 
 import eu.iamgio.pikt.explain.image.SourceImage
 import eu.iamgio.pikt.explain.image.SourceImageFactory
-import eu.iamgio.pikt.explain.syntax.SyntaxHighlighting
-import eu.iamgio.pikt.explain.syntax.SyntaxHighlightingEntry
-import eu.iamgio.pikt.explain.syntax.SyntaxHighlightingEntryStyle
+import eu.iamgio.pikt.explain.syntax.*
 import java.awt.Color
 import java.io.File
 import java.io.IOException
@@ -73,13 +71,17 @@ object ExplainDataParser {
         )
     }
 
-    private fun syntaxHighlighting(rawSyntaxHighlighting: Map<String, String>?): SyntaxHighlighting {
-        val entries = rawSyntaxHighlighting?.asSequence()
-            ?.map { (pattern, color) ->
+    private fun syntaxHighlighting(rawSyntaxHighlighting: Map<String, String>): SyntaxHighlighting {
+        if(rawSyntaxHighlighting.isEmpty()) {
+            return SyntaxHighlightingFactory(DefaultSyntaxHighlightingStyleFactory).default()
+        }
+
+        val entries = rawSyntaxHighlighting.asSequence()
+            .map { (pattern, color) ->
                 val style = SyntaxHighlightingEntryStyle(parseColor(color)!!)
                 SyntaxHighlightingEntry(pattern.toRegex(), style)
-            }
-            ?.toSet() ?: emptySet()
+            }.toList()
+
         return SyntaxHighlighting(entries)
     }
 }

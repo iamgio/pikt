@@ -30,7 +30,7 @@ data class RawExplainData(
     val outputImagePath: String?,
     val codeSource: String?,
     val code: String?,
-    val syntaxHighlighting: Map<String, String>?,
+    val syntaxHighlighting: Map<String, String>,
     val imageWidth: String?,
     val imageBackgroundColor: String?,
     val imageLineHeight: String?,
@@ -93,17 +93,16 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
      * @return syntax highlighting rules as a raw pattern-color map.
      *  For instance, `-Dsyntax::MYREGEX=MYCOLOR` is turned into a `MYREGEX-MYCOLOR` pair
      */
-    private fun retrieveRawSyntaxHighlighting(): Map<String, String>? {
-        return System.getProperties()?.asSequence()
+    private fun retrieveRawSyntaxHighlighting(): Map<String, String> {
+        return System.getProperties().asSequence()
             // Only get selected properties that begin with the given prefix.
-            ?.filter { it.key.toString().startsWith(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX) }
-            ?.map { (pattern, color) ->
+            .filter { it.key.toString().startsWith(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX) }
+            .map { (pattern, color) ->
                 pattern.toString()
                     // Replace equals sign '=' with a supported alternative.
                     .replace(SYNTAX_HIGHLIGHTING_EQUALS_SUBSTITUTE, SYNTAX_HIGHLIGHTING_EQUALS_REPLACEMENT)
                     // Remove prefix.
                     .substring(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX.length) to color.toString()
-            }
-            ?.toMap()
+            }.toMap()
     }
 }
