@@ -38,7 +38,7 @@ data class ImageSpecsData(
         /**
          * Default value for [ImageSpecsData.backgroundColor].
          */
-        val BACKGROUND_COLOR: Color = Color.BLACK
+        val BACKGROUND_COLOR: Color = Color(26, 26, 26) // #1A1A1A
 
         /**
          * Default value for [ImageSpecsData.lineHeight].
