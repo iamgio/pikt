@@ -6,7 +6,12 @@ package eu.iamgio.pikt.explain.syntax
  * @param entries syntax highlighting rules
  * @author Giorgio Garofalo
  */
-class SyntaxHighlighting(private val entries: Set<SyntaxHighlightingEntry>) {
+class SyntaxHighlighting(private val entries: List<SyntaxHighlightingEntry>) {
+
+    /**
+     * @param entries syntax highlighting rules
+     */
+    constructor(vararg entries: SyntaxHighlightingEntry) : this(listOf(*entries))
 
     /**
      * @param text text to get matching groups for

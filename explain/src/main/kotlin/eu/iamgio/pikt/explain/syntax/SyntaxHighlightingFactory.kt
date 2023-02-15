@@ -11,7 +11,7 @@ class SyntaxHighlightingFactory(private val styleFactory: SyntaxHighlightingStyl
     /**
      * @return the default syntax highlighting set of rules
      */
-    fun default() = SyntaxHighlighting(setOf(
+    fun default() = SyntaxHighlighting(
         SyntaxHighlightingEntry(
             "\\{|}|->|,".toRegex(), this.styleFactory.lowRelevance()
         ),
@@ -30,5 +30,5 @@ class SyntaxHighlightingFactory(private val styleFactory: SyntaxHighlightingStyl
         SyntaxHighlightingEntry(
             "//.+".toRegex(), this.styleFactory.comment()
         ),
-    ))
+    )
 }
