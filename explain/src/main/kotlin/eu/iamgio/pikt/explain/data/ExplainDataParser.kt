@@ -65,6 +65,7 @@ object ExplainDataParser {
             backgroundColor = parseColor(data.imageBackgroundColor) ?: BACKGROUND_COLOR,
             lineHeight = data.imageLineHeight?.toIntOrNull() ?: LINE_HEIGHT,
             textColor = parseColor(data.imageTextColor) ?: TEXT_COLOR,
+            textYOffset = data.imageTextYOffset?.toIntOrNull() ?: TEXT_Y_OFFSET,
             fontFamily = data.imageFontFamily ?: FONT_FAMILY,
             fontSize = data.imageFontSize?.toIntOrNull() ?: FONT_SIZE,
             separatorColor = parseColor(data.imageSeparatorColor) ?: SEPARATOR_COLOR,

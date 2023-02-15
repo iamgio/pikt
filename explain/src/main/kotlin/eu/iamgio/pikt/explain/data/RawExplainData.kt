@@ -16,6 +16,7 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  * @param imageBackgroundColor background color of the output image
  * @param imageLineHeight height of a pixel from the source image
  * @param imageTextColor default code text color
+ * @param imageTextYOffset Y offset of the text to help aligning it
  * @param imageFontFamily font family of code text, either as its name or as a path to its file
  * @param imageFontSize font size of code text
  * @param imageSeparatorColor color of the line separators
@@ -34,6 +35,7 @@ data class RawExplainData(
     val imageBackgroundColor: String?,
     val imageLineHeight: String?,
     val imageTextColor: String?,
+    val imageTextYOffset: String?,
     val imageFontFamily: String?,
     val imageFontSize: String?,
     val imageSeparatorColor: String?,
@@ -55,6 +57,7 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     private const val PROPERTY_BACKGROUND_COLOR = "imgbg"
     private const val PROPERTY_LINE_HEIGHT = "imglineheight"
     private const val PROPERTY_TEXT_COLOR = "imgtextcolor"
+    private const val PROPERTY_TEXT_Y_OFFSET = "imgtextyoffset"
     private const val PROPERTY_FONT_FAMILY = "imgfontfamily"
     private const val PROPERTY_FONT_SIZE = "imgfontsize"
     private const val PROPERTY_SEPARATOR_COLOR = "imgseparatorcolor"
@@ -78,6 +81,7 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
         imageBackgroundColor = System.getProperty(PROPERTY_BACKGROUND_COLOR),
         imageLineHeight = System.getProperty(PROPERTY_LINE_HEIGHT),
         imageTextColor = System.getProperty(PROPERTY_TEXT_COLOR),
+        imageTextYOffset = System.getProperty(PROPERTY_TEXT_Y_OFFSET),
         imageFontFamily = System.getProperty(PROPERTY_FONT_FAMILY),
         imageFontSize = System.getProperty(PROPERTY_FONT_SIZE),
         imageSeparatorColor = System.getProperty(PROPERTY_SEPARATOR_COLOR),

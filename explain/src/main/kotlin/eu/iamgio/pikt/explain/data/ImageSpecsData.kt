@@ -11,6 +11,7 @@ import java.awt.Font
  * @param backgroundColor background color of the image
  * @param lineHeight height (scale) of a pixel of the source image
  * @param textColor default code text color
+ * @param textYOffset Y offset of the text to help aligning it
  * @param fontFamily font family of the code text, either as a name or as a path to its file
  * @param fontSize font size of the code text
  * @param separatorColor color of the line separators
@@ -22,6 +23,7 @@ data class ImageSpecsData(
     val backgroundColor: Color,
     val lineHeight: Int,
     val textColor: Color,
+    val textYOffset: Int,
     val fontFamily: String,
     val fontSize: Int,
     val separatorColor: Color,
@@ -47,6 +49,11 @@ data class ImageSpecsData(
          * Default value for [ImageSpecsData.textColor]
          */
         val TEXT_COLOR: Color = Color.WHITE
+
+        /**
+         * Default value for [ImageSpecsData.textYOffset]
+         */
+        const val TEXT_Y_OFFSET = 5
 
         /**
          * Default value for [ImageSpecsData.fontFamily]

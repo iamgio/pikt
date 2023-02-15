@@ -8,11 +8,6 @@ import java.awt.Font
 import java.awt.Graphics2D
 
 /**
- * Value to add to the Y coordinate of each line of code to have aligned text.
- */
-private const val TEXT_Y_OFFSET = 5
-
-/**
  * Character to use to calculate a font's character width.
  * Given a monospaced font, the chosen character is not relevant.
  */
@@ -38,7 +33,7 @@ class CodeLayer(
 
         this.codeLines.forEachIndexed { index, line ->
             val groups = this.syntaxHighlighting.getGroups(line)
-            val y = index * imageSpecs.lineHeight + imageSpecs.lineHeight / 2 + TEXT_Y_OFFSET
+            val y = index * imageSpecs.lineHeight + imageSpecs.lineHeight / 2 + imageSpecs.textYOffset
 
             this.drawGroups(groups, imageSpecs, y, graphics)
         }
