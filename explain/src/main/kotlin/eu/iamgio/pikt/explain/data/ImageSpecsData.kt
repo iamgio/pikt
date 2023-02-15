@@ -11,7 +11,7 @@ import java.awt.Font
  * @param backgroundColor background color of the image
  * @param lineHeight height (scale) of a pixel of the source image
  * @param textColor default code text color
- * @param fontFamily font family of the code text
+ * @param fontFamily font family of the code text, either as a name or as a path to its file
  * @param fontSize font size of the code text
  * @param separatorColor color of the line separators
  * @param separatorSize height of the line separators

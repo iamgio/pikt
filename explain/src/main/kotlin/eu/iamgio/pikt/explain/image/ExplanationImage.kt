@@ -8,8 +8,10 @@ import eu.iamgio.pikt.explain.image.layers.SourceImageLayer
 import eu.iamgio.pikt.explain.syntax.SyntaxHighlighting
 import java.awt.Font
 import java.awt.Graphics2D
+import java.awt.GraphicsEnvironment
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
+import java.io.File
 
 /**
  * The final image that contains human-readable explanation of a Pikt source.
@@ -55,10 +57,23 @@ class ExplanationImage(
 
     /**
      * Creates the font used for text.
+     * If the [ImageSpecsData.fontFamily] refers to a file, the font is loaded from that file.
      * @return the text font
      */
     private fun createFont(): Font {
-        return Font(this.imageSpecs.fontFamily, Font.PLAIN, this.imageSpecs.fontSize)
+        // Check if the font family refers to a file.
+        val fontFile = File(this.imageSpecs.fontFamily)
+
+        val fontFamily = if(fontFile.exists()) {
+            // If the font family refers to a file, register it.
+            Font.createFont(Font.TRUETYPE_FONT, fontFile).also {
+                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(it)
+            }.family
+        } else {
+            this.imageSpecs.fontFamily
+        }
+
+        return Font(fontFamily, Font.PLAIN, this.imageSpecs.fontSize)
     }
 
     /**

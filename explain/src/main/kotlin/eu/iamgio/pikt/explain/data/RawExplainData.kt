@@ -16,7 +16,7 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  * @param imageBackgroundColor background color of the output image
  * @param imageLineHeight height of a pixel from the source image
  * @param imageTextColor default code text color
- * @param imageFontFamily font family of code text
+ * @param imageFontFamily font family of code text, either as its name or as a path to its file
  * @param imageFontSize font size of code text
  * @param imageSeparatorColor color of the line separators
  * @param imageSeparatorSize height of the line separators
