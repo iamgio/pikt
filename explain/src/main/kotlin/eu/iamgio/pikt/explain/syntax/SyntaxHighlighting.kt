@@ -47,10 +47,12 @@ class SyntaxHighlighting(private val entries: Set<SyntaxHighlightingEntry>) {
         }
 
         // Step-by-step complementary.
-        groups.forEach { group ->
-            addComplementaryBeforeIndex(group.range.first)
-            lastIndex = group.range.last + 1
-        }
+        groups.asSequence()
+            .sortedBy { it.range.first }
+            .forEach { group ->
+                addComplementaryBeforeIndex(group.range.first)
+                lastIndex = group.range.last + 1
+            }
         // Remaining range.
         addComplementaryBeforeIndex(fullRange.last)
     }
