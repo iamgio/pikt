@@ -19,13 +19,20 @@ class SyntaxHighlighting(private val entries: List<SyntaxHighlightingEntry>) {
      *  where `range` refers to a range of character indexes within [text].
      */
     fun getGroups(text: String): List<SyntaxHighlightingMatch> {
+        // This string builder gets progressively emptied as matches are found.
+        val textBuilder = StringBuilder(text)
+
         // Groups with a syntax highlighting match.
         val matchGroups = this.entries.asSequence()
             .flatMap { entry ->
-                entry.getMatchResults(text).map { match ->
+                entry.getMatchResults(textBuilder).map { match ->
                     SyntaxHighlightingMatch(match.value, match.range, entry)
                 }
-            }.toList()
+            }.onEach { match ->
+                // Removing the match content fixes overlapping text from different matches.
+                match.range.forEach { textBuilder.setCharAt(it, ' ') }
+            }
+            .toList()
 
         // Groups that don't have any syntax highlighting.
         val remainingGroups = this.getComplementaryRanges(0..text.length, matchGroups)

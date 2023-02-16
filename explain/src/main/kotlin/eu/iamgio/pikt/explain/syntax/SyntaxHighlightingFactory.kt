@@ -13,10 +13,13 @@ class SyntaxHighlightingFactory(private val styleFactory: SyntaxHighlightingStyl
      */
     fun default() = SyntaxHighlighting(
         SyntaxHighlightingEntry(
+            "//.+".toRegex(), this.styleFactory.comment()
+        ),
+        SyntaxHighlightingEntry(
             "\\{|}|->|,".toRegex(), this.styleFactory.lowRelevance()
         ),
         SyntaxHighlightingEntry(
-            "var".toRegex(), this.styleFactory.keyword1()
+            "\\bvar\\b".toRegex(), this.styleFactory.keyword1()
         ),
         SyntaxHighlightingEntry(
             "\\b(if|else|return)\\b".toRegex(), this.styleFactory.keyword2()
@@ -26,9 +29,6 @@ class SyntaxHighlightingFactory(private val styleFactory: SyntaxHighlightingStyl
         ),
         SyntaxHighlightingEntry(
             "\".+?\"".toRegex(), this.styleFactory.string()
-        ),
-        SyntaxHighlightingEntry(
-            "//.+".toRegex(), this.styleFactory.comment()
         ),
     )
 }

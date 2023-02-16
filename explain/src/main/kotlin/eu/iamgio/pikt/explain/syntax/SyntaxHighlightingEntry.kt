@@ -16,7 +16,7 @@ data class SyntaxHighlightingEntry(
      * @param text text to find occurrences in
      * @return pattern match results
      */
-    fun getMatchResults(text: String): Sequence<MatchResult> {
+    fun getMatchResults(text: CharSequence): Sequence<MatchResult> {
         return this.regex.findAll(text)
     }
 }
