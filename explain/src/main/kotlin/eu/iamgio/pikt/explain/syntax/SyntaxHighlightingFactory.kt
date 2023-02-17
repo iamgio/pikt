@@ -16,6 +16,9 @@ class SyntaxHighlightingFactory(private val styleFactory: SyntaxHighlightingStyl
             "//.+".toRegex(), this.styleFactory.comment()
         ),
         SyntaxHighlightingEntry(
+            "/\\*.+?\\*/".toRegex(), this.styleFactory.comment()
+        ),
+        SyntaxHighlightingEntry(
             "\\{|}|->|,".toRegex(), this.styleFactory.lowRelevance()
         ),
         SyntaxHighlightingEntry(
