@@ -14,6 +14,11 @@ import java.awt.Graphics2D
 private const val CHAR_WIDTH_DUMMY_VALUE = ' '
 
 /**
+ * Numbers of space characters to build a tabulation.
+ */
+private const val TAB_SPACES_AMOUNT = 4
+
+/**
  * Layer with text of code.
  *
  * @param codeLines lines of code to display
@@ -32,12 +37,19 @@ class CodeLayer(
         graphics.font = this.font
 
         this.codeLines.forEachIndexed { index, line ->
-            val groups = this.syntaxHighlighting.getGroups(line)
+            val groups = this.syntaxHighlighting.getGroups(this.replaceTabs(line))
             val y = index * imageSpecs.lineHeight + imageSpecs.lineHeight / 2 + imageSpecs.textYOffset
 
             this.drawGroups(groups, imageSpecs, y, graphics)
         }
     }
+
+    /**
+     * Substitutes tabulations with an amount of spaced defined by [TAB_SPACES_AMOUNT].
+     * @param text text to substitute tabs from
+     * @return a copy of [text] with spaces instead of tabs
+     */
+    private fun replaceTabs(text: String) = text.replace("\t", " ".repeat(TAB_SPACES_AMOUNT))
 
     /**
      * Calculates the width used by a character with the given [font].
