@@ -28,7 +28,7 @@ class SyntaxHighlightingFactory(private val styleFactory: SyntaxHighlightingStyl
             "\\b(if|else|return)\\b".toRegex(), this.styleFactory.keyword2()
         ),
         SyntaxHighlightingEntry(
-            "forEach|\\b[a-zA-Z]+?(?=\\()".toRegex(), this.styleFactory.function()
+            "\\b(forEach|[a-zA-Z]+?(?=\\())".toRegex(), this.styleFactory.function()
         ),
         SyntaxHighlightingEntry(
             "\".+?\"".toRegex(), this.styleFactory.string()
