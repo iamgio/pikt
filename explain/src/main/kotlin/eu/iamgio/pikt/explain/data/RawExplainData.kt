@@ -9,8 +9,7 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  *
  * @param sourceImagePath path to the source Pikt image
  * @param outputImagePath path to the output image file
- * @param codeSource strategy used to get code
- * @param code text code. Its parsing depends on the [codeSource]
+ * @param code text code or path to code file
  * @param syntaxHighlighting syntax highlighting rules as pattern-color pairs
  * @param imageWidth optional width of the output image
  * @param imageBackgroundColor background color of the output image
@@ -28,7 +27,6 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
 data class RawExplainData(
     val sourceImagePath: String?,
     val outputImagePath: String?,
-    val codeSource: String?,
     val code: String?,
     val syntaxHighlighting: Map<String, String>,
     val imageWidth: String?,
@@ -51,7 +49,6 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
 
     private const val PROPERTY_SOURCE_IMAGE = "source"
     private const val PROPERTY_OUTPUT_IMAGE = "out"
-    private const val PROPERTY_CODE_SOURCE = "codesrc"
     private const val PROPERTY_CODE = "code"
     private const val PROPERTY_IMAGE_WIDTH = "imgwidth"
     private const val PROPERTY_BACKGROUND_COLOR = "imgbg"
@@ -74,7 +71,6 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     override fun retrieve() = RawExplainData(
         sourceImagePath = System.getProperty(PROPERTY_SOURCE_IMAGE),
         outputImagePath = System.getProperty(PROPERTY_OUTPUT_IMAGE),
-        codeSource = System.getProperty(PROPERTY_CODE_SOURCE),
         code = System.getProperty(PROPERTY_CODE),
         syntaxHighlighting = this.retrieveRawSyntaxHighlighting(),
         imageWidth = System.getProperty(PROPERTY_IMAGE_WIDTH),

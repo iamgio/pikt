@@ -33,3 +33,12 @@ object FileCodeSource : CodeSource {
         return File(codeSource).readLines()
     }
 }
+
+/**
+ * A retriever of no code.
+ */
+object EmptyCodeSource : CodeSource {
+    override fun getCodeLines(codeSource: String): List<String> {
+        return emptyList()
+    }
+}
