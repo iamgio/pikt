@@ -82,8 +82,15 @@ class ExplanationImage(
      * @return image width
      */
     private fun calcImageWidth(font: Font): Int {
-        return this.imageSpecs.width
-            ?: (this.codeX + (this.codeLines.maxByOrNull { it.length }?.length?.times(font.size) ?: 0))
+        if(this.imageSpecs.width != null) {
+            return this.imageSpecs.width
+        }
+        if(this.codeLines.isEmpty()) {
+            return this.sourceImage.width
+        }
+
+        val longestLine = this.codeLines.maxByOrNull { it.length }
+        return this.codeX + (longestLine?.length?.times(font.size) ?: 0)
     }
 
     /**
