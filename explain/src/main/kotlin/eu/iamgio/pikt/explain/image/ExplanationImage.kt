@@ -98,6 +98,14 @@ class ExplanationImage(
     }
 
     /**
+     * Enables global anti-aliasing.
+     */
+    private fun enableAntialiasing() {
+        this.graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB)
+        this.graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+    }
+
+    /**
      * Generates the explanation image.
      * @return the output image that contains the [sourceImage]
      *  and its human-readable explanation.
@@ -106,7 +114,7 @@ class ExplanationImage(
         val font = this.createFont()
         val image = BufferedImage(this.calcImageWidth(font), this.sourceImage.height, BufferedImage.TYPE_INT_RGB)
         this.graphics = image.createGraphics()
-        this.graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB)
+        this.enableAntialiasing()
 
         this.layers.forEach {
             it.draw(this.graphics, this.imageSpecs, image.width, image.height)
