@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.explain.image.layers
 
 import eu.iamgio.pikt.explain.data.ImageSpecsData
+import eu.iamgio.pikt.explain.image.calcImageCenteredTextY
 import eu.iamgio.pikt.explain.syntax.SyntaxHighlighting
 import eu.iamgio.pikt.explain.syntax.SyntaxHighlightingEntryStyle
 import eu.iamgio.pikt.explain.syntax.SyntaxHighlightingMatch
@@ -38,7 +39,7 @@ class CodeLayer(
 
         this.codeLines.forEachIndexed { index, line ->
             val groups = this.syntaxHighlighting.getGroups(this.replaceTabs(line))
-            val y = index * imageSpecs.lineHeight + imageSpecs.lineHeight / 2 + imageSpecs.textYOffset
+            val y = imageSpecs.calcImageCenteredTextY(index)
 
             this.drawGroups(groups, imageSpecs, y, graphics)
         }

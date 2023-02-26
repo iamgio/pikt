@@ -1,10 +1,8 @@
 package eu.iamgio.pikt.explain.image
 
+import eu.iamgio.pikt.explain.data.CommentData
 import eu.iamgio.pikt.explain.data.ImageSpecsData
-import eu.iamgio.pikt.explain.image.layers.BackgroundLayer
-import eu.iamgio.pikt.explain.image.layers.CodeLayer
-import eu.iamgio.pikt.explain.image.layers.SeparatorLinesLayer
-import eu.iamgio.pikt.explain.image.layers.SourceImageLayer
+import eu.iamgio.pikt.explain.image.layers.*
 import eu.iamgio.pikt.explain.syntax.SyntaxHighlighting
 import java.awt.Font
 import java.awt.Graphics2D
@@ -18,6 +16,7 @@ import java.io.File
  *
  * @param sourceImage Pikt source image, already scaled
  * @param codeLines lines of human-readable explanation code
+ * @param comments comments on the source image
  * @param syntaxHighlighting syntax highlighting rules
  * @param imageSpecs style of the image
  * @author Giorgio Garofalo
@@ -25,6 +24,7 @@ import java.io.File
 class ExplanationImage(
         private val sourceImage: SourceImage,
         private val codeLines: List<String>,
+        private val comments: List<CommentData>,
         private val syntaxHighlighting: SyntaxHighlighting,
         private val imageSpecs: ImageSpecsData
 ) {
@@ -52,7 +52,8 @@ class ExplanationImage(
         BackgroundLayer(),
         SeparatorLinesLayer(),
         SourceImageLayer(this.sourceImage),
-        CodeLayer(this.codeLines, this.syntaxHighlighting, this.font, this.codeX)
+        CodeLayer(this.codeLines, this.syntaxHighlighting, this.font, this.codeX),
+        CommentsLayer(this.comments, this.font, imageX = 0)
     )
 
     /**
