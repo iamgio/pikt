@@ -5,6 +5,7 @@ import eu.iamgio.pikt.explain.data.LineCommentData
 import eu.iamgio.pikt.explain.data.TextCommentData
 import eu.iamgio.pikt.explain.image.layers.comments.LineCommentDrawer
 import eu.iamgio.pikt.explain.image.layers.comments.TextCommentDrawer
+import java.awt.BasicStroke
 import java.awt.Font
 import java.awt.Graphics2D
 
@@ -26,9 +27,12 @@ class CommentsLayer(
     override fun draw(graphics: Graphics2D, imageSpecs: ImageSpecsData, imageWidth: Int, imageHeight: Int) {
         graphics.font = this.font
         graphics.color = imageSpecs.commentColor
+        graphics.stroke = BasicStroke(imageSpecs.lineCommentSize)
 
-        val drawers = (this.textComments.map { TextCommentDrawer(it) }
-                + this.lineComments.map { LineCommentDrawer(it) })
+        val drawers = sequenceOf(
+            this.textComments.map { TextCommentDrawer(it) },
+            this.lineComments.map { LineCommentDrawer(it) }
+        ).flatten()
 
         drawers.forEach { it.draw(graphics, imageSpecs, imageX) }
     }

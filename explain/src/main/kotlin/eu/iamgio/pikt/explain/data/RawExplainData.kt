@@ -23,6 +23,7 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  * @param imageSeparatorColor color of the line separators
  * @param imageSeparatorSize height of the line separators
  * @param imageCommentColor color of comments on the source image
+ * @param imageCommentLineSize width of line comments
  * @see ExplainData
  * @see ImageSpecsData
  * @author Giorgio Garofalo
@@ -43,7 +44,8 @@ data class RawExplainData(
     val imageFontSize: String?,
     val imageSeparatorColor: String?,
     val imageSeparatorSize: String?,
-    val imageCommentColor: String?
+    val imageCommentColor: String?,
+    val imageCommentLineSize: String?
 ) : Properties
 
 /**
@@ -66,6 +68,7 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     private const val PROPERTY_SEPARATOR_COLOR = "imgseparatorcolor"
     private const val PROPERTY_SEPARATOR_SIZE = "imgseparatorsize"
     private const val PROPERTY_COMMENT_COLOR = "imgcommentcolor"
+    private const val PROPERTY_COMMENT_LINE_SIZE = "imglinesize"
 
     // A text comment is defined via a property that begins with a prefix:
     // -Dcomment::X.Y=TEXT
@@ -102,7 +105,8 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
         imageFontSize = System.getProperty(PROPERTY_FONT_SIZE),
         imageSeparatorColor = System.getProperty(PROPERTY_SEPARATOR_COLOR),
         imageSeparatorSize = System.getProperty(PROPERTY_SEPARATOR_SIZE),
-        imageCommentColor = System.getProperty(PROPERTY_COMMENT_COLOR)
+        imageCommentColor = System.getProperty(PROPERTY_COMMENT_COLOR),
+        imageCommentLineSize = System.getProperty(PROPERTY_COMMENT_LINE_SIZE)
     )
 
     /**

@@ -70,16 +70,17 @@ object ExplainDataParser {
 
     private fun imageSpecs(data: RawExplainData): ImageSpecsData = with(ImageSpecsData.Defaults) {
         ImageSpecsData(
-            width = data.imageWidth?.toIntOrNull(),
-            backgroundColor = parseColor(data.imageBackgroundColor) ?: BACKGROUND_COLOR,
-            lineHeight = data.imageLineHeight?.toIntOrNull() ?: LINE_HEIGHT,
-            textColor = parseColor(data.imageTextColor) ?: TEXT_COLOR,
-            textYOffset = data.imageTextYOffset?.toIntOrNull() ?: TEXT_Y_OFFSET,
-            fontFamily = data.imageFontFamily ?: FONT_FAMILY,
-            fontSize = data.imageFontSize?.toIntOrNull() ?: FONT_SIZE,
-            separatorColor = parseColor(data.imageSeparatorColor) ?: SEPARATOR_COLOR,
-            separatorSize = data.imageSeparatorColor?.toIntOrNull() ?: SEPARATOR_SIZE,
-            commentColor = parseColor(data.imageCommentColor) ?: COMMENT_COLOR
+            width           = data.imageWidth?.toIntOrNull(),
+            backgroundColor = parseColor(data.imageBackgroundColor)      ?: BACKGROUND_COLOR,
+            lineHeight      = data.imageLineHeight?.toIntOrNull()        ?: LINE_HEIGHT,
+            textColor       = parseColor(data.imageTextColor)            ?: TEXT_COLOR,
+            textYOffset     = data.imageTextYOffset?.toIntOrNull()       ?: TEXT_Y_OFFSET,
+            fontFamily      = data.imageFontFamily                       ?: FONT_FAMILY,
+            fontSize        = data.imageFontSize?.toIntOrNull()          ?: FONT_SIZE,
+            separatorColor  = parseColor(data.imageSeparatorColor)       ?: SEPARATOR_COLOR,
+            separatorSize   = data.imageSeparatorColor?.toIntOrNull()    ?: SEPARATOR_SIZE,
+            commentColor    = parseColor(data.imageCommentColor)         ?: COMMENT_COLOR,
+            lineCommentSize = data.imageCommentLineSize?.toFloatOrNull() ?: COMMENT_LINE_SIZE
         )
     }
 
