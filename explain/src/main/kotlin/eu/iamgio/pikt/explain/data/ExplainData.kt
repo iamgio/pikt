@@ -11,7 +11,7 @@ import java.io.File
  * @param image source Pikt image
  * @param output output image file
  * @param codeLines lines of explanation code
- * @param comments comments on the source image
+ * @param textComments text comments on the source image
  * @param imageSpecs style of the output image
  * @param syntaxHighlighting syntax highlighting rules
  * @author Giorgio Garofalo
@@ -20,7 +20,7 @@ data class ExplainData(
     val image: SourceImage,
     val output: File,
     val codeLines: List<String>,
-    val comments: List<CommentData>,
+    val textComments: List<TextCommentData>,
     val imageSpecs: ImageSpecsData,
     val syntaxHighlighting: SyntaxHighlighting
 ) : Properties

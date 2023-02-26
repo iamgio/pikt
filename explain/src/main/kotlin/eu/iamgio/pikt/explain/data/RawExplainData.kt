@@ -10,7 +10,8 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  * @param sourceImagePath path to the source Pikt image
  * @param outputImagePath path to the output image file
  * @param code text code or path to code file
- * @param comments comments on the source image as a (x-y)-text map
+ * @param textComments text comments on the source image as a (x-y)-text map
+ * @param lineComments line comments on the source image as a (x-y)-(x-y) map
  * @param syntaxHighlighting syntax highlighting rules as pattern-color pairs
  * @param imageWidth optional width of the output image
  * @param imageBackgroundColor background color of the output image
@@ -30,7 +31,8 @@ data class RawExplainData(
     val sourceImagePath: String?,
     val outputImagePath: String?,
     val code: String?,
-    val comments: Map<Pair<Int, Int>, String>,
+    val textComments: Map<Pair<Int, Int>, String>,
+    val lineComments: Map<Pair<Int, Int>, Pair<Int, Int>>,
     val syntaxHighlighting: Map<String, String>,
     val imageWidth: String?,
     val imageBackgroundColor: String?,
@@ -65,9 +67,13 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     private const val PROPERTY_SEPARATOR_SIZE = "imgseparatorsize"
     private const val PROPERTY_COMMENT_COLOR = "imgcommentcolor"
 
-    // A code comment is defined via a property that begins with a prefix:
+    // A text comment is defined via a property that begins with a prefix:
     // -Dcomment::X.Y=TEXT
-    private const val COMMENT_PROPERTY_PREFIX = "comment::"
+    private const val TEXT_COMMENT_PROPERTY_PREFIX = "comment::"
+
+    // A line comment is defined via a property that begins with a prefix:
+    // -Dcomment::X1.Y2=X2.Y2
+    private const val LINE_COMMENT_PROPERTY_PREFIX = "line::"
 
     // Separator of a comment's X and Y coordinates.
     private const val COMMENT_COORDINATES_SEPARATOR = "."
@@ -84,7 +90,8 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
         sourceImagePath = System.getProperty(PROPERTY_SOURCE_IMAGE),
         outputImagePath = System.getProperty(PROPERTY_OUTPUT_IMAGE),
         code = System.getProperty(PROPERTY_CODE),
-        comments = this.retrieveComments(),
+        textComments = this.retrieveTextComments(),
+        lineComments = this.retrieveLineComments(),
         syntaxHighlighting = this.retrieveRawSyntaxHighlighting(),
         imageWidth = System.getProperty(PROPERTY_IMAGE_WIDTH),
         imageBackgroundColor = System.getProperty(PROPERTY_BACKGROUND_COLOR),
@@ -120,18 +127,27 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
             }.toMap()
     }
 
+    private fun toCoordinates(text: String): Pair<Int, Int> {
+        return text.split(COMMENT_COORDINATES_SEPARATOR).map { it.toInt() }.let {
+            val x = it.firstOrNull() ?: 0
+            val y = it.elementAtOrNull(1) ?: 0
+            (x to y)
+        }
+    }
+
     /**
      * Converts comment properties to position-text pairs.
      * @return image comments as a (x-y)-text map.
      */
-    private fun retrieveComments(): Map<Pair<Int, Int>, String> {
-        return getPropertiesFromPrefix(COMMENT_PROPERTY_PREFIX)
-            .map { (position, text) -> position.split(COMMENT_COORDINATES_SEPARATOR) to text }
-            .map { (coords, text) -> coords.map { it.toInt() } to text }
-            .map { (coords, text) ->
-                val x = coords.firstOrNull() ?: 0
-                val y = coords.elementAtOrNull(1) ?: 0
-                (x to y) to text
-            }.toMap()
+    private fun retrieveTextComments(): Map<Pair<Int, Int>, String> {
+        return getPropertiesFromPrefix(TEXT_COMMENT_PROPERTY_PREFIX)
+            .map { (position, text) -> toCoordinates(position) to text }
+            .toMap()
+    }
+
+    private fun retrieveLineComments(): Map<Pair<Int, Int>, Pair<Int, Int>> {
+        return getPropertiesFromPrefix(LINE_COMMENT_PROPERTY_PREFIX)
+            .map { (position, text) -> toCoordinates(position) to toCoordinates(text) }
+            .toMap()
     }
 }
