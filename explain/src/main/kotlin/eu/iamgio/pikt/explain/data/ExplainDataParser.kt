@@ -74,6 +74,7 @@ object ExplainDataParser {
             fontSize = data.imageFontSize?.toIntOrNull() ?: FONT_SIZE,
             separatorColor = parseColor(data.imageSeparatorColor) ?: SEPARATOR_COLOR,
             separatorSize = data.imageSeparatorColor?.toIntOrNull() ?: SEPARATOR_SIZE,
+            commentColor = parseColor(data.imageCommentColor) ?: COMMENT_COLOR
         )
     }
 

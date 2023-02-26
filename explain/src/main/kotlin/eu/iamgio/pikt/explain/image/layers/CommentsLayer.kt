@@ -23,7 +23,7 @@ class CommentsLayer(
 
     override fun draw(graphics: Graphics2D, imageSpecs: ImageSpecsData, imageWidth: Int, imageHeight: Int) {
         graphics.font = this.font
-        graphics.color = imageSpecs.textColor
+        graphics.color = imageSpecs.commentColor
 
         this.comments.forEach { comment ->
             val textWidth = graphics.fontMetrics.stringWidth(comment.text)

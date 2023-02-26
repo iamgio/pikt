@@ -16,6 +16,7 @@ import java.awt.Font
  * @param fontSize font size of the code text
  * @param separatorColor color of the line separators
  * @param separatorSize height of the line separators
+ * @param commentColor color of comments on the source image
  * @author Giorgio Garofalo
  */
 data class ImageSpecsData(
@@ -28,6 +29,7 @@ data class ImageSpecsData(
     val fontSize: Int,
     val separatorColor: Color,
     val separatorSize: Int,
+    val commentColor: Color
 ) : Properties {
 
     /**
@@ -74,5 +76,10 @@ data class ImageSpecsData(
          * Default value for [ImageSpecsData.separatorSize].
          */
         const val SEPARATOR_SIZE = 2
+
+        /**
+         * Default value for [ImageSpecsData.commentColor].
+         */
+        val COMMENT_COLOR: Color = BACKGROUND_COLOR
     }
 }
