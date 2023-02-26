@@ -35,6 +35,7 @@ object ExplainDataParser {
             image,
             output = this.outputImage(data.outputImagePath ?: DEFAULT_OUTPUT_NAME),
             codeLines = this.codeSource(data.code).getCodeLines(data.code ?: DEFAULT_CODE),
+            comments = this.comments(data.comments),
             imageSpecs = this.imageSpecs(data),
             syntaxHighlighting = this.syntaxHighlighting(data.syntaxHighlighting)
         )
@@ -49,9 +50,13 @@ object ExplainDataParser {
     }
 
     private fun codeSource(code: String?): CodeSource = when {
-        code == null        -> EmptyCodeSource
-        File(code).exists() -> FileCodeSource
-        else                -> PlainTextCodeSource
+        code.isNullOrEmpty() -> EmptyCodeSource
+        File(code).exists()  -> FileCodeSource
+        else                 -> PlainTextCodeSource
+    }
+
+    private fun comments(comments: Map<Pair<Int, Int>, String>): List<CommentData> {
+        return comments.map { (position, text) -> CommentData(position.first, position.second, text) }
     }
 
     private fun parseColor(string: String?): Color? {

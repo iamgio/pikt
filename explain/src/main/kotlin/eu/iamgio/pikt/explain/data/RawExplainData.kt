@@ -10,6 +10,7 @@ import eu.iamgio.pikt.properties.PropertiesRetriever
  * @param sourceImagePath path to the source Pikt image
  * @param outputImagePath path to the output image file
  * @param code text code or path to code file
+ * @param comments comments on the source image as a (x-y)-text map
  * @param syntaxHighlighting syntax highlighting rules as pattern-color pairs
  * @param imageWidth optional width of the output image
  * @param imageBackgroundColor background color of the output image
@@ -28,6 +29,7 @@ data class RawExplainData(
     val sourceImagePath: String?,
     val outputImagePath: String?,
     val code: String?,
+    val comments: Map<Pair<Int, Int>, String>,
     val syntaxHighlighting: Map<String, String>,
     val imageWidth: String?,
     val imageBackgroundColor: String?,
@@ -60,6 +62,13 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     private const val PROPERTY_SEPARATOR_COLOR = "imgseparatorcolor"
     private const val PROPERTY_SEPARATOR_SIZE = "imgseparatorsize"
 
+    // A code comment is defined via a property that begins with a prefix:
+    // -Dcomment::X.Y=TEXT
+    private const val COMMENT_PROPERTY_PREFIX = "comment::"
+
+    // Separator of a comment's X and Y coordinates.
+    private const val COMMENT_COORDINATES_SEPARATOR = "."
+
     // Syntax highlighting is defined via properties that begins with a prefix:
     // -Dsyntax::MYREGEX=MYCOLOR
     private const val SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX = "syntax::"
@@ -72,6 +81,7 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
         sourceImagePath = System.getProperty(PROPERTY_SOURCE_IMAGE),
         outputImagePath = System.getProperty(PROPERTY_OUTPUT_IMAGE),
         code = System.getProperty(PROPERTY_CODE),
+        comments = this.retrieveComments(),
         syntaxHighlighting = this.retrieveRawSyntaxHighlighting(),
         imageWidth = System.getProperty(PROPERTY_IMAGE_WIDTH),
         imageBackgroundColor = System.getProperty(PROPERTY_BACKGROUND_COLOR),
@@ -85,20 +95,39 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
     )
 
     /**
+     * @return system properties that begin with the given [prefix] as (key, value) pairs
+     */
+    private fun getPropertiesFromPrefix(prefix: String): Sequence<Pair<String, String>> {
+        return System.getProperties().asSequence()
+            .filter { it.key.toString().startsWith(prefix) }
+            .map { it.key.toString().substring(prefix.length) to it.value.toString() }
+    }
+
+    /**
      * Converts syntax highlighting properties to pattern-color pairs.
      * @return syntax highlighting rules as a raw pattern-color map.
      *  For instance, `-Dsyntax::MYREGEX=MYCOLOR` is turned into a `MYREGEX-MYCOLOR` pair
      */
     private fun retrieveRawSyntaxHighlighting(): Map<String, String> {
-        return System.getProperties().asSequence()
-            // Only get selected properties that begin with the given prefix.
-            .filter { it.key.toString().startsWith(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX) }
+        return getPropertiesFromPrefix(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX)
             .map { (pattern, color) ->
-                pattern.toString()
-                    // Replace equals sign '=' with a supported alternative.
-                    .replace(SYNTAX_HIGHLIGHTING_EQUALS_SUBSTITUTE, SYNTAX_HIGHLIGHTING_EQUALS_REPLACEMENT)
-                    // Remove prefix.
-                    .substring(SYNTAX_HIGHLIGHTING_PROPERTY_PREFIX.length) to color.toString()
+                // Replace equals sign '=' with a supported alternative.
+                pattern.replace(SYNTAX_HIGHLIGHTING_EQUALS_SUBSTITUTE, SYNTAX_HIGHLIGHTING_EQUALS_REPLACEMENT) to color
+            }.toMap()
+    }
+
+    /**
+     * Converts comment properties to position-text pairs.
+     * @return image comments as a (x-y)-text map.
+     */
+    private fun retrieveComments(): Map<Pair<Int, Int>, String> {
+        return getPropertiesFromPrefix(COMMENT_PROPERTY_PREFIX)
+            .map { (position, text) -> position.split(COMMENT_COORDINATES_SEPARATOR) to text }
+            .map { (coords, text) -> coords.map { it.toInt() } to text }
+            .map { (coords, text) ->
+                val x = coords.firstOrNull() ?: 0
+                val y = coords.elementAtOrNull(1) ?: 0
+                (x to y) to text
             }.toMap()
     }
 }
