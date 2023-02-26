@@ -37,3 +37,17 @@ data class TextCommentData(
     override val y: Int,
     override val content: String
 ) : CommentData<String>
+
+/**
+ * A line comment that connects two parts of the image.
+ *
+ * @param x X coordinate of the target pixel
+ * @param x Y coordinate of the target pixel
+ * @param content coordinates of the destination
+ * @author Giorgio Garofalo
+ */
+data class LineCommentData(
+    override val x: Int,
+    override val y: Int,
+    override val content: Pair<Int, Int>
+) : CommentData<Pair<Int, Int>>

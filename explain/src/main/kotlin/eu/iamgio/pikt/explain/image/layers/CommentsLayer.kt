@@ -1,7 +1,9 @@
 package eu.iamgio.pikt.explain.image.layers
 
 import eu.iamgio.pikt.explain.data.ImageSpecsData
+import eu.iamgio.pikt.explain.data.LineCommentData
 import eu.iamgio.pikt.explain.data.TextCommentData
+import eu.iamgio.pikt.explain.image.layers.comments.LineCommentDrawer
 import eu.iamgio.pikt.explain.image.layers.comments.TextCommentDrawer
 import java.awt.Font
 import java.awt.Graphics2D
@@ -16,6 +18,7 @@ import java.awt.Graphics2D
  */
 class CommentsLayer(
     private val textComments: List<TextCommentData>,
+    private val lineComments: List<LineCommentData>,
     private val font: Font,
     private val imageX: Int
 ) : ImageLayer {
@@ -24,8 +27,9 @@ class CommentsLayer(
         graphics.font = this.font
         graphics.color = imageSpecs.commentColor
 
-        this.textComments.forEach { comment ->
-            TextCommentDrawer(comment).draw(graphics, imageSpecs, imageX)
-        }
+        val drawers = (this.textComments.map { TextCommentDrawer(it) }
+                + this.lineComments.map { LineCommentDrawer(it) })
+
+        drawers.forEach { it.draw(graphics, imageSpecs, imageX) }
     }
 }

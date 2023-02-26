@@ -12,6 +12,7 @@ import java.io.File
  * @param output output image file
  * @param codeLines lines of explanation code
  * @param textComments text comments on the source image
+ * @param lineComments line comments on the source image
  * @param imageSpecs style of the output image
  * @param syntaxHighlighting syntax highlighting rules
  * @author Giorgio Garofalo
@@ -21,6 +22,7 @@ data class ExplainData(
     val output: File,
     val codeLines: List<String>,
     val textComments: List<TextCommentData>,
+    val lineComments: List<LineCommentData>,
     val imageSpecs: ImageSpecsData,
     val syntaxHighlighting: SyntaxHighlighting
 ) : Properties

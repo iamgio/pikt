@@ -127,6 +127,12 @@ object RawExplainDataSystemPropertiesRetriever : PropertiesRetriever<RawExplainD
             }.toMap()
     }
 
+    /**
+     * Given a text as `X{sep}Y` (where `{sep}` is defined by [COMMENT_COORDINATES_SEPARATOR],
+     *     splits it into X and Y (as numbers)
+     * @param text raw coordinates string
+     * @return extracted coordinates
+     */
     private fun toCoordinates(text: String): Pair<Int, Int> {
         return text.split(COMMENT_COORDINATES_SEPARATOR).map { it.toInt() }.let {
             val x = it.firstOrNull() ?: 0

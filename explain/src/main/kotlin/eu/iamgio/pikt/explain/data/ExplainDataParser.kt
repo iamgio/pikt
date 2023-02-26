@@ -36,6 +36,7 @@ object ExplainDataParser {
             output = this.outputImage(data.outputImagePath ?: DEFAULT_OUTPUT_NAME),
             codeLines = this.codeSource(data.code).getCodeLines(data.code ?: DEFAULT_CODE),
             textComments = this.textComments(data.textComments),
+            lineComments = this.lineComments(data.lineComments),
             imageSpecs = this.imageSpecs(data),
             syntaxHighlighting = this.syntaxHighlighting(data.syntaxHighlighting)
         )
@@ -57,6 +58,10 @@ object ExplainDataParser {
 
     private fun textComments(comments: Map<Pair<Int, Int>, String>): List<TextCommentData> {
         return comments.map { (position, text) -> TextCommentData(position.first, position.second, text) }
+    }
+
+    private fun lineComments(comments: Map<Pair<Int, Int>, Pair<Int, Int>>): List<LineCommentData> {
+        return comments.map { (from, to) -> LineCommentData(from.first, from.second, to) }
     }
 
     private fun parseColor(string: String?): Color? {

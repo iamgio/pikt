@@ -3,6 +3,15 @@ package eu.iamgio.pikt.explain.image
 import eu.iamgio.pikt.explain.data.ImageSpecsData
 
 /**
+ * Calculates the coordinate of the center of a Pikt pixel within the final image,
+ * @param pixel index, either of the column (X) or the row (Y)
+ * @return X or Y coordinate of center of the pixel in the final image
+ */
+fun ImageSpecsData.calcImagePixelCenter(pixel: Int): Int {
+    return pixel * this.lineHeight + this.lineHeight / 2
+}
+
+/**
  * Calculates the X coordinate of some text within the final image,
  *     horizontally centered, from a given column index.
  * @param pixelX column index
@@ -10,7 +19,7 @@ import eu.iamgio.pikt.explain.data.ImageSpecsData
  * @return X coordinate of the text in the final image
  */
 fun ImageSpecsData.calcImageCenteredTextX(pixelX: Int, textWidth: Int): Int {
-    return pixelX * this.lineHeight + (this.lineHeight - textWidth) / 2
+    return calcImagePixelCenter(pixelX) - textWidth / 2
 }
 
 /**
@@ -20,5 +29,5 @@ fun ImageSpecsData.calcImageCenteredTextX(pixelX: Int, textWidth: Int): Int {
  * @return Y coordinate of the text in the final image
  */
 fun ImageSpecsData.calcImageCenteredTextY(pixelY: Int): Int {
-    return pixelY * this.lineHeight + this.lineHeight / 2 + this.textYOffset
+    return calcImagePixelCenter(pixelY) + this.textYOffset
 }
