@@ -47,8 +47,8 @@ class ForEachStatement : Statement() {
         // Makes the lambda block that follows generate the correct output.
         data.nextStatement.asBlock.codeBuilder = ForEachLambdaOpenCodeBuilder(collection.code)
 
-        // Output (including lambda output): for(name in collection) {
-        return "for"
+        // Output (including lambda output): for (name in collection) {
+        return "for "
     }
 }
 

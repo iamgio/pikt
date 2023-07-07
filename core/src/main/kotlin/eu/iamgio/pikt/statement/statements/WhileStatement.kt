@@ -27,7 +27,7 @@ class WhileStatement : Statement() {
     override fun getColors(colors: ColorsProperties) = colors.keywords.`while`
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence? {
-        val builder = StringBuilder("while(")
+        val builder = StringBuilder("while (")
         val condition = reader.nextExpression(data.scope)
 
         // If no condition was specified, this becomes an endless loop that can be exited from via a 'break'.
