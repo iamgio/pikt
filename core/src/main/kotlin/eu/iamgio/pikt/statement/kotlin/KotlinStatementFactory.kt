@@ -7,7 +7,7 @@ class KotlinStatementFactory : StatementFactory {
 
     // TODO implement Kotlin-specific, make general ones abstract
 
-    override fun variableAssignment() = SetVariableStatement()
+    override fun variableAssignment() = KotlinSetVariableStatement()
 
     override fun functionCall() = FunctionCallStatement()
 

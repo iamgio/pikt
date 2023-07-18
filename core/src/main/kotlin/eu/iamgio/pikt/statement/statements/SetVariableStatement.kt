@@ -4,13 +4,14 @@ import eu.iamgio.pikt.eval.ConstantMember
 import eu.iamgio.pikt.eval.FunctionMember
 import eu.iamgio.pikt.eval.StructMember
 import eu.iamgio.pikt.eval.VariableMember
+import eu.iamgio.pikt.expression.Expression
+import eu.iamgio.pikt.expression.PixelSequence
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.log.pixel.loggableName
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
-import eu.iamgio.pikt.statement.statements.bridge.LAMBDA_DEFAULT_BLOCK_NAME
 
 /**
  * Used to define and set (if already they exist) variables
@@ -18,7 +19,7 @@ import eu.iamgio.pikt.statement.statements.bridge.LAMBDA_DEFAULT_BLOCK_NAME
  *
  * @author Giorgio Garofalo
  */
-class SetVariableStatement : Statement() {
+abstract class SetVariableStatement : Statement() {
 
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("variable.set", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
@@ -29,8 +30,6 @@ class SetVariableStatement : Statement() {
     override fun getColors(colors: ColorsProperties) = colors.keywords.setVariable
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence? {
-        val builder = StringBuilder()
-
         val sequence = reader.nextSequence()
         // A nested variable is a struct field.
         // For instance: a.b.c
@@ -39,7 +38,7 @@ class SetVariableStatement : Statement() {
 
         // Name.
         val name = sequence.lastOrNull()
-        if(name == null) {
+        if (name == null) {
             syntax.mark("name", StatementSyntax.Mark.WRONG)
             reader.error("Variable has no name.", syntax)
             return null
@@ -49,28 +48,33 @@ class SetVariableStatement : Statement() {
         // Whether this variable represents a function (= is followed by a lambda block).
         val isFunction = data.nextStatement?.isBlock ?: false
 
-        // Check if the variable were already registered.
+        // Whether this variable is new and should be registered.
+        val isNew = !isNested && name !in data.scope
+
+        // Check if the variable were already registered to a non-overwritable member type.
         // TODO check nested existance
-        if(!isNested) when(data.scope[name]) {
-            null -> builder.append("var ") // Variable or function is not registered.
-            is VariableMember -> {}
-            is ConstantMember -> {
-                reader.error("${name.loggableName} is constant and its value cannot be set.", referenceToFirstPixel = true)
-                return null
-            }
-            is StructMember -> {
-                reader.error("${name.loggableName} is already linked to a struct.", referenceToFirstPixel = true)
-                return null
-            }
-            is FunctionMember -> {
-                reader.error("${name.loggableName} is a function and its value cannot be set.", referenceToFirstPixel = true)
-                return null
+        if (!isNested) {
+            when(data.scope[name]) {
+                null -> {}
+                is VariableMember -> {}
+                is ConstantMember -> {
+                    reader.error("${name.loggableName} is constant and its value cannot be set.", referenceToFirstPixel = true)
+                    return null
+                }
+                is StructMember -> {
+                    reader.error("${name.loggableName} is already linked to a struct.", referenceToFirstPixel = true)
+                    return null
+                }
+                is FunctionMember -> {
+                    reader.error("${name.loggableName} is a function and its value cannot be set.", referenceToFirstPixel = true)
+                    return null
+                }
             }
         }
 
         // Value.
         val value = reader.nextExpression(data.scope)
-        if(value.isEmpty && !isFunction) {
+        if (value.isEmpty && !isFunction) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
             reader.error("Variable ${name.loggableName} has no value.", syntax)
             return null
@@ -79,8 +83,8 @@ class SetVariableStatement : Statement() {
         syntax.mark("value", StatementSyntax.Mark.CORRECT)
 
         // Push variable to the scope.
-        if(!reader.isInvalidated && !isNested) {
-            if(isFunction) {
+        if (!reader.isInvalidated && !isNested) {
+            if (isFunction) {
                 val block = data.nextStatement?.asBlock
                 // If this is a function declaration, wait for the next lambda to be evaluated and get the amount of arguments.
                 block?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, FunctionMember.Overload(args.size))) }
@@ -91,20 +95,18 @@ class SetVariableStatement : Statement() {
             }
         }
 
-        builder.append(sequence.toNestedCode(data.scope)).append(" = ")
-
-        // If this is a function declaration, name the following block as a Kotlin annotation.
-        if(isFunction) {
-            builder.append(LAMBDA_DEFAULT_BLOCK_NAME).append("@ ")
-        }
-
-        // Output:
-        // If variable:
-        // [var] name = value
-        // If function (including lambda output):
-        // [var] name = lambda@ { arg1: Any, arg2: Any ->
-        return builder.append(value.code)
+        return this.generate(data, sequence, value, isFunction, isNew)
     }
+
+    /**
+     * Generates the output code.
+     * @param data information about this generation
+     * @param sequence name of the variable. If it is more than one layer deep, then it is a nested variable
+     * @param value value to assign
+     * @param isFunction whether this variable represents a function, so that the assignment is a function declaration
+     * @param isNew whether this variable is not in scope
+     */
+    protected abstract fun generate(data: StatementData, sequence: PixelSequence, value: Expression, isFunction: Boolean, isNew: Boolean): CharSequence
 }
 
 // This implementation does not serve a real purpose for code generation,
