@@ -42,8 +42,8 @@ abstract class IfStatement : Statement() {
     }
 
     /**
-     * Generates the output Kotlin code.
+     * Generates the output code.
      * @param condition condition of the `if` statement
      */
-    abstract fun generate(condition: Expression): CharSequence
+    protected abstract fun generate(condition: Expression): CharSequence
 }

@@ -46,7 +46,7 @@ abstract class ElseStatement : Statement() {
     }
 
     /**
-     * Generates the output Kotlin code.
+     * Generates the output code.
      */
-    abstract fun generate(): CharSequence
+    protected abstract fun generate(): CharSequence
 }

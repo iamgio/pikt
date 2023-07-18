@@ -34,8 +34,8 @@ abstract class PrintStatement : Statement() {
     }
 
     /**
-     * Generates the output Kotlin code.
+     * Generates the output code.
      * @param expression expression to print
      */
-    abstract fun generate(expression: Expression): CharSequence
+    protected abstract fun generate(expression: Expression): CharSequence
 }
