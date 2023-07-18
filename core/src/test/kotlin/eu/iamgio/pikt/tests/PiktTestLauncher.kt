@@ -10,6 +10,7 @@ import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.properties.SystemPropertyConstants
 import eu.iamgio.pikt.registerStatements
+import eu.iamgio.pikt.statement.kotlin.KotlinStatementFactory
 import java.io.File
 import java.io.InputStream
 import javax.imageio.ImageIO
@@ -26,7 +27,7 @@ abstract class PiktTestLauncher {
 
     init {
         tempDirectory.mkdir()
-        registerStatements()
+        registerStatements(KotlinStatementFactory())
 
         System.setProperty(SystemPropertyConstants.THROW_EXCEPTION_ON_READER_ERROR, "")
     }

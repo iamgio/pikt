@@ -8,7 +8,7 @@ import eu.iamgio.pikt.statement.StatementOptions
 import eu.iamgio.pikt.statement.StatementSyntax
 
 /**
- * Runs a task for every element of the collection.
+ * Runs a task as long as a condition is verified.
  * <%while%> <condition?> <lambda or statement>
  *
  * @author Giorgio Garofalo

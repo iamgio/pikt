@@ -15,18 +15,23 @@ import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.project.PiktProjectInfo
 import eu.iamgio.pikt.project.PiktProjectInfoParser
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
+import eu.iamgio.pikt.statement.StatementFactory
 import eu.iamgio.pikt.statement.Statements
-import eu.iamgio.pikt.statement.statements.*
+import eu.iamgio.pikt.statement.kotlin.KotlinStatementFactory
 
 fun main(args: Array<String>) {
     // Record when Pikt was started.
     val startTime = System.currentTimeMillis()
 
+    // The target language to generate code for.
+    // This could be retrieved via properties in the future.
+    val statementFactory: StatementFactory = KotlinStatementFactory()
+
     // Register command-line commands and arguments.
     registerCommands()
 
     // Register code statements.
-    registerStatements()
+    registerStatements(statementFactory)
 
     // Project info is an optional YAML file loaded from -Dproject=path.
     // It may store command-line properties and commands that should be used for a specific project.
@@ -140,16 +145,16 @@ fun registerCommands() = with(Commands) {
 /**
  * Registers code statements.
  */
-fun registerStatements() = with(Statements) {
-    register(SetVariableStatement())
-    register(FunctionCallStatement())
-    register(IfStatement())
-    register(ElseStatement())
-    register(StructStatement())
-    register(ForEachStatement())
-    register(WhileStatement())
-    register(ReturnStatement())
-    register(LambdaOpenStatement())
-    register(LambdaCloseStatement())
-    register(PrintStatement())
+fun registerStatements(factory: StatementFactory) = with(Statements) {
+    register(factory.variableAssignment())
+    register(factory.functionCall())
+    register(factory.`if`())
+    register(factory.`else`())
+    register(factory.struct())
+    register(factory.forEach())
+    register(factory.`while`())
+    register(factory.`return`())
+    register(factory.lambdaOpen())
+    register(factory.lambdaClose())
+    register(factory.print())
 }

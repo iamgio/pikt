@@ -17,7 +17,7 @@ abstract class Statement {
     /**
      * Defines whether this statement requires empty lines in the decompacted output image.
      * @see eu.iamgio.pikt.command.commands.imageprocessing.DecompactCommand
-     * @see eu.iamgio.pikt.image.ImageCompacter
+     * @see eu.iamgio.pikt.image.processing.ImageCompacter
      */
     open val decompactionStyle: DecompactionStyle = DecompactionStyle.NO_SPACING
 
@@ -64,11 +64,11 @@ abstract class Statement {
     abstract fun getColors(colors: ColorsProperties): ColorsProperty
 
     /**
-     * Generates Kotlin code.
+     * Generates output code.
      * @param reader pixel reader
      * @param syntax syntax instance, so that calling [StatementSyntax.mark] applies syntax marks
      * @param data information about this generation
-     * @return Kotlin code
+     * @return output code
      */
     abstract fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence?
 
@@ -87,7 +87,7 @@ abstract class Statement {
      * @param hasEmptyLineBefore whether this statement should be preceeded by an empty line
      * @param hasEmptyLineAfter whether this statement should be followed by an empty line
      * @see eu.iamgio.pikt.command.commands.imageprocessing.DecompactCommand
-     * @see eu.iamgio.pikt.image.ImageCompacter
+     * @see eu.iamgio.pikt.image.processing.ImageCompacter
      */
     enum class DecompactionStyle(val hasEmptyLineBefore: Boolean, val hasEmptyLineAfter: Boolean) {
         NO_SPACING(false, false),

@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.statement.statements
 
+import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
@@ -13,7 +14,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
  *
  * @author Giorgio Garofalo
  */
-class IfStatement : Statement() {
+abstract class IfStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.SPACE_BEFORE
     override val options = StatementOptions(opensTemporaryScope = true)
@@ -37,8 +38,12 @@ class IfStatement : Statement() {
             syntax.mark("lambda|statement", StatementSyntax.Mark.CORRECT)
         }
 
-        // Output: if ((condition).bool)
-        // Note: bool is a library function from Objects.kt
-        return "if ((${condition.code}).bool)"
+        return this.generate(condition)
     }
+
+    /**
+     * Generates the output Kotlin code.
+     * @param condition condition of the `if` statement
+     */
+    abstract fun generate(condition: Expression): CharSequence
 }
