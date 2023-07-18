@@ -160,7 +160,10 @@ class ColorsPropertiesRetriever(private val libraries: Libraries) : PropertiesRe
      * Internal properties consist of the internal color scheme, along with libraries'.
      */
     private fun loadInternalProperties() {
-        internalProperties.load(InputStreamReader(javaClass.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)!!))
+        val propertiesInputStream = javaClass.getResourceAsStream(INTERNAL_COLORS_SCHEME_PATH)
+            ?: throw IllegalStateException("Could not resolve the internal color scheme (from $INTERNAL_COLORS_SCHEME_PATH)")
+
+        internalProperties.load(InputStreamReader(propertiesInputStream))
         libraries.forEach { library ->
             val scheme = library.colorScheme
             scheme?.properties?.forEach { key, value ->
