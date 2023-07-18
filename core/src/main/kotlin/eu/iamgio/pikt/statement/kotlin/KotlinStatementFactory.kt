@@ -13,7 +13,7 @@ class KotlinStatementFactory : StatementFactory {
 
     override fun `if`() = KotlinIfStatement()
 
-    override fun `else`() = ElseStatement()
+    override fun `else`() = KotlinElseStatement()
 
     override fun struct() = StructStatement()
 

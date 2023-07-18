@@ -13,7 +13,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
  *
  * @author Giorgio Garofalo
  */
-class ElseStatement : Statement() {
+abstract class ElseStatement : Statement() {
 
     override val options = StatementOptions(opensTemporaryScope = true)
 
@@ -35,14 +35,18 @@ class ElseStatement : Statement() {
         }*/
         // TODO check if 'else' has 'if'
 
-        if(data.nextStatement is IfStatement) {
+        if (data.nextStatement is IfStatement) {
             syntax.mark("ifcondition", StatementSyntax.Mark.CORRECT)
-        } else if(data.nextStatement == null) {
+        } else if (data.nextStatement == null) {
             syntax.mark("lambda|statement", StatementSyntax.Mark.WRONG)
             reader.error("\"else\" has empty body.", syntax)
         }
 
-        // Output: else
-        return "else"
+        return this.generate()
     }
+
+    /**
+     * Generates the output Kotlin code.
+     */
+    abstract fun generate(): CharSequence
 }
