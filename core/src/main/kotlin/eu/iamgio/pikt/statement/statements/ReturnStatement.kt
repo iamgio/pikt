@@ -1,13 +1,13 @@
 package eu.iamgio.pikt.statement.statements
 
 import eu.iamgio.pikt.eval.Scope
+import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementOptions
 import eu.iamgio.pikt.statement.StatementSyntax
-import eu.iamgio.pikt.statement.statements.bridge.LAMBDA_DEFAULT_BLOCK_NAME
 
 /**
  * Performs either a `return` or `break` depending on its chain size:
@@ -24,13 +24,13 @@ import eu.iamgio.pikt.statement.statements.bridge.LAMBDA_DEFAULT_BLOCK_NAME
  *
  * @author Giorgio Garofalo
  */
-class ReturnStatement : Statement() {
+abstract class ReturnStatement : Statement() {
 
     override val options = StatementOptions(allowsChaining = true)
 
     override fun getSyntax() = StatementSyntax(
-            StatementSyntax.Member("return", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
-            StatementSyntax.Member("value", StatementSyntax.Type.OPTIONAL)
+        StatementSyntax.Member("return", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
+        StatementSyntax.Member("value", StatementSyntax.Type.OPTIONAL)
     )
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.`return`
@@ -53,7 +53,7 @@ class ReturnStatement : Statement() {
     }
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence? {
-        return when(data.chainSize) {
+        return when (data.chainSize) {
             1 -> generateReturn(reader, syntax, data)
             2 -> generateBreak(reader, syntax, data)
             else -> {
@@ -64,37 +64,50 @@ class ReturnStatement : Statement() {
     }
 
     private fun generateReturn(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence {
-        if(isReturnPlacementInvalid(data.scope)) {
-            reader.error("A return statement must be placed within a function declaration.", referenceToFirstPixel = true)
+        if (isReturnPlacementInvalid(data.scope)) {
+            reader.error(
+                "A return statement must be placed within a function declaration.",
+                referenceToFirstPixel = true
+            )
         }
 
-        // The lambda block is identified by its name.
-        // In the future it might be dinamically generated,
-        // for now it's fixed to "lambda".
-        val builder = StringBuilder("return@").append(LAMBDA_DEFAULT_BLOCK_NAME)
         val expression = reader.nextExpression(data.scope)
 
-        if(!expression.isEmpty) {
+        return if (expression.isEmpty) {
+            this.generateEmptyReturn()
+        } else {
             syntax.mark("value", StatementSyntax.Mark.CORRECT)
-            builder.append(" ").append(expression.code)
+            this.generateValuedReturn(expression)
         }
-
-        // Output: return@lambda [value]
-        return builder
     }
 
     private fun generateBreak(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence {
-        if(isBreakPlacementInvalid(data.scope)) {
+        if (isBreakPlacementInvalid(data.scope)) {
             reader.error("A break statement must be placed within a loop.", referenceToFirstPixel = true)
         }
 
         // A break expects no value.
-        if(!reader.nextExpression(data.scope).isEmpty) {
+        if (!reader.nextExpression(data.scope).isEmpty) {
             syntax.mark("value", StatementSyntax.Mark.WRONG)
             reader.error("A break statement cannot have a value.")
         }
 
-        // Output: break
-        return "break"
+        return this.generateBreak()
     }
+
+    /**
+     * Generates the output code for a `return` with no value.
+     */
+    protected abstract fun generateEmptyReturn(): CharSequence
+
+    /**
+     * Generates the output code for a `return` with a value.
+     * @param expression value to return
+     */
+    protected abstract fun generateValuedReturn(expression: Expression): CharSequence
+
+    /**
+     * Generates the output code for a `break` statement within a loop (when the [ReturnStatement] is chained twice).
+     */
+    protected abstract fun generateBreak(): CharSequence
 }

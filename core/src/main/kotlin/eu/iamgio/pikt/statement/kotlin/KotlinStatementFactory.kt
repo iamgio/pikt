@@ -21,7 +21,7 @@ class KotlinStatementFactory : StatementFactory {
 
     override fun `while`() = WhileStatement()
 
-    override fun `return`() = ReturnStatement()
+    override fun `return`() = KotlinReturnStatement()
 
     override fun lambdaOpen() = LambdaOpenStatement()
 
