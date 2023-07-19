@@ -1,12 +1,13 @@
 package eu.iamgio.pikt.statement.statements
 
+import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementOptions
 import eu.iamgio.pikt.statement.StatementSyntax
-import eu.iamgio.pikt.statement.kotlin.KotlinDefaultLambdaOpenCodeBuilder
+import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
 
 /**
  * Runs a task as long as a condition is verified.
@@ -14,7 +15,7 @@ import eu.iamgio.pikt.statement.kotlin.KotlinDefaultLambdaOpenCodeBuilder
  *
  * @author Giorgio Garofalo
  */
-class WhileStatement : Statement() {
+abstract class WhileStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.SPACE_BEFORE
     override val options = StatementOptions(opensTemporaryScope = true)
@@ -28,21 +29,15 @@ class WhileStatement : Statement() {
     override fun getColors(colors: ColorsProperties) = colors.keywords.`while`
 
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence? {
-        val builder = StringBuilder("while (")
         val condition = reader.nextExpression(data.scope)
 
         // If no condition was specified, this becomes an endless loop that can be exited from via a 'break'.
-        if(condition.isEmpty) {
-            builder.append("true")
-        } else {
+        if (!condition.isEmpty) {
             syntax.mark("condition", StatementSyntax.Mark.CORRECT)
-            builder.append("(").append(condition.code).append(").bool")
         }
 
-        builder.append(")")
-
         // A while loop cannot be the last statement
-        if(data.nextStatement == null) {
+        if (data.nextStatement == null) {
             syntax.mark("lambda|statement", StatementSyntax.Mark.WRONG)
             reader.error("A while loop must be followed by a code block or statement.", syntax)
             return null
@@ -50,21 +45,21 @@ class WhileStatement : Statement() {
 
         // If a lambda block follows, give it an identifier for bridging.
         if(data.nextStatement.isBlock) {
-            data.nextStatement.asBlock.codeBuilder = WhileLambdaOpenCodeBuilder()
+            data.nextStatement.asBlock.codeBuilder = this.createCodeBuilder() //WhileLambdaOpenCodeBuilder()
         }
 
-        // Output with condition: while((condition).bool)
-        // Output without condition: while(true)
-        return builder
+        return this.generate(condition)
     }
-}
 
-/**
- * Defines lambda behavior for while statements.
- */
-class WhileLambdaOpenCodeBuilder : KotlinDefaultLambdaOpenCodeBuilder() {
+    /**
+     * Instantiates a new [LambdaOpenCodeBuilder] that handles the body of this `while` loop.
+     * @return a new lambda code builder for this loop
+     */
+    protected abstract fun createCodeBuilder(): LambdaOpenCodeBuilder
 
-    override fun getDelegate() = WhileStatement::class.java
-
-    override fun expectArgsSize(argsSize: Int) = argsSize == 0 // A while loop does not expect arguments
+    /**
+     * Generates the output code.
+     * @param condition condition of the `while` loop
+     */
+    protected abstract fun generate(condition: Expression): CharSequence
 }

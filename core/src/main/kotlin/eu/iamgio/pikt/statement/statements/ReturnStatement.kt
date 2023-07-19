@@ -47,8 +47,7 @@ abstract class ReturnStatement : Statement() {
      */
     private fun isBreakPlacementInvalid(scope: Scope): Boolean {
         return scope.isGlobal || !scope.anyParent {
-            (it.owner?.isBlock == true && (it.owner.asBlock.codeBuilder is ForEachLambdaOpenCodeBuilder || it.owner.asBlock.codeBuilder is WhileLambdaOpenCodeBuilder)) ||
-                    it.owner is WhileStatement
+            (it.owner?.isBlock == true && it.owner.asBlock.isLoop()) || it.owner is WhileStatement
         }
     }
 

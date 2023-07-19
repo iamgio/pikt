@@ -115,9 +115,3 @@ abstract class SetVariableStatement : Statement() {
      */
     protected abstract fun generate(data: StatementData, sequence: PixelSequence, value: Expression, isFunction: Boolean, isNew: Boolean): CharSequence
 }
-
-/**
- * @return whether a code block is part of a function declaration
- * @see ReturnStatement.isReturnPlacementInvalid
- */
-fun LambdaOpenStatement.isFunctionDeclaration() = this.codeBuilder.getDelegate().isAssignableFrom(SetVariableStatement::class.java)

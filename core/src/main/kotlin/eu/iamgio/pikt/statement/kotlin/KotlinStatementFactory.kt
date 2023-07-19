@@ -3,7 +3,6 @@ package eu.iamgio.pikt.statement.kotlin
 import eu.iamgio.pikt.statement.StatementFactory
 import eu.iamgio.pikt.statement.statements.FunctionCallStatement
 import eu.iamgio.pikt.statement.statements.StructStatement
-import eu.iamgio.pikt.statement.statements.WhileStatement
 
 class KotlinStatementFactory : StatementFactory {
 
@@ -21,7 +20,7 @@ class KotlinStatementFactory : StatementFactory {
 
     override fun forEach() = KotlinForEachStatement()
 
-    override fun `while`() = WhileStatement()
+    override fun `while`() = KotlinWhileStatement()
 
     override fun `return`() = KotlinReturnStatement()
 
