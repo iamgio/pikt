@@ -1,6 +1,5 @@
 package eu.iamgio.pikt.statement.statements
 
-import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
@@ -14,7 +13,7 @@ import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
  *
  * @author Giorgio Garofalo
  */
-class ForEachStatement : Statement() {
+abstract class ForEachStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.SPACE_BEFORE
 
@@ -29,7 +28,7 @@ class ForEachStatement : Statement() {
     override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence? {
         val collection = reader.nextExpression(data.scope)
 
-        if(collection.isEmpty) {
+        if (collection.isEmpty) {
             syntax.mark("collection", StatementSyntax.Mark.WRONG)
             reader.error("No list to iterate found.", syntax)
             return null
@@ -37,7 +36,7 @@ class ForEachStatement : Statement() {
         syntax.mark("collection", StatementSyntax.Mark.CORRECT)
 
         // A following lambda block is required.
-        if(data.nextStatement == null || !data.nextStatement.isBlock) {
+        if (data.nextStatement == null || !data.nextStatement.isBlock) {
             syntax.mark("lambda with argument", StatementSyntax.Mark.WRONG)
             reader.error("A for-each must be followed by a code block.", syntax)
             return null
@@ -45,44 +44,30 @@ class ForEachStatement : Statement() {
         syntax.mark("lambda with argument", StatementSyntax.Mark.CORRECT)
 
         // Makes the lambda block that follows generate the correct output.
-        data.nextStatement.asBlock.codeBuilder = ForEachLambdaOpenCodeBuilder(collection.code)
+        data.nextStatement.asBlock.codeBuilder = this.createCodeBuilder(collection.code)
 
-        // Output (including lambda output): for (name in collection) {
-        return "for "
+        return this.generate()
     }
+
+    /**
+     * Instantiates a new [LambdaOpenCodeBuilder] that handles the body of the for-each.
+     * @param collectionCode code of the collection to iterate.
+     * @return a new lambda code builder for this for-each statement
+     */
+    protected abstract fun createCodeBuilder(collectionCode: String): LambdaOpenCodeBuilder
+
+    /**
+     * Generates the output code.
+     */
+    protected abstract fun generate(): CharSequence
 }
 
 /**
  * Defines lambda behavior for for-each statements.
- *
- * With arguments:
- * ```
- * (arg in collection)
- * ```
- *
- * Without arguments:
- * ```
- * (_ignored_ in collection)
- * ```
- *
- * @param collectionCode the code of the collection to iterate.
  */
-class ForEachLambdaOpenCodeBuilder(private val collectionCode: String) : LambdaOpenCodeBuilder() {
+abstract class ForEachLambdaOpenCodeBuilder : LambdaOpenCodeBuilder() {
 
     override fun getDelegate() = ForEachStatement::class.java
 
-    override fun open() {
-        builder.append("(")
-    }
-
-    override fun appendArgument(argument: Pixel) {
-        builder.append(argument)
-    }
-
-    override fun close() {
-        if(builder.length == 1) builder.append("_ignored_")
-        builder.append(" in (").append(collectionCode).append(").iterable").append(") {")
-    }
-
-    override fun expectArgsSize(argsSize: Int) = argsSize == 0 || argsSize == 1
+    override fun expectArgsSize(argsSize: Int) = argsSize == 0 || argsSize == 1 // One or no arguments
 }
