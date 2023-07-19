@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.statement.statements
 
+import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.expression.ExpressionType
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
@@ -13,7 +14,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
  *
  * @author Giorgio Garofalo
  */
-class FunctionCallStatement : Statement() {
+abstract class FunctionCallStatement : Statement() {
 
     override fun getSyntax() = StatementSyntax(
             StatementSyntax.Member("funcall", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
@@ -31,7 +32,11 @@ class FunctionCallStatement : Statement() {
             reader.error("No function name provided.", syntax)
         }
 
-        // Output: name(arg1, arg2, ...)
-        return expression.code
+        return this.generate(expression)
     }
+
+    /**
+     * Generates the output code.
+     */
+    protected abstract fun generate(function: Expression): CharSequence
 }

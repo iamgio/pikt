@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.statement.kotlin
 
 import eu.iamgio.pikt.statement.StatementFactory
-import eu.iamgio.pikt.statement.statements.FunctionCallStatement
 import eu.iamgio.pikt.statement.statements.StructStatement
 
 class KotlinStatementFactory : StatementFactory {
@@ -10,7 +9,7 @@ class KotlinStatementFactory : StatementFactory {
 
     override fun variableAssignment() = KotlinSetVariableStatement()
 
-    override fun functionCall() = FunctionCallStatement()
+    override fun functionCall() = KotlinFunctionCallStatement()
 
     override fun `if`() = KotlinIfStatement()
 
