@@ -2,7 +2,6 @@ package eu.iamgio.pikt.statement.kotlin
 
 import eu.iamgio.pikt.statement.StatementFactory
 import eu.iamgio.pikt.statement.statements.FunctionCallStatement
-import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
 import eu.iamgio.pikt.statement.statements.StructStatement
 import eu.iamgio.pikt.statement.statements.WhileStatement
 
@@ -26,7 +25,7 @@ class KotlinStatementFactory : StatementFactory {
 
     override fun `return`() = KotlinReturnStatement()
 
-    override fun lambdaOpen() = LambdaOpenStatement()
+    override fun lambdaOpen() = KotlinLambdaOpenStatement()
 
     override fun lambdaClose() = KotlinLambdaCloseStatement()
 

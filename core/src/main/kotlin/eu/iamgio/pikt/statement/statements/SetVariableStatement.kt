@@ -12,7 +12,7 @@ import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
-import eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
+import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
 
 /**
  * Used to define and set (if already they exist) variables
@@ -89,7 +89,7 @@ abstract class SetVariableStatement : Statement() {
                 val block = data.nextStatement?.asBlock
                 // If this is a function declaration, wait for the next lambda to be evaluated and get the amount of arguments.
                 block?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, FunctionMember.Overload(args.size))) }
-                block?.codeBuilder = FunctionDeclarationLambdaOpenCodeBuilder()
+                block?.codeBuilder = this.createFunctionDeclarationCodeBuilder()
             } else {
                 // If this a variable declaration, directly push it to the scope.
                 data.scope.push(name, VariableMember(name))
@@ -98,6 +98,12 @@ abstract class SetVariableStatement : Statement() {
 
         return this.generate(data, sequence, value, isFunction, isNew)
     }
+
+    /**
+     * Instantiates a new [LambdaOpenCodeBuilder] that handles the body of the function declaration (if this variable is a function).
+     * @return a new lambda code builder for this function declaration
+     */
+    protected abstract fun createFunctionDeclarationCodeBuilder(): LambdaOpenCodeBuilder
 
     /**
      * Generates the output code.
@@ -110,12 +116,8 @@ abstract class SetVariableStatement : Statement() {
     protected abstract fun generate(data: StatementData, sequence: PixelSequence, value: Expression, isFunction: Boolean, isNew: Boolean): CharSequence
 }
 
-// This implementation does not serve a real purpose for code generation,
-// but it is used by the Return statement in order to recognize whether it is placed within a function declaration.
-
 /**
+ * @return whether a code block is part of a function declaration
  * @see ReturnStatement.isReturnPlacementInvalid
  */
-class FunctionDeclarationLambdaOpenCodeBuilder : DefaultLambdaOpenCodeBuilder() {
-    override fun getDelegate() = SetVariableStatement::class.java
-}
+fun LambdaOpenStatement.isFunctionDeclaration() = this.codeBuilder.getDelegate().isAssignableFrom(SetVariableStatement::class.java)

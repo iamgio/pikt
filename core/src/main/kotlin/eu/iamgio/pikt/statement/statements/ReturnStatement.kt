@@ -39,7 +39,7 @@ abstract class ReturnStatement : Statement() {
      * @return whether the statement is placed within a function declaration
      */
     private fun isReturnPlacementInvalid(scope: Scope): Boolean {
-        return scope.isGlobal || !scope.anyParent { it.owner?.isBlock == true && it.owner.asBlock.codeBuilder is FunctionDeclarationLambdaOpenCodeBuilder }
+        return scope.isGlobal || !scope.anyParent { it.owner?.isBlock == true && it.owner.asBlock.isFunctionDeclaration() }
     }
 
     /**

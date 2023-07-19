@@ -5,7 +5,6 @@ import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.*
-import eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
 import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
 
 /**
@@ -13,18 +12,18 @@ import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
  * <%lambda.open%> <...args?>
  * @author Giorgio Garofalo
  */
-class LambdaOpenStatement : Statement() {
+abstract class LambdaOpenStatement : Statement() {
 
     /**
      * A callback that is called once the generation is complete,
-     * with a list representing the lambda arguments.
+     * that takes a list of lambda arguments.
      */
     var onGenerationCompleted: ((List<Pixel>) -> Unit)? = null
 
     /**
-     * Whether args should be inserted in the generated code.
+     * How the block should be handled in the generated code.
      */
-    var codeBuilder: LambdaOpenCodeBuilder = DefaultLambdaOpenCodeBuilder()
+    abstract var codeBuilder: LambdaOpenCodeBuilder
 
     override val decompactionStyle = DecompactionStyle.SPACE_AFTER
 
@@ -52,7 +51,7 @@ class LambdaOpenStatement : Statement() {
         codeBuilder.close()
 
         // Check arguments size
-        if(codeBuilder.expectArgsSize(arguments.size)) {
+        if (codeBuilder.expectArgsSize(arguments.size)) {
             syntax.mark("args", StatementSyntax.Mark.CORRECT)
         } else {
             syntax.mark("args", StatementSyntax.Mark.WRONG)
@@ -69,6 +68,4 @@ class LambdaOpenStatement : Statement() {
         // the output depends on its implementation.
         return codeBuilder.builder
     }
-
-    override fun getEvaluableInstance() = LambdaOpenStatement()
 }

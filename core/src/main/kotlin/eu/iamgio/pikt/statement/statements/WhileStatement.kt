@@ -6,7 +6,7 @@ import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementOptions
 import eu.iamgio.pikt.statement.StatementSyntax
-import eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
+import eu.iamgio.pikt.statement.kotlin.KotlinDefaultLambdaOpenCodeBuilder
 
 /**
  * Runs a task as long as a condition is verified.
@@ -62,7 +62,7 @@ class WhileStatement : Statement() {
 /**
  * Defines lambda behavior for while statements.
  */
-class WhileLambdaOpenCodeBuilder : DefaultLambdaOpenCodeBuilder() {
+class WhileLambdaOpenCodeBuilder : KotlinDefaultLambdaOpenCodeBuilder() {
 
     override fun getDelegate() = WhileStatement::class.java
 

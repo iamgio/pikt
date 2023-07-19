@@ -17,7 +17,7 @@ const val LAMBDA_DEFAULT_BLOCK_NAME = "lambda"
  * This is meant to be used in other statements as a "bridge" between that statement and lambda blocks that follow it.
  *
  * @param builder the String builder that contains the output code for this lambda statement. This is accessed from sub-classes.
- * @see eu.iamgio.pikt.statement.statements.DefaultLambdaOpenCodeBuilder
+ * @see eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
  * @see eu.iamgio.pikt.statement.statements.ForEachLambdaOpenCodeBuilder
  * @author Giorgio Garofalo
  */
