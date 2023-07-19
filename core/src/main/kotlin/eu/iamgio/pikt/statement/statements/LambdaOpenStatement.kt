@@ -61,11 +61,7 @@ abstract class LambdaOpenStatement : Statement() {
         // Invoke the callback
         onGenerationCompleted?.invoke(arguments)
 
-        // When using the default code builder:
-        // Output without arguments: {
-        // Output with arguments:    { arg1: Any, arg2: Any ->
-        // When not using the default code builder,
-        // the output depends on its implementation.
+        // The output depends on the code builder implementation.
         return codeBuilder.builder
     }
 }
