@@ -4,10 +4,7 @@ import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
-import eu.iamgio.pikt.statement.Statement
-import eu.iamgio.pikt.statement.StatementData
-import eu.iamgio.pikt.statement.StatementOptions
-import eu.iamgio.pikt.statement.StatementSyntax
+import eu.iamgio.pikt.statement.*
 
 /**
  * Performs either a `return` or `break` depending on its chain size:

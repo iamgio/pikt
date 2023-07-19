@@ -1,6 +1,6 @@
-package eu.iamgio.pikt.statement.statements
+package eu.iamgio.pikt.statement
 
-import eu.iamgio.pikt.statement.Statement
+import eu.iamgio.pikt.statement.statements.*
 
 // Extension functions to check the purpose of a code block.
 
