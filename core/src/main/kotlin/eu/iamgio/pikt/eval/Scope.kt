@@ -17,7 +17,9 @@ data class Scope(private val parent: Scope?, val owner: Statement?, private val 
 
     private fun getAllMembers(map: MutableMap<String, ScopeMember> = hashMapOf()): MutableMap<String, ScopeMember> {
         map.putAll(ownMembers)
-        if(parent != null) map.putAll(parent.getAllMembers(map))
+        if (parent != null) {
+            map.putAll(parent.getAllMembers(map))
+        }
         return map
     }
 
@@ -64,8 +66,10 @@ data class Scope(private val parent: Scope?, val owner: Statement?, private val 
      */
     fun anyParent(predicate: (Scope) -> Boolean): Boolean {
         var scope: Scope? = this
-        while(scope != null) {
-            if(predicate(scope)) return true
+        while (scope != null) {
+            if (predicate(scope)) {
+                return true
+            }
             scope = scope.parent
         }
         return false

@@ -45,7 +45,7 @@ abstract class WhileStatement : Statement() {
 
         // If a lambda block follows, give it an identifier for bridging.
         if(data.nextStatement.isBlock) {
-            data.nextStatement.asBlock.codeBuilder = this.createCodeBuilder() //WhileLambdaOpenCodeBuilder()
+            data.nextStatement.asBlock.codeBuilder = this.createCodeBuilder()
         }
 
         return this.generate(condition)
