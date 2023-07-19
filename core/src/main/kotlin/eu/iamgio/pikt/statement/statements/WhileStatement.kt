@@ -6,6 +6,7 @@ import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementOptions
 import eu.iamgio.pikt.statement.StatementSyntax
+import eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
 
 /**
  * Runs a task as long as a condition is verified.

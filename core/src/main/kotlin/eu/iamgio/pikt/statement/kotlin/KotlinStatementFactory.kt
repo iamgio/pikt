@@ -25,7 +25,7 @@ class KotlinStatementFactory : StatementFactory {
 
     override fun lambdaOpen() = LambdaOpenStatement()
 
-    override fun lambdaClose() = LambdaCloseStatement()
+    override fun lambdaClose() = KotlinLambdaCloseStatement()
 
     override fun print() = KotlinPrintStatement()
 }

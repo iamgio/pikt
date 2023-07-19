@@ -12,6 +12,7 @@ import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.StatementSyntax
+import eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
 
 /**
  * Used to define and set (if already they exist) variables

@@ -5,6 +5,7 @@ import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.*
+import eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
 import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
 
 /**
@@ -70,50 +71,4 @@ class LambdaOpenStatement : Statement() {
     }
 
     override fun getEvaluableInstance() = LambdaOpenStatement()
-}
-
-/**
- * Closes a block of code.
- * <%lambda.close%>
- * @author Giorgio Garofalo
- */
-class LambdaCloseStatement : Statement() {
-
-    override val decompactionStyle = DecompactionStyle.SPACE_BEFORE_AND_AFTER
-
-    override val options = StatementOptions(closesScope = true)
-
-    override fun getSyntax() = StatementSyntax(
-            StatementSyntax.Member("lambda.close", StatementSyntax.Type.SCHEME_OBLIGATORY, mark = StatementSyntax.Mark.CORRECT),
-    )
-
-    override fun getColors(colors: ColorsProperties) = colors.lambda.close
-
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData) = "}"
-}
-
-/**
- * Defines the default lambda Kotlin-like behavior:
- * ```
- * { arg1: Any, arg2: Any ->
- * ```
- *
- */
-open class DefaultLambdaOpenCodeBuilder : LambdaOpenCodeBuilder() {
-    override fun getDelegate(): Class<out Statement> = LambdaOpenStatement::class.java
-
-    override fun open() {
-        builder.append("{")
-    }
-
-    override fun appendArgument(argument: Pixel) {
-        builder.append(" ").append(argument).append(": Any,")
-    }
-
-    override fun close() {
-        if(builder.endsWith(",")) {
-            builder.setCharAt(builder.length - 1, ' ')
-            builder.append("->")
-        }
-    }
 }
