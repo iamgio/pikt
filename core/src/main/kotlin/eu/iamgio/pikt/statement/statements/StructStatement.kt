@@ -15,7 +15,7 @@ import eu.iamgio.pikt.statement.StatementSyntax
  *
  * @author Giorgio Garofalo
  */
-class StructStatement : Statement() {
+abstract class StructStatement : Statement() {
 
     override val decompactionStyle = DecompactionStyle.SPACE_BEFORE_AND_AFTER
 
@@ -27,34 +27,32 @@ class StructStatement : Statement() {
 
     override fun getColors(colors: ColorsProperties) = colors.keywords.struct
 
-    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence {
-        val builder = StringBuilder("class ")
-
+    override fun generate(reader: PixelReader, syntax: StatementSyntax, data: StatementData): CharSequence? {
         // The name of the struct
         val name = reader.next()
-        if(name == null) {
+        if (name == null) {
             syntax.mark("name", StatementSyntax.Mark.WRONG)
             reader.error("Struct has no name.", syntax)
-            return builder.toString()
+            return null
         }
 
-        builder.append(name).append(" : Struct(")
         val arguments = mutableListOf<Pixel>()
 
         // The members (parameters) of the struct
         reader.whileNotNull { argument ->
-            builder.append("\"").append(argument).append("\" to 0, ")
             arguments += argument
             syntax.mark("members", StatementSyntax.Mark.CORRECT)
         }
-        if(builder.endsWith(", ")) {
-            builder.setLength(builder.length - 2)
-        }
-        builder.append(")")
 
         data.scope.push(name, StructMember(name, FunctionMember.Overload(arguments.size)))
 
-        // Output: class Name : Struct(arg1 to 0, arg2 to 0, ...)
-        return builder
+        return this.generate(name, arguments)
     }
+
+    /**
+     * Generates the output code.
+     * @param name name of the struct
+     * @param arguments members of the struct
+     */
+    protected abstract fun generate(name: Pixel, arguments: List<Pixel>): CharSequence
 }

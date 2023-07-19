@@ -1,11 +1,8 @@
 package eu.iamgio.pikt.statement.kotlin
 
 import eu.iamgio.pikt.statement.StatementFactory
-import eu.iamgio.pikt.statement.statements.StructStatement
 
 class KotlinStatementFactory : StatementFactory {
-
-    // TODO implement Kotlin-specific, make general ones abstract
 
     override fun variableAssignment() = KotlinSetVariableStatement()
 
@@ -15,7 +12,7 @@ class KotlinStatementFactory : StatementFactory {
 
     override fun `else`() = KotlinElseStatement()
 
-    override fun struct() = StructStatement()
+    override fun struct() = KotlinStructStatement()
 
     override fun forEach() = KotlinForEachStatement()
 
