@@ -1,6 +1,7 @@
 package eu.iamgio.pikt.compiler
 
 import eu.iamgio.pikt.eval.Evaluator
+import eu.iamgio.pikt.eval.InjectionData
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.*
 
@@ -79,7 +80,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
         outputFolder.mkdir()
 
         // Inject specific variables.
-        evaluator.insertInjections(properties)
+        evaluator.insertInjections(InjectionData.fromProperties(properties))
 
         // Apply compiler-specific code settings.
         applyEvaluatorSettings()

@@ -5,7 +5,6 @@ import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.lib.Libraries
 import eu.iamgio.pikt.lib.Library
 import eu.iamgio.pikt.log.Log
-import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementOptions
 
@@ -115,6 +114,10 @@ abstract class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInv
      */
     abstract fun insertInMain()
 
+    /**
+     * @param library library to import
+     * @return an import line to access [library] functions.
+     */
     protected abstract fun generateImport(library: Library): String
 
     /**
@@ -132,10 +135,10 @@ abstract class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInv
     }
 
     /**
-     * Sets values of variables from the standard library.
-     * @param properties Pikt properties
+     * Inserts informational variables into the output code.
+     * @param injectionData information to inject
      */
-    abstract fun insertInjections(properties: PiktProperties)
+    abstract fun insertInjections(injectionData: InjectionData)
 
     /**
      * Invalidates this evaluator (finishes generating Kotlin code but doesn't compile it).
@@ -148,4 +151,9 @@ abstract class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInv
             Log.error("Error: $message\n")
         }
     }
+
+    /**
+     * @return [this] string into a code-friendly string value
+     */
+    protected fun String.stringify() = "\"" + replace("\\", "\\\\") + "\""
 }

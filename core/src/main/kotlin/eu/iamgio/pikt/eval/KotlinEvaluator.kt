@@ -1,7 +1,6 @@
 package eu.iamgio.pikt.eval
 
 import eu.iamgio.pikt.lib.Library
-import eu.iamgio.pikt.properties.PiktProperties
 
 /**
  *
@@ -19,13 +18,12 @@ class KotlinEvaluator(codeBuilder: StringBuilder = StringBuilder(), isInvalidate
         return "import ${library.info.`package`}.*\n"
     }
 
-    override fun insertInjections(properties: PiktProperties) {
-        // TODO pass key-value injections to this method from this evaluator's superclass
-        // in order to make it less error-prone for possible future evaluator implementations
+    override fun insertInjections(injectionData: InjectionData): Unit = with(injectionData) {
+        val code = """
+            ${::sourceImagePath.name} = ${sourceImagePath.stringify()}
+            
+        """.trimIndent()
 
-        // Transforms a string into a code-friendly string value
-        fun String.stringify() = "\"" + replace("\\", "\\\\") + "\""
-
-        codeBuilder.insert(0, "sourceImagePath = ${properties.source.absolutePath.stringify()}\n")
+        codeBuilder.insert(0, code)
     }
 }
