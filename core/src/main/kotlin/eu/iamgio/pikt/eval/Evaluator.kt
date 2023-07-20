@@ -3,19 +3,20 @@ package eu.iamgio.pikt.eval
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.lib.Libraries
+import eu.iamgio.pikt.lib.Library
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementOptions
 
 /**
- * Evaluates a [PiktImage] in order to generate Kotlin code
+ * Evaluates a [PiktImage] in order to generate output code
  *
  * @param codeBuilder Kotlin code builder
  * @param isInvalidated whether code generation has run into an error
  * @author Giorgio Garofalo
  */
-class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated: Boolean = false) : Cloneable {
+abstract class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated: Boolean = false) : Cloneable {
 
     /**
      * If an evaluator is invalidated, its content will not be compiled.
@@ -33,7 +34,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
     /**
      * @return a copy of this evaluator containing already generated code
      */
-    public override fun clone() = Evaluator(StringBuilder(codeBuilder), isInvalidated)
+    public abstract override fun clone(): Evaluator
 
     /**
      * Evaluates [image] source via subdivided pixel readers.
@@ -49,7 +50,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
         val statements = mutableListOf<QueuedStatement>()
 
         // Queue statements so that previousStatement and nextStatement can be set.
-        for(reader in readers) {
+        for (reader in readers) {
             val pixel = reader.next()
             val statement = pixel?.statement ?: continue
 
@@ -57,10 +58,10 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
             // depending on the amount of pixels that start it.
             // For example: <return> exits a function,
             // but <return> <return> performs a "break" on a loop.
-            if(statement.options.allowsChaining && statements.isNotEmpty()) {
+            if (statement.options.allowsChaining && statements.isNotEmpty()) {
                 val last = statements.last()
                 // If this is a chained statement, overwrite the last queued statement
-                if(last.reader.size == 1 && last.statement::class == statement::class) {
+                if (last.reader.size == 1 && last.statement::class == statement::class) {
                     statements[statements.size - 1] = last.copy(reader = reader, chainSize = last.chainSize + 1)
                     continue
                 }
@@ -110,12 +111,11 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
     }
 
     /**
-     * Inserts the current [outputCode] into a `fun main()` block.
+     * Inserts the current [outputCode] into a `main` executable block.
      */
-    fun insertInMain() {
-        codeBuilder.insert(0, "fun main() {\n")
-        codeBuilder.append("\n}")
-    }
+    abstract fun insertInMain()
+
+    protected abstract fun generateImport(library: Library): String
 
     /**
      * Imports library functions.
@@ -124,7 +124,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
     fun insertImports(libraries: Libraries) {
         val imports = buildString {
             libraries.forEach { library ->
-                append("import ${library.info.`package`}.*\n")
+                append(generateImport(library))
             }
             append("\n")
         }
@@ -135,12 +135,7 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
      * Sets values of variables from the standard library.
      * @param properties Pikt properties
      */
-    fun insertInjections(properties: PiktProperties) {
-        // Transforms a string into a code-friendly string value
-        fun String.stringify() = "\"" + replace("\\", "\\\\") + "\""
-
-        codeBuilder.insert(0, "sourceImagePath = ${properties.source.absolutePath.stringify()}\n")
-    }
+    abstract fun insertInjections(properties: PiktProperties)
 
     /**
      * Invalidates this evaluator (finishes generating Kotlin code but doesn't compile it).
@@ -149,6 +144,8 @@ class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInvalidated:
     fun invalidate(message: String? = null) {
         isInvalidated = true
 
-        if(message != null) Log.error("Error: $message\n")
+        if (message != null) {
+            Log.error("Error: $message\n")
+        }
     }
 }

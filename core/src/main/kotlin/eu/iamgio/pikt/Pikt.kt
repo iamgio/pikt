@@ -8,7 +8,7 @@ import eu.iamgio.pikt.command.commands.*
 import eu.iamgio.pikt.command.commands.imageprocessing.*
 import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.compiler.Interpreter
-import eu.iamgio.pikt.eval.Evaluator
+import eu.iamgio.pikt.eval.KotlinEvaluator
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.log.Log
@@ -68,7 +68,9 @@ fun main(args: Array<String>) {
     val image = PiktImage(properties)
 
     // Evaluate the image pixel-by-pixel
-    val evaluator = Evaluator()
+    // TODO: instead of instantiating KotlinEvaluator, there should be a factory
+    // that generates an evaluator, a statement factory and other language-specific implementations.
+    val evaluator = KotlinEvaluator()
     evaluator.evaluate(image, Scope.buildMainScope(properties.libraries, properties.colors.libraries))
 
     // Print Kotlin output if -printoutput is enabled.
