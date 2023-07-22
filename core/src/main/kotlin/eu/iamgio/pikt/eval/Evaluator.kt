@@ -151,9 +151,4 @@ abstract class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInv
             Log.error("Error: $message\n")
         }
     }
-
-    /**
-     * @return [this] string into a code-friendly string value
-     */
-    protected fun String.stringify() = "\"" + replace("\\", "\\\\") + "\""
 }
