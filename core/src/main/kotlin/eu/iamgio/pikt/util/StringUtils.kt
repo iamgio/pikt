@@ -6,4 +6,7 @@ package eu.iamgio.pikt.util
  * - `1 "2" 3` turns into `"1 \"2\" 3"`
  * @return [this] string into a code-friendly string value
  */
-fun String.stringify() = "\"" + replace("\\", "\\\\") + "\""
+fun String.stringify(): String {
+    val escaped = replace("\\", "\\\\").replace("\"", "\\\"")
+    return "\"" + escaped + "\""
+}
