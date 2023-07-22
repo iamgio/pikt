@@ -4,7 +4,10 @@ import eu.iamgio.pikt.lib.Library
 import eu.iamgio.pikt.util.stringify
 
 /**
+ * [Evaluator] implementation for Kotlin as a target language.
  *
+ * @param codeBuilder string builder that contains the generated code
+ * @param isInvalidated whether code generation has run into an error
  */
 class KotlinEvaluator(codeBuilder: StringBuilder = StringBuilder(), isInvalidated: Boolean = false) : Evaluator(codeBuilder, isInvalidated) {
 

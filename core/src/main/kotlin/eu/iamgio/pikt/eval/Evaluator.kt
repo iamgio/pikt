@@ -11,7 +11,7 @@ import eu.iamgio.pikt.statement.StatementOptions
 /**
  * Evaluates a [PiktImage] in order to generate output code
  *
- * @param codeBuilder Kotlin code builder
+ * @param codeBuilder string builder that contains the generated code
  * @param isInvalidated whether code generation has run into an error
  * @author Giorgio Garofalo
  */
