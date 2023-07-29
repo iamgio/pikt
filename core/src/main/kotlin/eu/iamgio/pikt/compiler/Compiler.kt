@@ -51,7 +51,7 @@ abstract class Compiler(evaluator: Evaluator, properties: PiktProperties) : Abst
      * @param target compilation target
      * @return folder of the target
      */
-    protected fun getTargetFolder(target: CompilationTarget) = File(outputFolder, target.argName)
+    private fun getTargetFolder(target: CompilationTarget) = File(outputFolder, target.argName)
 
     /**
      * Gets the output file without extension in the target folder.
@@ -59,4 +59,23 @@ abstract class Compiler(evaluator: Evaluator, properties: PiktProperties) : Abst
      * @return output file
      */
     protected fun getOutputFile(target: CompilationTarget) = File(getTargetFolder(target), properties.output)
+
+    /**
+     * @param target compilation target to retrieve the script files for
+     * @return an array of the starter script files (such as sh, bat, command)
+     *         that are suitable for the given target
+     */
+    private fun getStarterScriptFiles(target: CompilationTarget): Array<StarterScriptFile> {
+        return target.getStarterScriptFiles(executableName = properties.output)
+    }
+
+    /**
+     * Creates the starter script files (such as sh, bat, command) for the given target.
+     * @param target compilation target to retrieve the script files for
+     */
+    protected fun createStarterScriptFiles(target: CompilationTarget) {
+        this.getStarterScriptFiles(target).forEach {
+            it.create(getTargetFolder(target), name = properties.output)
+        }
+    }
 }

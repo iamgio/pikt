@@ -3,7 +3,6 @@ package eu.iamgio.pikt.compiler.kotlin
 import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.compiler.KOTLIN_COMPILER_ERROR_MESSAGE_HEADER
-import eu.iamgio.pikt.compiler.getStarterScriptFiles
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktProperties
@@ -39,9 +38,6 @@ class KotlinCompiler(evaluator: Evaluator, properties: PiktProperties) : Compile
             }
         }
 
-        // Generate script (.sh, .bat and .command) files
-        target.getStarterScriptFiles(executableName = properties.output).forEach {
-            it.create(getTargetFolder(target), name = properties.output)
-        }
+        super.createStarterScriptFiles(target)
     }
 }
