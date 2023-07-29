@@ -14,4 +14,5 @@ This module contains the key features of Pikt, including code generation, interp
 - `properties`: system properties and color scheme parsing;
 - `schemes`: color-based processing and operations;
 - `statements`: statements (such as `if`, `variable.set`, etc.) and their behaviors;
+- `targetlang`: access to specific tools for each target language available for transpilation (currently Kotlin only); 
 - `util`: general utilities.

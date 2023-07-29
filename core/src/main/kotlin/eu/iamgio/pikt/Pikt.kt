@@ -8,7 +8,6 @@ import eu.iamgio.pikt.command.commands.*
 import eu.iamgio.pikt.command.commands.imageprocessing.*
 import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.compiler.Interpreter
-import eu.iamgio.pikt.eval.KotlinEvaluator
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.log.Log
@@ -17,7 +16,8 @@ import eu.iamgio.pikt.project.PiktProjectInfoParser
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 import eu.iamgio.pikt.statement.StatementFactory
 import eu.iamgio.pikt.statement.Statements
-import eu.iamgio.pikt.statement.kotlin.KotlinStatementFactory
+import eu.iamgio.pikt.targetlang.KotlinToolFactory
+import eu.iamgio.pikt.targetlang.TargetLanguageToolFactory
 
 fun main(args: Array<String>) {
     // Record when Pikt was started.
@@ -25,13 +25,13 @@ fun main(args: Array<String>) {
 
     // The target language to generate code for.
     // This could be retrieved via properties in the future.
-    val statementFactory: StatementFactory = KotlinStatementFactory()
+    val toolFactory: TargetLanguageToolFactory = KotlinToolFactory()
 
     // Register command-line commands and arguments.
     registerCommands()
 
     // Register code statements.
-    registerStatements(statementFactory)
+    registerStatements(toolFactory.statementFactory)
 
     // Project info is an optional YAML file loaded from -Dproject=path.
     // It may store command-line properties and commands that should be used for a specific project.
@@ -68,9 +68,8 @@ fun main(args: Array<String>) {
     val image = PiktImage(properties)
 
     // Evaluate the image pixel-by-pixel
-    // TODO: instead of instantiating KotlinEvaluator, there should be a factory
     // that generates an evaluator, a statement factory and other language-specific implementations.
-    val evaluator = KotlinEvaluator()
+    val evaluator = toolFactory.newEvaluator()
     evaluator.evaluate(image, Scope.buildMainScope(properties.libraries, properties.colors.libraries))
 
     // Print Kotlin output if -printoutput is enabled.
@@ -146,6 +145,7 @@ fun registerCommands() = with(Commands) {
 
 /**
  * Registers code statements.
+ * @param factory statement factory to get retrieve the statements from
  */
 fun registerStatements(factory: StatementFactory) = with(Statements) {
     register(factory.variableAssignment())
