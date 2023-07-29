@@ -73,25 +73,25 @@ fun main(args: Array<String>) {
     evaluator.evaluate(image, Scope.buildMainScope(properties.libraries, properties.colors.libraries))
 
     // Print Kotlin output if -printoutput is enabled.
-    if(CMD_PRINTOUTPUT in GlobalSettings) {
+    if (CMD_PRINTOUTPUT in GlobalSettings) {
         Log.info("Output:\n${evaluator.outputCode}\n")
     }
 
     // Stop execution if at least one error has occurred during code generation.
-    if(evaluator.isInvalidated) {
+    if (evaluator.isInvalidated) {
         Log.warn("Please fix these issues and try again.")
         return
     }
 
     // Interpret the generated code if -interpret is enabled.
-    if(CMD_INTERPRET in GlobalSettings) {
+    if (CMD_INTERPRET in GlobalSettings) {
         val interpreter = Interpreter(evaluator.clone(), properties)
         interpreter.compile()
     }
 
     // Compile the code output into an executable via the Kotlin compiler.
     // Does not run if -nocompile is enabled.
-    if(CMD_NOCOMPILE !in GlobalSettings) {
+    if (CMD_NOCOMPILE !in GlobalSettings) {
         val compiler = Compiler(evaluator.clone(), properties)
         compiler.compile()
     }
@@ -148,15 +148,15 @@ fun registerCommands() = with(Commands) {
  * @param factory statement factory to get retrieve the statements from
  */
 fun registerStatements(factory: StatementFactory) = with(Statements) {
-    register(factory.variableAssignment())
-    register(factory.functionCall())
-    register(factory.`if`())
-    register(factory.`else`())
-    register(factory.struct())
-    register(factory.forEach())
-    register(factory.`while`())
-    register(factory.`return`())
-    register(factory.lambdaOpen())
-    register(factory.lambdaClose())
-    register(factory.print())
+    register(factory.variableAssignmentStatement())
+    register(factory.functionCallStatement())
+    register(factory.ifStatement())
+    register(factory.elseStatement())
+    register(factory.structStatement())
+    register(factory.forEachStatement())
+    register(factory.whileStatement())
+    register(factory.returnStatement())
+    register(factory.lambdaOpenStatement())
+    register(factory.lambdaCloseStatement())
+    register(factory.printStatement())
 }

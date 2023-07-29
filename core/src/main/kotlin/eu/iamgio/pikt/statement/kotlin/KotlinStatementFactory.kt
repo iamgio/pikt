@@ -2,27 +2,30 @@ package eu.iamgio.pikt.statement.kotlin
 
 import eu.iamgio.pikt.statement.StatementFactory
 
+/**
+ * Kotlin implementation for [StatementFactory].
+ */
 class KotlinStatementFactory : StatementFactory {
 
-    override fun variableAssignment() = KotlinSetVariableStatement()
+    override fun variableAssignmentStatement() = KotlinSetVariableStatement()
 
-    override fun functionCall() = KotlinFunctionCallStatement()
+    override fun functionCallStatement() = KotlinFunctionCallStatement()
 
-    override fun `if`() = KotlinIfStatement()
+    override fun ifStatement() = KotlinIfStatement()
 
-    override fun `else`() = KotlinElseStatement()
+    override fun elseStatement() = KotlinElseStatement()
 
-    override fun struct() = KotlinStructStatement()
+    override fun structStatement() = KotlinStructStatement()
 
-    override fun forEach() = KotlinForEachStatement()
+    override fun forEachStatement() = KotlinForEachStatement()
 
-    override fun `while`() = KotlinWhileStatement()
+    override fun whileStatement() = KotlinWhileStatement()
 
-    override fun `return`() = KotlinReturnStatement()
+    override fun returnStatement() = KotlinReturnStatement()
 
-    override fun lambdaOpen() = KotlinLambdaOpenStatement()
+    override fun lambdaOpenStatement() = KotlinLambdaOpenStatement()
 
-    override fun lambdaClose() = KotlinLambdaCloseStatement()
+    override fun lambdaCloseStatement() = KotlinLambdaCloseStatement()
 
-    override fun print() = KotlinPrintStatement()
+    override fun printStatement() = KotlinPrintStatement()
 }
