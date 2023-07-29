@@ -17,7 +17,7 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
 
     private var hasKotlinError = false
 
-    override val sourceKotlinFile = File(outputFolder, properties.output + ".kt")
+    override val sourceFile = File(outputFolder, properties.output + ".kt")
 
     override fun applyEvaluatorSettings() {
         evaluator.insertInMain()
@@ -31,7 +31,7 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
     }
 
     override fun generateCommand(target: CompilationTarget): Array<String> {
-        return target.commandGenerator.generateCompileCommand(sourceKotlinFile, getOutputFile(target), properties)
+        return target.commandGenerator.generateCompileCommand(sourceFile, getOutputFile(target), properties)
     }
 
     override fun onPostCompile(target: CompilationTarget) {

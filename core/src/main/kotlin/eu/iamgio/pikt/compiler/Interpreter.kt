@@ -15,7 +15,7 @@ import kotlin.concurrent.thread
  */
 abstract class AbstractInterpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractCompiler(evaluator, properties) {
 
-    override val sourceKotlinFile = File(outputFolder, properties.output + ".kts")
+    override val sourceFile = File(outputFolder, properties.output + ".kts")
 
     override fun applyEvaluatorSettings() {}
 
@@ -24,7 +24,7 @@ abstract class AbstractInterpreter(evaluator: Evaluator, properties: PiktPropert
     override fun onPreCompile(target: CompilationTarget) {}
 
     override fun generateCommand(target: CompilationTarget): Array<String> {
-        return target.commandGenerator.generateInterpretCommand(sourceKotlinFile, properties)
+        return target.commandGenerator.generateInterpretCommand(sourceFile, properties)
     }
 
     override fun onPostCompile(target: CompilationTarget) {}

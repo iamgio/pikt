@@ -24,9 +24,9 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
     protected val outputFolder = File(properties.source.parent, "out")
 
     /**
-     * Temporary source .kt (or .kts if interpreted) file.
+     * Temporary source file (e.g. for Kotlin: .kt if compiled, .kts if interpreted).
      */
-    protected abstract val sourceKotlinFile: File
+    protected abstract val sourceFile: File
 
     /**
      * Applies pre-compilation properties to the [evaluator].
@@ -89,7 +89,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
         evaluator.insertImports(properties.libraries)
 
         // Write the evaluator code to the source file.
-        sourceKotlinFile.writeText(evaluator.outputCode)
+        sourceFile.writeText(evaluator.outputCode)
 
         // Compile for each target.
         getTargets().forEach { target ->
@@ -114,7 +114,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
         }
 
         // Delete temporary Kotlin source file.
-        sourceKotlinFile.delete()
+        sourceFile.delete()
     }
 
     /**
@@ -125,9 +125,9 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
 
         var line: String?
 
-        while(reader.readLine().also { line = it } != null) {
+        while (reader.readLine().also { line = it } != null) {
             line?.let {
-                if(!it.startsWith(KOTLIN_COMPILER_WARNING) && !it.contains(KOTLIN_COMPILER_XVERIFY)) {
+                if (!it.startsWith(KOTLIN_COMPILER_WARNING) && !it.contains(KOTLIN_COMPILER_XVERIFY)) {
                     printProcessLine(it, isErrorStream)
                 }
             }
