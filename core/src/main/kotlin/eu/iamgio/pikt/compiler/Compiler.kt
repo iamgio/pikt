@@ -4,7 +4,6 @@ import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.File
-import java.io.IOException
 import java.io.OutputStream
 
 /**
@@ -14,11 +13,11 @@ import java.io.OutputStream
  * @param properties Pikt properties
  * @author Giorgio Garofalo
  */
-class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompiler(evaluator, properties) {
+abstract class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompiler(evaluator, properties) {
 
-    private var hasKotlinError = false
+    private var hasError = false
 
-    override val sourceFile = File(outputFolder, properties.output + ".kt")
+    abstract val errorMessageHeader: String
 
     override fun applyEvaluatorSettings() {
         evaluator.insertInMain()
@@ -31,39 +30,14 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
         Log.info("\nCompiling for target $target. Please wait...\n")
     }
 
-    override fun generateCommand(target: CompilationTarget): Array<String> {
-        return target.commandGenerator.generateCompileCommand(sourceFile, getOutputFile(target), properties)
-    }
-
-    override fun onPostCompile(target: CompilationTarget) {
-        // If the compilation target is the JVM,
-        // include libraries into the output JAR file.
-        if (target == CompilationTarget.JVM) {
-            val executable = File(getOutputFile(target).absolutePath + ".jar")
-
-            properties.libraries.forEach { library ->
-                try {
-                    library.applyTo(executable)
-                } catch (e: IOException) {
-                    Log.error("Could not apply library ${library.name} to $executable: " + e.message)
-                }
-            }
-        }
-
-        // Generate script (.sh, .bat and .command) files
-        target.getStarterScriptFiles(executableName = properties.output).forEach {
-            it.create(getTargetFolder(target), name = properties.output)
-        }
-    }
-
     // No input expected during compilation.
     override fun handleInput(stdin: OutputStream) {}
 
     override fun printProcessLine(line: String, isError: Boolean) {
-        if(isError) {
-            if(!hasKotlinError) {
-                hasKotlinError = true
-                Log.error(KOTLIN_COMPILER_ERROR_MESSAGE_HEADER)
+        if (isError) {
+            if (!this.hasError) {
+                hasError = true
+                Log.error(this.errorMessageHeader)
             }
             Log.error(line)
         } else {
@@ -77,12 +51,12 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
      * @param target compilation target
      * @return folder of the target
      */
-    private fun getTargetFolder(target: CompilationTarget) = File(outputFolder, target.argName)
+    protected fun getTargetFolder(target: CompilationTarget) = File(outputFolder, target.argName)
 
     /**
      * Gets the output file without extension in the target folder.
      * @param target compilation target to get the folder for
      * @return output file
      */
-    private fun getOutputFile(target: CompilationTarget) = File(getTargetFolder(target), properties.output)
+    protected fun getOutputFile(target: CompilationTarget) = File(getTargetFolder(target), properties.output)
 }

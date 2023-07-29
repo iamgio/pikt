@@ -113,7 +113,7 @@ abstract class AbstractCompiler(protected val evaluator: Evaluator, protected va
             onPostCompile(target)
         }
 
-        // Delete temporary Kotlin source file.
+        // Delete temporary source file.
         sourceFile.delete()
     }
 

@@ -1,6 +1,8 @@
 package eu.iamgio.pikt.targetlang
 
+import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.eval.Evaluator
+import eu.iamgio.pikt.properties.PiktProperties
 import eu.iamgio.pikt.statement.StatementFactory
 
 /**
@@ -18,4 +20,11 @@ interface TargetLanguageToolFactory {
      * @return a new instance of an empty evaluator for this target language
      */
     fun newEvaluator(): Evaluator
+
+    /**
+     * @param evaluator evaluator containing output code
+     * @param properties Pikt properties
+     * @return a new instance of a compiler that wraps the code content from the [evaluator]
+     */
+    fun newCompiler(evaluator: Evaluator, properties: PiktProperties): Compiler
 }

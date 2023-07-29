@@ -6,7 +6,6 @@ import eu.iamgio.pikt.command.CliCommandsUtils.parsed
 import eu.iamgio.pikt.command.Commands
 import eu.iamgio.pikt.command.commands.*
 import eu.iamgio.pikt.command.commands.imageprocessing.*
-import eu.iamgio.pikt.compiler.Compiler
 import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
@@ -92,7 +91,7 @@ fun main(args: Array<String>) {
     // Compile the code output into an executable via the Kotlin compiler.
     // Does not run if -nocompile is enabled.
     if (CMD_NOCOMPILE !in GlobalSettings) {
-        val compiler = Compiler(evaluator.clone(), properties)
+        val compiler = toolFactory.newCompiler(evaluator.clone(), properties)
         compiler.compile()
     }
 
