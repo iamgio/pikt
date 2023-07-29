@@ -4,6 +4,7 @@ import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktProperties
 import java.io.File
+import java.io.IOException
 import java.io.OutputStream
 
 /**
@@ -37,9 +38,15 @@ class Compiler(evaluator: Evaluator, properties: PiktProperties) : AbstractCompi
     override fun onPostCompile(target: CompilationTarget) {
         // If the compilation target is the JVM,
         // include libraries into the output JAR file.
-        if(target == CompilationTarget.JVM) {
-            properties.libraries.forEach {
-                it.applyTo(executableFile = File(getOutputFile(target).absolutePath + ".jar"))
+        if (target == CompilationTarget.JVM) {
+            val executable = File(getOutputFile(target).absolutePath + ".jar")
+
+            properties.libraries.forEach { library ->
+                try {
+                    library.applyTo(executable)
+                } catch (e: IOException) {
+                    Log.error("Could not apply library ${library.name} to $executable: " + e.message)
+                }
             }
         }
 

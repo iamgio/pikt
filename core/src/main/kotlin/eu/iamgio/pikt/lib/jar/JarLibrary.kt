@@ -4,11 +4,9 @@ import eu.iamgio.pikt.lib.Library
 import eu.iamgio.pikt.lib.LibraryColorScheme
 import eu.iamgio.pikt.lib.LibraryFunction
 import eu.iamgio.pikt.lib.LibraryInfo
-import eu.iamgio.pikt.log.Log
 import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import java.io.File
-import java.io.IOException
 import java.util.*
 
 /**
@@ -87,12 +85,7 @@ class JarLibrary(private val libraryJar: ZipFile) : Library {
      * @param executableFile target output JAR file
      */
     override fun applyTo(executableFile: File) {
-        val targetJar = try {
-            ZipFile(executableFile)
-        } catch (e: IOException) {
-            Log.error("Could not apply library $name to $executableFile: " + e.message)
-            return
-        }
+        val targetJar = ZipFile(executableFile)
 
         libraryJar.fileHeaders.asSequence()
                 // Ignoring non-relevant content.
