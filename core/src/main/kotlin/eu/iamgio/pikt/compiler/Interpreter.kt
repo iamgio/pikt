@@ -10,28 +10,6 @@ import java.io.Reader
 import kotlin.concurrent.thread
 
 /**
- * Abstract interpreter that allows handling process streams.
- *
- * @param evaluator evaluator containing output code
- * @param properties Pikt properties
- * @author Giorgio Garofalo
- */
-abstract class AbstractInterpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractCompiler(evaluator, properties) {
-
-    override fun applyEvaluatorSettings() {}
-
-    override fun getTargets() = listOf(CompilationTarget.JVM)
-
-    override fun onPreCompile(target: CompilationTarget) {}
-
-    override fun generateCommand(target: CompilationTarget): Array<String> {
-        return target.commandGenerator.generateInterpretCommand(sourceFile, properties)
-    }
-
-    override fun onPostCompile(target: CompilationTarget) {}
-}
-
-/**
  * Compiles code and executes it on the fly.
  *
  * @param evaluator evaluator containing output code
@@ -66,7 +44,7 @@ abstract class Interpreter(evaluator: Evaluator, properties: PiktProperties) : A
                     stdin.write(ret)
                     stdin.flush()
                 }
-            } catch(e: IOException) {
+            } catch (e: IOException) {
                 Log.error("An error occurred while reading input:")
                 e.printStackTrace()
             }
