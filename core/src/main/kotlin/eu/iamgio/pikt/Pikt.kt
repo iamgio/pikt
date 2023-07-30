@@ -6,7 +6,6 @@ import eu.iamgio.pikt.command.CliCommandsUtils.parsed
 import eu.iamgio.pikt.command.Commands
 import eu.iamgio.pikt.command.commands.*
 import eu.iamgio.pikt.command.commands.imageprocessing.*
-import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.image.PiktImage
 import eu.iamgio.pikt.log.Log
@@ -84,7 +83,7 @@ fun main(args: Array<String>) {
 
     // Interpret the generated code if -interpret is enabled.
     if (CMD_INTERPRET in GlobalSettings) {
-        val interpreter = Interpreter(evaluator.clone(), properties)
+        val interpreter = toolFactory.newInterpreter(evaluator.clone(), properties)
         interpreter.compile()
     }
 

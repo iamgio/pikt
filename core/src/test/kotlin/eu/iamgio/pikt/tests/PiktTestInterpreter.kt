@@ -1,6 +1,6 @@
 package eu.iamgio.pikt.tests
 
-import eu.iamgio.pikt.compiler.AbstractInterpreter
+import eu.iamgio.pikt.compiler.kotlin.KotlinInterpreter
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktProperties
@@ -18,7 +18,7 @@ class PiktTestInterpreter(
     private val name: String,
     evaluator: Evaluator,
     properties: PiktProperties
-) : AbstractInterpreter(evaluator, properties) {
+) : KotlinInterpreter(evaluator, properties) {
 
     /**
      * Standard output lines.

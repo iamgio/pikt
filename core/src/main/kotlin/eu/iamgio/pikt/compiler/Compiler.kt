@@ -7,7 +7,7 @@ import java.io.File
 import java.io.OutputStream
 
 /**
- * Compiles Kotlin code into an executable file.
+ * Compiles code into an executable file.
  *
  * @param evaluator evaluator containing output code
  * @param properties Pikt properties
@@ -17,6 +17,9 @@ abstract class Compiler(evaluator: Evaluator, properties: PiktProperties) : Abst
 
     private var hasError = false
 
+    /**
+     * Header message shown before error messages.
+     */
     abstract val errorMessageHeader: String
 
     override fun applyEvaluatorSettings() {

@@ -3,7 +3,10 @@ package eu.iamgio.pikt.compiler
 import eu.iamgio.pikt.eval.Evaluator
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktProperties
-import java.io.*
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.OutputStream
+import java.io.Reader
 import kotlin.concurrent.thread
 
 /**
@@ -14,8 +17,6 @@ import kotlin.concurrent.thread
  * @author Giorgio Garofalo
  */
 abstract class AbstractInterpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractCompiler(evaluator, properties) {
-
-    override val sourceFile = File(outputFolder, properties.output + ".kts")
 
     override fun applyEvaluatorSettings() {}
 
@@ -31,17 +32,22 @@ abstract class AbstractInterpreter(evaluator: Evaluator, properties: PiktPropert
 }
 
 /**
- * Interprets Kotlin code.
+ * Compiles code and executes it on the fly.
  *
  * @param evaluator evaluator containing output code
  * @param properties Pikt properties
  * @author Giorgio Garofalo
  */
-class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractInterpreter(evaluator, properties) {
+abstract class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractInterpreter(evaluator, properties) {
 
-    private var hasKotlinError = false
+    private var hasError = false
 
     private var stdinReader: Reader? = null
+
+    /**
+     * Header message shown before error messages.
+     */
+    abstract val errorMessageHeader: String
 
     override fun onPostCompile(target: CompilationTarget) {
         super.onPostCompile(target)
@@ -68,10 +74,10 @@ class Interpreter(evaluator: Evaluator, properties: PiktProperties) : AbstractIn
     }
 
     override fun printProcessLine(line: String, isError: Boolean) {
-        if(isError) {
-            if(!hasKotlinError) {
-                hasKotlinError = true
-                Log.error(KOTLIN_COMPILER_ERROR_MESSAGE_HEADER)
+        if (isError) {
+            if (!hasError) {
+                hasError = true
+                Log.error(this.errorMessageHeader)
             }
             Log.error(line)
         } else {
