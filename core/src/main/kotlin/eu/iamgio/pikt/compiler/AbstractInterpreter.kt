@@ -14,13 +14,7 @@ abstract class AbstractInterpreter(evaluator: Evaluator, properties: PiktPropert
 
     override fun applyEvaluatorSettings() {}
 
-    override fun getTargets() = listOf(CompilationTarget.JVM)
-
     override fun onPreCompile(target: CompilationTarget) {}
-
-    override fun generateCommand(target: CompilationTarget): Array<String> {
-        return target.commandGenerator.generateInterpretCommand(sourceFile, properties)
-    }
 
     override fun onPostCompile(target: CompilationTarget) {}
 }

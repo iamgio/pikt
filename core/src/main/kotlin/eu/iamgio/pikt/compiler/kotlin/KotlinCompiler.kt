@@ -19,8 +19,7 @@ class KotlinCompiler(evaluator: Evaluator, properties: PiktProperties) : Compile
     override val errorMessageHeader = KOTLIN_COMPILER_ERROR_MESSAGE_HEADER
 
     override fun generateCommand(target: CompilationTarget): Array<String> {
-        // TODO adapt command generator to allow multiple target languages
-        return target.commandGenerator.generateCompileCommand(sourceFile, getOutputFile(target), properties)
+        return KotlinCompilerCommandGenerator(sourceFile, properties).generateCompilationCommand(target, getOutputFile(target))
     }
 
     override fun onPostCompile(target: CompilationTarget) {

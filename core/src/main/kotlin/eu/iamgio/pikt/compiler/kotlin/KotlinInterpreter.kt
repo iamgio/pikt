@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.compiler.kotlin
 
+import eu.iamgio.pikt.compiler.CompilationTarget
 import eu.iamgio.pikt.compiler.Interpreter
 import eu.iamgio.pikt.compiler.KOTLIN_COMPILER_ERROR_MESSAGE_HEADER
 import eu.iamgio.pikt.eval.Evaluator
@@ -14,4 +15,10 @@ open class KotlinInterpreter(evaluator: Evaluator, properties: PiktProperties) :
     override val sourceFile = File(outputFolder, properties.output + ".kts")
 
     override val errorMessageHeader = KOTLIN_COMPILER_ERROR_MESSAGE_HEADER
+
+    override fun getTargets() = listOf(CompilationTarget.JVM)
+
+    override fun generateCommand(target: CompilationTarget): Array<String> {
+        return KotlinCompilerCommandGenerator(sourceFile, properties).generateInterpretationCommand(target)
+    }
 }
