@@ -5,6 +5,7 @@ import eu.iamgio.pikt.statement.statements.ForEachStatement
 import eu.iamgio.pikt.statement.statements.LambdaOpenStatement
 import eu.iamgio.pikt.statement.statements.SetVariableStatement
 import eu.iamgio.pikt.statement.statements.WhileStatement
+import kotlin.math.max
 
 // Extension functions to check the purpose of a code block.
 
@@ -42,3 +43,19 @@ fun LambdaOpenStatement.isLoop() = isForEachLoop() || isWhileLoop()
  * @return whether [this] scope is part of a loop
  */
 fun Scope.isInLoop() = anyParent { it.owner?.isBlock == true && it.owner.asBlock.isLoop() }
+
+/**
+ * Evaluates the amount of indentations of [this] statement within a [scope].
+ * The result depends on [Scope.level] and [StatementOptions.handlesScopes].
+ * @param scope scope where the statement is in
+ * @param previousStatement statement that preceeds [this] statement, if it exists
+ * @return the optimal amount of indentations, always greater than 0 or equals.
+ */
+fun Statement.evaluateIndentationLevel(scope: Scope, previousStatement: Statement?): Int {
+    val indentationLevel = scope.level - when {
+        this.options.handlesScopes && previousStatement?.options?.opensTemporaryScope == true -> 2
+        this.options.handlesScopes -> 1
+        else -> 0
+    }
+    return max(0, indentationLevel)
+}

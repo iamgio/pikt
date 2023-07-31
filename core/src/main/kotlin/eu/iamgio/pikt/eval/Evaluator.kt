@@ -6,7 +6,7 @@ import eu.iamgio.pikt.lib.Libraries
 import eu.iamgio.pikt.lib.Library
 import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.statement.Statement
-import eu.iamgio.pikt.statement.StatementOptions
+import eu.iamgio.pikt.statement.evaluateIndentationLevel
 
 /**
  * Evaluates a [PiktImage] in order to generate output code
@@ -75,38 +75,35 @@ abstract class Evaluator(val codeBuilder: StringBuilder = StringBuilder(), isInv
     }
 
     /**
-     * Appends indentation to [codeBuilder]. The amount of tab characters depends on [Scope.level] and [StatementOptions.handlesScopes].
+     * Appends indentation to [codeBuilder].
+     * The amount of tabulation characters depends on [Statement.evaluateIndentationLevel].
+     *
+     * ```
+     * Case 0:              Applied: (nothing changes)
+     * statement1           statement1
+     * statement2           statement2
+     *
+     * Case 1:              Applied:
+     * var function =       var function =
+     *     {                {
+     *     statement            statement
+     *     }                }
+     *
+     * Case 2:              Applied:
+     * if (condition)       if (condition)
+     *     {                {
+     *     statement            statement
+     * }                    }
+     * ```
+     *
      * @param scope current scope
-     * @param statement target statement
-     * @param previousStatement statement that comes before [statement], if exists
+     * @param statement statement to calculate the indentation level for
+     * @param previousStatement statement that preceeds [statement], if it exists
+     * @see Statement.evaluateIndentationLevel
      */
     fun appendIndentation(scope: Scope, statement: Statement, previousStatement: Statement?) {
-        /*
-        Case 0:              Applied: (nothing changes)
-        statement1           statement1
-        statement2           statement2
-
-        Case 1:              Applied:
-        var function =       var function =
-            {                {
-            statement            statement
-            }                }
-
-        Case 2:              Applied:
-        if(condition)        if(condition)
-            {                {
-            statement            statement
-        }                    }
-        */
-        val indentationLevel = scope.level - when {
-            statement.options.handlesScopes && previousStatement?.options?.opensTemporaryScope == true -> 2
-            statement.options.handlesScopes -> 1
-            else -> 0
-        }
-
-        if(indentationLevel >= 0) {
-            codeBuilder.append("\t".repeat(indentationLevel))
-        }
+        val indentationLevel = statement.evaluateIndentationLevel(scope, previousStatement)
+        codeBuilder.append("\t".repeat(indentationLevel))
     }
 
     /**
