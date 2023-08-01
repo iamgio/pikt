@@ -18,7 +18,11 @@ private const val ERROR_UNRESOLVED_REFERENCE = "Unresolved reference: "
  * @param isComplexParser whether this parser is internally generated for complex expression parsing
  * @author Giorgio Garofalo
  */
-class ExpressionParser(private val reader: PixelReader, private val scope: Scope, private val isComplexParser: Boolean = false) {
+class ExpressionParser(
+    private val reader: PixelReader,
+    private val scope: Scope,
+    private val isComplexParser: Boolean = false
+) {
 
     private fun Pixel.isInScope(): Boolean {
         return this in scope || this.isBoolean || this.isLibraryMember
@@ -59,7 +63,7 @@ class ExpressionParser(private val reader: PixelReader, private val scope: Scope
     }
 
     /**
-     * Analizes the next pixels and finds the expression type.
+     * Analyzes the next pixels and finds the expression type.
      * @return type of the expression
      */
     private fun analyze(): ExpressionType {
