@@ -152,7 +152,7 @@ class ExpressionParser(
             }
         }
 
-        return StringExpression(components)
+        return StringExpression(components, isNumber = requireNumber)
     }
 
     /**
@@ -184,7 +184,7 @@ class ExpressionParser(
             }
         }
 
-        if(arguments.isNotEmpty()) {
+        if (arguments.isNotEmpty()) {
             name?.checkType({ it is FunctionMember }, message = "${name.loggableName} is not a valid function.")
         }
 
@@ -211,7 +211,7 @@ class ExpressionParser(
             return EmptyExpression()
         }
 
-        if(scope[struct] !is StructMember) {
+        if (scope[struct] !is StructMember) {
             reader.error("Attempted initialization of invalid struct ${struct.loggableName}.")
             return EmptyExpression()
         }
@@ -228,11 +228,11 @@ class ExpressionParser(
 
         var startIndex = reader.index
 
-        while(true) {
+        while (true) {
             val pixel = reader.next()
             val operator = pixel?.operator
 
-            if(!(isComplexParser && startIndex <= 0) && (pixel == null || operator != null)) {
+            if (!(isComplexParser && startIndex <= 0) && (pixel == null || operator != null)) {
                 members += ExpressionParser(reader.sliced(startIndex, reader.index - 1).also { it.next() }, scope, isComplexParser = true).eval()
                 startIndex = reader.index
 
@@ -240,7 +240,9 @@ class ExpressionParser(
                     members += operator
                 }
             }
-            if(pixel == null) return members
+            if (pixel == null) {
+                return members
+            }
         }
     }
 

@@ -20,12 +20,15 @@ data class StringReference(val sequence: PixelSequence) : StringComponent
  *
  * @param components parts this string is built by
  */
-class StringExpression(val components: List<StringComponent>) : Expression(ExpressionType.STRING) {
+class StringExpression(
+    val components: List<StringComponent>,
+    private val isNumber: Boolean = false
+) : Expression(ExpressionType.STRING) {
 
     override val isEmpty: Boolean
         get() = components.isEmpty()
 
     override fun toCode(transpiler: ExpressionTranspiler): String {
-        return transpiler.string(this)
+        return if (isNumber) transpiler.number(this) else transpiler.string(this)
     }
 }
