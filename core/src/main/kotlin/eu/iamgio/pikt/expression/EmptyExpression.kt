@@ -3,7 +3,7 @@ package eu.iamgio.pikt.expression
 /**
  * An expression with no content.
  */
-class EmptyExpression : Expression(ExpressionType.COMPLEX) {
+class EmptyExpression : Expression(ExpressionType.EMPTY) {
 
     override val isEmpty: Boolean
         get() = true

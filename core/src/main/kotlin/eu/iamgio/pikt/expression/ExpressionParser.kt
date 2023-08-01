@@ -110,7 +110,7 @@ class ExpressionParser(
         }
 
         reader.index = startIndex
-        return type ?: ExpressionType.COMPLEX
+        return type ?: ExpressionType.EMPTY
     }
 
     /**
@@ -125,6 +125,7 @@ class ExpressionParser(
         ExpressionType.FUNCTION_CALL -> nextFunctionCall()
         ExpressionType.STRUCT_INIT -> nextStructInit()
         ExpressionType.COMPLEX -> nextComplex()
+        ExpressionType.EMPTY -> EmptyExpression()
     }
 
     /**

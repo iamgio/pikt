@@ -38,5 +38,10 @@ enum class ExpressionType {
     /**
      * A mix of the previous expressions containing [Operator]s.
      */
-    COMPLEX
+    COMPLEX,
+
+    /**
+     * An expression with no content.
+     */
+    EMPTY
 }
