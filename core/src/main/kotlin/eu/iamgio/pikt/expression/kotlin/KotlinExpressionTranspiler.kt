@@ -29,10 +29,11 @@ class KotlinExpressionTranspiler(private val scope: Scope) : ExpressionTranspile
 
             expression.arguments.forEach { argument ->
                 append(argument.toCode(this@KotlinExpressionTranspiler))
+                append(", ")
             }
 
-            if (endsWith(",")) {
-                setLength(length - 1)
+            if (endsWith(", ")) {
+                setLength(length - 2)
             }
 
             append(")")
