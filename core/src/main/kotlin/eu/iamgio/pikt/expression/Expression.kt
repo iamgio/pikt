@@ -4,20 +4,18 @@ package eu.iamgio.pikt.expression
  * Represents an expression that might be a string, a number, a boolean or a complex expression.
  *
  * @param type type of the expression
- * @param code Kotlin code
  * @author Giorgio Garofalo
  */
-data class Expression(val type: ExpressionType, override val code: String) : ExpressionMember {
+sealed class Expression(val type: ExpressionType) : ExpressionMember {
 
     /**
-     * Whether this expression has no code.
+     * Whether this expression has no content.
      */
-    val isEmpty: Boolean
-        get() = code.isEmpty()
+    abstract val isEmpty: Boolean
 
     /**
-     * Whether this expression has code.
+     * Whether this expression has content.
      */
     val isNotEmpty: Boolean
-        get() = code.isNotEmpty()
+        get() = !isEmpty
 }

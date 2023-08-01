@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.statement.statements
 
+import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.image.PixelReader
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
@@ -44,22 +45,22 @@ abstract class ForEachStatement : Statement() {
         syntax.mark("lambda with argument", StatementSyntax.Mark.CORRECT)
 
         // Makes the lambda block that follows generate the correct output.
-        data.nextStatement.asBlock.codeBuilder = this.createCodeBuilder(collection.code)
+        data.nextStatement.asBlock.codeBuilder = this.createCodeBuilder(data, collection)
 
-        return this.generate()
+        return this.generate(data)
     }
 
     /**
      * Instantiates a new [LambdaOpenCodeBuilder] that handles the body of the for-each.
-     * @param collectionCode code of the collection to iterate.
+     * @param collection the collection to iterate.
      * @return a new lambda code builder for this for-each statement
      */
-    protected abstract fun createCodeBuilder(collectionCode: String): LambdaOpenCodeBuilder
+    protected abstract fun createCodeBuilder(data: StatementData, collection: Expression): LambdaOpenCodeBuilder
 
     /**
      * Generates the output code.
      */
-    protected abstract fun generate(): CharSequence
+    protected abstract fun generate(data: StatementData): CharSequence
 }
 
 /**

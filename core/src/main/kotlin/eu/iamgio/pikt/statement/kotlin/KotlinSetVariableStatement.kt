@@ -2,6 +2,7 @@ package eu.iamgio.pikt.statement.kotlin
 
 import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.expression.PixelSequence
+import eu.iamgio.pikt.expression.kotlin.KotlinExpressionTranspiler
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.statements.SetVariableStatement
 import eu.iamgio.pikt.statement.statements.bridge.LAMBDA_DEFAULT_BLOCK_NAME
@@ -26,7 +27,7 @@ class KotlinSetVariableStatement : SetVariableStatement() {
             append(LAMBDA_DEFAULT_BLOCK_NAME).append("@ ")
         }
 
-        append(value.code)
+        append(value.toCode(KotlinExpressionTranspiler(data.scope)))
 
         // Output:
         // If variable:

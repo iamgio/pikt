@@ -10,15 +10,17 @@ interface ExpressionTranspiler {
     /**
      *
      */
-    fun string(content: String): String
+    fun string(expression: StringExpression): String
 
-    fun number(content: String): String
+    fun number(expression: StringExpression): String
 
-    fun boolean(content: Boolean): String
+    fun boolean(expression: BooleanExpression): String
 
-    fun functionCall(name: String, arguments: List<String>): String
+    fun functionCall(expression: FunctionCallExpression): String
 
-    fun structInit(name: String, members: List<String>): String
+    fun structInit(expression: StructInitExpression): String
+
+    fun operator(operator: Operator): String
 
     fun symbol(symbol: Pixel): String
 

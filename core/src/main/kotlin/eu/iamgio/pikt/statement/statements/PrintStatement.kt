@@ -30,12 +30,12 @@ abstract class PrintStatement : Statement() {
             syntax.mark("value", StatementSyntax.Mark.CORRECT)
         }
 
-        return this.generate(expression)
+        return this.generate(data, expression)
     }
 
     /**
      * Generates the output code.
      * @param expression expression to print
      */
-    protected abstract fun generate(expression: Expression): CharSequence
+    protected abstract fun generate(data: StatementData, expression: Expression): CharSequence
 }

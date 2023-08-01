@@ -38,12 +38,12 @@ abstract class IfStatement : Statement() {
             syntax.mark("lambda|statement", StatementSyntax.Mark.CORRECT)
         }
 
-        return this.generate(condition)
+        return this.generate(data, condition)
     }
 
     /**
      * Generates the output code.
      * @param condition condition of the `if` statement
      */
-    protected abstract fun generate(condition: Expression): CharSequence
+    protected abstract fun generate(data: StatementData, condition: Expression): CharSequence
 }

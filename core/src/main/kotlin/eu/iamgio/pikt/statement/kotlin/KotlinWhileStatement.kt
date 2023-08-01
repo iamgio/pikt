@@ -1,6 +1,8 @@
 package eu.iamgio.pikt.statement.kotlin
 
 import eu.iamgio.pikt.expression.Expression
+import eu.iamgio.pikt.expression.kotlin.KotlinExpressionTranspiler
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.statements.WhileStatement
 import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
 
@@ -11,7 +13,7 @@ class KotlinWhileStatement : WhileStatement() {
 
     override fun createCodeBuilder(): LambdaOpenCodeBuilder = KotlinWhileLambdaOpenCodeBuilder()
 
-    override fun generate(condition: Expression) = buildString {
+    override fun generate(data: StatementData, condition: Expression) = buildString {
         // Output with condition: while ((condition).bool)
         // Output without condition: while (true)
 
@@ -20,7 +22,9 @@ class KotlinWhileStatement : WhileStatement() {
         if (condition.isEmpty) {
             append("true")
         } else {
-            append("(").append(condition.code).append(").bool")
+            append("(")
+            append(condition.toCode(KotlinExpressionTranspiler(data.scope)))
+            append(").bool")
         }
 
         append(")")

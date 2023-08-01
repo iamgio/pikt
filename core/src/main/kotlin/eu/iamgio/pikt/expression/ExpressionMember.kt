@@ -1,14 +1,14 @@
 package eu.iamgio.pikt.expression
 
 /**
- * Interface used to recognize [Expression]s and [Operator]s. Represents a part of complex expressions.
- *
- * @author Giorgio Garofalo
+ * Interface implemented by [Expression]s and [Operator]s. Represents parts of complex expressions.
  */
 interface ExpressionMember {
 
     /**
-     * Output code
+     * Transpiles this expression into output code.
+     * @param transpiler expression to string converter
+     * @return the output code
      */
-    val code: String
+    fun toCode(transpiler: ExpressionTranspiler): String
 }

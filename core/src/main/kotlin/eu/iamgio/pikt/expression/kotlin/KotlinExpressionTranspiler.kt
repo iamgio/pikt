@@ -1,36 +1,57 @@
 package eu.iamgio.pikt.expression.kotlin
 
-import eu.iamgio.pikt.expression.ExpressionTranspiler
-import eu.iamgio.pikt.expression.PixelSequence
+import eu.iamgio.pikt.eval.Scope
+import eu.iamgio.pikt.expression.*
 import eu.iamgio.pikt.image.Pixel
 
-class KotlinExpressionTranspiler : ExpressionTranspiler {
+class KotlinExpressionTranspiler(private val scope: Scope) : ExpressionTranspiler {
 
-    override fun string(content: String): String {
-        return "\"$content\""
+    override fun string(expression: StringExpression) = "\"" + expression.components.joinToString("") {
+        when (it) {
+            is StringCharacter -> it.character.toString()
+            is StringReference -> "\${${sequence(it.sequence)}}"
+        }
+    } + "\""
+
+    override fun number(expression: StringExpression) = expression.components.joinToString("") {
+        when (it) {
+            is StringCharacter -> it.character.toString()
+            is StringReference -> "" // TODO maybe interpet it as a sum between variables?
+        }
     }
 
-    override fun number(content: String): String {
-        return content
+    override fun boolean(expression: BooleanExpression) = expression.content.toString()
+
+    override fun functionCall(expression: FunctionCallExpression) = "".takeIf { expression.isEmpty }
+        ?: buildString {
+            append(sequence(expression.functionName))
+            append("(")
+
+            expression.arguments.forEach { argument ->
+                append(argument.toCode(this@KotlinExpressionTranspiler))
+            }
+
+            if (endsWith(",")) {
+                setLength(length - 1)
+            }
+
+            append(")")
+        }
+
+    override fun structInit(expression: StructInitExpression) = buildString {
+        append(symbol(expression.structName))
+        append("()") // Default arguments
     }
 
-    override fun boolean(content: Boolean): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun functionCall(name: String, arguments: List<String>): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun structInit(name: String, members: List<String>): String {
-        TODO("Not yet implemented")
+    override fun operator(operator: Operator): String {
+        return " ${operator.symbol} "
     }
 
     override fun symbol(symbol: Pixel): String {
-        TODO("Not yet implemented")
+        return symbol.toString() // TODO use different approach
     }
 
     override fun sequence(sequence: PixelSequence): String {
-        TODO("Not yet implemented")
+        return sequence.toNestedCode(scope) // TODO use different approach
     }
 }

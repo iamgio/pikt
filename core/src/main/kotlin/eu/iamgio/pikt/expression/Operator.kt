@@ -9,7 +9,7 @@ import eu.iamgio.pikt.properties.OperatorColorsProperties
  *
  * @author Giorgio Garofalo
  */
-enum class Operator(private val symbol: String, val colors: (OperatorColorsProperties) -> ColorsProperty): ExpressionMember {
+enum class Operator(val symbol: String, val colors: (OperatorColorsProperties) -> ColorsProperty): ExpressionMember {
     PLUS("+",               { colors -> colors.plus            }),
     MINUS("-",              { colors -> colors.minus           }),
     TIMES("*",              { colors -> colors.times           }),
@@ -24,8 +24,9 @@ enum class Operator(private val symbol: String, val colors: (OperatorColorsPrope
     LESS("<",               { colors -> colors.less            }),
     LESS_OR_EQUALS("<=",    { colors -> colors.lessOrEquals    });
 
-    override val code: String
-        get() = " $symbol "
+    override fun toCode(transpiler: ExpressionTranspiler): String {
+        return transpiler.operator(this)
+    }
 
     companion object {
 

@@ -1,6 +1,8 @@
 package eu.iamgio.pikt.statement.kotlin
 
 import eu.iamgio.pikt.expression.Expression
+import eu.iamgio.pikt.expression.kotlin.KotlinExpressionTranspiler
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.statements.IfStatement
 
 /**
@@ -8,9 +10,10 @@ import eu.iamgio.pikt.statement.statements.IfStatement
  */
 class KotlinIfStatement : IfStatement() {
 
-    override fun generate(condition: Expression): CharSequence {
+    override fun generate(data: StatementData, condition: Expression): CharSequence {
         // Output: if ((condition).bool)
         // Note: bool is a library function from Objects.kt
-        return "if ((${condition.code}).bool)"
+        val conditionCode = condition.toCode(KotlinExpressionTranspiler(data.scope))
+        return "if (($conditionCode).bool)"
     }
 }

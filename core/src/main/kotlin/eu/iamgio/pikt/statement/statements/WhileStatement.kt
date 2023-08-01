@@ -48,7 +48,7 @@ abstract class WhileStatement : Statement() {
             data.nextStatement.asBlock.codeBuilder = this.createCodeBuilder()
         }
 
-        return this.generate(condition)
+        return this.generate(data, condition)
     }
 
     /**
@@ -61,5 +61,5 @@ abstract class WhileStatement : Statement() {
      * Generates the output code.
      * @param condition condition of the `while` loop
      */
-    protected abstract fun generate(condition: Expression): CharSequence
+    protected abstract fun generate(data: StatementData, condition: Expression): CharSequence
 }

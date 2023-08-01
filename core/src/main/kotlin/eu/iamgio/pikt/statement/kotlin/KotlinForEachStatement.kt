@@ -1,6 +1,9 @@
 package eu.iamgio.pikt.statement.kotlin
 
+import eu.iamgio.pikt.expression.Expression
+import eu.iamgio.pikt.expression.kotlin.KotlinExpressionTranspiler
 import eu.iamgio.pikt.image.Pixel
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.statements.ForEachLambdaOpenCodeBuilder
 import eu.iamgio.pikt.statement.statements.ForEachStatement
 import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
@@ -10,9 +13,10 @@ import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
  */
 class KotlinForEachStatement : ForEachStatement() {
 
-    override fun createCodeBuilder(collectionCode: String): LambdaOpenCodeBuilder = KotlinForEachLambdaOpenCodeBuilder(collectionCode)
+    override fun createCodeBuilder(data: StatementData, collection: Expression): LambdaOpenCodeBuilder =
+        KotlinForEachLambdaOpenCodeBuilder(collection.toCode(KotlinExpressionTranspiler(data.scope)))
 
-    override fun generate(): CharSequence {
+    override fun generate(data: StatementData): CharSequence {
         // Output (including lambda output): for (name in collection) {
         return "for "
     }

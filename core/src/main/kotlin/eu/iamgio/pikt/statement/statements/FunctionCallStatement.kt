@@ -32,11 +32,11 @@ abstract class FunctionCallStatement : Statement() {
             reader.error("No function name provided.", syntax)
         }
 
-        return this.generate(expression)
+        return this.generate(data, expression)
     }
 
     /**
      * Generates the output code.
      */
-    protected abstract fun generate(function: Expression): CharSequence
+    protected abstract fun generate(data: StatementData, function: Expression): CharSequence
 }

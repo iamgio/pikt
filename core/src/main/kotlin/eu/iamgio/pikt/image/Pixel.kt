@@ -82,8 +82,8 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
     /**
      * Boolean value linked to the pixel if [isBoolean] is `true`.
      */
-    val booleanContent: String
-        get() = matches(colors.boolean.boolTrue).toString()
+    val booleanContent: Boolean
+        get() = matches(colors.boolean.boolTrue)
 
     /**
      * [Statement] linked to this pixel if exists. `null` otherwise.
@@ -118,12 +118,13 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
     val isLibraryMember: Boolean
         get() = libraryMemberName != null
 
+    // TODO to be removed for multi-language support
     /**
      * Pixel as a Kotlin output content.
      */
     val codeContent: String by lazy {
         when {
-            isBoolean -> booleanContent
+            isBoolean -> booleanContent.toString()
             isLibraryMember -> libraryMemberName!!
             else -> "`$hex`"
         }

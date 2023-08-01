@@ -71,7 +71,7 @@ abstract class ReturnStatement : Statement() {
             this.generateEmptyReturn()
         } else {
             syntax.mark("value", StatementSyntax.Mark.CORRECT)
-            this.generateValuedReturn(expression)
+            this.generateValuedReturn(data, expression)
         }
     }
 
@@ -98,7 +98,7 @@ abstract class ReturnStatement : Statement() {
      * Generates the output code for a `return` with a value.
      * @param expression value to return
      */
-    protected abstract fun generateValuedReturn(expression: Expression): CharSequence
+    protected abstract fun generateValuedReturn(data: StatementData, expression: Expression): CharSequence
 
     /**
      * Generates the output code for a `break` statement within a loop (when the [ReturnStatement] is chained twice).

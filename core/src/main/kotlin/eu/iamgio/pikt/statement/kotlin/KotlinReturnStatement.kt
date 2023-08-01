@@ -1,6 +1,8 @@
 package eu.iamgio.pikt.statement.kotlin
 
 import eu.iamgio.pikt.expression.Expression
+import eu.iamgio.pikt.expression.kotlin.KotlinExpressionTranspiler
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.statements.ReturnStatement
 import eu.iamgio.pikt.statement.statements.bridge.LAMBDA_DEFAULT_BLOCK_NAME
 
@@ -18,9 +20,10 @@ class KotlinReturnStatement : ReturnStatement() {
         return StringBuilder("return@").append(LAMBDA_DEFAULT_BLOCK_NAME)
     }
 
-    override fun generateValuedReturn(expression: Expression): CharSequence {
+    override fun generateValuedReturn(data: StatementData, expression: Expression): CharSequence {
         // Output: return@lambda value
-        return generateEmptyReturn().append(" ").append(expression.code)
+        return generateEmptyReturn().append(" ")
+            .append(expression.toCode(KotlinExpressionTranspiler(data.scope)))
     }
 
     override fun generateBreak(): CharSequence {
