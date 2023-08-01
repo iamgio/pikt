@@ -16,6 +16,12 @@ data class StringCharacter(val character: Char) : StringComponent
 data class StringReference(val sequence: PixelSequence) : StringComponent
 
 /**
+ * An empty character that serves no purpose to the content of a string,
+ * but may be useful to force a string initialization or to initialize an empty string.
+ */
+object StringBlankCharacter : StringComponent
+
+/**
  * Expression that wraps a string value.
  *
  * @param components parts this string is built by

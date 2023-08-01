@@ -141,8 +141,13 @@ class ExpressionParser(
                 if (!requireNumber || characterPixel.isNumber || (characterPixel.characterContent == '-' && components.isEmpty())) {
                     // Grayscale pixel -> character, except for null character (code 0)
                     // Therefore, the null character is useful to force string initialization or concatenation.
-                    characterPixel.characterContent.takeIf { it.code != 0 }
-                        ?.let { components += StringCharacter(it) }
+                    characterPixel.characterContent.let { char ->
+                        components += if (char.code != 0) {
+                            StringCharacter(char)
+                        } else {
+                            StringBlankCharacter
+                        }
+                    }
                 } else {
                     reader.error("Member not expected while parsing number.")
                 }

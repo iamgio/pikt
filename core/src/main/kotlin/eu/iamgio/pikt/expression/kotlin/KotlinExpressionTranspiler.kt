@@ -10,6 +10,7 @@ class KotlinExpressionTranspiler(private val scope: Scope) : ExpressionTranspile
         when (it) {
             is StringCharacter -> it.character.toString()
             is StringReference -> "\${${sequence(it.sequence)}}"
+            is StringBlankCharacter -> ""
         }
     } + "\""
 
@@ -17,6 +18,7 @@ class KotlinExpressionTranspiler(private val scope: Scope) : ExpressionTranspile
         when (it) {
             is StringCharacter -> it.character.toString()
             is StringReference -> "" // TODO maybe interpet it as a sum between variables?
+            is StringBlankCharacter -> ""
         }
     }
 
