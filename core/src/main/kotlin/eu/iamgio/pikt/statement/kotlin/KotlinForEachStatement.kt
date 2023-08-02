@@ -29,6 +29,8 @@ class KotlinForEachStatement : ForEachStatement() {
  */
 private class KotlinForEachLambdaOpenCodeBuilder(private val collectionCode: String) : ForEachLambdaOpenCodeBuilder() {
 
+    private val transpiler = KotlinExpressionTranspiler(scope = null)
+
     // Output:
     //
     // With arguments:
@@ -46,7 +48,7 @@ private class KotlinForEachLambdaOpenCodeBuilder(private val collectionCode: Str
     }
 
     override fun appendArgument(argument: Pixel) {
-        builder.append(argument)
+        builder.append(transpiler.symbol(argument))
     }
 
     override fun close() {

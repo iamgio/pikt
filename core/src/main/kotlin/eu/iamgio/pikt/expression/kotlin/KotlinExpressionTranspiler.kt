@@ -4,7 +4,12 @@ import eu.iamgio.pikt.eval.Scope
 import eu.iamgio.pikt.expression.*
 import eu.iamgio.pikt.image.Pixel
 
-class KotlinExpressionTranspiler(private val scope: Scope) : ExpressionTranspiler {
+/**
+ * Kotlin implementation of [ExpressionTranspiler].
+ *
+ * @param scope scope that contains the expressions that should be transpiled, and particularly affects how pixel sequences are translated
+ */
+class KotlinExpressionTranspiler(private val scope: Scope?) : ExpressionTranspiler {
 
     override fun string(expression: StringExpression) = "\"" + expression.components.joinToString("") {
         when (it) {
@@ -66,12 +71,12 @@ class KotlinExpressionTranspiler(private val scope: Scope) : ExpressionTranspile
     override fun sequence(sequence: PixelSequence) = buildString {
         sequence.forEachIndexed { index, pixel ->
             when {
-                index == 0        -> append(pixel)
+                index == 0 || scope == null -> append(symbol(pixel))
                 // If the pixel is in the current scope (or it's a number/character) it is used as index (for lists, strings and more): first[second].
-                pixel in scope    -> append("[").append(pixel).append("]")
+                pixel in scope    -> append("[").append(symbol(pixel)).append("]")
                 pixel.isCharacter -> append("[").append(pixel.characterContent).append("]")
                 // If the pixel is not in the current scope, then it's read as a nested property, possibly of a struct: first["second"].
-                else              -> append("[\"").append(pixel).append("\"]")
+                else -> append("[\"").append(symbol(pixel)).append("\"]")
             }
         }
     }

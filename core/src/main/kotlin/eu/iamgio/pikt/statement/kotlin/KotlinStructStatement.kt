@@ -1,6 +1,8 @@
 package eu.iamgio.pikt.statement.kotlin
 
+import eu.iamgio.pikt.expression.kotlin.KotlinExpressionTranspiler
 import eu.iamgio.pikt.image.Pixel
+import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.statements.StructStatement
 
 /**
@@ -8,14 +10,16 @@ import eu.iamgio.pikt.statement.statements.StructStatement
  */
 class KotlinStructStatement : StructStatement() {
 
-    override fun generate(name: Pixel, arguments: List<Pixel>) = buildString {
+    override fun generate(data: StatementData, name: Pixel, arguments: List<Pixel>) = buildString {
         // Output:
         // class Name : Struct(arg1 to 0, arg2 to 0, ...)
 
-        append("class ").append(name).append(" : Struct(")
+        val transpiler = KotlinExpressionTranspiler(data.scope)
+
+        append("class ").append(transpiler.symbol(name)).append(" : Struct(")
 
         arguments.forEach {
-            append("\"").append(it).append("\" to 0, ")
+            append("\"").append(transpiler.symbol(it)).append("\" to 0, ")
         }
 
         if (endsWith(", ")) {

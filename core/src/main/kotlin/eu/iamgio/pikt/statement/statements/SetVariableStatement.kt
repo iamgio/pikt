@@ -55,7 +55,7 @@ abstract class SetVariableStatement : Statement() {
         // Check if the variable were already registered to a non-overwritable member type.
         // TODO check nested existance
         if (!isNested) {
-            when(data.scope[name]) {
+            when (data.scope[name]) {
                 null -> {}
                 is VariableMember -> {}
                 is ConstantMember -> {

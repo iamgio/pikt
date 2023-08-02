@@ -17,7 +17,7 @@ sealed interface ScopeMember {
  * @param name Kotlin name of the variable
  */
 data class VariableMember(override val name: String) : ScopeMember {
-    constructor(pixel: Pixel) : this(pixel.codeContent)
+    constructor(pixel: Pixel) : this(pixel.id)
 }
 
 /**
@@ -26,7 +26,7 @@ data class VariableMember(override val name: String) : ScopeMember {
  * @param name Kotlin name of the constant
  */
 data class ConstantMember(override val name: String) : ScopeMember {
-    constructor(pixel: Pixel) : this(pixel.codeContent)
+    constructor(pixel: Pixel) : this(pixel.id)
 }
 
 /**
@@ -36,7 +36,7 @@ data class ConstantMember(override val name: String) : ScopeMember {
  * @param overload arguments information
  */
 data class StructMember(override val name: String, val overload: FunctionMember.Overload) : ScopeMember {
-    constructor(pixel: Pixel, overload: FunctionMember.Overload) : this(pixel.codeContent, overload)
+    constructor(pixel: Pixel, overload: FunctionMember.Overload) : this(pixel.id, overload)
 }
 
 /**
@@ -46,8 +46,8 @@ data class StructMember(override val name: String, val overload: FunctionMember.
  * @param overloads function overloads
  */
 data class FunctionMember(override val name: String, val overloads: MutableList<Overload>, val isLibraryFunction: Boolean = false) : ScopeMember {
-    constructor(pixel: Pixel, overloads: MutableList<Overload>) : this(pixel.codeContent, overloads)
-    constructor(pixel: Pixel, overload: Overload) : this(pixel.codeContent, mutableListOf(overload))
+
+    constructor(pixel: Pixel, overload: Overload) : this(pixel.id, mutableListOf(overload))
 
     /**
      * @param argumentsSize amount of arguments from method call

@@ -1,5 +1,6 @@
 package eu.iamgio.pikt.statement.kotlin
 
+import eu.iamgio.pikt.expression.kotlin.KotlinExpressionTranspiler
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
 
@@ -7,6 +8,8 @@ import eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
  *
  */
 open class KotlinDefaultLambdaOpenCodeBuilder : DefaultLambdaOpenCodeBuilder() {
+
+    private val transpiler = KotlinExpressionTranspiler(scope = null)
 
     // Output:
     //
@@ -19,7 +22,7 @@ open class KotlinDefaultLambdaOpenCodeBuilder : DefaultLambdaOpenCodeBuilder() {
     }
 
     override fun appendArgument(argument: Pixel) {
-        builder.append(" ").append(argument).append(": Any,")
+        builder.append(" ").append(transpiler.symbol(argument)).append(": Any,")
     }
 
     override fun close() {

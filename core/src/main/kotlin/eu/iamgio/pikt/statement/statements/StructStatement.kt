@@ -46,7 +46,7 @@ abstract class StructStatement : Statement() {
 
         data.scope.push(name, StructMember(name, FunctionMember.Overload(arguments.size)))
 
-        return this.generate(name, arguments)
+        return this.generate(data, name, arguments)
     }
 
     /**
@@ -54,5 +54,5 @@ abstract class StructStatement : Statement() {
      * @param name name of the struct
      * @param arguments members of the struct
      */
-    protected abstract fun generate(name: Pixel, arguments: List<Pixel>): CharSequence
+    protected abstract fun generate(data: StatementData, name: Pixel, arguments: List<Pixel>): CharSequence
 }

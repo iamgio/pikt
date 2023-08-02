@@ -1,7 +1,5 @@
 package eu.iamgio.pikt.image
 
-import eu.iamgio.pikt.GlobalSettings
-import eu.iamgio.pikt.command.commands.CMD_PIXELINFO
 import eu.iamgio.pikt.expression.Operator
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.properties.ColorsProperty
@@ -118,23 +116,5 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
     val isLibraryMember: Boolean
         get() = libraryMemberName != null
 
-    // TODO to be removed for multi-language support
-    /**
-     * Pixel as a Kotlin output content.
-     */
-    val codeContent: String by lazy {
-        when {
-            isBoolean -> booleanContent.toString()
-            isLibraryMember -> libraryMemberName!!
-            else -> "`$hex`"
-        }
-    }
-
-    /**
-     * @return pixel as a Kotlin output name + pixel information, if enabled.
-     */
-    override fun toString(): String = codeContent.run {
-        // Appends commented pixel coordinates if -pixelinfo is enabled.
-        if(CMD_PIXELINFO in GlobalSettings) "$this /*$x,$y*/ " else this
-    }
+    override fun toString() = "Pixel(color=${color.hexName}, x=$x, y=$y)"
 }
