@@ -16,18 +16,20 @@ class KotlinSetVariableStatement : SetVariableStatement() {
     override fun createFunctionDeclarationCodeBuilder(): LambdaOpenCodeBuilder = KotlinFunctionDeclarationLambdaOpenCodeBuilder()
 
     override fun generate(data: StatementData, sequence: PixelSequence, value: Expression, isFunction: Boolean, isNew: Boolean) = buildString {
+        val transpiler = KotlinExpressionTranspiler(data.scope)
+
         if (isNew) {
             append("var ")
         }
 
-        append(sequence.toNestedCode(data.scope)).append(" = ")
+        append(transpiler.sequence(sequence)).append(" = ")
 
         // If this is a function declaration, name the following block as a Kotlin annotation.
         if(isFunction) {
             append(LAMBDA_DEFAULT_BLOCK_NAME).append("@ ")
         }
 
-        append(value.toCode(KotlinExpressionTranspiler(data.scope)))
+        append(value.toCode(transpiler))
 
         // Output:
         // If variable:

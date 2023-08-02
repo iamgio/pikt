@@ -20,9 +20,15 @@ import eu.iamgio.pikt.statement.Statements
 data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsProperties) {
 
     /**
-     * [color] as hexadecimal.
+     * Hexadecimal representation of the color of this pixel.
      */
-    private val hex: String = color.hex
+    val hex: String = color.hex
+
+    /**
+     * Hexadecimal representation of the color of this pixel with a `#` prefix, e.g. #FF0000.
+     */
+    val hexName: String
+        get() = color.hexName
 
     /**
      * Used for identification.
@@ -35,12 +41,6 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
      * @return whether the pixel's color matches [hex]
      */
     fun matches(colors: ColorsProperty) = colors.has(hex)
-
-    /**
-     * Pixel as a hex color, e.g. #FF0000.
-     */
-    val hexName: String
-        get() = color.hexName
 
     /**
      * Whether this pixel is a whitespace (either white or non-opaque), hence should be skipped.
@@ -108,9 +108,9 @@ data class Pixel(val color: Color, val x: Int, val y: Int, val colors: ColorsPro
         get() = operator != null
 
     /**
-     * Name of the library member linked to this pixel if exists. `null` otherwise.
+     * Name of the library member linked to this pixel if it exists. `null` otherwise.
      */
-    private val libraryMemberName: String? by lazy { colors.libraries.getMemberName(hex) }
+    val libraryMemberName: String? by lazy { colors.libraries.getMemberName(hex) }
 
     /**
      * Whether this pixel is linked to a library member/function.
