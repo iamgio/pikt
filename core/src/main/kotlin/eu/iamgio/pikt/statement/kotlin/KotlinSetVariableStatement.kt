@@ -2,7 +2,7 @@ package eu.iamgio.pikt.statement.kotlin
 
 import eu.iamgio.pikt.expression.Expression
 import eu.iamgio.pikt.expression.PixelSequence
-import eu.iamgio.pikt.expression.kotlin.KotlinExpressionTranspiler
+import eu.iamgio.pikt.expression.kotlin.buildStringWithKotlinTranspiler
 import eu.iamgio.pikt.statement.StatementData
 import eu.iamgio.pikt.statement.statements.SetVariableStatement
 import eu.iamgio.pikt.statement.statements.bridge.LAMBDA_DEFAULT_BLOCK_NAME
@@ -15,9 +15,7 @@ class KotlinSetVariableStatement : SetVariableStatement() {
 
     override fun createFunctionDeclarationCodeBuilder(): LambdaOpenCodeBuilder = KotlinFunctionDeclarationLambdaOpenCodeBuilder()
 
-    override fun generate(data: StatementData, sequence: PixelSequence, value: Expression, isFunction: Boolean, isNew: Boolean) = buildString {
-        val transpiler = KotlinExpressionTranspiler(data.scope)
-
+    override fun generate(data: StatementData, sequence: PixelSequence, value: Expression, isFunction: Boolean, isNew: Boolean) = buildStringWithKotlinTranspiler(data.scope) { transpiler ->
         if (isNew) {
             append("var ")
         }

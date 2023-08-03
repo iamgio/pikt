@@ -22,8 +22,8 @@ class KotlinReturnStatement : ReturnStatement() {
 
     override fun generateValuedReturn(data: StatementData, expression: Expression): CharSequence {
         // Output: return@lambda value
-        return generateEmptyReturn().append(" ")
-            .append(expression.toCode(KotlinExpressionTranspiler(data.scope)))
+        val value = expression.toCode(KotlinExpressionTranspiler(data.scope))
+        return generateEmptyReturn().append(" ").append(value)
     }
 
     override fun generateBreak(): CharSequence {

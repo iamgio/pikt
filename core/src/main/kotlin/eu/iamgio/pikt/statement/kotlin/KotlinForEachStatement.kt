@@ -14,7 +14,7 @@ import eu.iamgio.pikt.statement.statements.bridge.LambdaOpenCodeBuilder
 class KotlinForEachStatement : ForEachStatement() {
 
     override fun createCodeBuilder(data: StatementData, collection: Expression): LambdaOpenCodeBuilder =
-        KotlinForEachLambdaOpenCodeBuilder(collection.toCode(KotlinExpressionTranspiler(data.scope)))
+        KotlinForEachLambdaOpenCodeBuilder(data, collection.toCode(KotlinExpressionTranspiler(data.scope)))
 
     override fun generate(data: StatementData): CharSequence {
         // Output (including lambda output): for (name in collection) {
@@ -27,9 +27,9 @@ class KotlinForEachStatement : ForEachStatement() {
  *
  * @param collectionCode code of the collection to iterate.
  */
-private class KotlinForEachLambdaOpenCodeBuilder(private val collectionCode: String) : ForEachLambdaOpenCodeBuilder() {
+private class KotlinForEachLambdaOpenCodeBuilder(data: StatementData, private val collectionCode: String) : ForEachLambdaOpenCodeBuilder() {
 
-    private val transpiler = KotlinExpressionTranspiler(scope = null)
+    private val transpiler = KotlinExpressionTranspiler(data.scope)
 
     // Output:
     //

@@ -11,6 +11,12 @@ import eu.iamgio.pikt.image.Pixel
  */
 class KotlinExpressionTranspiler(private val scope: Scope?) : ExpressionTranspiler {
 
+    /**
+     * Instantiates a [KotlinExpressionTranspiler] without a scope reference,
+     * that hence will not generate different outcomes depending on the scope status.
+     */
+    constructor() : this(scope = null)
+
     override fun string(expression: StringExpression) = "\"" + expression.components.joinToString("") {
         when (it) {
             is StringCharacter -> it.character.toString()
@@ -80,4 +86,15 @@ class KotlinExpressionTranspiler(private val scope: Scope?) : ExpressionTranspil
             }
         }
     }
+}
+
+/**
+ * Builds a string using an instance of [KotlinExpressionTranspiler].
+ * @param scope optional scope that contains the expressions that should be transpiled
+ * @param builderAction action that populates the [StringBuilder] with the transpiler instance as a lambda parameter
+ * @return the built string
+ * @see buildString
+ */
+fun buildStringWithKotlinTranspiler(scope: Scope?, builderAction: StringBuilder.(KotlinExpressionTranspiler) -> Unit): String {
+    return buildString { builderAction(KotlinExpressionTranspiler(scope)) }
 }

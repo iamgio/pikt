@@ -5,11 +5,11 @@ import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.statement.statements.bridge.DefaultLambdaOpenCodeBuilder
 
 /**
- *
+ * Kotlin implementation of [DefaultLambdaOpenCodeBuilder].
  */
 open class KotlinDefaultLambdaOpenCodeBuilder : DefaultLambdaOpenCodeBuilder() {
 
-    private val transpiler = KotlinExpressionTranspiler(scope = null)
+    private val transpiler = KotlinExpressionTranspiler()
 
     // Output:
     //
