@@ -9,6 +9,7 @@ object ValueType {
     const val NUMBER = "number"
     const val STRING = "string"
     const val LIST = "list"
+    const val FILE = "file"
 
     infix fun String.or(other: String) = "$this or $other"
 }
