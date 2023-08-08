@@ -44,7 +44,8 @@ abstract class StructStatement : Statement() {
             syntax.mark("members", StatementSyntax.Mark.CORRECT)
         }
 
-        data.scope.push(name, StructMember(name, FunctionMember.Overload(arguments.size)))
+        val overload = FunctionMember.Overload(arguments.map { FunctionMember.Parameter(name = it.id) })
+        data.scope.push(name, StructMember(name, overload))
 
         return this.generate(data, name, arguments)
     }

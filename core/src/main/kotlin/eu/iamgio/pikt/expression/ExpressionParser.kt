@@ -196,10 +196,10 @@ class ExpressionParser(
 
         // Check whether this is a proper call
         if (name != null && functionMember != null && !functionMember.isApplicableFor(arguments.size)) {
-            val functionName = (if(functionMember.isLibraryFunction) "${functionMember.name} " else "") + name.loggableName
-            val passedArguments = if(arguments.isNotEmpty()) " (${arguments.joinToString()})" else ""
-            val argumentsSize = functionMember.overloads.joinToString(" or ") { it.argumentsSize.toString() }
-            reader.error("Function $functionName called with ${arguments.size} arguments$passedArguments, but $argumentsSize expected.", referenceToFirstPixel = true)
+            val functionName = if (functionMember.isLibraryFunction) functionMember.name + " " else ""
+            val passedArguments = if (arguments.isNotEmpty()) " (${arguments.joinToString()})" else ""
+            val argumentsSize = functionMember.overloads.joinToString(" or ") { it.parameters.size.toString() }
+            reader.error("Function $functionName${name.loggableName} called with ${arguments.size} arguments$passedArguments, but $argumentsSize expected.", referenceToFirstPixel = true)
         }
 
         // Return empty string if the method has no name and no arguments.

@@ -21,8 +21,12 @@ class JarLibraryFunction(private val method: Method) : LibraryFunction {
      */
     override fun createFunctionOverload(): FunctionMember.Overload {
         return FunctionMember.Overload(
-                argumentsSize = method.parameterCount.takeIf { method.parameters.none { it.isVarArgs } }
-                        ?: FunctionMember.Overload.VARARG_ARGUMENTS_AMOUNT
+            parameters = method.parameters.map { parameter ->
+                FunctionMember.Parameter(
+                    parameter.name.takeIf { parameter.isNamePresent },
+                    parameter.isVarArgs
+                )
+            },
         )
     }
 }

@@ -53,27 +53,29 @@ data class FunctionMember(override val name: String, val overloads: MutableList<
      * @param argumentsSize amount of arguments from method call
      * @return whether the passed amount of arguments matches the definition
      */
-    fun isApplicableFor(argumentsSize: Int) = overloads.any { it.isApplicableFor(argumentsSize) || it.hasVarArgs }
+    fun isApplicableFor(argumentsSize: Int) = overloads.any { it.isApplicableFor(argumentsSize) }
 
     /**
-     * An overload of this function.
+     * A single parameter taken by a function.
      *
-     * @param argumentsSize amount of arguments
+     * @param name name of the parameter, `null` if undefined
+     * @param isVarArg whether this parameter accepts multiple arguments
      */
-    data class Overload(val argumentsSize: Int) {
-        val hasVarArgs: Boolean
-            get() = argumentsSize == VARARG_ARGUMENTS_AMOUNT
+    data class Parameter(val name: String?, val isVarArg: Boolean = false)
+
+    /**
+     * An overload of a function.
+     *
+     * @param parameters parameters accepted by this overload
+     */
+    data class Overload(val parameters: List<Parameter>) {
+
+        private val hasVarArgs: Boolean
+            get() = parameters.any { it.isVarArg }
 
         /**
-         * @return whether the amount of arguments of this overload matches [argumentsSize]
+         * @return whether the amount of arguments of this overload matches [argumentsAmount]
          */
-        fun isApplicableFor(argumentsSize: Int) = this.argumentsSize == argumentsSize
-
-        companion object {
-            /**
-             * The standard amount of arguments if an [Overload] includes varargs.
-             */
-            const val VARARG_ARGUMENTS_AMOUNT = -1
-        }
+        fun isApplicableFor(argumentsAmount: Int) = this.parameters.size == argumentsAmount || this.hasVarArgs
     }
 }

@@ -88,7 +88,10 @@ abstract class SetVariableStatement : Statement() {
             if (isFunction) {
                 val block = data.nextStatement?.asBlock
                 // If this is a function declaration, wait for the next lambda to be evaluated and get the amount of arguments.
-                block?.onGenerationCompleted = { args -> data.scope.push(name, FunctionMember(name, FunctionMember.Overload(args.size))) }
+                block?.onGenerationCompleted = { args ->
+                    val overload = FunctionMember.Overload(args.map { FunctionMember.Parameter(name = it.id) })
+                    data.scope.push(name, FunctionMember(name, overload))
+                }
                 block?.codeBuilder = this.createFunctionDeclarationCodeBuilder()
             } else {
                 // If this a variable declaration, directly push it to the scope.
