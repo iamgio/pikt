@@ -61,9 +61,14 @@ class JarLibrary(private val libraryJar: ZipFile) : Library {
         }
 
     /**
-     * A reflection helper for this library
+     * A reflection helper for this library.
      */
     private val reflectionHelper = JarLibraryReflectionHelper(this)
+
+    /**
+     * Class loader for this library, externally injected.
+     */
+    lateinit var classLoader: ClassLoader
 
     /**
      * Scans the JAR for .class files.
