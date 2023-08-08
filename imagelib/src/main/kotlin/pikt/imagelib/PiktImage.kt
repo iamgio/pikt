@@ -5,22 +5,16 @@ import java.io.File
 import javax.imageio.ImageIO
 
 /**
- * Abstraction of images for Pikt.
+ * [Image] implementation for JVM [BufferedImage]s.
  *
- * @param image Java image
+ * @param image image to wrap
  */
-class PiktImage(private val image: BufferedImage) {
+class PiktImage(private val image: BufferedImage) : WritableImage {
 
-    /**
-     * Width of the image.
-     */
-    val width: Int
+    override val width: Int
         get() = image.width
 
-    /**
-     * Height of the image
-     */
-    val height: Int
+    override val height: Int
         get() = image.height
 
     override fun toString() = "PiktImage (width=$width, height=$height)"
