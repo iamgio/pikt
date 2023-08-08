@@ -2,9 +2,8 @@ package pikt.imagelib
 
 import pikt.error.ImageValueType.IMAGE
 import pikt.error.PiktWrongArgumentTypeException
-import pikt.error.ValueType
+import pikt.error.ValueType.NUMBER
 import pikt.stdlib.newFile
-import java.awt.image.BufferedImage
 import java.io.File
 
 /**
@@ -18,7 +17,7 @@ fun newImage(width: Any, height: Any): PiktImage {
         throw PiktWrongArgumentTypeException(
             parameterName = "width",
             argumentValue = width,
-            expectedType = ValueType.NUMBER,
+            expectedType = NUMBER,
             reference = object {}
         )
     }
@@ -26,19 +25,19 @@ fun newImage(width: Any, height: Any): PiktImage {
         throw PiktWrongArgumentTypeException(
             parameterName = "height",
             argumentValue = height,
-            expectedType = ValueType.NUMBER,
+            expectedType = NUMBER,
             reference = object {}
         )
     }
 
-    return PiktImage(BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB))
+    return PiktImage.blank(width, height)
 }
 
 /**
  * Instantiates a writable [PiktImage] from an image on disk.
  * @param pathOrFile either a [File] or a [String] path
  */
-fun newImage(pathOrFile: Any) = PiktImage(newFile(pathOrFile, requireExistance = true))
+fun newImage(pathOrFile: Any) = PiktImage.fromFile(newFile(pathOrFile, requireExistance = true))
 
 /**
  * @return width of [image]
