@@ -7,6 +7,7 @@ import pikt.stdlib.newFile
 import java.io.File
 
 // Top-level functions to access image methods from Pikt.
+// The only supported implementation is currently the AWT one for the JVM.
 
 /**
  * Instantiates a new writable [Image].
@@ -32,7 +33,7 @@ fun newImage(width: Any, height: Any): WritableImage {
         )
     }
 
-    return PiktImage.blank(width, height)
+    return AwtImage.blank(width, height)
 }
 
 /**
@@ -40,7 +41,7 @@ fun newImage(width: Any, height: Any): WritableImage {
  * @param pathOrFile either a [File] or a [String] path
  * @return the loaded image
  */
-fun newImage(pathOrFile: Any) = PiktImage.fromFile(newFile(pathOrFile, requireExistance = true))
+fun newImage(pathOrFile: Any): WritableImage = AwtImage.fromFile(newFile(pathOrFile, requireExistance = true))
 
 /**
  * @return width of [image]
