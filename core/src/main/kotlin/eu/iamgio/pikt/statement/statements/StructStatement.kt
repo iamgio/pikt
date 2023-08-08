@@ -4,6 +4,7 @@ import eu.iamgio.pikt.eval.FunctionMember
 import eu.iamgio.pikt.eval.StructMember
 import eu.iamgio.pikt.image.Pixel
 import eu.iamgio.pikt.image.PixelReader
+import eu.iamgio.pikt.log.pixel.loggableName
 import eu.iamgio.pikt.properties.ColorsProperties
 import eu.iamgio.pikt.statement.Statement
 import eu.iamgio.pikt.statement.StatementData
@@ -44,7 +45,7 @@ abstract class StructStatement : Statement() {
             syntax.mark("members", StatementSyntax.Mark.CORRECT)
         }
 
-        val overload = FunctionMember.Overload(arguments.map { FunctionMember.Parameter(name = it.id) })
+        val overload = FunctionMember.Overload(arguments.map { FunctionMember.Parameter(name = it.loggableName) })
         data.scope.push(name, StructMember(name, overload))
 
         return this.generate(data, name, arguments)

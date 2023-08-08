@@ -58,10 +58,10 @@ data class FunctionMember(override val name: String, val overloads: MutableList<
     /**
      * A single parameter taken by a function.
      *
-     * @param name name of the parameter, `null` if undefined
+     * @param name name of the parameter
      * @param isVarArg whether this parameter accepts multiple arguments
      */
-    data class Parameter(val name: String?, val isVarArg: Boolean = false)
+    data class Parameter(val name: String, val isVarArg: Boolean = false)
 
     /**
      * An overload of a function.

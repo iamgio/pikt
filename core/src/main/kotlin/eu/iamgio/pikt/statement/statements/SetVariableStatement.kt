@@ -89,7 +89,7 @@ abstract class SetVariableStatement : Statement() {
                 val block = data.nextStatement?.asBlock
                 // If this is a function declaration, wait for the next lambda to be evaluated and get the amount of arguments.
                 block?.onGenerationCompleted = { args ->
-                    val overload = FunctionMember.Overload(args.map { FunctionMember.Parameter(name = it.id) })
+                    val overload = FunctionMember.Overload(args.map { FunctionMember.Parameter(name = it.loggableName) })
                     data.scope.push(name, FunctionMember(name, overload))
                 }
                 block?.codeBuilder = this.createFunctionDeclarationCodeBuilder()

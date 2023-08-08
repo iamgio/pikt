@@ -23,7 +23,7 @@ class JarLibraryFunction(private val method: Method) : LibraryFunction {
         return FunctionMember.Overload(
             parameters = method.parameters.map { parameter ->
                 FunctionMember.Parameter(
-                    parameter.name.takeIf { parameter.isNamePresent },
+                    parameter.name,
                     parameter.isVarArgs
                 )
             },

@@ -155,7 +155,9 @@ class PixelReader(val pixels: PixelArray, val statement: Statement? = null) {
         } else ""
 
         Log.error("Error$coordinates (index $pixelIndex in ${statement?.name ?: "<no statement>"}):")
-        Log.error("\t$message")
+        message.lines().forEach { line ->
+            Log.error("\t$line")
+        }
 
         // Prints a nice message that explains the expected syntax vs the used syntax.
         // Example from SetVariableStatement:

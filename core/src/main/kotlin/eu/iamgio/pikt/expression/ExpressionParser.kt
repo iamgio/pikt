@@ -196,14 +196,45 @@ class ExpressionParser(
 
         // Check whether this is a proper call
         if (name != null && functionMember != null && !functionMember.isApplicableFor(arguments.size)) {
-            val functionName = if (functionMember.isLibraryFunction) functionMember.name + " " else ""
-            val passedArguments = if (arguments.isNotEmpty()) " (${arguments.joinToString()})" else ""
-            val argumentsSize = functionMember.overloads.joinToString(" or ") { it.parameters.size.toString() }
-            reader.error("Function $functionName${name.loggableName} called with ${arguments.size} arguments$passedArguments, but $argumentsSize expected.", referenceToFirstPixel = true)
+            this.logInvalidFunctionCall(name, functionMember, arguments.size)
         }
 
         // Return empty string if the method has no name and no arguments.
         return FunctionCallExpression(sequence, arguments)
+    }
+
+    /**
+     * Logs a complete explanation of a bad function call and shows how to fix it.
+     * @param name function name as a pixel
+     * @param function function
+     * @param argumentsSize passed amount of arguments
+     */
+    private fun logInvalidFunctionCall(name: Pixel, function: FunctionMember, argumentsSize: Int) {
+        val message = buildString {
+            append("Function ")
+            if (function.isLibraryFunction) {
+                append(function.name)
+                append(" ")
+            }
+            append(name.loggableName)
+
+            append(" called with ")
+            append(argumentsSize)
+            append(" arguments, but ")
+            append(function.overloads.joinToString(" or ") { it.parameters.size.toString() })
+            append(" expected.\n")
+
+            append("The following calls are accepted:")
+
+            function.overloads.forEach { overload ->
+                append("\n• ")
+                val parameters = overload.parameters.takeIf { it.isNotEmpty() }?.joinToString { it.name }
+                append(parameters ?: "<no parameters>")
+            }
+        }
+
+        // TODO it shouldn't reference to the first pixel, but OutOfBounds errors sometimes occur. Must investigate
+        reader.error(message, referenceToFirstPixel = true)
     }
 
     /**
