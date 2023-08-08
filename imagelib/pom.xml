@@ -57,6 +57,10 @@
                 </executions>
                 <configuration>
                     <jvmTarget>1.8</jvmTarget>
+                    <args>
+                        <!-- This lets Pikt dynamically retrieve parameter names -->
+                        <arg>-java-parameters</arg>
+                    </args>
                 </configuration>
             </plugin>
             <plugin>

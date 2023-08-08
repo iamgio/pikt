@@ -52,7 +52,7 @@
                 <configuration>
                     <jvmTarget>1.8</jvmTarget>
                     <args>
-                        <!-- This lets PiktException dynamically retrieve parameter names -->
+                        <!-- This lets Pikt dynamically retrieve parameter names -->
                         <arg>-java-parameters</arg>
                     </args>
                 </configuration>
