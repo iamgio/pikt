@@ -1,7 +1,9 @@
 package pikt.imagelib
 
+import pikt.error.PiktIOException
 import java.awt.image.BufferedImage
 import java.io.File
+import java.io.IOException
 import javax.imageio.ImageIO
 
 /**
@@ -17,6 +19,14 @@ class AwtImage(private val image: BufferedImage) : WritableImage {
     override val height: Int
         get() = image.height
 
+    override fun save(file: File) {
+        try {
+            ImageIO.write(image, file.extension, file)
+        } catch (e: IOException) {
+            throw PiktIOException(e.message ?: "Could not save image to $file", reference = object {})
+        }
+    }
+
     override fun toString() = "AwtImage (width=$width, height=$height)"
 
     companion object : ImageFactory<AwtImage> {
@@ -27,7 +37,11 @@ class AwtImage(private val image: BufferedImage) : WritableImage {
         }
 
         override fun fromFile(file: File): AwtImage {
-            return AwtImage(ImageIO.read(file))
+            try {
+                return AwtImage(ImageIO.read(file))
+            } catch (e: IOException) {
+                throw PiktIOException(e.message ?: "Could not read image from $file", reference = object {})
+            }
         }
     }
 }

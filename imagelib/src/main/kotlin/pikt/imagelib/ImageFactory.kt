@@ -1,5 +1,6 @@
 package pikt.imagelib
 
+import pikt.error.PiktIOException
 import java.io.File
 
 /**
@@ -21,7 +22,7 @@ interface ImageFactory<T : Image> {
      * Loads an image from file.
      * @param file file to load the image from
      * @return the loaded image
-     * @throws IOException if the image could not be loaded
+     * @throws PiktIOException if the image could not be loaded
      */
     fun fromFile(file: File): T
 }
