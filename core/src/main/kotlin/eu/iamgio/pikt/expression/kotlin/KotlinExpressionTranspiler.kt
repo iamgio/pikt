@@ -20,7 +20,7 @@ class KotlinExpressionTranspiler(private val scope: Scope?) : ExpressionTranspil
     override fun string(expression: StringExpression) = "\"" + expression.components.joinToString("") {
         when (it) {
             is StringCharacter -> it.character.toString()
-            is StringReference -> "\${${sequence(it.sequence)}}"
+            is StringReference -> "\${${sequence(it.sequence)}()}"
             is StringBlankCharacter -> ""
         }
     } + "\""
