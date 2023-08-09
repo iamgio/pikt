@@ -6,4 +6,5 @@ package pikt.error
 object ImageValueType {
 
     const val IMAGE = "image"
+    const val WRITABLE_IMAGE = "writable image"
 }

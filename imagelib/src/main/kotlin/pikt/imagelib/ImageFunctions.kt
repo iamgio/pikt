@@ -1,6 +1,8 @@
 package pikt.imagelib
 
 import pikt.error.ImageValueType.IMAGE
+import pikt.error.ImageValueType.WRITABLE_IMAGE
+import pikt.error.PiktIOException
 import pikt.error.PiktWrongArgumentTypeException
 import pikt.error.ValueType.NUMBER
 import pikt.stdlib.newFile
@@ -13,7 +15,7 @@ import java.io.File
  * Instantiates a new writable [Image].
  * @param width image width as [Int]
  * @param height image height as [Int]
- * @return a new readable and writable image
+ * @return a new readable and writable blank image
  */
 fun newImage(width: Any, height: Any): WritableImage {
     if (width !is Int) {
@@ -38,10 +40,29 @@ fun newImage(width: Any, height: Any): WritableImage {
 
 /**
  * Instantiates a writable [Image] from an image on disk.
- * @param pathOrFile either a [File] or a [String] path
+ * @param pathOrFile either a [File] or a [String] path to load the image from
  * @return the loaded image
+ * @throws PiktIOException if the image could not be read
  */
 fun newImage(pathOrFile: Any): WritableImage = AwtImage.fromFile(newFile(pathOrFile, requireExistance = true))
+
+/**
+ * Saves an image to file.
+ * @param pathOrFile either a [File] or a [String] path to save the image to
+ * @throws PiktIOException if the image could not be saved
+ */
+fun saveImage(image: Any, pathOrFile: Any) {
+    if (image !is WritableImage) {
+        throw PiktWrongArgumentTypeException(
+            parameterName = "image",
+            argumentValue = image,
+            expectedType = WRITABLE_IMAGE,
+            reference = object {}
+        )
+    }
+
+    image.save(newFile(pathOrFile))
+}
 
 /**
  * @return width of [image]
