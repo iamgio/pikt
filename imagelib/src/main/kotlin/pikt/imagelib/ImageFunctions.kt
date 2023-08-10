@@ -3,6 +3,7 @@ package pikt.imagelib
 import pikt.error.ImageValueType.IMAGE
 import pikt.error.ImageValueType.WRITABLE_IMAGE
 import pikt.error.PiktIOException
+import pikt.error.PiktIndexOutOfBoundsException
 import pikt.error.PiktWrongArgumentTypeException
 import pikt.error.ValueType.NUMBER
 import pikt.stdlib.newFile
@@ -94,4 +95,40 @@ fun imageHeight(image: Any): Int {
     }
 
     return image.height
+}
+
+/**
+ * @param x X coordinate
+ * @param y Y coordinate
+ * @return the color of the [image] at the given coordinate
+ * @throws PiktIndexOutOfBoundsException if one of the coordinates is negative or greater than the image size
+ */
+fun imageColor(image: Any, x: Any, y: Any): Color {
+    if (image !is Image) {
+        throw PiktWrongArgumentTypeException(
+            parameterName = "image",
+            argumentValue = image,
+            expectedType = IMAGE,
+            reference = object {}
+        )
+    }
+
+    if (x !is Int) {
+        throw PiktWrongArgumentTypeException(
+            parameterName = "x",
+            argumentValue = x,
+            expectedType = NUMBER,
+            reference = object {}
+        )
+    }
+    if (y !is Int) {
+        throw PiktWrongArgumentTypeException(
+            parameterName = "y",
+            argumentValue = y,
+            expectedType = NUMBER,
+            reference = object {}
+        )
+    }
+
+    return image.getColor(x, y)
 }
