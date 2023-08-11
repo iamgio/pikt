@@ -103,7 +103,7 @@ fun imageHeight(image: Any): Int {
  * @return the color of the [image] at the given coordinate
  * @throws PiktIndexOutOfBoundsException if one of the coordinates is negative or greater than the image size
  */
-fun imageColor(image: Any, x: Any, y: Any): Color {
+fun getImageColor(image: Any, x: Any, y: Any): Color {
     if (image !is Image) {
         throw PiktWrongArgumentTypeException(
             parameterName = "image",
