@@ -7,7 +7,7 @@ import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
 
-private typealias AWTColor = java.awt.Color
+private typealias AwtColor = java.awt.Color
 
 /**
  * [Image] implementation based on AWT [BufferedImage] for the JVM.
@@ -22,12 +22,12 @@ class AwtImage(private val image: BufferedImage) : WritableImage {
     override val height: Int
         get() = image.height
 
-    override fun getColor(x: Int, y: Int): Color {
+    private fun checkCoordinates(x: Int, y: Int, reference: Any) {
         if (x < 0 || x >= image.width) {
             throw PiktIndexOutOfBoundsException(
                 index = x,
                 size = image.width,
-                reference = object {}
+                reference
             )
         }
 
@@ -35,12 +35,22 @@ class AwtImage(private val image: BufferedImage) : WritableImage {
             throw PiktIndexOutOfBoundsException(
                 index = y,
                 size = image.height,
-                reference = object {}
+                reference
             )
         }
+    }
+
+    override fun getColor(x: Int, y: Int): Color {
+        this.checkCoordinates(x, y, reference = object {})
 
         val rgb = image.getRGB(x, y)
-        return AWTColor(rgb).toPiktColor()
+        return AwtColor(rgb).toPiktColor()
+    }
+
+    override fun setColor(x: Int, y: Int, color: Color) {
+        this.checkCoordinates(x, y, reference = object {})
+
+        image.setRGB(x, y, color.toAwtColor().rgb)
     }
 
     override fun save(file: File) {
@@ -53,7 +63,8 @@ class AwtImage(private val image: BufferedImage) : WritableImage {
 
     override fun toString() = "AwtImage (width=$width, height=$height)"
 
-    private fun AWTColor.toPiktColor() = Color(red, green, blue)
+    private fun AwtColor.toPiktColor() = Color(red, green, blue)
+    private fun Color.toAwtColor() = AwtColor(red, green, blue)
 
     companion object : ImageFactory<AwtImage> {
 
