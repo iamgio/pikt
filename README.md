@@ -172,7 +172,7 @@ The following arguments execute tasks and exit when completed.
 These are handy shortcuts that replace several manual actions, such as image transformations, while being unrelated to code generation and compilation.
 
 - `-downloadcompiler=type[,version]` downloads the zipped Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`).   
-`version` defaults to `1.7.20`.
+`version` defaults to `1.9.21`.
 
 
 - `-createscheme` creates a new [color scheme](core/src/main/resources/colors.properties) with default values.  
