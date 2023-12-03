@@ -22,7 +22,7 @@ open class Struct(vararg members: Pair<String, Any>) {
      * @param property member of this struct associated with the desired value
      * @throws PiktNoSuchElementException if [property]'s `toString()` is not a member of this struct
      */
-    operator fun get(property: Any) = properties.mapGet(property.toString())
+    open operator fun get(property: Any) = properties.mapGet(property.toString())
         ?: throw PiktNoSuchElementException(property, reference = object {})
 
     /**
@@ -31,7 +31,7 @@ open class Struct(vararg members: Pair<String, Any>) {
      * @param value new value to overwrite
      * @throws PiktNoSuchElementException if [property]'s `toString()` is not a member of this struct
      */
-    operator fun set(property: Any, value: Any) {
+    open operator fun set(property: Any, value: Any) {
         val key = property.toString()
         if(properties.containsKey(key)) {
             properties.mapSet(key, value)
