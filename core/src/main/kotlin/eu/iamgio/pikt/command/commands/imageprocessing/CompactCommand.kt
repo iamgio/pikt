@@ -7,11 +7,11 @@ import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 
 /**
- * Triggered by -compact[=size] argument.
+ * Triggered by the `-compact[=size]` argument.
  *
  * @author Giorgio Garofalo
  */
-class CompactCommand : Command("-compact", closeOnComplete = true) {
+class CompactCommand : Command("compact", closeOnComplete = true) {
     override fun execute(args: String?) {
         val properties = PiktPropertiesRetriever().retrieve()
         val piktImage = PiktImage(properties)

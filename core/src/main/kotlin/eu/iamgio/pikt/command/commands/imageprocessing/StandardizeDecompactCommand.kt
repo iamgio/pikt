@@ -8,13 +8,13 @@ import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 
 /**
- * Triggered by -standardecompact argument.
+ * Triggered by the `standardecompact` argument.
  *
  * -standardize + -decompact
  *
  * @author Giorgio Garofalo
  */
-class StandardizeDecompactCommand : Command("-standardecompact", closeOnComplete = true) {
+class StandardizeDecompactCommand : Command("standardecompact", closeOnComplete = true) {
     override fun execute(args: String?) {
         val properties = PiktPropertiesRetriever().retrieve()
         val piktImage = PiktImage(properties)

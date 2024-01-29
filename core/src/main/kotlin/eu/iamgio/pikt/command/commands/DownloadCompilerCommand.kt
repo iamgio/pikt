@@ -7,11 +7,11 @@ import eu.iamgio.pikt.util.KotlinCompilerDownloader
 import eu.iamgio.pikt.util.KotlinCompilerType
 
 /**
- * Triggered by -downloadcompiler=type[,version] argument
+ * Triggered by `downloadcompiler=type[,version]` argument
  *
  * @author Giorgio Garofalo
  */
-class DownloadCompilerCommand : Command("-downloadcompiler", closeOnComplete = true) {
+class DownloadCompilerCommand : Command("downloadcompiler", closeOnComplete = true) {
     override fun execute(args: String?) {
         val type: KotlinCompilerType?
         val version: String?

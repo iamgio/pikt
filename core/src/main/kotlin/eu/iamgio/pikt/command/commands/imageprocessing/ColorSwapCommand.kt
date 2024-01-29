@@ -7,14 +7,14 @@ import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 
 /**
- * Triggered by -colorswap=<swaps> argument,
+ * Triggered by the `colorswap=<swaps>` argument,
  * where `<swaps>` is a list of `from:to` separated by a comma.
  *
  * Example: `-swapcolors=FF0000:FFFF00,00FF00:0000FF`
  *
  * @author Giorgio Garofalo
  */
-class ColorSwapCommand : Command("-colorswap", closeOnComplete = true) {
+class ColorSwapCommand : Command("colorswap", closeOnComplete = true) {
     override fun execute(args: String?) {
         if(args == null) {
             Log.error("Usage: -colorswap=<from1:to1,from2,to2,...>. Exiting.")

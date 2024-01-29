@@ -84,7 +84,6 @@ class PiktProjectInfoParser(private val inputStream: InputStream) {
         val properties = listToMap(propertiesData)
 
         val commands = listToMap(commandsData)
-            .mapKeys { "-" + it.key } // Commands start with a '-', but they don't in the project info file.
             .mapValues { it.value?.toString() }
 
         return PiktProjectInfo(properties, commands, tasks)

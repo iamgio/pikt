@@ -8,13 +8,13 @@ import eu.iamgio.pikt.log.pixel.AsciiBoxConsolePixelLogger
 import eu.iamgio.pikt.log.pixel.RGBConsolePixelLogger
 
 /**
- * Triggered by the -pl=type argument.
+ * Triggered by the `--pl[=type]` argument.
  * Defines the logger used to log pixels, for example in case of errors.
  *
  * @see Log.pixelLogger
  * @author Giorgio Garofalo
  */
-class PixelLoggerCommand : Command("-pl", isSettingsCommand = true) {
+class PixelLoggerCommand : Command("--pl", isSettingsCommand = true) {
 
     override fun execute(args: String?) {
         Log.pixelLogger = when(args) {

@@ -6,12 +6,12 @@ import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.log.pixel.ConsolePixelLogger
 
 /**
- * Triggered by -strconvert=string argument.
+ * Triggered by the `strconvert[=string]` argument.
  * Converts a string into a sequence of RGB values supported by Pikt and prints them out.
  *
  * @author Giorgio Garofalo
  */
-class StringConvertCommand : Command("-strconvert", closeOnComplete = true) {
+class StringConvertCommand : Command("strconvert", closeOnComplete = true) {
     override fun execute(args: String?) {
         if(args == null) {
             // Read lines from stdin

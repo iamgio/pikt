@@ -12,12 +12,12 @@ import java.io.FileOutputStream
 private const val HELLO_WORLD = "helloworld.png"
 
 /**
- * Triggered by -welcome argument. Creates useful initial files for the first run.
+ * Triggered by `welcome` argument. Creates useful initial files for the first run.
  * It is also called by the GitHub action before zipping.
  *
  * @author Giorgio Garofalo
  */
-class WelcomeCommand : Command("-welcome", closeOnComplete = true) {
+class WelcomeCommand : Command("welcome", closeOnComplete = true) {
     override fun execute(args: String?) {
         Log.info("-----\nWelcome to Pikt!\n-----\n")
 

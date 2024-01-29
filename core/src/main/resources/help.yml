@@ -27,11 +27,11 @@ sections:
   - name: Settings
     description: Commands that affect Pikt's behavior.
     members:
-      - -interpret: Runs the generated code on the fly via the JVM compiler.
-      - -printoutput: Prints the generated Kotlin code.
-      - -pixelinfo: Adds information about pixel coordinates to the output code.
-      - -nocompile: Disables the generation of any executable file.
-      - -pl[=type]:
+      - --interpret: Runs the generated code on the fly via the JVM compiler.
+      - --printoutput: Prints the generated Kotlin code.
+      - --pixelinfo: Adds information about pixel coordinates to the output code.
+      - --nocompile: Disables the generation of any executable file.
+      - --pl[=type]:
           description: Sets the active pixel logger type.
           args:
             - type:
@@ -43,23 +43,23 @@ sections:
   - name: Color schemes
     description: Utilities for color scheme files.
     members:
-      - -createscheme: Creates a new color scheme with default values.
-      - -exportscheme: Generates a color palette image out of the currently set color scheme.
+      - createscheme: Creates a new color scheme with default values.
+      - exportscheme: Generates a color palette image out of the currently set color scheme.
 
   - name: Image transformations
     description: "Commands that transform an image without altering its source content.\n\
       They don't affect the image itself but create a copy instead.\n\
       More info at https://github.com/iamgio/pikt/wiki/Image-transformation-commands"
     members:
-      - -imgoutput=path:
+      - --imgoutput=path:
           description: Sets the output file for image transformation commands.
           default: The source image path followed by a suffix.
           args:
             - path: Path of the image files to be created.
-      - -chainoutput:
+      - --chainoutput:
           description: "Enables output chaining: the output of a command becomes input for the next one."
           note: -imgoutput must be set.
-      - -recolorize[=method]:
+      - recolorize[=method]:
           description: Adapts the source image from the default color scheme to the current one.
           args:
             - method:
@@ -67,21 +67,21 @@ sections:
                 values: [ first, last, random ]
                 default: first
                 optional: true
-      - -standardize: Adapts the source image to the current custom color scheme to the default one.
-      - -compact[=size]:
+      - standardize: Adapts the source image to the current custom color scheme to the default one.
+      - compact[=size]:
           description: Removes whitespace from the source image.
           args:
             - size:
                 description: Width and/or height of the final image, e.g. w10h5, w10, h5.
                 default: The optimal size for a square-ish image.
                 optional: true
-      - -decompact: Adds whitespaces to the source image in order to have one statement per line.
-      - -standardecompact: -standardize + -decompact.
-      - -colorswap=swaps:
+      - decompact: Adds whitespaces to the source image in order to have one statement per line.
+      - standardecompact: -standardize + -decompact.
+      - colorswap=swaps:
           description: Swaps colors from the source image.
           args:
             - swaps: Sequence of from:to colors (as hex) separated by commas.
-      - -mask=path:
+      - mask=path:
           description: Gives a shape to the source image.
           args:
             - path: Path to the mask image, where the shape is defined by solid pixels.
@@ -89,14 +89,14 @@ sections:
   - name: Misc
     description: Other commands.
     members:
-      - -strconvert[=string]:
+      - strconvert[=string]:
           description: Converts a string into a sequence of ready-to-use RGB values.
           args:
             - string:
                 description: Text to convert.
                 default: None, will be read from stdin.
                 optional: true
-      - -downloadcompiler=type[,version]:
+      - downloadcompiler=type[,version]:
           description: Downloads the Kotlin compiler for the given platform.
           args:
             - type:
@@ -106,5 +106,5 @@ sections:
                 description: Version of the Kotlin compiler.
                 default: 1.7.20
                 optional: true
-      - -welcome: Runs -createscheme, -exportscheme and -downloadcompiler=jvm.
-      - -help: Shows available commands.
+      - welcome: Runs -createscheme, -exportscheme and -downloadcompiler=jvm.
+      - help: Shows available commands.

@@ -6,11 +6,11 @@ import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 
 /**
- * Triggered by -standardize argument.
+ * Triggered by the `standardize` argument.
  *
  * @author Giorgio Garofalo
  */
-class StandardizeCommand : Command("-standardize", closeOnComplete = true) {
+class StandardizeCommand : Command("standardize", closeOnComplete = true) {
     override fun execute(args: String?) {
         val properties = PiktPropertiesRetriever().retrieve()
         val sourceImage = ImageProcessingUtils.read(properties.source)

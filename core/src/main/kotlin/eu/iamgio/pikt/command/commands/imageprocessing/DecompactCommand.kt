@@ -7,11 +7,11 @@ import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 
 /**
- * Triggered by -decompact argument.
+ * Triggered by the `-decompact` argument.
  *
  * @author Giorgio Garofalo
  */
-class DecompactCommand : Command("-decompact", closeOnComplete = true) {
+class DecompactCommand : Command("decompact", closeOnComplete = true) {
     override fun execute(args: String?) {
         val properties = PiktPropertiesRetriever().retrieve()
         val piktImage = PiktImage(properties)

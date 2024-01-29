@@ -34,10 +34,10 @@ jobs:
           rm -rf */target/*-without-dependencies.jar
           cp */target/*.jar staging
           mv staging/*lib.jar staging/libraries
-      - name: Run -welcome
+      - name: Run welcome command
         run: |
           cd staging
-          java -jar pikt.jar -welcome
+          java -jar pikt.jar welcome
       - name: Get output files
         run: ls -d "$PWD/staging/"*
       - name: Publish JAR

@@ -14,12 +14,12 @@ import eu.iamgio.pikt.log.Log
 private const val HELP_PATH = "/help.yml"
 
 /**
- * Triggered by the -help argument.
+ * Triggered by the `help` argument.
  * Shows command and property information.
  *
  * @author Giorgio Garofalo
  */
-class HelpCommand : Command("-help", closeOnComplete = true) {
+class HelpCommand : Command("help", closeOnComplete = true) {
 
     /**
      * Formats some [text] as a title.

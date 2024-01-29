@@ -11,11 +11,11 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 /**
- * Triggered by -createscheme argument
+ * Triggered by the `createscheme` argument
  *
  * @author Giorgio Garofalo
  */
-class CreateSchemeCommand : Command("-createscheme", closeOnComplete = true) {
+class CreateSchemeCommand : Command("createscheme", closeOnComplete = true) {
     override fun execute(args: String?) {
         val retriever = PiktPropertiesRetriever()
         val libraries = retriever.libraries()

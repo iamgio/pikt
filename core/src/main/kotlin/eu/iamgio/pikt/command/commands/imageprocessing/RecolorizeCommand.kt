@@ -6,11 +6,11 @@ import eu.iamgio.pikt.log.Log
 import eu.iamgio.pikt.properties.PiktPropertiesRetriever
 
 /**
- * Triggered by -recolorize[=method] argument.
+ * Triggered by the `recolorize[=method]` argument.
  *
  * @author Giorgio Garofalo
  */
-class RecolorizeCommand : Command("-recolorize", closeOnComplete = true) {
+class RecolorizeCommand : Command("recolorize", closeOnComplete = true) {
     override fun execute(args: String?) {
         val properties = PiktPropertiesRetriever().retrieve()
         val sourceImage = ImageProcessingUtils.read(properties.source)

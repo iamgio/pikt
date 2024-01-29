@@ -116,25 +116,25 @@ If not specified, points by default to `./libraries/stdlib.jar`;
 
 The following arguments enable settings that affect Pikt's behavior.
 
-- `-interpret` runs the generated code via the JVM compiler;
+- `--interpret` runs the generated code via the JVM compiler;
 
 
-- `-printoutput` displays the generated Kotlin code;
+- `--printoutput` displays the generated Kotlin code;
 
 
-- `-nocompile` prevents the generation of any executable file;
+- `--nocompile` prevents the generation of any executable file;
 
 
-- `-pixelinfo` adds information about pixel coordinates to the output code as comments;
+- `--pixelinfo` adds information about pixel coordinates to the output code as comments;
 
 
-- `-imgoutput=path` sets the output file for image-generating commands (see below). If not specified, defaults to the source image path followed by a suffix;  
+- `--imgoutput=path` sets the output file for image-generating commands (see below). If not specified, defaults to the source image path followed by a suffix;  
 
 
-- `-chainoutput` enables output chaining for image-generating commands: the output of a command becomes the input for the next one. It requires `-imgoutput` to be set.
+- `--chainoutput` enables output chaining for image-generating commands: the output of a command becomes the input for the next one. It requires `-imgoutput` to be set.
 
 
-- `-pl[=type]` sets the active pixel logger type.
+- `--pl[=type]` sets the active pixel logger type.
   A pixel logger is responsible for printing pixels on screen,
   for example in case of compile-time errors.  
   Available types: `none`, `16`, `256`, `rgb`, `box`.  
@@ -171,57 +171,57 @@ The following arguments enable settings that affect Pikt's behavior.
 The following arguments execute tasks and exit when completed.  
 These are handy shortcuts that replace several manual actions, such as image transformations, while being unrelated to code generation and compilation.
 
-- `-downloadcompiler=type[,version]` downloads the zipped Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`).   
+- `downloadcompiler=type[,version]` downloads the zipped Kotlin compiler for the given platform (`jvm`, `windows`, `macos`, `linux`).   
 `version` defaults to `1.9.21`.
 
 
-- `-createscheme` creates a new [color scheme](core/src/main/resources/colors.properties) with default values.  
+- `createscheme` creates a new [color scheme](core/src/main/resources/colors.properties) with default values.  
 It automatically appends library colors too, e.g. the [stdlib scheme](stdlib/src/main/resources/colors.properties), loaded from `-Dlib`;
 
 
-- `-exportscheme` generates a useful color palette image out of the given color scheme;
+- `exportscheme` generates a useful color palette image out of the given color scheme;
 
 
-- `-recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`).  
+- `recolorize[=method]` creates a copy of the source image (that relies on the default scheme) and adapts it to a custom scheme (specified by `-Dcolors`).  
 `method` defines the way properties with more than one color are handled; it can be either `first` (default), `last` or `random`;
 
 
-- `-standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme;
+- `standardize` creates a copy of the source image (that relies on a custom scheme) and adapts it to the default scheme;
 
 
-- `-compact[=size]` creates a compacted copy of the source image with no whitespaces between pixels.  
+- `compact[=size]` creates a compacted copy of the source image with no whitespaces between pixels.  
 If `size` is not specified, it will try to create a square-ish image.  
 `size` can be defined via `w?h?`, where both `w`and `h` are optional (in case one is missing, it will be calculated the same way as before) (e.g. `w10h5`, `w10`, `h5`);
 
 
-- `-decompact` creates a decompacted copy of the source image with one statement per line;
+- `decompact` creates a decompacted copy of the source image with one statement per line;
 
 
-- `-standardecompact` runs `-standardize` + `-decompact`;
+- `standardecompact` runs `standardize` + `decompact`;
 
 
-- `-colorswap=<swaps>` swaps colors from the source image.  
+- `colorswap=<swaps>` swaps colors from the source image.  
 `swaps` is defined as `from1:to1,from2:to2,...` where `from` and `to` are hexadecimal colors; 
 
 
-- `-mask=path` creates a masked copy of the source image, loading the mask image from `path`;
+- `mask=path` creates a masked copy of the source image, loading the mask image from `path`;
 
 
-- `-strconvert[=string]` converts a string into a sequence of RGB (grayscale) values supported by Pikt and prints them out.  
+- `strconvert[=string]` converts a string into a sequence of RGB (grayscale) values supported by Pikt and prints them out.  
 If `string` is not specified, input is read from stdin.  
 _See [Hello world!](https://github.com/iAmGio/pikt/wiki/Hello-world) for further information._  
-For instance, `-strconvert="Hello Pikt!"` prints:
+For instance, `strconvert="Hello Pikt!"` prints:
 
   ```
   RGB:  72  101  108  108  111  32  80  105  107  116  33  
         H   e    l    l    o        P   i    k    t    !   
   ```
 
-- `-welcome` runs `-createscheme`, `-exportscheme` (both on `colors`), `-downloadcompiler=jvm` and creates a ready-to-use Hello World source.
+- `welcome` runs `createscheme`, `exportscheme` (both on `colors`), `downloadcompiler=jvm` and creates a ready-to-use Hello World source.
 Its output is already zipped in the downloadable archive;
 
 
-- `-help` shows these commands.
+- `help` shows these commands.
 
 
 More in-depth information about image transformation commands can be found [here](https://github.com/iAmGio/pikt/wiki/Image-transformation-commands).

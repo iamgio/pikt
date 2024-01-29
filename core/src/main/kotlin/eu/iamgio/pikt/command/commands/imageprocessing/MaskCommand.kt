@@ -11,11 +11,11 @@ import java.io.File
 
 
 /**
- * Triggered by -mask=<path> argument.
+ * Triggered by the `mask=<path>` argument.
  *
  * @author Giorgio Garofalo
  */
-class MaskCommand : Command("-mask", closeOnComplete = true) {
+class MaskCommand : Command("mask", closeOnComplete = true) {
     override fun execute(args: String?) {
         if(args == null) {
             Log.error("Expected -mask=<mask path>. Exiting.")

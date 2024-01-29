@@ -12,12 +12,12 @@ import java.io.FileInputStream
 import java.io.IOException
 
 /**
- * Triggered by -exportscheme argument.
+ * Triggered by the `exportscheme` argument.
  * Creates a color palette.
  *
  * @author Giorgio Garofalo
  */
-class ExportSchemeCommand : Command("-exportscheme", closeOnComplete = true) {
+class ExportSchemeCommand : Command("exportscheme", closeOnComplete = true) {
     override fun execute(args: String?) {
         val schemeFile = PiktPropertiesRetriever().colorsFile()
             ?: exit(ERROR_BAD_PROPERTIES, message = "Color scheme (-Dcolors) not set.")
